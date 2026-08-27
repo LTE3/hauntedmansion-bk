@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nothing down this hall.</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#050505">
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23050505"/><path d="M6 30V13L16 5l10 8v17z" fill="none" stroke="%233a332c" stroke-width="2"/><rect x="13" y="18" width="6" height="12" fill="%23c2702f"/></svg>'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400&family=Cormorant+Garamond:wght@300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#050505;
+  --bone:#cfc4b4;
+  --ash:#5e574e;
+  --blood-lit:#c9342a;
+  --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+  --display:"Cinzel","Cormorant Garamond",Georgia,serif;
+  --slow:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;min-height:100svh;background:var(--ink);color:var(--bone);
+  font-family:var(--serif);-webkit-font-smoothing:antialiased;
+  display:grid;place-content:center;text-align:center;gap:3.4rem;padding:12vh 8vw;
+}
+::selection{background:#7d1d14;color:#e8ded0}
+/* the only light in the room, and it is not steady */
+body::before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(52% 40% at 50% 46%,rgba(194,112,47,.10),transparent 72%);
+  animation:flick 7.3s steps(1,end) infinite;
+}
+@keyframes flick{
+  0%,42%{opacity:.85} 43%{opacity:.5} 45%{opacity:.95} 46%{opacity:.4}
+  48%{opacity:.88} 63%{opacity:.88} 64%{opacity:.58} 66%{opacity:1} 100%{opacity:.85}
+}
+h1{
+  font-family:var(--display);font-weight:400;margin:0;
+  font-size:clamp(1.5rem,5.6vw,3rem);line-height:1.15;letter-spacing:.1em;
+  text-transform:uppercase;color:#d8cdbc;text-wrap:balance;
+  text-shadow:0 0 60px rgba(160,26,18,.4);
+}
+p{margin:0;font-size:clamp(1rem,2.6vw,1.15rem);letter-spacing:.06em;color:var(--ash)}
+a{
+  justify-self:center;font-family:var(--display);font-size:.8rem;letter-spacing:.3em;
+  text-transform:uppercase;color:#ddd2c1;text-decoration:none;
+  border:1px solid #4a423a;padding:1.1rem 1.8rem;
+  transition:background-color .3s var(--slow),border-color .3s var(--slow),color .3s var(--slow);
+}
+a:hover,a:focus-visible{
+  background:#170907;border-color:var(--blood-lit);color:#f0e5d4;outline:none;
+  box-shadow:0 0 34px -12px rgba(201,52,42,.75);
+}
+@media (prefers-reduced-motion:reduce){ body::before{animation:none} }
+@media (prefers-contrast:more){
+  h1{color:#fff} p{color:#a2988b} a{border-color:#8b8175;color:#f4ebdc}
+}
+</style>
+</head>
+<body>
+  <h1>Nothing down this hall.</h1>
+  <p>Whatever was here is not here now.</p>
+  <a href="/">Back to the door</a>
+</body>
+</html>

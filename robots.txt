@@ -1,0 +1,6 @@
+# Preview only. index.html still carries <meta name="robots" content="noindex">;
+# when the real domain goes live, delete that line and this block together.
+User-agent: *
+Disallow: /
+
+Sitemap: https://hauntedmansionbk.com/sitemap.xml

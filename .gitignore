@@ -1,0 +1,16 @@
+# Dev artifacts, not the site
+screenshots/
+.playwright-mcp/
+__pycache__/
+
+# Source renders and grading experiments. Cali's art and the raw set render
+# stay off a public repo; the page only needs the three files below.
+img/_*.jpg
+img/cali/
+img/scarier/
+img/facade-*.jpg
+img/facade-raw.png
+img/hero-blood.jpg
+img/hero-cold.jpg
+img/hero-rot.jpg
+img/hero-full.jpg

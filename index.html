@@ -35,7 +35,7 @@
   --ink:#050505;
   --bone:#cfc4b4;
   --bone-dim:#8b8175;
-  --ash:#5e574e;
+  --ash:#82796f;
   --ember:#c2702f;
   --blood:#7d1d14;
   /* --blood is a fill. Type on near-black needs the lit one. */
@@ -162,20 +162,34 @@ section{max-width:44rem;margin:0 auto;padding:clamp(5rem,14vh,9rem) 7vw;text-ali
 
 /* signup */
 .form{display:grid;gap:1.9rem;max-width:30rem;margin-inline:auto;text-align:left}
-.field{position:relative}
+/* The placeholder used to be the only visible name a field had. It measured
+   2.23:1 against the ink - and it disappeared the moment anyone typed, so the
+   one person who most needs to check what they entered is the one who can no
+   longer see which box is which. The label is real now: it rests on the line,
+   lifts above it once the field holds anything, and never leaves. The
+   placeholder survives only as a single space, because :placeholder-shown is
+   what tells the label whether to sit down or stand up. */
+.field{position:relative;padding-top:1.2rem}
 .field input{
   width:100%;background:transparent;border:0;border-bottom:1px solid #2b2622;
   padding:.85rem .1rem;color:var(--bone);font-family:var(--serif);font-size:1.05rem;
   letter-spacing:.12em;transition:border-color .35s var(--slow)}
-.field input::placeholder{color:#4e4740;letter-spacing:.2em;text-transform:uppercase;font-size:.78rem}
+.field input::placeholder{color:transparent}
+.field label{
+  position:absolute;left:.1rem;bottom:.95rem;pointer-events:none;transform-origin:left bottom;
+  font-family:var(--display);font-size:.82rem;letter-spacing:.2em;text-transform:uppercase;
+  color:#857c72;transition:transform .34s var(--slow),color .34s var(--slow)}
+.field input:focus+label,
+.field input:not(:placeholder-shown)+label{transform:translateY(-1.7rem) scale(.86)}
+.field input:focus+label{color:var(--blood-lit)}
 .field input:focus{outline:none;border-bottom-color:var(--blood-lit)}
 .field input[aria-invalid="true"]{border-bottom-color:#a4453a}
 /* a honeypot. Off-screen, unlabelled and never reachable by keyboard, so the
    only thing that fills it is something reading the DOM. */
 .trap{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.trap label{position:static;transform:none}
 button{
-  margin-top:.6rem;justify-self:center;min-width:min(22rem,100%);background:transparent;color:#ddd2c1;border:1px solid #4a423a;
+  margin-top:.6rem;justify-self:stretch;background:transparent;color:#ddd2c1;border:1px solid #4a423a;
   font-family:var(--display);font-size:.82rem;letter-spacing:.3em;text-transform:uppercase;
   padding:1.15rem 1.4rem;cursor:pointer;
   transition:background-color .3s var(--slow),border-color .3s var(--slow),color .3s var(--slow)}
@@ -208,6 +222,11 @@ button[disabled]{opacity:.45;cursor:wait}
 .facts{font-family:var(--display);letter-spacing:.14em;text-transform:uppercase;
   font-size:clamp(.95rem,2.6vw,1.3rem);line-height:2.1;color:#cabfae;margin:0}
 .facts span{display:block}
+/* Short display lines orphan their last word - "SEPTEMBER / 25.", "ONE WAY /
+   OUT.", "ANSWER THE / DOOR." A ragged line is a wide-screen problem too, not
+   only a phone one, so balance them everywhere and the break lands somewhere
+   chosen rather than wherever the column happened to run out. */
+.facts span,.done p,.knock,.close p,.hero h1 span,.eyebrow{text-wrap:balance}
 .facts span+span{color:var(--bone-dim);font-size:.86em;letter-spacing:.2em}
 
 /* the counter is hidden unless the number is real and worth showing */
@@ -266,14 +285,11 @@ button[disabled]{opacity:.45;cursor:wait}
   .eyebrow{font-size:1.45rem;margin-bottom:2rem}
   .form{gap:1.5rem;max-width:none}
   .field input{font-size:1.05rem;padding:.95rem .1rem}
-  .field input::placeholder{font-size:.72rem;letter-spacing:.18em}
+  .field label{font-size:.76rem;letter-spacing:.18em}
   button{width:100%;padding:1.25rem 1rem;font-size:.8rem;letter-spacing:.26em}
   .fine{font-size:.72rem;letter-spacing:.16em;line-height:1.9}
   .facts{font-size:1.05rem;line-height:1.95}
   .done p{font-size:1.35rem}
-  /* short display lines were orphaning their last word ("SEPTEMBER / 25.",
-     "ANSWER THE / DOOR."). Balance them so the break lands somewhere chosen. */
-  .facts span,.done p,.knock,.close p,.hero h1 span{text-wrap:balance}
   .close{min-height:70svh;gap:3.2rem;padding:11vh 8vw calc(11vh + env(safe-area-inset-bottom))}
   .close p{font-size:2rem;letter-spacing:.12em}
   .close a{font-size:.74rem;letter-spacing:.26em}
@@ -313,7 +329,7 @@ button[disabled]{opacity:.45;cursor:wait}
   .clue{color:#c3b9ab} .clue b{color:#efe6d8} .remain{color:#ff6a58}
   .fine,.close a{color:#a2988b}
   .field input{border-bottom-color:#6b625a}
-  .field input::placeholder{color:#8b8175}
+  .field label{color:#c3b9ab}
   button{border-color:#8b8175;color:#f4ebdc}
 }
 </style>
@@ -358,19 +374,19 @@ button[disabled]{opacity:.45;cursor:wait}
         <input id="company" name="company" type="text" tabindex="-1" autocomplete="off">
       </div>
       <div class="field">
-        <label class="sr" for="name">Name</label>
         <input id="name" name="name" type="text" inputmode="text" autocomplete="name"
-               placeholder="Name" aria-describedby="err" required>
+               placeholder=" " aria-describedby="err" required>
+        <label for="name">Name</label>
       </div>
       <div class="field">
-        <label class="sr" for="email">Email</label>
         <input id="email" name="email" type="email" inputmode="email" autocomplete="email"
-               placeholder="Email" aria-describedby="err" required>
+               placeholder=" " aria-describedby="err" required>
+        <label for="email">Email</label>
       </div>
       <div class="field">
-        <label class="sr" for="phone">Phone number</label>
         <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel"
-               placeholder="Phone number">
+               placeholder=" ">
+        <label for="phone">Phone number</label>
       </div>
       <p class="err" id="err" role="alert"></p>
       <button type="submit" id="go">Get on the list</button>
@@ -611,6 +627,40 @@ const io = new IntersectionObserver(function(entries){
   });
 }, {rootMargin:"0px 0px -12% 0px"});
 document.querySelectorAll(".rise").forEach(function(el){ io.observe(el); });
+
+// An observer only reports a threshold crossing on a frame where it samples
+// one. Land past the middle of the page in a single frame - the End key, a
+// scrollbar dragged to the bottom, a reload that restores the previous scroll
+// position - and everything jumped over goes straight from below the fold to
+// above it without ever being sampled as intersecting. Nothing then reveals it,
+// ever: the eyebrow and the signup form, which is the entire point of the page,
+// sit permanently at opacity 0. Anything already past the top of the screen has
+// plainly been scrolled by, so show it. Elements still on screen or below are
+// left alone, so the staged entrance is untouched.
+(function(){
+  var queued = false;
+  function sweep(){
+    queued = false;
+    document.querySelectorAll(".rise:not(.is-in)").forEach(function(el){
+      if(el.getBoundingClientRect().bottom < 0){
+        el.classList.add("is-in");
+        io.unobserve(el);
+      }
+    });
+    if(!document.querySelector(".rise:not(.is-in)")){
+      removeEventListener("scroll", onScroll);
+    }
+  }
+  function onScroll(){
+    if(queued) return;
+    queued = true;
+    requestAnimationFrame(sweep);
+  }
+  addEventListener("scroll", onScroll, {passive:true});
+  // scroll restoration lands after this script runs and does not always emit a
+  // scroll event, so the first sweep cannot wait for one
+  addEventListener("load", sweep);
+})();
 </script>
 </body>
 </html>

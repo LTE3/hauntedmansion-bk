@@ -26,3 +26,22 @@ stays hidden below `COUNTER_MIN` signups: the number shown is always the real on
 
 - Remove the `robots: noindex` line in `index.html`
 - Point `og:image` back at the production domain
+
+## The hero image
+
+`tools/hero.py` builds all four hero plates from `img/facade-raw-v2.png`, a
+5504×3072 render that is kept out of the repo (see `.gitignore`) along with the
+rest of the art. The first version of the page graded a 1448px set photo, which
+is why the house looked soft: the browser was stretching a 1x plate across a
+retina viewport. v2 starts above the display size, so the grade only has to
+talk the doorway red down from a primary to blood, close the frame, and add
+grain.
+
+Re-cut the plates with:
+
+    python tools/hero.py
+
+It writes `hero-wide.jpg` / `hero-wide@2x.jpg` (16:9, desktop) and
+`hero-tall.jpg` / `hero-tall@2x.jpg` (3:4, phones). The phone crop centres on
+the doorway rather than the frame — `DOOR_X` in the script is measured from the
+red mask, and needs remeasuring if the render is ever replaced.

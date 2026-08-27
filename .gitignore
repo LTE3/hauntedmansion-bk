@@ -14,3 +14,7 @@ img/hero-blood.jpg
 img/hero-cold.jpg
 img/hero-rot.jpg
 img/hero-full.jpg
+
+# build artefacts for the reels, not source
+img/hero-reel.jpg
+reels/

@@ -88,4 +88,12 @@ for name, src, size2x in (("hero-wide", wide, (2560, 1440)),
     small.save(os.path.join(OUT, name + ".jpg"), quality=90, optimize=True,
                progressive=True, subsampling=0)
     print(name, small.size, "+", big.size)
-print("wrote hero-wide / hero-tall at 1x and 2x")
+# 9:16 for the countdown reels. Cut here rather than in tools/reel.py so the
+# reel and the page are looking at the same graded plate, and oversized by 10%
+# so the slow push-in has somewhere to go without upscaling.
+rw = int(H * 9 / 16)
+rleft = min(max(int(DOOR_X * W) - rw // 2, 0), W - rw)
+full.crop((rleft, 0, rleft + rw, H)).resize((1188, 2112), Image.LANCZOS).save(
+    os.path.join(OUT, "hero-reel.jpg"), quality=94, optimize=True, subsampling=0)
+print("hero-reel (1188, 2112)")
+print("wrote hero-wide / hero-tall at 1x and 2x, plus the reel plate")

@@ -13,7 +13,13 @@ from PIL import Image, ImageFilter
 SRC = os.path.join("img", "facade-raw.png")
 OUT = "img"
 
+# The source render is only 1448px wide. Grading at 1x and letting the browser
+# upscale to a retina viewport is what made the house look soft, so the whole
+# pass runs at 2x: the fog, halation and grain are then real pixels at the size
+# the page actually displays, instead of a stretched 1x plate.
+SUPER = 2
 im = Image.open(SRC).convert("RGB")
+im = im.resize((im.width * SUPER, im.height * SUPER), Image.LANCZOS)
 W, H = im.size
 x = np.asarray(im).astype(np.float32) / 255.0
 
@@ -75,6 +81,14 @@ x *= (1 - 0.74 * sign)[..., None]
 door = np.exp(-(((nx - 0.5) / 0.055) ** 2 + ((ny - 0.63) / 0.09) ** 2))
 x *= (1 - 0.70 * door * (1 - keep))[..., None]
 
+# The one red in the frame, and it comes from inside the house. Amber light on
+# a porch is hospitality; red light behind a door is not. A tight core in the
+# doorway gap, a wider bleed that catches the columns and the fog above it.
+core = np.exp(-(((nx - 0.5) / 0.030) ** 2 + ((ny - 0.655) / 0.055) ** 2))
+bleed = np.exp(-(((nx - 0.5) / 0.115) ** 2 + ((ny - 0.640) / 0.155) ** 2))
+blood = np.array([1.00, 0.11, 0.07], np.float32)
+x = x + (core * 0.58 + bleed * 0.19)[..., None] * blood * (1 - x)
+
 # 4. exposure back up, one cold source upper-left, flames stay amber
 x = np.clip(x * 1.18, 0, 1)
 cold = np.array([0.70, 0.84, 1.16], np.float32); cold /= cold.mean()
@@ -97,21 +111,37 @@ x = x + fog[..., None] * 0.30 * np.array([0.50, 0.58, 0.72], np.float32) * (1 - 
 # 7. halation, rotted local contrast, closing frame, grain
 e = blur(np.clip(x - 0.42, 0, 1) * practical, W * 0.015)
 x = x + e * 0.32 * np.array([1.00, 0.56, 0.20], np.float32)
-x = np.clip(x + (x - blur(x, W * 0.006)) * 0.75, 0, 1)
+# red spills further than the lanterns do - a wide, weak glow off the doorway
+x = x + blur(core + bleed * 0.5, W * 0.035)[..., None] * 0.15 * blood
+# 0.75 was carving halos around every board. Enough to read as texture, no more.
+x = np.clip(x + (x - blur(x, W * 0.006)) * 0.42, 0, 1)
 r = np.sqrt(((nx - 0.5) * 1.20) ** 2 + ((ny - 0.58) * 1.02) ** 2)
 x *= np.clip(1.14 - r * 1.02, 0.03, 1.0)[..., None]
-gr = np.random.default_rng(5).normal(0, 0.020, (H, W)).astype(np.float32)
+gr = np.random.default_rng(5).normal(0, 0.013, (H, W)).astype(np.float32)
 x = x + gr[..., None] * (1 - np.clip(x, 0, 1)) ** 1.4
 
 full = Image.fromarray((np.clip(x, 0, 1) * 255).astype(np.uint8))
-full.save(os.path.join(OUT, "hero-full.jpg"), quality=93)
 
-# 16:9 for desktop, 3:4 for phones - the phone crop keeps the doorway centred
+# 16:9 for desktop, 3:4 for phones - the phone crop keeps the doorway centred.
+# Each ships at 1x and 2x so the page can hand the right plate to each screen
+# instead of making one file cover both badly.
 w, h = full.size
 top = int(h * 0.10)
-full.crop((0, top, w, min(h, top + int(w * 9 / 16)))).save(
-    os.path.join(OUT, "hero-wide.jpg"), quality=92)
-cw = int(h * 3 / 4)
-full.crop(((w - cw) // 2, 0, (w - cw) // 2 + cw, h)).resize((900, 1200)).save(
-    os.path.join(OUT, "hero-tall.jpg"), quality=92)
-print("wrote hero-full / hero-wide / hero-tall")
+wide = full.crop((0, top, w, min(h, top + int(w * 9 / 16))))
+# start the phone crop below the ceiling line so the fan and the room above it
+# never make it into the plate, whatever object-fit does with it later
+ttop = int(h * 0.13)
+th = h - ttop
+cw = int(th * 3 / 4)
+tall = full.crop(((w - cw) // 2, ttop, (w - cw) // 2 + cw, h))
+
+for name, src, size2x in (("hero-wide", wide, (2560, 1440)),
+                          ("hero-tall", tall, (1440, 1920))):
+    big = src.resize(size2x, Image.LANCZOS)
+    small = src.resize((size2x[0] // 2, size2x[1] // 2), Image.LANCZOS)
+    big.save(os.path.join(OUT, name + "@2x.jpg"), quality=88, optimize=True,
+             progressive=True, subsampling=0)
+    small.save(os.path.join(OUT, name + ".jpg"), quality=90, optimize=True,
+               progressive=True, subsampling=0)
+    print(name, small.size, "+", big.size)
+print("wrote hero-wide / hero-tall at 1x and 2x")

@@ -3,6 +3,7 @@
 
 create table if not exists public.hm_waitlist (
   id          uuid primary key default gen_random_uuid(),
+  name        text,
   email       text not null,
   phone       text,
   source      text default 'site',
@@ -31,3 +32,6 @@ set search_path = public
 as $$ select count(*) from public.hm_waitlist $$;
 
 grant execute on function public.hm_waitlist_count() to anon;
+
+-- added after launch of the preview page
+alter table public.hm_waitlist add column if not exists name text;

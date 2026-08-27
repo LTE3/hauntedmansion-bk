@@ -70,6 +70,18 @@ body{
   opacity:0;transition:opacity 1.2s var(--slow);
   animation:drift 34s var(--slow) infinite alternate;will-change:transform}
 .stage__img.is-loaded{opacity:1}
+/* The house was a photograph, and a photograph of a haunted house is a
+   poster. This is the same plate with the lanterns flickering, something
+   behind the door breathing and fog crossing the porch - a 12s loop that
+   rests at its own wrap point, so the repeat is invisible. The camera does
+   not move inside it; the drift below is still doing that, which is also
+   why a locked-off frame compresses to a third of a megabyte. It lies over
+   the still and fades in only once it can actually play, so the plate
+   remains the answer on a slow line, on Save-Data, or with motion off. */
+.stage__vid{position:absolute;inset:-4%;width:108%;height:108%;object-fit:cover;z-index:1;
+  opacity:0;transition:opacity 1.6s var(--slow);pointer-events:none;
+  animation:drift 34s var(--slow) infinite alternate;will-change:transform}
+.stage__vid.is-loaded{opacity:1}
 @keyframes drift{
   from{transform:scale(1.04) translate3d(0,0,0)}
   to  {transform:scale(1.11) translate3d(-1.2%,-1.4%,0)}
@@ -280,11 +292,13 @@ button[disabled]{opacity:.45;cursor:wait}
 /* animation-play-state is not inherited, so every looping layer has to be
    named. Doing it in CSS also reaches .scroll::after, which no amount of
    querySelectorAll ever will. */
-.is-away .stage__img,.is-away .fog,.is-away .flicker,
+.is-away .stage__img,.is-away .stage__vid,.is-away .fog,.is-away .flicker,
 .is-away .cut,.is-away .scroll::after{animation-play-state:paused}
 
 @media (prefers-reduced-motion:reduce){
   .stage__img,.fog--a,.fog--b,.flicker,.cut{animation:none}
+  /* never fetched either - the script checks the same query */
+  .stage__vid{display:none}
   .scroll::after{animation:none;transform:none}
   .rise{opacity:1;transform:none;transition:none}
   .knock,.remain,.form,.done{transition:none}
@@ -319,6 +333,8 @@ button[disabled]{opacity:.45;cursor:wait}
   <div class="flicker"></div>
   <div class="vig"></div>
   <div class="cut"></div>
+  <video class="stage__vid" muted loop playsinline preload="none"
+         aria-hidden="true" tabindex="-1"></video>
   <div class="stage__floor"></div>
 
   <div class="hero">
@@ -406,10 +422,43 @@ button[disabled]{opacity:.45;cursor:wait}
          img.addEventListener("error", show, {once:true}); }
 })();
 
+// The loop is an upgrade to the still, never a requirement. Sources are
+// attached from script rather than sitting in the markup so that a phone on
+// Save-Data, or anyone who has asked for less motion, never spends the
+// download at all - the plate underneath is already the finished image.
+(function(){
+  const v = document.querySelector(".stage__vid");
+  if(!v) return;
+  const conn = navigator.connection || {};
+  if(matchMedia("(prefers-reduced-motion:reduce)").matches || conn.saveData) return;
+
+  const stem = matchMedia("(max-aspect-ratio:1/1)").matches
+    ? "img/hero-loop-tall" : "img/hero-loop-wide";
+  [["video/webm", "webm"], ["video/mp4", "mp4"]].forEach(function(t){
+    const src = document.createElement("source");
+    src.type = t[0];
+    src.src = stem + "." + t[1];
+    v.appendChild(src);
+  });
+
+  // canplay, not loadeddata: fading in on a frame the decoder cannot yet keep
+  // up with shows a stutter over a still that was already perfect.
+  v.addEventListener("canplay", function(){ v.classList.add("is-loaded"); }, {once:true});
+  v.load();
+  // autoplay can be refused; the still simply stays.
+  const p = v.play();
+  if(p && p.catch) p.catch(function(){});
+})();
+
 // Three full-bleed composited layers looping forever is a real battery cost
 // on a phone left open in a pocket. Nobody is watching a hidden tab.
 document.addEventListener("visibilitychange", function(){
   document.documentElement.classList.toggle("is-away", document.hidden);
+  // a paused animation still costs nothing; a decoding video does
+  const v = document.querySelector(".stage__vid");
+  if(!v || !v.currentSrc) return;
+  if(document.hidden) v.pause();
+  else { const p = v.play(); if(p && p.catch) p.catch(function(){}); }
 });
 
 const SUPABASE_URL = "https://tqeunmqnaoyrerkbhokk.supabase.co";

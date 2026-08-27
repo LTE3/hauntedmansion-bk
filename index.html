@@ -96,6 +96,16 @@ body{
 .clue{margin:2.6rem 0 0;font-size:clamp(.62rem,1.5vw,.8rem);letter-spacing:.42em;
   color:#8f8578;text-transform:uppercase}
 .clue b{display:block;font-weight:400;margin-top:.65rem;color:#cbc0b1;letter-spacing:.34em}
+/* Real days to a real date. No hours, no seconds, no ticking: a clock counting
+   down to the second is a sales widget, and this is a date on a poster. Hidden
+   until the script has a number, so it can never flash a wrong one. */
+.remain{display:block;margin-top:1.15rem;letter-spacing:.34em;
+  /* a step lighter than --blood-lit, and no opacity haircut: at 11px this line
+     needs 4.5:1 on near-black and the fill red only gets to 3.9:1 */
+  color:#d84a3c;
+  text-shadow:0 0 26px rgba(0,0,0,.9),0 0 34px rgba(201,52,42,.3);
+  opacity:0;transition:opacity 2s var(--slow)}
+.remain.is-on{opacity:1}
 .scroll{position:absolute;bottom:3.2vh;left:50%;transform:translateX(-50%);z-index:2;
   width:1px;height:8vh;background:linear-gradient(to bottom,transparent,var(--blood-lit));opacity:.55}
 
@@ -193,6 +203,7 @@ button[disabled]{opacity:.45;cursor:wait}
   .hero h1 .buried{font-size:.86rem;letter-spacing:.16em;margin-top:.9em}
   .clue{margin-top:2.2rem;font-size:.7rem;letter-spacing:.3em}
   .clue b{font-size:.78rem;letter-spacing:.26em}
+  .remain{margin-top:.9rem;letter-spacing:.28em}
   .scroll{height:6vh;bottom:2.4vh}
 
   section{padding:clamp(4.5rem,11vh,7rem) 8vw}
@@ -225,7 +236,7 @@ button[disabled]{opacity:.45;cursor:wait}
 @media (prefers-reduced-motion:reduce){
   .stage__img,.fog--a,.fog--b,.flicker,.cut{animation:none}
   .rise{opacity:1;transform:none;transition:none}
-  .knock{transition:none}
+  .knock,.remain{transition:none}
 }
 </style>
 </head>
@@ -250,7 +261,7 @@ button[disabled]{opacity:.45;cursor:wait}
       <span>has a story.</span>
       <span class="buried">This one should&rsquo;ve stayed buried.</span>
     </h1>
-    <p class="clue">Bushwick, Brooklyn<b>September 25</b></p>
+    <p class="clue">Bushwick, Brooklyn<b>September 25</b><span class="remain" id="remain"></span></p>
   </div>
   <div class="scroll" aria-hidden="true"></div>
 </div>
@@ -314,6 +325,34 @@ const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 // hidden, because "7 people are waiting" sells nothing and a fake number is
 // the one thing that would cheapen the whole page.
 const COUNTER_MIN = 25;
+
+// The one number on this page that is true without having to ask anyone: how
+// many days are left. Brooklyn's calendar, not the visitor's - somebody reading
+// this in Tokyo should see the same number as somebody standing on the block.
+const OPENS = [2026, 8, 25];   // month is 0-based. September 25, 2026.
+
+(function(){
+  const el = document.getElementById("remain");
+  let today;
+  try{
+    const p = {};
+    new Intl.DateTimeFormat("en-US", {timeZone:"America/New_York",
+      year:"numeric", month:"2-digit", day:"2-digit"})
+      .formatToParts(new Date()).forEach(function(x){ p[x.type] = x.value; });
+    today = Date.UTC(+p.year, +p.month - 1, +p.day);
+  }catch(e){ return; }   // no Intl, no line. Better absent than wrong.
+
+  const n = Math.round((Date.UTC(OPENS[0], OPENS[1], OPENS[2]) - today) / 864e5);
+  if(n < 0) return;      // the house is open by then and this page has a different job
+
+  el.textContent = n === 0 ? "Opens tonight"
+                 : n === 1 ? "One day remains"
+                 : n + " days remain";
+
+  // let the headline land first - the count arriving second is what makes it read
+  // as a fact about the house rather than a badge on a landing page
+  setTimeout(function(){ el.classList.add("is-on"); }, 900);
+})();
 
 const headers = {
   "apikey": SUPABASE_ANON,

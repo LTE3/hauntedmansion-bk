@@ -135,6 +135,20 @@ iframe.is-in{opacity:1}
   width:390px;height:min(844px,100%);
   box-shadow:0 0 0 1px #1b1815,0 40px 90px -30px #000;
 }
+/* The last three builds are the same picture until you scroll. Without this,
+   clicking between them looks like clicking a broken button. */
+.nudge{
+  position:absolute;left:50%;bottom:1.6rem;translate:-50% 0;margin:0;
+  background:rgba(10,8,7,.92);border:1px solid #3a2a1c;color:#e0d5c4;
+  font-size:.86rem;letter-spacing:.02em;padding:.7rem 1.1rem;
+  box-shadow:0 18px 40px -18px #000;max-width:min(90vw,26rem);text-align:center;
+  animation:nudgeIn .5s var(--slow) both;cursor:pointer;
+}
+.nudge:hover{border-color:var(--ember)}
+.nudge b{color:var(--ember);font-weight:400}
+@keyframes nudgeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){ .nudge{animation:none} }
+
 .width-toggle{display:none}
 @media (min-width:900px){ .width-toggle{display:inline-flex} }
 @media (max-width:520px){
@@ -176,6 +190,7 @@ iframe.is-in{opacity:1}
 
 <div class="stage" id="stage">
   <iframe id="frame" title="Build preview" src="about:blank"></iframe>
+  <p class="nudge" id="nudge" hidden>Same photo up here &mdash; tap <b>Inside</b> to see what changed</p>
 </div>
 
 <script>
@@ -184,16 +199,16 @@ iframe.is-in{opacity:1}
    down a folder and a preview harness added (see the note at the top of any of
    them). Nothing here is a mockup of a version that never shipped. */
 var BUILDS = [
-  { id:"1-first",    tab:"First light",
-    what:"<em>The porch.</em> Opening ceremony and the animated loop, before the half below the fold was touched." },
-  { id:"2-depth",    tab:"Depth",
-    what:"<em>Same house, real second half.</em> Grain over everything, the fact line made the loudest thing on the page, light under the form." },
-  { id:"3-brooklyn", tab:"Brooklyn",
-    what:"<em>New facade.</em> A Bushwick rowhouse instead of a mansion on a hill. Loop retired - the still carries it." },
-  { id:"4-hallway",  tab:"Hallway", live:true,
-    what:"<em>One look inside.</em> A wide interior plate between the facts and the last line. This is what is live right now." },
-  { id:"5-stairs",   tab:"Stairs",
-    what:"<em>Not shipped yet.</em> The staircase behind the signup as a dimmed backdrop, scrimmed until the small text measures 4.8:1." }
+  { id:"1-first",    tab:"Old house",
+    what:"<em>The first one.</em> A big porch, and the picture moved. Bottom half of the page was still empty." },
+  { id:"2-depth",    tab:"Bottom half",
+    what:"<em>Same house, better page.</em> Everything under the photo got built: bigger words, a lit-up sign-up." },
+  { id:"3-brooklyn", tab:"New house", diff:true,
+    what:"<em>New house.</em> A Bushwick building instead of a mansion. Nothing added below yet." },
+  { id:"4-hallway",  tab:"Hallway", live:true, diff:true,
+    what:"<em>Added a hallway photo</em> halfway down the page. This is the one that is live." },
+  { id:"5-stairs",   tab:"Staircase", diff:true,
+    what:"<em>Adds a staircase photo</em> behind the sign-up boxes. Not live - this is the one to say yes or no to." }
 ];
 
 var pills = document.querySelector(".pills");
@@ -205,6 +220,7 @@ var pos   = document.getElementById("pos");
 var prev  = document.getElementById("prev");
 var next  = document.getElementById("next");
 var wt    = document.getElementById("wt");
+var nudge = document.getElementById("nudge");
 var spotsEl = document.getElementById("spots");
 var cur   = -1;
 
@@ -227,6 +243,7 @@ SPOTS.forEach(function(s, i){
     spot = i;
     for(var k = 0; k < spotsEl.children.length; k++)
       spotsEl.children[k].setAttribute("aria-pressed", k === i ? "true" : "false");
+    nudge.hidden = !(BUILDS[cur] && BUILDS[cur].diff && spot === 0);
     place();
   });
   spotsEl.appendChild(el);
@@ -268,6 +285,8 @@ function show(i){
   }
   els[i].scrollIntoView({block:"nearest", inline:"center", behavior:"smooth"});
   what.innerHTML = b.what;
+  // only where it is true: builds 3, 4 and 5 share a hero, 1 and 2 do not
+  nudge.hidden = !(b.diff && spot === 0);
   open_.href = "v/" + b.id + ".html";
   pos.textContent = i + 1;
   prev.disabled = i === 0;
@@ -295,6 +314,8 @@ document.addEventListener("keydown", function(e){
   var n = parseInt(e.key, 10);
   if(n >= 1 && n <= BUILDS.length) show(n - 1);
 });
+
+nudge.addEventListener("click", function(){ spotsEl.children[1].click(); });
 
 wt.addEventListener("click", function(e){
   e.preventDefault();

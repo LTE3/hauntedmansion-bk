@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Five builds of the house</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#050505">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400&family=Cormorant+Garamond:wght@300;400&display=swap" rel="stylesheet">
+<style>
+/* The cycler is a workbench, not a haunted house. It borrows the ink and the
+   ember so the two do not fight, but it stays deliberately plain: any
+   atmosphere in here would be atmosphere competing with the thing being
+   judged. Chrome on top, page below, nothing else. */
+:root{
+  color-scheme:dark;
+  --ink:#050505;
+  --shell:#0b0a0a;
+  --line:#221f1c;
+  --bone:#cfc4b4;
+  --ash:#8b8177;
+  --ember:#c2702f;
+  --blood:#c9342a;
+  --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+  --display:"Cinzel","Cormorant Garamond",Georgia,serif;
+  --slow:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;background:var(--ink);color:var(--bone);font-family:var(--serif);
+  -webkit-font-smoothing:antialiased;
+  display:grid;grid-template-rows:auto 1fr;overflow:hidden;
+}
+::selection{background:#7d1d14;color:#e8ded0}
+
+/* ---------- chrome ---------- */
+header{
+  background:var(--shell);border-bottom:1px solid var(--line);
+  padding:.65rem max(.7rem,env(safe-area-inset-left)) .55rem;
+  display:grid;gap:.5rem;
+}
+.top{display:flex;align-items:baseline;gap:.8rem;padding-inline:.25rem}
+.top h1{
+  font-family:var(--display);font-weight:400;font-size:.72rem;letter-spacing:.24em;
+  text-transform:uppercase;margin:0;color:#ded3c2;white-space:nowrap;
+}
+.top .n{margin-left:auto;font-size:.8rem;letter-spacing:.12em;color:var(--ash);white-space:nowrap}
+.top .n b{color:var(--bone);font-weight:400}
+
+/* Pills scroll on a phone rather than wrapping to a second row that would push
+   the page itself further down. Snap, so a thumb always lands on a whole one. */
+.pills{
+  display:flex;gap:.4rem;overflow-x:auto;scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;padding:.1rem .25rem .25rem;
+}
+.pills::-webkit-scrollbar{display:none}
+.pill{
+  scroll-snap-align:start;flex:0 0 auto;position:relative;
+  background:none;border:1px solid var(--line);border-radius:0;
+  color:var(--ash);font-family:var(--display);font-size:.66rem;letter-spacing:.18em;
+  text-transform:uppercase;padding:.62rem .85rem;cursor:pointer;
+  transition:color .25s var(--slow),border-color .25s var(--slow),background-color .25s var(--slow);
+}
+.pill:hover{color:#ded3c2;border-color:#3a332c}
+.pill[aria-selected="true"]{color:#f0e5d4;border-color:#4a3a2a;background:#150e08}
+.pill[aria-selected="true"]::after{
+  content:"";position:absolute;left:.85rem;right:.85rem;bottom:-1px;height:1px;
+  background:var(--ember);box-shadow:0 0 12px 1px rgba(194,112,47,.55);
+}
+.pill:focus-visible{outline:1px solid var(--ember);outline-offset:2px}
+.pill .num{color:var(--ember);margin-right:.45em;opacity:.8}
+.pill.is-live{border-color:#3d2a26}
+.pill.is-live::before{
+  content:"";position:absolute;top:.42rem;right:.42rem;width:4px;height:4px;
+  border-radius:50%;background:var(--blood);box-shadow:0 0 8px 1px rgba(201,52,42,.8);
+}
+
+.meta{
+  display:flex;align-items:center;gap:.7rem;padding:0 .35rem .1rem;
+  font-size:.88rem;color:var(--ash);min-height:1.35rem;
+}
+.meta .what{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.meta .what em{color:#c3b8a8;font-style:normal}
+.meta a{
+  flex:0 0 auto;color:var(--ash);text-decoration:none;font-family:var(--display);
+  font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;
+  border:1px solid var(--line);padding:.42rem .62rem;
+  transition:color .25s var(--slow),border-color .25s var(--slow);
+}
+.meta a:hover,.meta a:focus-visible{color:#f0e5d4;border-color:var(--blood);outline:none}
+/* Builds 3, 4 and 5 are identical above the fold - everything that separates
+   them is further down. A cycler that only ever shows the top of the page is a
+   cycler that cannot answer the question, so the position is part of the state
+   and it survives the switch. */
+.meta .arrows{flex:0 0 auto;display:flex;gap:.3rem}
+.meta button{
+  background:none;border:1px solid var(--line);color:var(--ash);
+  width:2.1rem;height:2.1rem;cursor:pointer;font-size:.95rem;line-height:1;
+  transition:color .25s var(--slow),border-color .25s var(--slow);
+}
+.meta button:hover{color:#f0e5d4;border-color:#4a3a2a}
+.meta button:disabled{opacity:.3;cursor:default}
+.meta button:focus-visible{outline:1px solid var(--ember);outline-offset:2px}
+
+/* Builds 3, 4 and 5 are identical above the fold - everything that separates
+   them is further down. A cycler that only ever shows the top of the page is a
+   cycler that cannot answer the question, so where you are standing is part of
+   the state and it survives the switch.
+   Written after .meta button and with its specificity, or the arrow sizing wins
+   and squashes four words into the width of one. */
+.meta .spots{flex:0 0 auto;display:flex;gap:0;border:1px solid var(--line)}
+.meta .spots button{
+  border:0;border-left:1px solid var(--line);width:auto;height:1.95rem;
+  padding:0 .68rem;font-family:var(--display);font-size:.58rem;letter-spacing:.16em;
+  text-transform:uppercase;
+}
+.meta .spots button:first-child{border-left:0}
+.meta .spots button:hover{border-color:var(--line);color:#ded3c2}
+.meta .spots button[aria-pressed="true"]{color:#f0e5d4;background:#150e08}
+
+/* ---------- the stage ---------- */
+.stage{position:relative;background:#000;overflow:hidden}
+iframe{
+  display:block;width:100%;height:100%;border:0;background:#000;
+  opacity:0;transition:opacity .32s var(--slow);
+}
+iframe.is-in{opacity:1}
+/* On a wide screen you can hold the phone layout with nothing beside it, which
+   is the only honest way to judge a page most people will meet on a phone. */
+.stage.is-narrow{display:grid;place-items:center;background:#070707}
+.stage.is-narrow iframe{
+  width:390px;height:min(844px,100%);
+  box-shadow:0 0 0 1px #1b1815,0 40px 90px -30px #000;
+}
+.width-toggle{display:none}
+@media (min-width:900px){ .width-toggle{display:inline-flex} }
+@media (max-width:520px){
+  /* On a phone the chrome was eating a third of the screen to tell you the name
+     of a page you just opened. The pills already say which build you are on. */
+  header{padding:.45rem .5rem .4rem;gap:.4rem}
+  .top{display:none}
+  .pill{font-size:.62rem;padding:.55rem .7rem}
+  .meta{font-size:.8rem;gap:.5rem;flex-wrap:wrap}
+  /* the sentence takes its own line so the controls stay a full thumb wide */
+  .meta .what{flex:1 0 100%;white-space:normal;line-height:1.25;max-height:2.5em}
+  .meta .spots{flex:1 1 auto}
+  .meta .spots button{flex:1 1 0;padding:0 .3rem}
+}
+@media (prefers-reduced-motion:reduce){ iframe{transition:none} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="top">
+    <h1>Haunted Mansion BK &middot; builds</h1>
+    <span class="n"><b id="pos">5</b>&thinsp;/&thinsp;5</span>
+  </div>
+
+  <div class="pills" role="tablist" aria-label="Builds"></div>
+
+  <div class="meta">
+    <span class="what" id="what"></span>
+    <span class="spots" id="spots" role="group" aria-label="Where in the page"></span>
+    <a class="width-toggle" id="wt" href="#" role="button">Phone</a>
+    <a id="open" href="#" target="_blank" rel="noopener">Open</a>
+    <span class="arrows">
+      <button id="prev" aria-label="Previous build">&#8249;</button>
+      <button id="next" aria-label="Next build">&#8250;</button>
+    </span>
+  </div>
+</header>
+
+<div class="stage" id="stage">
+  <iframe id="frame" title="Build preview" src="about:blank"></iframe>
+</div>
+
+<script>
+/* Five real builds. Every entry is a file that exists and opens on its own -
+   the actual page as it stood at that commit, with only its asset paths moved
+   down a folder and a preview harness added (see the note at the top of any of
+   them). Nothing here is a mockup of a version that never shipped. */
+var BUILDS = [
+  { id:"1-first",    tab:"First light",
+    what:"<em>The porch.</em> Opening ceremony and the animated loop, before the half below the fold was touched." },
+  { id:"2-depth",    tab:"Depth",
+    what:"<em>Same house, real second half.</em> Grain over everything, the fact line made the loudest thing on the page, light under the form." },
+  { id:"3-brooklyn", tab:"Brooklyn",
+    what:"<em>New facade.</em> A Bushwick rowhouse instead of a mansion on a hill. Loop retired - the still carries it." },
+  { id:"4-hallway",  tab:"Hallway", live:true,
+    what:"<em>One look inside.</em> A wide interior plate between the facts and the last line. This is what is live right now." },
+  { id:"5-stairs",   tab:"Stairs",
+    what:"<em>Not shipped yet.</em> The staircase behind the signup as a dimmed backdrop, scrimmed until the small text measures 4.8:1." }
+];
+
+var pills = document.querySelector(".pills");
+var frame = document.getElementById("frame");
+var stage = document.getElementById("stage");
+var what  = document.getElementById("what");
+var open_ = document.getElementById("open");
+var pos   = document.getElementById("pos");
+var prev  = document.getElementById("prev");
+var next  = document.getElementById("next");
+var wt    = document.getElementById("wt");
+var spotsEl = document.getElementById("spots");
+var cur   = -1;
+
+/* Where to stand. The selectors are ordered fallbacks because the early builds
+   do not have the later sections - build 1 has no interior plate to look at,
+   so "inside" lands on the facts line that was there instead. */
+var SPOTS = [
+  { k:"top",    label:"Top",    sel:null },
+  { k:"inside", label:"Inside", sel:[".plate", ".facts"] },
+  { k:"signup", label:"Signup", sel:[".bay"] },
+  { k:"end",    label:"End",    sel:[".close"] }
+];
+var spot = 0;
+
+SPOTS.forEach(function(s, i){
+  var el = document.createElement("button");
+  el.textContent = s.label;
+  el.setAttribute("aria-pressed", i === 0 ? "true" : "false");
+  el.addEventListener("click", function(){
+    spot = i;
+    for(var k = 0; k < spotsEl.children.length; k++)
+      spotsEl.children[k].setAttribute("aria-pressed", k === i ? "true" : "false");
+    place();
+  });
+  spotsEl.appendChild(el);
+});
+
+// Same origin, so the frame is reachable. Anything unreachable is not worth
+// throwing over - the preview just stays where it is.
+function place(){
+  var doc;
+  try { doc = frame.contentDocument; } catch(e){ return; }
+  if(!doc || !doc.body) return;
+  var s = SPOTS[spot];
+  if(!s.sel){ doc.documentElement.scrollTop = doc.body.scrollTop = 0; return; }
+  // Below the top there is no ceremony to watch: the curtain is a fixed black
+  // sheet over the whole viewport, so arriving mid-page during it means
+  // arriving at nothing. is-open is the page's own second-visit state.
+  doc.documentElement.classList.add("is-open");
+  var el = null;
+  for(var i = 0; i < s.sel.length && !el; i++) el = doc.querySelector(s.sel[i]);
+  if(el) el.scrollIntoView({block: s.k === "signup" ? "center" : "start"});
+}
+
+BUILDS.forEach(function(b, i){
+  var el = document.createElement("button");
+  el.className = "pill" + (b.live ? " is-live" : "");
+  el.setAttribute("role", "tab");
+  el.innerHTML = '<span class="num">' + (i + 1) + '</span>' + b.tab;
+  el.addEventListener("click", function(){ show(i); });
+  pills.appendChild(el);
+});
+var els = pills.querySelectorAll(".pill");
+
+function show(i){
+  if(i < 0 || i >= BUILDS.length || i === cur) return;
+  cur = i;
+  var b = BUILDS[i];
+  for(var k = 0; k < els.length; k++){
+    els[k].setAttribute("aria-selected", k === i ? "true" : "false");
+  }
+  els[i].scrollIntoView({block:"nearest", inline:"center", behavior:"smooth"});
+  what.innerHTML = b.what;
+  open_.href = "v/" + b.id + ".html";
+  pos.textContent = i + 1;
+  prev.disabled = i === 0;
+  next.disabled = i === BUILDS.length - 1;
+  // Fade out, swap, fade back in on load. A hard cut between two dark pages
+  // reads as a flicker, and you cannot tell which one you are looking at.
+  frame.classList.remove("is-in");
+  frame.src = "v/" + b.id + ".html";
+  if(history.replaceState) history.replaceState(null, "", "#" + (i + 1));
+}
+frame.addEventListener("load", function(){
+  if(frame.src.indexOf("about:blank") === -1){
+    // place before the fade, so the jump is never something you watch happen
+    place();
+    requestAnimationFrame(function(){ frame.classList.add("is-in"); });
+  }
+});
+
+prev.addEventListener("click", function(){ show(cur - 1); });
+next.addEventListener("click", function(){ show(cur + 1); });
+document.addEventListener("keydown", function(e){
+  if(e.target && /^(INPUT|TEXTAREA)$/.test(e.target.tagName)) return;
+  if(e.key === "ArrowLeft")  show(cur - 1);
+  if(e.key === "ArrowRight") show(cur + 1);
+  var n = parseInt(e.key, 10);
+  if(n >= 1 && n <= BUILDS.length) show(n - 1);
+});
+
+wt.addEventListener("click", function(e){
+  e.preventDefault();
+  var narrow = stage.classList.toggle("is-narrow");
+  wt.textContent = narrow ? "Full" : "Phone";
+});
+
+// A build is a link: #3 opens on Brooklyn, and the address bar keeps up as you
+// move, so any one of these is something you can send to somebody.
+var start = parseInt((location.hash || "").replace("#", ""), 10);
+show(start >= 1 && start <= BUILDS.length ? start - 1 : BUILDS.length - 1);
+</script>
+</body>
+</html>

@@ -26,3 +26,6 @@ live2-*.jpg
 crop-*.jpg
 rm-*.jpg
 chk-*.jpg
+
+# raw renders and retired plates - kept locally, never published (repo is public)
+_raw/

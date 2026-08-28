@@ -78,24 +78,12 @@ body{
    the house in silhouette instead of a black rectangle, and the real image
    crossfades onto a shape that is already the right shape. 440 bytes. */
 .stage::before{content:"";position:absolute;inset:-4%;z-index:0;
-  background:url("data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABMNDhEODBMRDxEVFBMXHTAfHRoaHToqLCMwRT1JR0Q9Q0FMVm1dTFFoUkFDX4JgaHF1e3x7SlyGkIV3j214e3b/2wBDARQVFR0ZHTgfHzh2T0NPdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnb/wAARCAAOABgDASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAMBAgQG/8QAHRABAAMAAQUAAAAAAAAAAAAAAQACERIDITFSYf/EABYBAQEBAAAAAAAAAAAAAAAAAAEAAv/EABcRAQEBAQAAAAAAAAAAAAAAAAEAAhH/2gAMAwEAAhEDEQA/AOQAM02W4nqyacfsdRr3qkmcgvLMgjhkIzq4eNhGzf/Z") center/cover no-repeat;
+  background:url("data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAOABgDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAMCBv/EAB0QAAMAAgIDAAAAAAAAAAAAAAABEQIhAxIiQYH/xAAVAQEBAAAAAAAAAAAAAAAAAAAAAf/EABURAQEAAAAAAAAAAAAAAAAAAAAB/9oADAMBAAIRAxEAPwDkPhTLGJNO1Uz4zdK97xvFNpTYpEHsBz0Aj//Z") center/cover no-repeat;
   filter:blur(18px) saturate(.9);transform:scale(1.06)}
 .stage__img{position:absolute;inset:-4%;width:108%;height:108%;object-fit:cover;z-index:1;
   opacity:0;transition:opacity 1.2s var(--slow);
   animation:drift 34s var(--slow) infinite alternate;will-change:transform}
 .stage__img.is-loaded{opacity:1}
-/* The house was a photograph, and a photograph of a haunted house is a
-   poster. This is the same plate with the lanterns flickering, something
-   behind the door breathing and fog crossing the porch - a 12s loop that
-   rests at its own wrap point, so the repeat is invisible. The camera does
-   not move inside it; the drift below is still doing that, which is also
-   why a locked-off frame compresses to a third of a megabyte. It lies over
-   the still and fades in only once it can actually play, so the plate
-   remains the answer on a slow line, on Save-Data, or with motion off. */
-.stage__vid{position:absolute;inset:-4%;width:108%;height:108%;object-fit:cover;z-index:1;
-  opacity:0;transition:opacity 1.6s var(--slow);pointer-events:none;
-  animation:drift 34s var(--slow) infinite alternate;will-change:transform}
-.stage__vid.is-loaded{opacity:1}
 @keyframes drift{
   from{transform:scale(1.04) translate3d(0,0,0)}
   to  {transform:scale(1.11) translate3d(-1.2%,-1.4%,0)}
@@ -398,7 +386,7 @@ button[disabled]{opacity:.45;cursor:wait}
 /* animation-play-state is not inherited, so every looping layer has to be
    named. Doing it in CSS also reaches .scroll::after, which no amount of
    querySelectorAll ever will. */
-.is-away .stage__img,.is-away .stage__vid,.is-away .fog,.is-away .flicker,
+.is-away .stage__img,.is-away .fog,.is-away .flicker,
 .is-away .cut,.is-away .grain,.is-away .scroll::after{animation-play-state:paused}
 
 /* ---------- wide screens ----------
@@ -411,14 +399,14 @@ button[disabled]{opacity:.45;cursor:wait}
    and not the other and the handover jumps. */
 @media (min-width:1000px){
   @keyframes drift{
-    from{transform:scale(1.28) translate3d(0,4.5%,0)}
-    to  {transform:scale(1.35) translate3d(-1.2%,3.1%,0)}
+    from{transform:scale(1.32) translate3d(0,-12.6%,0)}
+    to  {transform:scale(1.38) translate3d(-1.2%,-13.4%,0)}
   }
 }
-/* drift is switched off entirely below, which would also switch off the crop.
-   The framing is not motion and has to survive without it. */
+/* drift is switched off entirely below, which would take the framing with it.
+   Where the door sits is not motion and has to survive without it. */
 @media (min-width:1000px) and (prefers-reduced-motion:reduce){
-  .stage__img,.stage__vid{transform:scale(1.31) translate3d(0,3.8%,0)}
+  .stage__img{transform:scale(1.35) translate3d(0,-13%,0)}
 }
 
 @media (prefers-reduced-motion:reduce){
@@ -427,8 +415,6 @@ button[disabled]{opacity:.45;cursor:wait}
   .curtain{display:none}
   .hero h1 span,.clue{opacity:1;animation:none}
   .scroll{opacity:.55;animation:none}
-  /* never fetched either - the script checks the same query */
-  .stage__vid{display:none}
   .scroll::after{animation:none;transform:none}
   .rise{opacity:1;transform:none;transition:none}
   .knock,.remain,.form,.done{transition:none}
@@ -459,15 +445,13 @@ button[disabled]{opacity:.45;cursor:wait}
   <picture>
     <source media="(max-width:699px)" srcset="img/hero-tall.jpg 1x, img/hero-tall@2x.jpg 2x">
     <img class="stage__img" src="img/hero-wide.jpg" srcset="img/hero-wide.jpg 1x, img/hero-wide@2x.jpg 2x"
-         alt="A boarded-up house at night. Lanterns burn on the porch and something red is lit behind the front door." fetchpriority="high">
+         alt="A narrow brick row house at night, wedged between two dark warehouse walls. One red door is lit at the top of the stoop." fetchpriority="high">
   </picture>
   <div class="fog fog--a"></div>
   <div class="fog fog--b"></div>
   <div class="flicker"></div>
   <div class="vig"></div>
   <div class="cut"></div>
-  <video class="stage__vid" muted loop playsinline preload="none"
-         aria-hidden="true" tabindex="-1"></video>
   <div class="stage__floor"></div>
 
   <div class="hero">
@@ -578,43 +562,10 @@ button[disabled]{opacity:.45;cursor:wait}
          img.addEventListener("error", show, {once:true}); }
 })();
 
-// The loop is an upgrade to the still, never a requirement. Sources are
-// attached from script rather than sitting in the markup so that a phone on
-// Save-Data, or anyone who has asked for less motion, never spends the
-// download at all - the plate underneath is already the finished image.
-(function(){
-  const v = document.querySelector(".stage__vid");
-  if(!v) return;
-  const conn = navigator.connection || {};
-  if(matchMedia("(prefers-reduced-motion:reduce)").matches || conn.saveData) return;
-
-  const stem = matchMedia("(max-aspect-ratio:1/1)").matches
-    ? "img/hero-loop-tall" : "img/hero-loop-wide";
-  [["video/webm", "webm"], ["video/mp4", "mp4"]].forEach(function(t){
-    const src = document.createElement("source");
-    src.type = t[0];
-    src.src = stem + "." + t[1];
-    v.appendChild(src);
-  });
-
-  // canplay, not loadeddata: fading in on a frame the decoder cannot yet keep
-  // up with shows a stutter over a still that was already perfect.
-  v.addEventListener("canplay", function(){ v.classList.add("is-loaded"); }, {once:true});
-  v.load();
-  // autoplay can be refused; the still simply stays.
-  const p = v.play();
-  if(p && p.catch) p.catch(function(){});
-})();
-
 // Three full-bleed composited layers looping forever is a real battery cost
 // on a phone left open in a pocket. Nobody is watching a hidden tab.
 document.addEventListener("visibilitychange", function(){
   document.documentElement.classList.toggle("is-away", document.hidden);
-  // a paused animation still costs nothing; a decoding video does
-  const v = document.querySelector(".stage__vid");
-  if(!v || !v.currentSrc) return;
-  if(document.hidden) v.pause();
-  else { const p = v.play(); if(p && p.catch) p.catch(function(){}); }
 });
 
 const SUPABASE_URL = "https://tqeunmqnaoyrerkbhokk.supabase.co";

@@ -73,12 +73,6 @@ button{color:inherit}
 a{color:inherit}
 ::selection{background:#6e0f0b;color:#fff}
 
-.skip{
-  position:fixed;left:-999px;top:12px;z-index:500;
-  background:#0c0504;color:#fff;border:1px solid var(--red);
-  border-radius:999px;padding:12px 16px;text-decoration:none
-}
-.skip:focus{left:12px}
 
 /* ---------- HERO / KEYHOLE ---------- */
 .hero{
@@ -121,15 +115,15 @@ a{color:inherit}
   display:grid;place-items:center;z-index:2;perspective:900px
 }
 .key-glow{
-  position:absolute;width:min(86vw,470px);height:min(72svh,700px);max-height:104%;
+  position:absolute;top:-4%;bottom:-4%;left:50%;translate:-50% 0;width:min(86vw,470px);
   background:radial-gradient(ellipse at 50% 48%,rgba(227,48,39,.22),rgba(227,48,39,.08) 25%,transparent 67%);
   filter:blur(26px);animation:glowbreath 3.8s infinite
 }
 .keyhole{
-  width:min(78vw,420px);height:min(68svh,660px);max-height:100%;position:relative;
+  position:absolute;top:0;bottom:0;left:50%;width:min(78vw,420px);
   clip-path:polygon(35% 0,65% 0,70% 4%,74% 12%,75% 20%,72% 29%,66% 37%,62% 41%,79% 100%,21% 100%,38% 41%,34% 37%,28% 29%,25% 20%,26% 12%,30% 4%);
   filter:drop-shadow(0 0 18px rgba(227,48,39,.45)) drop-shadow(0 0 60px rgba(227,48,39,.20));
-  transform:translateZ(0)
+  transform:translateX(-50%) translateZ(0)
 }
 .keyhole:before{
   content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
@@ -165,8 +159,8 @@ a{color:inherit}
 }
 h1{
   margin:0;
-  font:700 clamp(48px,14.5vw,78px)/.86 "Space Grotesk",sans-serif;
-  letter-spacing:-.065em;max-width:7.2ch;text-wrap:balance
+  font:700 clamp(38px,12vw,66px)/.88 "Space Grotesk",sans-serif;
+  letter-spacing:-.055em;max-width:10ch;text-wrap:balance
 }
 .glow{
   color:var(--red);
@@ -206,22 +200,6 @@ h1{
 }
 
 /* ---------- SECONDARY STORY ---------- */
-.story{
-  min-height:100svh;padding:88px 20px;position:relative;overflow:hidden;
-  display:flex;flex-direction:column;justify-content:center;
-  background:
-    linear-gradient(180deg,#040202,#090303 48%,#030202),
-    radial-gradient(circle at 70% 35%,rgba(113,4,2,.18),transparent 28%);
-  border-top:1px solid var(--line)
-}
-.story .num{
-  font:700 12px/1 "Space Grotesk";letter-spacing:.18em;color:var(--red);text-transform:uppercase
-}
-.story h2{
-  font:700 clamp(44px,12vw,72px)/.9 "Space Grotesk";
-  letter-spacing:-.06em;margin:13px 0 18px;max-width:8.5ch
-}
-.story p{font-size:19px;max-width:31ch;color:var(--muted);margin:0 0 22px}
 .rulecard{
   margin-top:40px;border:1px solid var(--line);border-radius:24px;
   padding:20px;background:rgba(255,255,255,.025)
@@ -233,7 +211,7 @@ h1{
 .rules span{
   display:block;border-top:1px solid var(--line);padding-top:10px;color:#c9bbb1;font-size:16px
 }
-.counter{display:none;margin-top:18px;color:#c9bbb1;font-size:15px}
+.counter{display:none;margin-top:14px;text-align:center;color:#c9bbb1;font-size:15px}
 .counter.on{display:block}
 .counter strong{color:#fff;font-size:22px}
 
@@ -337,11 +315,11 @@ h1{
     column-gap:clamp(16px,4vw,48px)}
   .topbar{grid-column:1/-1}
   .key-stage{grid-column:1;grid-row:2;margin:6px 0 10px}
-  .keyhole{height:100%;width:min(38vw,300px)}
+  .keyhole{width:min(38vw,300px)}
   .hero-copy{grid-column:2;grid-row:2;align-self:center;padding-top:0;max-width:46ch}
   /* 78px display type is for a screen held upright. Sideways it costs three
      lines and pushes the button off the bottom, so it comes down a size. */
-  .hero-copy h1{font-size:clamp(30px,4.6vw,42px);max-width:11ch}
+  .hero-copy h1{font-size:clamp(28px,4vw,38px);max-width:14ch}
   .hero-copy .kicker{margin-bottom:6px;font-size:12px}
   .hero-copy .lead{margin:10px 0 12px;font-size:15px;max-width:40ch}
   .scrollhint{display:none}
@@ -350,13 +328,10 @@ h1{
 @media (min-width:900px){
   .hero{padding-left:6vw;padding-right:6vw}
   .hero-copy{padding-top:8px;max-width:700px}
-  h1{font-size:clamp(78px,8vw,126px)}
+  h1{font-size:clamp(64px,6.6vw,104px)}
   .key-stage{margin:22px 0 10px}
-  .keyhole{width:min(40vw,500px);height:min(74svh,760px)}
-  .key-glow{width:min(50vw,600px);height:min(80svh,800px)}
-  .story{padding:11vh 8vw}
-  .story h2{font-size:clamp(70px,6vw,104px)}
-  .story p{max-width:40ch}
+  .keyhole{width:min(40vw,500px)}
+  .key-glow{width:min(50vw,600px)}
   .modal{place-items:center}
   .sheet{border-radius:28px}
 }
@@ -373,8 +348,6 @@ h1{
 </head>
 <body>
 <div class="grain" aria-hidden="true"></div>
-<a class="skip" href="#story">Skip to details</a>
-
 <header class="hero">
   <div class="topbar">
     <div class="brand"><span class="pulse-dot" aria-hidden="true"></span><span>Haunted Mansion BK</span></div>
@@ -395,36 +368,14 @@ h1{
 
   <div class="hero-copy">
     <p class="kicker">You shouldn't be looking.</p>
-    <h1>But since you're <span class="glow">here.</span></h1>
+    <h1>Some doors were closed <span class="glow">for a reason.</span></h1>
     <p class="lead">A house in Bushwick opens September 25. Sixty minutes inside. Multiple rooms. One way out.</p>
     <div class="actions">
       <button class="cta" data-open>Unlock the invitation</button>
-      <button class="ghost" onclick="document.getElementById('story').scrollIntoView()">Look closer</button>
     </div>
   </div>
-  <div class="scrollhint" aria-hidden="true"></div>
 </header>
 
-<main id="story">
-  <section class="story">
-    <div class="reveal">
-      <span class="num">The house / Bushwick, Brooklyn</span>
-      <h2>Some doors were closed <span class="glow">for a reason.</span></h2>
-      <p>The house opens September 25. Bring someone you trust. You get sixty minutes once the door shuts.</p>
-
-      <div class="rulecard">
-        <b>What you know</b>
-        <div class="rules">
-          <span>September 25, 2026</span>
-          <span>Bushwick, Brooklyn</span>
-          <span>60 minutes</span>
-          <span>Multiple rooms</span>
-        </div>
-        <div class="counter" id="counter"><strong id="count">—</strong> people are waiting to enter.</div>
-      </div>
-    </div>
-  </section>
-</main>
 
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
   <div class="sheet">
@@ -450,6 +401,7 @@ h1{
         <p class="err" id="err" role="alert"></p>
         <button class="submit" id="go" type="submit">Knock on the door</button>
         <p class="fine">Early access. Limited tickets. No spam.</p>
+        <div class="counter" id="counter"><strong id="count">—</strong> people are waiting to enter.</div>
       </form>
     </div>
 

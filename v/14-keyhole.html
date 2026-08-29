@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>
+/* PREVIEW HARNESS - not part of any shipped version of this page.
+   Injected only into the copies under /v/ so the cycler behaves like five
+   first visits instead of one visit and four reruns:
+     1. the intro ceremony is keyed to sessionStorage, which is per-origin, so
+        without this the second version you open would skip its own opening.
+     2. the signup form writes a real row. Inside the cycler frame it must not.
+   Both only apply when framed, so opening a /v/ link directly still gives you
+   the honest page, real form and all. */
+(function(){
+  if (window.top === window.self) return;
+  try { sessionStorage.removeItem("hm.lit"); } catch(e){}
+  var f = window.fetch;
+  window.fetch = function(u, o){
+    if (String(u).indexOf("supabase.co") > -1)
+      return Promise.resolve(new Response('[{"id":0}]', {status:201,
+        headers:{"content-type":"application/json"}}));
+    return f.apply(this, arguments);
+  };
+})();
+</script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Haunted Mansion BK — The Keyhole</title>
+<meta name="description" content="Bushwick, Brooklyn. September 25, 2026. 60 minutes. Multiple rooms. One way out.">
+<meta name="theme-color" content="#030202">
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,500;1,500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#030202;
+  --ink2:#090504;
+  --bone:#f3e8de;
+  --muted:#b9aaa1;
+  --red:#e33027;
+  --red2:#8d1712;
+  --line:rgba(255,255,255,.14);
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box}
+html{background:#000;scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--ink);color:var(--bone);
+  font:500 18px/1.45 "DM Sans",system-ui,sans-serif;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased
+}
+button,input{font:inherit}
+button{color:inherit}
+a{color:inherit}
+::selection{background:#6e0f0b;color:#fff}
+
+.skip{
+  position:fixed;left:-999px;top:12px;z-index:500;
+  background:#0c0504;color:#fff;border:1px solid var(--red);
+  border-radius:999px;padding:12px 16px;text-decoration:none
+}
+.skip:focus{left:12px}
+
+/* ---------- HERO / KEYHOLE ---------- */
+.hero{
+  height:100svh;position:relative;overflow:hidden;isolation:isolate;
+  display:grid;grid-template-rows:auto minmax(0,1fr) auto;
+  padding:max(22px,env(safe-area-inset-top)) 18px max(24px,env(safe-area-inset-bottom));
+  background:
+    radial-gradient(circle at 50% 52%,rgba(117,8,5,.16),transparent 26%),
+    radial-gradient(circle at 50% 50%,#120706 0,#040202 58%,#000 100%)
+}
+.hero:before{
+  content:"";position:absolute;inset:-30%;z-index:-5;pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(255,40,28,.09),transparent 24%),
+    conic-gradient(from 0deg at 50% 50%,transparent,rgba(135,8,4,.06),transparent 35%);
+  animation:ambient 14s linear infinite
+}
+.grain{
+  position:fixed;inset:-50%;z-index:120;pointer-events:none;opacity:.045;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
+  animation:grain .18s steps(2) infinite
+}
+.topbar{
+  position:relative;z-index:8;display:flex;justify-content:space-between;align-items:center;
+  gap:12px;font:700 12px/1 "Space Grotesk",sans-serif;letter-spacing:.11em;text-transform:uppercase
+}
+.brand{display:flex;align-items:center;gap:9px}
+.pulse-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--red);
+  box-shadow:0 0 14px var(--red),0 0 30px rgba(227,48,39,.45);
+  animation:heart 3.8s infinite
+}
+.date{color:#c7b8ae}
+
+/* The keyhole is the middle of the column, so let it be the middle of the
+   column. flex:1 with min-height:0 lets it give up room when a short screen
+   needs it, which is the whole reason the copy below used to get clipped. */
+.key-stage{
+  position:relative;min-height:0;margin:18px 0 8px;
+  display:grid;place-items:center;z-index:2;perspective:900px
+}
+.key-glow{
+  position:absolute;width:min(86vw,470px);height:min(72svh,700px);max-height:104%;
+  background:radial-gradient(ellipse at 50% 48%,rgba(227,48,39,.22),rgba(227,48,39,.08) 25%,transparent 67%);
+  filter:blur(26px);animation:glowbreath 3.8s infinite
+}
+.keyhole{
+  width:min(78vw,420px);height:min(68svh,660px);max-height:100%;position:relative;
+  clip-path:polygon(35% 0,65% 0,70% 4%,74% 12%,75% 20%,72% 29%,66% 37%,62% 41%,79% 100%,21% 100%,38% 41%,34% 37%,28% 29%,25% 20%,26% 12%,30% 4%);
+  filter:drop-shadow(0 0 18px rgba(227,48,39,.45)) drop-shadow(0 0 60px rgba(227,48,39,.20));
+  transform:translateZ(0)
+}
+.keyhole:before{
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  box-shadow:inset 0 0 70px 20px rgba(0,0,0,.78);
+  background:linear-gradient(180deg,rgba(0,0,0,.08),transparent 40%,rgba(0,0,0,.18))
+}
+.keyhole img{
+  width:100%;height:100%;object-fit:cover;object-position:center;
+  filter:brightness(.64) saturate(.86) contrast(1.05);
+  transform:scale(1.06);
+  animation:housebreath 8s var(--ease) infinite alternate;
+  will-change:transform
+}
+.key-rim{
+  position:absolute;inset:0;z-index:3;pointer-events:none;
+  clip-path:inherit;
+  box-shadow:inset 0 0 0 2px rgba(255,84,70,.42)
+}
+.red-wash{
+  position:absolute;inset:0;z-index:4;pointer-events:none;
+  background:radial-gradient(circle at 52% 61%,rgba(255,33,23,.2),transparent 20%);
+  mix-blend-mode:screen;animation:heartwash 3.8s infinite
+}
+
+.hero-copy{
+  position:relative;z-index:9;padding-top:8px;
+  text-align:left
+}
+.kicker{
+  margin:0 0 10px;
+  font:700 13px/1.2 "Space Grotesk",sans-serif;
+  letter-spacing:.13em;text-transform:uppercase;color:#d9cbc0
+}
+h1{
+  margin:0;
+  font:700 clamp(48px,14.5vw,78px)/.86 "Space Grotesk",sans-serif;
+  letter-spacing:-.065em;max-width:7.2ch;text-wrap:balance
+}
+.glow{
+  color:var(--red);
+  text-shadow:
+    0 0 8px rgba(227,48,39,.75),
+    0 0 28px rgba(227,48,39,.48),
+    0 0 64px rgba(227,48,39,.25);
+  animation:hearttext 3.8s infinite;
+  display:inline-block
+}
+.lead{
+  margin:15px 0 18px;max-width:31ch;font-size:18px;line-height:1.42;color:#ded2c8
+}
+.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.cta{
+  min-height:58px;padding:0 22px;border-radius:999px;
+  border:1px solid rgba(255,89,78,.72);
+  background:rgba(92,8,6,.38);
+  backdrop-filter:blur(14px);
+  font:700 15px/1 "Space Grotesk",sans-serif;
+  box-shadow:0 0 28px rgba(227,48,39,.08);
+  transition:.3s var(--ease)
+}
+.cta:active{transform:scale(.97)}
+.ghost{
+  min-height:58px;padding:0 18px;border-radius:999px;border:1px solid var(--line);
+  background:rgba(255,255,255,.04);font-weight:700
+}
+.scrollhint{
+  position:absolute;right:18px;bottom:28px;z-index:9;
+  width:1px;height:74px;background:rgba(255,255,255,.16);overflow:hidden
+}
+.scrollhint:after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(transparent,var(--red),transparent);
+  animation:scrollcue 2.6s var(--ease) infinite
+}
+
+/* ---------- SECONDARY STORY ---------- */
+.story{
+  min-height:100svh;padding:88px 20px;position:relative;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:center;
+  background:
+    linear-gradient(180deg,#040202,#090303 48%,#030202),
+    radial-gradient(circle at 70% 35%,rgba(113,4,2,.18),transparent 28%);
+  border-top:1px solid var(--line)
+}
+.story .num{
+  font:700 12px/1 "Space Grotesk";letter-spacing:.18em;color:var(--red);text-transform:uppercase
+}
+.story h2{
+  font:700 clamp(44px,12vw,72px)/.9 "Space Grotesk";
+  letter-spacing:-.06em;margin:13px 0 18px;max-width:8.5ch
+}
+.story p{font-size:19px;max-width:31ch;color:var(--muted);margin:0 0 22px}
+.rulecard{
+  margin-top:40px;border:1px solid var(--line);border-radius:24px;
+  padding:20px;background:rgba(255,255,255,.025)
+}
+.rulecard b{
+  display:block;font:700 12px/1 "Space Grotesk";letter-spacing:.14em;text-transform:uppercase;color:#d9cbc0;margin-bottom:12px
+}
+.rules{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rules span{
+  display:block;border-top:1px solid var(--line);padding-top:10px;color:#c9bbb1;font-size:16px
+}
+.counter{display:none;margin-top:18px;color:#c9bbb1;font-size:15px}
+.counter.on{display:block}
+.counter strong{color:#fff;font-size:22px}
+
+/* ---------- MODAL ---------- */
+.modal{
+  display:none;position:fixed;inset:0;z-index:300;
+  background:rgba(0,0,0,.86);backdrop-filter:blur(18px);padding:10px
+}
+.modal.open{display:grid;place-items:end center}
+.sheet{
+  width:100%;max-width:620px;max-height:calc(100svh - 20px);overflow:auto;
+  background:#0b0706;border:1px solid #512822;
+  border-radius:28px 28px 18px 18px;
+  padding:22px 20px max(26px,env(safe-area-inset-bottom));
+  box-shadow:0 -30px 120px #000,0 0 80px rgba(135,6,3,.12);
+  animation:sheetup .5s var(--ease)
+}
+.sheet-top{display:flex;align-items:center;justify-content:space-between}
+.sheet-tag{
+  font:700 12px/1 "Space Grotesk";letter-spacing:.14em;text-transform:uppercase;color:#d7c9be
+}
+.close{
+  width:46px;height:46px;border-radius:50%;border:1px solid #4a3832;background:transparent;font-size:25px
+}
+.sheet h2{
+  margin:24px 0 8px;font:700 42px/.94 "Space Grotesk";letter-spacing:-.055em
+}
+.sheet>p{margin:0 0 25px;color:var(--muted);font-size:18px}
+.trap{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.field{display:block;margin:0 0 16px}
+.field span{display:block;margin:0 0 7px;font-size:14px;font-weight:700}
+.field input{
+  width:100%;height:58px;border:1px solid #493832;border-radius:14px;
+  background:#070504;color:#fff;padding:0 16px;font-size:18px;outline:0
+}
+.field input:focus{border-color:#bb3730;box-shadow:0 0 0 3px rgba(227,48,39,.13)}
+.submit{
+  width:100%;height:60px;border:0;border-radius:14px;background:var(--red);color:#fff;
+  font-weight:800;margin-top:4px
+}
+.submit[disabled]{opacity:.65}
+.err{min-height:21px;color:#ff7a70;font-size:14px;margin:2px 0 8px}
+.fine{font-size:13px!important;color:#85786f!important;margin:11px 0 0!important}
+.success{display:none;padding:72px 0 36px;outline:0}
+.success strong{display:block;font:700 44px/.95 "Space Grotesk";letter-spacing:-.055em}
+.success span{display:block;margin-top:12px;color:var(--muted)}
+.success .glow{display:block;margin-top:22px;font:700 19px/1.2 "Space Grotesk"}
+
+.reveal{opacity:0;transform:translateY(30px);filter:blur(8px);transition:1s var(--ease)}
+.reveal.in{opacity:1;transform:none;filter:none}
+
+@keyframes ambient{to{transform:rotate(360deg)}}
+@keyframes grain{
+  0%{transform:translate(0)}25%{transform:translate(3%,-2%)}
+  50%{transform:translate(-2%,3%)}75%{transform:translate(2%,2%)}
+}
+@keyframes housebreath{
+  from{transform:scale(1.06) translate3d(0,0,0)}
+  to{transform:scale(1.11) translate3d(-1%,-1.2%,0)}
+}
+@keyframes heart{
+  0%,16%,100%{transform:scale(1);opacity:1}
+  5%{transform:scale(1.25);opacity:1}
+  9%{transform:scale(.88);opacity:.68}
+  12%{transform:scale(1.12);opacity:1}
+}
+@keyframes hearttext{
+  0%,16%,100%{filter:brightness(1);transform:scale(1)}
+  5%{filter:brightness(1.6);transform:scale(1.022)}
+  9%{filter:brightness(.92);transform:scale(.997)}
+  12%{filter:brightness(1.35);transform:scale(1.011)}
+}
+@keyframes glowbreath{
+  0%,16%,100%{opacity:.62;transform:scale(1)}
+  5%{opacity:1;transform:scale(1.06)}
+  9%{opacity:.58}
+  12%{opacity:.88;transform:scale(1.025)}
+}
+@keyframes heartwash{
+  0%,16%,100%{opacity:.45}
+  5%{opacity:.9}
+  9%{opacity:.36}
+  12%{opacity:.72}
+}
+@keyframes scrollcue{
+  from{transform:translateY(-100%)}
+  65%,100%{transform:translateY(100%)}
+}
+@keyframes sheetup{from{opacity:0;transform:translateY(70px)}}
+
+@media (max-height:560px){
+  .hero{height:auto;min-height:100svh}
+  .keyhole{height:min(52svh,340px)}
+}
+
+/* Sideways, and wide enough to stand them next to each other. */
+@media (max-height:560px) and (min-width:680px){
+  .hero{height:100svh;
+    grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
+    grid-template-rows:auto minmax(0,1fr);
+    column-gap:clamp(16px,4vw,48px)}
+  .topbar{grid-column:1/-1}
+  .key-stage{grid-column:1;grid-row:2;margin:6px 0 10px}
+  .keyhole{height:100%;width:min(38vw,300px)}
+  .hero-copy{grid-column:2;grid-row:2;align-self:center;padding-top:0;max-width:46ch}
+  /* 78px display type is for a screen held upright. Sideways it costs three
+     lines and pushes the button off the bottom, so it comes down a size. */
+  .hero-copy h1{font-size:clamp(30px,4.6vw,42px);max-width:11ch}
+  .hero-copy .kicker{margin-bottom:6px;font-size:12px}
+  .hero-copy .lead{margin:10px 0 12px;font-size:15px;max-width:40ch}
+  .scrollhint{display:none}
+}
+
+@media (min-width:900px){
+  .hero{padding-left:6vw;padding-right:6vw}
+  .hero-copy{padding-top:8px;max-width:700px}
+  h1{font-size:clamp(78px,8vw,126px)}
+  .key-stage{margin:22px 0 10px}
+  .keyhole{width:min(40vw,500px);height:min(74svh,760px)}
+  .key-glow{width:min(50vw,600px);height:min(80svh,800px)}
+  .story{padding:11vh 8vw}
+  .story h2{font-size:clamp(70px,6vw,104px)}
+  .story p{max-width:40ch}
+  .modal{place-items:center}
+  .sheet{border-radius:28px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none;filter:none}
+}
+@media(prefers-contrast:more){
+  :root{--bone:#fff;--muted:#f0e9e3;--line:#bbb;--red:#ff554a}
+  .hero{background:#000}
+  .sheet{background:#000}
+}
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<a class="skip" href="#story">Skip to details</a>
+
+<header class="hero">
+  <div class="topbar">
+    <div class="brand"><span class="pulse-dot" aria-hidden="true"></span><span>Haunted Mansion BK</span></div>
+    <div class="date">09.25.26</div>
+  </div>
+
+  <div class="key-stage" aria-hidden="true">
+    <div class="key-glow"></div>
+    <div class="keyhole">
+      <picture>
+        <source media="(min-width:760px)" srcset="img-cali/hero-wide.jpg 1x, img-cali/hero-wide@2x.jpg 2x">
+        <img src="img-cali/hero-tall.jpg" srcset="img-cali/hero-tall.jpg 1x, img-cali/hero-tall@2x.jpg 2x" alt="">
+      </picture>
+      <div class="key-rim"></div>
+      <div class="red-wash"></div>
+    </div>
+  </div>
+
+  <div class="hero-copy">
+    <p class="kicker">You shouldn't be looking.</p>
+    <h1>But since you're <span class="glow">here.</span></h1>
+    <p class="lead">A house in Bushwick opens September 25. Sixty minutes inside. Multiple rooms. One way out.</p>
+    <div class="actions">
+      <button class="cta" data-open>Unlock the invitation</button>
+      <button class="ghost" onclick="document.getElementById('story').scrollIntoView()">Look closer</button>
+    </div>
+  </div>
+  <div class="scrollhint" aria-hidden="true"></div>
+</header>
+
+<main id="story">
+  <section class="story">
+    <div class="reveal">
+      <span class="num">The house / Bushwick, Brooklyn</span>
+      <h2>Some doors were closed <span class="glow">for a reason.</span></h2>
+      <p>The house opens September 25. Bring someone you trust. You get sixty minutes once the door shuts.</p>
+
+      <button class="cta" data-open>Put my name on the list</button>
+
+      <div class="rulecard">
+        <b>What you know</b>
+        <div class="rules">
+          <span>September 25, 2026</span>
+          <span>Bushwick, Brooklyn</span>
+          <span>60 minutes</span>
+          <span>Multiple rooms</span>
+        </div>
+        <div class="counter" id="counter"><strong id="count">—</strong> people are waiting to enter.</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="sheet">
+    <div class="sheet-top">
+      <span class="sheet-tag">Private waitlist</span>
+      <button class="close" type="button" aria-label="Close waitlist">×</button>
+    </div>
+
+    <div id="formbox">
+      <h2 id="modal-title">The door is locked.<br><span class="glow">Leave your name.</span></h2>
+      <p>Be first to know when the house opens.</p>
+
+      <form id="join" novalidate>
+        <div class="trap" aria-hidden="true">
+          <label for="company">Company</label>
+          <input id="company" name="company" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
+        <label class="field"><span>Name</span><input id="name" name="name" autocomplete="name" required></label>
+        <label class="field"><span>Email</span><input id="email" name="email" type="email" autocomplete="email" required></label>
+        <label class="field"><span>Phone — optional</span><input id="phone" name="phone" type="tel" autocomplete="tel"></label>
+
+        <p class="err" id="err" role="alert"></p>
+        <button class="submit" id="go" type="submit">Knock on the door</button>
+        <p class="fine">Early access. Limited tickets. No spam.</p>
+      </form>
+    </div>
+
+    <div class="success" id="done" tabindex="-1" aria-live="polite">
+      <strong>We heard you.</strong>
+      <span>We'll contact you when the house is ready.</span>
+      <span class="glow">Don't answer the door.</span>
+    </div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = "https://tqeunmqnaoyrerkbhokk.supabase.co";
+const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxZXVubXFuYW95cmVya2Job2trIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4OTQ1MzQsImV4cCI6MjA4OTQ3MDUzNH0.hkkuc7_YE2yf0w0NQENpahAxqxxqBfjq8n5QhtTIkw8";
+const COUNTER_MIN = 25;
+
+const headers = {
+  "apikey": SUPABASE_ANON,
+  "Authorization": "Bearer " + SUPABASE_ANON,
+  "Content-Type": "application/json"
+};
+
+const modal = document.getElementById("modal");
+const closeBtn = modal.querySelector(".close");
+const form = document.getElementById("join");
+const done = document.getElementById("done");
+const formbox = document.getElementById("formbox");
+const err = document.getElementById("err");
+const go = document.getElementById("go");
+let modalTouched = false;
+
+function openModal(){
+  modalTouched = true;
+  modal.classList.add("open");
+  document.body.style.overflow = "hidden";
+  setTimeout(() => document.getElementById("name").focus(), 80);
+}
+function autoOpenModal(){
+  if(modalTouched || modal.classList.contains("open")) return;
+  modal.classList.add("open");
+  document.body.style.overflow = "hidden";
+  setTimeout(() => document.getElementById("name").focus(), 80);
+}
+function closeModal(){
+  modalTouched = true;
+  modal.classList.remove("open");
+  document.body.style.overflow = "";
+}
+document.querySelectorAll("[data-open]").forEach(btn => btn.addEventListener("click", openModal));
+closeBtn.addEventListener("click", closeModal);
+modal.addEventListener("click", e => { if(e.target === modal) closeModal(); });
+addEventListener("keydown", e => { if(e.key === "Escape") closeModal(); });
+
+// Auto invitation after 5 seconds.
+setTimeout(autoOpenModal, 5000);
+
+// Scroll reveal.
+const io = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if(en.isIntersecting){
+      en.target.classList.add("in");
+      io.unobserve(en.target);
+    }
+  });
+}, {threshold:.12});
+document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+// Real waitlist count. Hidden below COUNTER_MIN.
+async function realCount(){
+  try{
+    const r = await fetch(SUPABASE_URL + "/rest/v1/rpc/hm_waitlist_count", {
+      method:"POST", headers, body:"{}"
+    });
+    if(!r.ok) return null;
+    const n = await r.json();
+    return typeof n === "number" ? n : null;
+  }catch(_){ return null; }
+}
+async function paintCount(){
+  const n = await realCount();
+  if(n === null || n < COUNTER_MIN) return;
+  document.getElementById("count").textContent = n.toLocaleString();
+  document.getElementById("counter").classList.add("on");
+}
+paintCount();
+
+function fail(el, message){
+  err.textContent = message;
+  el.setAttribute("aria-invalid","true");
+  el.focus();
+  el.addEventListener("input", function(){
+    el.removeAttribute("aria-invalid");
+    err.textContent = "";
+  }, {once:true});
+}
+
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  err.textContent = "";
+
+  const nameEl = form.elements.namedItem("name");
+  const name = nameEl.value.trim();
+  const email = form.email.value.trim();
+  const phone = form.phone.value.trim();
+
+  if(form.elements.namedItem("company").value){
+    formbox.style.display = "none";
+    done.style.display = "block";
+    done.focus();
+    return;
+  }
+
+  [nameEl, form.email].forEach(el => el.removeAttribute("aria-invalid"));
+  if(name.length < 2){ fail(nameEl,"The house wants a name."); return; }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){
+    fail(form.email,"That address will not reach you.");
+    return;
+  }
+
+  go.disabled = true;
+  go.textContent = "Opening";
+
+  try{
+    const r = await fetch(SUPABASE_URL + "/rest/v1/hm_waitlist", {
+      method:"POST",
+      headers:Object.assign({},headers,{Prefer:"return=minimal"}),
+      body:JSON.stringify({
+        name, email, phone:phone || null, user_agent:navigator.userAgent
+      })
+    });
+    if(!r.ok && r.status !== 409) throw new Error(String(r.status));
+  }catch(_){
+    go.disabled = false;
+    go.textContent = "Knock on the door";
+    err.textContent = "The door stuck. Try again.";
+    return;
+  }
+
+  formbox.style.display = "none";
+  done.style.display = "block";
+  done.focus();
+  paintCount();
+});
+
+// Desktop-only subtle parallax.
+if(!matchMedia("(prefers-reduced-motion:reduce)").matches){
+  const img = document.querySelector(".keyhole img");
+  addEventListener("pointermove", e => {
+    if(innerWidth < 760) return;
+    const x = e.clientX / innerWidth - .5;
+    const y = e.clientY / innerHeight - .5;
+    img.style.transform = `scale(1.08) translate3d(${x * -1.8}%,${y * -1.4}%,0)`;
+  });
+}
+</script>
+</body>
+</html>

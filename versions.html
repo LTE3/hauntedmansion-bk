@@ -234,7 +234,13 @@ var BUILDS = [
   { id:"12-photo",  tab:"Photos fixed", diff:true, type:true,
     what:"<em>Same photos, fixed.</em> The red was smeared over every picture; now it only comes off the doors, so the rooms look cold and the light looks warm." },
   { id:"13-split",  tab:"Both", diff:true, type:true,
-    what:"<em>Drawing outside, photo inside.</em> Painted storefront up top, and the hallway is framed like a real photograph taped onto it." }
+    what:"<em>Drawing outside, photo inside.</em> Painted storefront up top, and the hallway is framed like a real photograph taped onto it." },
+  { id:"14-keyhole", tab:"Keyhole", diff:false, type:true,
+    what:"<em>You are looking through a keyhole.</em> The first screen is a keyhole cut out of the dark with the house lit behind it. Two buttons, and after five seconds the invitation opens by itself." },
+  { id:"15-livingdoor", tab:"Living door", diff:false, type:true,
+    what:"<em>One door, breathing.</em> A single door fills the whole screen and slowly swells, like something behind it is asleep. The only thing to press is the knocker." },
+  { id:"16-thelist", tab:"The list", diff:false, type:true,
+    what:"<em>Invitation only.</em> Built on being left out rather than on being scared - not everyone gets in, the list is private, and signing up is written as being let through a door." }
 ];
 
 var pills = document.querySelector(".pills");
@@ -255,9 +261,9 @@ var cur   = -1;
    so "inside" lands on the facts line that was there instead. */
 var SPOTS = [
   { k:"top",    label:"Top",    sel:null },
-  { k:"inside", label:"Inside", sel:[".plate", ".facts"] },
-  { k:"signup", label:"Signup", sel:[".bay"] },
-  { k:"end",    label:"End",    sel:[".close"] }
+  { k:"inside", label:"Inside", sel:[".plate", ".facts", ".story", ".doorworld"] },
+  { k:"signup", label:"Signup", sel:[".bay", ".rulecard", ".story", ".copy"] },
+  { k:"end",    label:"End",    sel:[".close", ".counter", ".story", ".copy"] }
 ];
 var spot = 0;
 

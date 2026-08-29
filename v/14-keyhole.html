@@ -131,9 +131,16 @@ a{color:inherit}
 }
 /* overflow:visible because the bloom is blurred past the viewBox, and an SVG
    clips to its box by default. */
-.key-outline{z-index:3;height:100%;pointer-events:none;overflow:visible}
-.key-outline .bloom{filter:blur(3.5px);opacity:.6;animation:rimbreath 3.8s infinite}
-.key-outline .edge{opacity:.92}
+.key-outline{
+  z-index:3;height:100%;pointer-events:none;overflow:visible;
+  filter:
+    drop-shadow(0 0 8px rgba(227,48,39,.75))
+    drop-shadow(0 0 28px rgba(227,48,39,.48))
+    drop-shadow(0 0 64px rgba(227,48,39,.25))
+}
+/* The beat lives on the path, not the svg, because the halo above is also a
+   filter and one of them would overwrite the other. */
+.key-outline path{stroke:var(--red);animation:hearttext 3.8s infinite}
 .keyhole:before{
   content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
   box-shadow:inset 0 0 70px 20px rgba(0,0,0,.78);
@@ -288,8 +295,6 @@ h1{
   9%{filter:brightness(.92);transform:scale(.997)}
   12%{filter:brightness(1.35);transform:scale(1.011)}
 }
-@keyframes rimbreath{
-  0%,16%,100%{opacity:.5}
   5%{opacity:1}
   9%{opacity:.42}
   12%{opacity:.82}
@@ -375,19 +380,7 @@ h1{
     </div>
       <svg class="key-outline" viewBox="0 0 100 100" preserveAspectRatio="none"
            aria-hidden="true" focusable="false">
-        <defs>
-          <linearGradient id="rimlight" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#ffa48f" stop-opacity=".9"/>
-            <stop offset=".34" stop-color="#ff5a45" stop-opacity=".62"/>
-            <stop offset=".72" stop-color="#e33027" stop-opacity=".3"/>
-            <stop offset="1" stop-color="#e33027" stop-opacity="0"/>
-          </linearGradient>
-        </defs>
-        <path class="bloom" d="M65 0 L70 4 L74 12 L75 20 L72 29 L66 37 L62 41 L79 100 M21 100 L38 41 L34 37 L28 29 L25 20 L26 12 L30 4 L35 0" fill="none" stroke="url(#rimlight)"
-              stroke-width="6" stroke-linecap="round" stroke-linejoin="round"
-              vector-effect="non-scaling-stroke"/>
-        <path class="edge" d="M65 0 L70 4 L74 12 L75 20 L72 29 L66 37 L62 41 L79 100 M21 100 L38 41 L34 37 L28 29 L25 20 L26 12 L30 4 L35 0" fill="none" stroke="url(#rimlight)"
-              stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"
+        <path d="M65 0 L70 4 L74 12 L75 20 L72 29 L66 37 L62 41 L79 100 M21 100 L38 41 L34 37 L28 29 L25 20 L26 12 L30 4 L35 0" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
               vector-effect="non-scaling-stroke"/>
       </svg>
   </div>

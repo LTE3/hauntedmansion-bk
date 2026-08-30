@@ -106,6 +106,20 @@ a{color:inherit}
   animation:heart 3.8s infinite
 }
 .date{color:#c7b8ae}
+.topright{display:flex;align-items:center;gap:12px}
+/* Quiet on purpose. It has to be findable before the scream happens and
+   forgettable after, which means low contrast and no colour - the only red on
+   this page is the door. */
+.sound{
+  display:grid;place-items:center;width:26px;height:26px;margin:-6px -6px -6px 0;
+  padding:0;border:0;background:none;color:#c7b8ae;opacity:.45;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;transition:opacity .3s var(--ease)
+}
+.sound:hover,.sound:focus-visible{opacity:1}
+.sound svg{width:15px;height:15px;display:block}
+.sound .off{display:none}
+.sound[aria-pressed="false"] .on{display:none}
+.sound[aria-pressed="false"] .off{display:block}
 
 /* The keyhole is the middle of the column, so let it be the middle of the
    column. flex:1 with min-height:0 lets it give up room when a short screen
@@ -431,7 +445,22 @@ h1{
 <header class="hero">
   <div class="topbar">
     <div class="brand"><span class="pulse-dot" aria-hidden="true"></span><span>Haunted Mansion BK</span></div>
-    <div class="date">09.25.26</div>
+    <div class="topright">
+      <div class="date">09.25.26</div>
+      <button class="sound" type="button" aria-pressed="true" aria-label="Sound on">
+        <svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4z" fill="currentColor" stroke="none"/>
+          <path d="M15.6 9.2a4 4 0 0 1 0 5.6"/>
+          <path d="M18.2 6.6a7.6 7.6 0 0 1 0 10.8"/>
+        </svg>
+        <svg class="off" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4z" fill="currentColor" stroke="none"/>
+          <path d="M16 9.5l5 5M21 9.5l-5 5"/>
+        </svg>
+      </button>
+    </div>
   </div>
 
   <div class="key-stage" aria-hidden="true">
@@ -580,8 +609,54 @@ const err = document.getElementById("err");
 const go = document.getElementById("go");
 let modalTouched = false;
 
+/* The scream.
+
+   Freesound #219817 by saraonsins, CC0, run through a 1970 print chain - see
+   snd/CREDITS.md. It plays when a person opens the invitation themselves and
+   at no other time. The page also opens the modal on a five second timer, and
+   that one is deliberately silent: a browser blocks audio no gesture asked
+   for, and a site that screams at somebody who has not touched it yet is a
+   site they close.
+
+   The toggle is in the top bar from the first paint so it can be used before
+   anything has made a sound, and the answer is remembered. localStorage is
+   wrapped because it throws outright in a locked-down browser rather than
+   returning null, and a scream is not worth taking the page down over. */
+const sound = document.querySelector(".sound");
+let scream = null;
+let soundOn = true;
+try{ soundOn = localStorage.getItem("hm-sound") !== "0"; }catch(e){}
+
+function paintSound(){
+  sound.setAttribute("aria-pressed", soundOn ? "true" : "false");
+  sound.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");
+}
+paintSound();
+
+sound.addEventListener("click", () => {
+  soundOn = !soundOn;
+  try{ localStorage.setItem("hm-sound", soundOn ? "1" : "0"); }catch(e){}
+  paintSound();
+  if(!soundOn && scream){ scream.pause(); scream.currentTime = 0; }
+});
+
+function playScream(){
+  if(!soundOn) return;
+  /* Built on first use, so a visitor who never opens the modal never
+     downloads it. */
+  if(!scream){
+    scream = new Audio("snd/scream.mp3");
+    scream.volume = .5;
+  }
+  scream.currentTime = 0;
+  /* Rejects if the gesture was not good enough for this browser. That is a
+     browser being careful, not an error worth showing anyone. */
+  scream.play().catch(() => {});
+}
+
 function openModal(){
   modalTouched = true;
+  playScream();
   modal.classList.add("open");
   document.body.style.overflow = "hidden";
   setTimeout(() => document.getElementById("name").focus(), 80);

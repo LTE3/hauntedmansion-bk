@@ -363,6 +363,21 @@ h1{
   .modal{place-items:center}
   .sheet{border-radius:28px}
 }
+/* On a big screen the picture is the wall, not a panel on it. Out of the grid
+   flow so it can have the hero's whole height - the 1fr row it leaves behind
+   still holds the copy at the bottom - and faded out low down so the rim's
+   light ends above the words instead of crossing them. */
+@media (min-width:900px) and (min-height:700px) and (min-aspect-ratio:1/1){
+  .key-stage{position:absolute;inset:0;margin:0;z-index:1}
+  .key-fit{--keyw:min(46vw,620px)}
+  .keyhole,.key-outline{
+    -webkit-mask-image:linear-gradient(to bottom,#000 46%,rgba(0,0,0,.5) 68%,transparent 86%);
+    mask-image:linear-gradient(to bottom,#000 46%,rgba(0,0,0,.5) 68%,transparent 86%)
+  }
+  .key-glow{width:min(58vw,760px);top:-2%;bottom:22%}
+  .hero-copy{position:relative;grid-row:3;align-self:end;z-index:9}
+}
+
 @media(prefers-reduced-motion:reduce){
   *,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
   .reveal{opacity:1;transform:none;filter:none}

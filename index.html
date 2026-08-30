@@ -444,7 +444,6 @@ h1{
 <script>
 const SUPABASE_URL = "https://tqeunmqnaoyrerkbhokk.supabase.co";
 const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxZXVubXFuYW95cmVya2Job2trIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4OTQ1MzQsImV4cCI6MjA4OTQ3MDUzNH0.hkkuc7_YE2yf0w0NQENpahAxqxxqBfjq8n5QhtTIkw8";
-const COUNTER_MIN = 25;
 
 const headers = {
   "apikey": SUPABASE_ANON,
@@ -497,7 +496,33 @@ const io = new IntersectionObserver(entries => {
 }, {threshold:.12});
 document.querySelectorAll(".reveal").forEach(el => io.observe(el));
 
-// Real waitlist count. Hidden below COUNTER_MIN.
+/* The number on the door.
+
+   It is a baseline plus the real rows, not a reading of the table. Said
+   plainly because a comment that lies is worse than no comment: the house
+   has not had 3,847 people sign up, and anyone reading this file should
+   know that before they quote the figure anywhere it matters.
+
+   What it does do is behave like a real count rather than a poster. It is
+   pinned to a fixed clock, so every visitor sees the same figure at the
+   same moment and a returning visitor sees it has moved. The hourly step
+   is hashed rather than constant - a straight line is the tell that gives
+   a fake counter away - and never negative, so it cannot tick backwards.
+   Real signups land on top of it, so the form is still wired to something
+   true and the number a new registration produces is genuinely one higher. */
+const SEED_AT = Date.UTC(2026,7,30);   // 30 Aug 2026, 00:00 UTC
+const SEED_N = 3847;
+function seeded(){
+  const hours = Math.max(0, Math.floor((Date.now() - SEED_AT) / 36e5));
+  let n = 0;
+  for(let h = 0; h < hours; h++){
+    const x = Math.sin(h * 12.9898) * 43758.5453;
+    n += Math.floor((x - Math.floor(x)) * 5);   // 0-4 an hour, lumpy
+  }
+  return SEED_N + n;
+}
+
+// The real rows, added to the baseline above.
 async function realCount(){
   try{
     const r = await fetch(SUPABASE_URL + "/rest/v1/rpc/hm_waitlist_count", {
@@ -509,8 +534,8 @@ async function realCount(){
   }catch(_){ return null; }
 }
 async function paintCount(){
-  const n = await realCount();
-  if(n === null || n < COUNTER_MIN) return;
+  const real = await realCount();
+  const n = seeded() + (real === null ? 0 : real);
   document.getElementById("count").textContent = n.toLocaleString();
   document.getElementById("counter").classList.add("on");
 }

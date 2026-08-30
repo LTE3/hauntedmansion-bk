@@ -379,9 +379,13 @@ h1{
 }
 
 
-/* The eye. Shown once on load, gone before the copy has finished arriving.
-   Everything is timed off one 2.4s run so the blink cannot drift out of the
-   window the eye is visible in. */
+/* The eye.
+
+   These keyframes are the no-JS version: it appears, blinks, glances once and
+   goes, all timed off one 2.4s run so the blink cannot drift outside the
+   window the eye is visible in. When script is available it takes the iris
+   off these rails immediately and drives it from the pointer instead - see
+   "the eye watches back" at the bottom of the page. */
 .key-eye{
   position:absolute;inset:0;z-index:2;height:100%;pointer-events:none;
   opacity:0;animation:eyeshow 2.4s var(--ease) .5s 1 both;
@@ -724,6 +728,106 @@ if(!matchMedia("(prefers-reduced-motion:reduce)").matches){
     const y = e.clientY / innerHeight - .5;
     img.style.transform = `scale(1.08) translate3d(${x * -1.8}%,${y * -1.4}%,0)`;
   });
+}
+
+/* The eye watches back.
+
+   The CSS above already draws and animates it. This takes the iris off those
+   keyframes - an animation beats an inline transform in the cascade, so they
+   cannot both have it - and points it at the pointer for as long as the eye
+   is open. Everything is in the SVG's own units: the viewBox is 0 0 69.9 100
+   and preserveAspectRatio is none, so a fraction across the box is a fraction
+   across the viewBox and the conversion is a multiply.
+
+   Reduced motion gets none of this. The eye stays at opacity 0 there, which
+   is what the base rule already says and what the reduce block already
+   enforces by killing every animation. */
+if(!matchMedia("(prefers-reduced-motion:reduce)").matches){
+  const eye = document.querySelector(".key-eye");
+  const iris = eye && eye.querySelector(".iris");
+  const lids = eye && eye.querySelector(".lids");
+
+  if(eye && iris && lids){
+    const IRIS_X = 37.1, IRIS_Y = 26.3;   // where it is drawn, in viewBox units
+    const REACH_X = 3.1, REACH_Y = 1.7;   // how far it can travel before the lid stops it
+    let tx = 0, ty = 0, cx = 0, cy = 0;   // target, then current
+    let awake = true, raf = 0, still = 0;
+
+    iris.style.animation = "none";        // ours now
+
+    addEventListener("pointermove", e => {
+      const r = eye.getBoundingClientRect();
+      if(!r.width) return;
+      const dx = (e.clientX - r.left) / r.width * 69.9 - IRIS_X;
+      const dy = (e.clientY - r.top) / r.height * 100 - IRIS_Y;
+      const d = Math.hypot(dx, dy) || 1;
+      /* Full deflection well before the pointer reaches the edge of the
+         screen, because an eye that is still turning at arm's length reads as
+         a dial rather than as looking. */
+      const k = Math.min(1, d / 38);
+      tx = dx / d * k * REACH_X;
+      ty = dy / d * k * REACH_Y;
+      still = 0;
+    }, {passive:true});
+
+    /* Nobody is moving - a phone with no hovering finger, or a person who has
+       stopped. Two sines that do not share a period, so the path never
+       repeats and it never settles into a pattern you can watch. */
+    function drift(t){
+      tx = Math.sin(t / 2300) * 2.4 + Math.sin(t / 770) * .55;
+      ty = Math.sin(t / 3100 + 1.4) * 1.1;
+    }
+
+    function frame(t){
+      if(++still > 130) drift(t);
+      cx += (tx - cx) * .10;
+      cy += (ty - cy) * .10;
+      iris.style.transform = "translate(" + cx.toFixed(2) + "px," + cy.toFixed(2) + "px)";
+      raf = awake ? requestAnimationFrame(frame) : 0;
+    }
+    raf = requestAnimationFrame(frame);
+
+    function blink(at){
+      setTimeout(() => lids.animate(
+        [{transform:"scaleY(1)"},{transform:"scaleY(.06)",offset:.5},{transform:"scaleY(1)"}],
+        {duration:150, easing:"linear"}), at);
+    }
+
+    /* The opening run is the CSS one, so no-JS sees the same thing. When it
+       finishes, take the element off its keyframes too - otherwise the fill
+       holds it at opacity 0 and nothing scripted can ever show it again. */
+    eye.addEventListener("animationend", function handoff(e){
+      if(e.animationName !== "eyeshow") return;
+      eye.removeEventListener("animationend", handoff);
+      eye.style.animation = "none";
+      lids.style.animation = "none";
+      eye.style.opacity = "0";
+      awake = false;
+      schedule();
+    });
+
+    function schedule(){
+      setTimeout(peek, 16000 + Math.random() * 20000);
+    }
+
+    function peek(){
+      if(document.hidden) return schedule();   // do not spend a visit on a tab nobody is looking at
+      awake = true;
+      still = 0;
+      /* Open already aimed. The loop stops while the eye is shut, so without
+         this it opens pointing wherever it was five visits ago and then swings
+         across to find you - which reads as a machine catching up. Snapping
+         the current position onto the target first means the lid lifts on an
+         eye that is already looking at you. */
+      cx = tx; cy = ty;
+      if(!raf) raf = requestAnimationFrame(frame);
+      blink(900); blink(3400);
+      eye.animate(
+        [{opacity:0},{opacity:.96,offset:.13},{opacity:.96,offset:.82},{opacity:0}],
+        {duration:5200, easing:"linear", fill:"both"}
+      ).onfinish = () => { awake = false; schedule(); };
+    }
+  }
 }
 </script>
 </body>

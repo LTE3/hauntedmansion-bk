@@ -100,12 +100,19 @@ a{color:inherit}
 }
 /* Geometry shared with .key-outline: the stroke has to sit exactly where the
    mask cuts, so anything that resizes one resizes both. */
-.keyhole,.key-outline{
-  position:absolute;top:0;bottom:0;left:50%;width:min(78vw,420px);
-  transform:translateX(-50%) translateZ(0)
+/* The wrapper is the only thing that decides the keyhole's proportions, and
+   it keeps them: a fixed ratio, shrunk to whatever the row and the viewport
+   allow. Everything inside it can then be drawn in units that mean the same
+   thing on every screen, which is the only way a circle stays a circle. */
+.key-fit{
+  --keyw:min(78vw,420px);--keyh:100%;
+  position:absolute;top:50%;left:50%;translate:-50% -50%;
+  height:min(100%,var(--keyh),calc(var(--keyw) / .699));
+  aspect-ratio:.699
 }
+.keyhole,.key-outline{position:absolute;inset:0;transform:translateZ(0)}
 .keyhole{
-  clip-path:polygon(35% 0,65% 0,70% 4%,74% 12%,75% 20%,72% 29%,66% 37%,62% 41%,79% 100%,21% 100%,38% 41%,34% 37%,28% 29%,25% 20%,26% 12%,30% 4%);
+  clip-path:polygon(80.04% 100.00%,68.19% 47.35%,70.18% 46.42%,72.07% 45.39%,73.85% 44.26%,75.52% 43.06%,77.06% 41.78%,78.46% 40.42%,79.73% 39.00%,80.86% 37.52%,81.83% 35.99%,82.65% 34.42%,83.31% 32.81%,83.81% 31.17%,84.15% 29.51%,84.31% 27.84%,84.31% 26.16%,84.15% 24.49%,83.81% 22.83%,83.31% 21.19%,82.65% 19.58%,81.83% 18.01%,80.86% 16.48%,79.73% 15.00%,78.46% 13.58%,77.06% 12.22%,75.52% 10.94%,73.85% 9.74%,72.07% 8.61%,70.18% 7.58%,68.19% 6.65%,66.12% 5.81%,63.97% 5.07%,61.74% 4.45%,59.46% 3.93%,57.14% 3.52%,54.78% 3.23%,52.40% 3.06%,50.00% 3.00%,47.60% 3.06%,45.22% 3.23%,42.86% 3.52%,40.54% 3.93%,38.26% 4.45%,36.03% 5.07%,33.88% 5.81%,31.81% 6.65%,29.82% 7.58%,27.93% 8.61%,26.15% 9.74%,24.48% 10.94%,22.94% 12.22%,21.54% 13.58%,20.27% 15.00%,19.14% 16.48%,18.17% 18.01%,17.35% 19.58%,16.69% 21.19%,16.19% 22.83%,15.85% 24.49%,15.69% 26.16%,15.69% 27.84%,15.85% 29.51%,16.19% 31.17%,16.69% 32.81%,17.35% 34.42%,18.17% 35.99%,19.14% 37.52%,20.27% 39.00%,21.54% 40.42%,22.94% 41.78%,24.48% 43.06%,26.15% 44.26%,27.93% 45.39%,29.82% 46.42%,31.81% 47.35%,31.81% 47.35%,19.96% 100.00%);
   filter:drop-shadow(0 0 18px rgba(227,48,39,.45)) drop-shadow(0 0 60px rgba(227,48,39,.20))
 }
 /* overflow:visible because the bloom is blurred past the viewBox, and an SVG
@@ -119,7 +126,7 @@ a{color:inherit}
 }
 /* The beat lives on the path, not the svg, because the halo above is also a
    filter and one of them would overwrite the other. */
-.key-outline path{stroke:var(--red);animation:hearttext 3.8s infinite}
+.key-outline path{stroke:var(--red);animation:rimbeat 3.8s infinite}
 .keyhole:before{
   content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
   box-shadow:inset 0 0 70px 20px rgba(0,0,0,.78);
@@ -268,6 +275,12 @@ h1{
   9%{transform:scale(.88);opacity:.68}
   12%{transform:scale(1.12);opacity:1}
 }
+@keyframes rimbeat{
+  0%,16%,100%{filter:brightness(1)}
+  5%{filter:brightness(1.6)}
+  9%{filter:brightness(.92)}
+  12%{filter:brightness(1.35)}
+}
 @keyframes hearttext{
   0%,16%,100%{filter:brightness(1);transform:scale(1)}
   5%{filter:brightness(1.6);transform:scale(1.022)}
@@ -298,7 +311,7 @@ h1{
 
 @media (max-height:560px){
   .hero{height:auto;min-height:100svh}
-  .keyhole,.key-outline{height:min(52svh,340px)}
+  .key-fit{--keyh:min(52svh,340px)}
 }
 
 /* Sideways, and wide enough to stand them next to each other. */
@@ -309,7 +322,7 @@ h1{
     column-gap:clamp(16px,4vw,48px)}
   .topbar{grid-column:1/-1}
   .key-stage{grid-column:1;grid-row:2;margin:6px 0 10px}
-  .keyhole,.key-outline{width:min(38vw,300px)}
+  .key-fit{--keyw:min(38vw,300px)}
   .hero-copy{grid-column:2;grid-row:2;align-self:center;padding-top:0;max-width:46ch}
   /* 78px display type is for a screen held upright. Sideways it costs three
      lines and pushes the button off the bottom, so it comes down a size. */
@@ -324,7 +337,7 @@ h1{
   .hero-copy{padding-top:8px;max-width:700px}
   h1{font-size:clamp(64px,6.6vw,104px)}
   .key-stage{margin:22px 0 10px}
-  .keyhole,.key-outline{width:min(40vw,500px)}
+  .key-fit{--keyw:min(40vw,500px)}
   .key-glow{width:min(50vw,600px)}
   .modal{place-items:center}
   .sheet{border-radius:28px}
@@ -350,6 +363,7 @@ h1{
 
   <div class="key-stage" aria-hidden="true">
     <div class="key-glow"></div>
+    <div class="key-fit">
     <div class="keyhole">
       <picture>
         <source media="(min-width:760px)" srcset="v/img-cali/hero-wide.jpg 1x, v/img-cali/hero-wide@2x.jpg 2x">
@@ -357,11 +371,12 @@ h1{
       </picture>
       <div class="red-wash"></div>
     </div>
-      <svg class="key-outline" viewBox="0 0 100 100" preserveAspectRatio="none"
+      <svg class="key-outline" viewBox="0 0 69.9 100" preserveAspectRatio="none"
            aria-hidden="true" focusable="false">
-        <path d="M65 0 L70 4 L74 12 L75 20 L72 29 L66 37 L62 41 L79 100 M21 100 L38 41 L34 37 L28 29 L25 20 L26 12 L30 4 L35 0" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        <path d="M 47.67 47.35 A 24.00 24.00 0 1 0 22.23 47.35 M 47.67 47.35 L 55.95 100 M 22.23 47.35 L 13.95 100" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
               vector-effect="non-scaling-stroke"/>
       </svg>
+    </div>
   </div>
 
   <div class="hero-copy">

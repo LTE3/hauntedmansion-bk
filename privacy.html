@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>What we keep</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="What the waitlist for the house collects, why, and how to be taken off it.">
+<meta name="theme-color" content="#050505">
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23050505"/><path d="M6 30V13L16 5l10 8v17z" fill="none" stroke="%233a332c" stroke-width="2"/><rect x="13" y="18" width="6" height="12" fill="%23c2702f"/></svg>'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400&family=Cormorant+Garamond:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:dark;
+  --ink:#050505;
+  --bone:#cfc4b4;
+  --read:#c3b8a8;      /* body copy: lighter than the 404's --ash, which is a
+                          caption colour and does not clear 4.5:1 at this size */
+  --ash:#9b9184;       /* meta lines only, and only at 16px or larger */
+  --blood-lit:#c9342a;
+  --rule:#241f1b;
+  --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+  --display:"Cinzel","Cormorant Garamond",Georgia,serif;
+  --slow:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--ink);color:var(--read);
+  font-family:var(--serif);font-weight:400;
+  -webkit-font-smoothing:antialiased;
+  padding:11vh 7vw 16vh;
+}
+::selection{background:#7d1d14;color:#e8ded0}
+/* One lamp, and it does not move. The 404 flickers because there are eleven
+   words on it; a page of prose that flickers is a page nobody finishes. */
+body::before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(60% 45% at 50% 0%,rgba(194,112,47,.09),transparent 70%);
+}
+main{max-width:62ch;margin:0 auto}
+
+.eyebrow{
+  font-family:var(--display);font-size:.68rem;letter-spacing:.34em;
+  text-transform:uppercase;color:var(--ash);margin:0 0 1.5rem
+}
+h1{
+  font-family:var(--display);font-weight:400;margin:0 0 .5rem;
+  font-size:clamp(1.6rem,5vw,2.6rem);line-height:1.15;letter-spacing:.09em;
+  text-transform:uppercase;color:#d8cdbc;text-wrap:balance;
+  text-shadow:0 0 60px rgba(160,26,18,.35)
+}
+.standfirst{
+  font-size:clamp(1.05rem,2.8vw,1.25rem);line-height:1.6;color:var(--bone);
+  margin:0 0 2.2rem
+}
+h2{
+  font-family:var(--display);font-weight:400;
+  font-size:clamp(.92rem,2.3vw,1.02rem);letter-spacing:.2em;
+  text-transform:uppercase;color:#c8bcab;
+  margin:3.2rem 0 .9rem;padding-top:1.5rem;border-top:1px solid var(--rule)
+}
+p,li{font-size:clamp(1rem,2.5vw,1.1rem);line-height:1.72;margin:0 0 1.05rem}
+ul{margin:0 0 1.05rem;padding-left:1.1rem}
+li{margin-bottom:.55rem}
+li::marker{color:#6b5f52}
+/* No underline, and no bold either. Underlined text on the same page as a
+   real mailto link reads as a link that does not work; bold in a text face
+   this light is a blotch. Emphasis here is a step up in brightness, which
+   is the one axis nothing else on the page is using. */
+strong{color:#efe4d2;font-weight:400}
+.aside{
+  border-left:2px solid #3a2019;padding:.1rem 0 .1rem 1.1rem;
+  margin:0 0 1.05rem;color:var(--bone)
+}
+a{color:#e0d4c2;text-decoration:underline;text-underline-offset:3px;
+  text-decoration-color:#6a5b4c;transition:text-decoration-color .3s var(--slow)}
+a:hover,a:focus-visible{text-decoration-color:var(--blood-lit)}
+a:focus-visible{outline:2px solid #ff6b5f;outline-offset:3px}
+
+.back{
+  display:inline-block;margin-top:3.4rem;
+  font-family:var(--display);font-size:.76rem;letter-spacing:.3em;
+  text-transform:uppercase;color:#ddd2c1;text-decoration:none;
+  border:1px solid #4a423a;padding:1rem 1.7rem;
+  transition:background-color .3s var(--slow),border-color .3s var(--slow),color .3s var(--slow)
+}
+.back:hover,.back:focus-visible{
+  background:#170907;border-color:var(--blood-lit);color:#f0e5d4;
+  box-shadow:0 0 34px -12px rgba(201,52,42,.75)
+}
+.updated{margin-top:3.4rem;font-size:.95rem;color:var(--ash)}
+
+@media (prefers-contrast:more){
+  body{color:#ded3c2} .updated,.eyebrow{color:#b8ada0} h1{color:#fff}
+}
+</style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">The House &middot; Bushwick, Brooklyn</p>
+  <h1>What we keep</h1>
+  <p class="standfirst">There is one form on this site. It exists so we can tell
+    you when the house opens. This page says exactly what it collects and what
+    happens to it, in the same number of words it actually takes.</p>
+
+  <h2>What the form collects</h2>
+  <ul>
+    <li><strong>Your name</strong> and <strong>your email address</strong>,
+      because you typed them.</li>
+    <li><strong>Your phone number</strong>, only if you chose to give it. The
+      field is optional and the form works without it.</li>
+    <li><strong>Your browser&rsquo;s user-agent string</strong> &mdash; the line
+      your browser sends to every site it visits, naming itself and your
+      operating system. We store it with your signup so we can tell a real
+      signup from a script. It is not a name, an address or a location.</li>
+    <li><strong>The time you signed up.</strong></li>
+  </ul>
+  <p>That is the whole list. There is no tracking pixel on this site, no
+    analytics, no advertising tag and no cookie. The only thing kept in your
+    browser is whether you turned the sound off, so the page can remember.</p>
+
+  <h2>What we do with it</h2>
+  <p>We email you about this house: when it opens, when tickets go up, and
+    little else. If you gave a phone number we may text you the same kind of
+    thing. <strong>Giving your number is not a condition of anything</strong>
+    &mdash; you can join the list, and buy a ticket, without one. Message and
+    data rates may apply; reply STOP to any text to stop them, or HELP for
+    help.</p>
+  <p class="aside">We do not sell this list, rent it, trade it, or hand it to
+    another company to market to you. It is a list of people who want to know
+    when a door opens.</p>
+
+  <h2>Who else touches it</h2>
+  <ul>
+    <li><strong>Supabase</strong> stores the list. It is a database host acting
+      on our instructions; the list is not readable with the key published in
+      this page.</li>
+    <li><strong>GitHub Pages</strong> serves this site and, like every web
+      server, sees the IP address of anyone who loads it.</li>
+    <li><strong>Google Fonts</strong> serves two typefaces, which means Google
+      receives your IP address when the page loads them.</li>
+  </ul>
+  <p>Nobody else. No data broker, no ad network, no third party we have not
+    named here.</p>
+
+  <h2>How long we keep it</h2>
+  <p>Until the season this list was for is over, or until you ask us to delete
+    it &mdash; whichever comes first.</p>
+
+  <h2>Getting off the list</h2>
+  <p>Every email we send has an unsubscribe link, and one click is enough. You
+    can also write to us and ask to be removed, to be told what we hold about
+    you, or to have it corrected, and we will do it. Ask at
+    <a href="mailto:hello@hauntedmansionbk.com">hello@hauntedmansionbk.com</a>.</p>
+  <p>If you are in a place with laws about this &mdash; the EU or UK under GDPR,
+    California under the CCPA &mdash; those rights are yours by law and the
+    address above is how you use them. We will not charge you for asking and we
+    will not treat you differently for having asked.</p>
+
+  <h2>Children</h2>
+  <p>This is a haunted house and this list is not meant for children. Do not
+    sign up if you are under 13. If you believe a child has, write to the
+    address above and we will remove them.</p>
+
+  <h2>If this page changes</h2>
+  <p>The date below changes with it. If a change matters &mdash; if we ever
+    start collecting something not on the list above &mdash; we will say so in
+    an email before it happens, not after.</p>
+
+  <p class="updated">Last updated 31 August 2026.</p>
+  <a class="back" href="/hauntedmansion-bk/">Back to the door</a>
+</main>
+</body>
+</html>

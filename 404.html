@@ -65,6 +65,10 @@ a:hover,a:focus-visible{
 <body>
   <h1>Nothing down this hall.</h1>
   <p>Whatever was here is not here now.</p>
-  <a href="/">Back to the door</a>
+  <!-- Not "/": the site is served from a project path, so the only way
+       off the error page landed on the account root, which is GitHub's
+       own "Site not found". Verified live. Becomes "/" the day the
+       domain does - it is on the switchover list in the README. -->
+  <a href="/hauntedmansion-bk/">Back to the door</a>
 </body>
 </html>

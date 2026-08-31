@@ -295,7 +295,12 @@ h1{
 .sheet h2{
   margin:24px 0 8px;font:700 42px/.94 "Space Grotesk";letter-spacing:-.055em
 }
-.sheet>p{margin:0 0 25px;color:var(--muted);font-size:18px}
+/* Not .sheet>p: the paragraph sits inside #formbox, so the child
+   combinator matched nothing and the line rendered at full body
+   brightness, competing with the headline it is meant to sit under.
+   :not([class]) rather than a plain descendant, because .err and .fine
+   are paragraphs in here too and a descendant selector outranks them. */
+.sheet p:not([class]){margin:0 0 25px;color:var(--muted);font-size:18px}
 .trap{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .field{display:block;margin:0 0 16px}
 .field span{display:block;margin:0 0 7px;font-size:14px;font-weight:700}
@@ -1256,6 +1261,18 @@ form.addEventListener("submit", async e => {
          finish out its five seconds at opacity 0. */
       look.onfinish = () => { awake = false; schedule(); };
     }
+
+    /* Arming the chain, for the visitor who arrived with reduced motion on.
+       Their opening CSS run is suppressed, so the handoff above never fires
+       and nothing else ever calls this - the eye would stay shut for the whole
+       session, including if they turned the setting off to look properly.
+       peek() reschedules without painting for as long as the setting is on,
+       so one pending timer is the entire cost of being able to notice.
+
+       It has to be here and not up in that branch: `peeks` is a let declared
+       below it, so calling schedule() there throws a ReferenceError off the
+       temporal dead zone and takes the rest of this block down with it. */
+    if(window.hmQuiet) schedule();
   }
 }
 </script>

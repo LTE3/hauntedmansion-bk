@@ -6,11 +6,10 @@
 <title>Every house has a story.</title>
 <!-- PREVIEW ONLY: remove this line when the real domain goes live -->
 <meta name="robots" content="noindex, nofollow">
-<meta name="description" content="Bushwick, Brooklyn. September 25. 60 minutes. Multiple rooms. One way out.">
+<meta name="description" content="A house in Bushwick, Brooklyn opens September 25, 2026. Sixty minutes inside. Multiple rooms. One way out. Leave your name before the door opens.">
 <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23050505"/><path d="M6 30V13L16 5l10 8v17z" fill="none" stroke="%233a332c" stroke-width="2"/><rect x="13" y="18" width="6" height="12" fill="%23c2702f"/></svg>'>
-<meta name="theme-color" content="#050505">
 <meta property="og:title" content="Every house has a story.">
-<meta property="og:description" content="This one should&rsquo;ve stayed buried. Bushwick, Brooklyn - September 25.">
+<meta property="og:description" content="This one should&rsquo;ve stayed buried. Bushwick, Brooklyn &mdash; September 25, 2026.">
 <meta property="og:image" content="https://lte3.github.io/hauntedmansion-bk/v/img-cali/card.jpg">
 <!-- Without stated dimensions a scraper reserves a default box and the card
      reflows once the image lands. Given up front, it renders at the right
@@ -18,11 +17,23 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="A keyhole cut out of the dark. Behind it, a lit door at the top of a stair, and an eye.">
-<meta property="og:url" content="https://hauntedmansionbk.com/">
+<meta property="og:url" content="https://lte3.github.io/hauntedmansion-bk/">
 <meta property="og:type" content="website">
+<!-- Without this Slack labels the unfurl with the bare hostname, which reads
+     like somebody pasted a dev link. -->
+<meta property="og:site_name" content="Haunted Mansion BK">
+<meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://lte3.github.io/hauntedmansion-bk/v/img-cali/card.jpg">
-<link rel="canonical" href="https://hauntedmansionbk.com/">
+<meta name="twitter:image:alt" content="A keyhole cut out of the dark. Behind it, a lit door at the top of a stair, and an eye.">
+<!-- Both of these named hauntedmansionbk.com, which is not registered and
+     does not resolve. That is inert only while the noindex above is on: take
+     it off with the canonical still pointing at a host no crawler can fetch,
+     and neither address ranks - Google cannot confirm the canonical, and the
+     page has already demoted itself in its favour. Pointed at the address
+     that actually serves the page. When the domain is bought and serving,
+     these two and the robots line above change together, in one commit. -->
+<link rel="canonical" href="https://lte3.github.io/hauntedmansion-bk/">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <meta name="theme-color" content="#030202">
@@ -31,6 +42,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,500;1,500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
+  color-scheme:dark;
   --ink:#030202;
   --ink2:#090504;
   --bone:#f3e8de;
@@ -282,9 +294,14 @@ h1{
   0%{transform:translate(0)}25%{transform:translate(3%,-2%)}
   50%{transform:translate(-2%,3%)}75%{transform:translate(2%,2%)}
 }
+/* --px/--py are the pointer offset, written by the parallax below and
+   defaulting to nothing, so this animation is unchanged on a phone and on
+   any pointer that has never moved. They are read here rather than set as an
+   inline transform because an animation outranks an inline style: written
+   there the parallax is silently discarded, written here it composes. */
 @keyframes housebreath{
-  from{transform:scale(1.06) translate3d(0,0,0)}
-  to{transform:scale(1.11) translate3d(-1%,-1.2%,0)}
+  from{transform:scale(1.06) translate3d(var(--px,0%),var(--py,0%),0)}
+  to{transform:scale(1.11) translate3d(calc(-1% + var(--px,0%)),calc(-1.2% + var(--py,0%)),0)}
 }
 @keyframes heart{
   0%,16%,100%{transform:scale(1);opacity:1}
@@ -303,10 +320,6 @@ h1{
   5%{filter:brightness(1.6);transform:scale(1.022)}
   9%{filter:brightness(.92);transform:scale(.997)}
   12%{filter:brightness(1.35);transform:scale(1.011)}
-}
-  5%{opacity:1}
-  9%{opacity:.42}
-  12%{opacity:.82}
 }
 @keyframes glowbreath{
   0%,16%,100%{opacity:.62;transform:scale(1)}
@@ -540,9 +553,9 @@ h1{
   </div>
 
   <div class="hero-copy">
-    <p class="kicker">You shouldn't be looking.</p>
+    <p class="kicker">You shouldn&rsquo;t be looking.</p>
     <h1>Some doors were closed <span class="glow">for a reason.</span></h1>
-    <p class="lead">A house in Bushwick opens September 25. Sixty minutes inside. Multiple rooms. One way out.</p>
+    <p class="lead">A house in Bushwick, Brooklyn opens September 25. Sixty minutes inside. Multiple rooms. One way out.</p>
     <div class="actions">
       <button class="cta" data-open>Unlock the invitation</button>
     </div>
@@ -573,15 +586,15 @@ h1{
 
         <p class="err" id="err" role="alert"></p>
         <button class="submit" id="go" type="submit">Knock on the door</button>
-        <p class="fine">Early access. Limited tickets. No spam.</p>
+        <p class="fine">Early access. No spam.</p>
         <div class="counter" id="counter"><strong id="count">—</strong> people are waiting to enter.</div>
       </form>
     </div>
 
     <div class="success" id="done" tabindex="-1" aria-live="polite">
       <strong>We heard you.</strong>
-      <span>We'll contact you when the house is ready.</span>
-      <span class="glow">Don't answer the door.</span>
+      <span>We&rsquo;ll contact you when the house is ready.</span>
+      <span class="glow">Don&rsquo;t answer the door.</span>
     </div>
   </div>
 </div>
@@ -773,15 +786,33 @@ form.addEventListener("submit", async e => {
   paintCount();
 });
 
-// Desktop-only subtle parallax.
-if(!matchMedia("(prefers-reduced-motion:reduce)").matches){
+/* Desktop-only subtle parallax.
+
+   This writes --px/--py, which the housebreath keyframes read. It used to
+   write `img.style.transform` directly, which an animation on the same
+   property outranks, so nothing ever moved.
+
+   The work is deferred to a frame rather than done in the handler: a pointer
+   can fire far more often than the screen refreshes, and writing a style on
+   every one of those is layout work nobody asked for.
+
+   Coarse pointers are excluded by capability rather than by width, because a
+   tablet is wide and still has no cursor to follow. */
+if(matchMedia("(pointer:fine)").matches &&
+   !matchMedia("(prefers-reduced-motion:reduce)").matches){
   const img = document.querySelector(".keyhole img");
+  let px = 0, py = 0, queued = false;
   addEventListener("pointermove", e => {
-    if(innerWidth < 760) return;
-    const x = e.clientX / innerWidth - .5;
-    const y = e.clientY / innerHeight - .5;
-    img.style.transform = `scale(1.08) translate3d(${x * -1.8}%,${y * -1.4}%,0)`;
-  });
+    px = (e.clientX / innerWidth - .5) * -1.8;
+    py = (e.clientY / innerHeight - .5) * -1.4;
+    if(queued) return;
+    queued = true;
+    requestAnimationFrame(() => {
+      queued = false;
+      img.style.setProperty("--px", px.toFixed(3) + "%");
+      img.style.setProperty("--py", py.toFixed(3) + "%");
+    });
+  }, {passive:true});
 }
 
 /* The eye watches back.

@@ -303,9 +303,14 @@ h1{
   0%{transform:translate(0)}25%{transform:translate(3%,-2%)}
   50%{transform:translate(-2%,3%)}75%{transform:translate(2%,2%)}
 }
+/* --px/--py are the pointer offset, written by the parallax below and
+   defaulting to nothing, so this animation is unchanged on a phone and on
+   any pointer that has never moved. They are read here rather than set as an
+   inline transform because an animation outranks an inline style: written
+   there the parallax is silently discarded, written here it composes. */
 @keyframes housebreath{
-  from{transform:scale(1.06) translate3d(0,0,0)}
-  to{transform:scale(1.11) translate3d(-1%,-1.2%,0)}
+  from{transform:scale(1.06) translate3d(var(--px,0%),var(--py,0%),0)}
+  to{transform:scale(1.11) translate3d(calc(-1% + var(--px,0%)),calc(-1.2% + var(--py,0%)),0)}
 }
 @keyframes heart{
   0%,16%,100%{transform:scale(1);opacity:1}
@@ -794,15 +799,33 @@ form.addEventListener("submit", async e => {
   paintCount();
 });
 
-// Desktop-only subtle parallax.
-if(!matchMedia("(prefers-reduced-motion:reduce)").matches){
+/* Desktop-only subtle parallax.
+
+   This writes --px/--py, which the housebreath keyframes read. It used to
+   write `img.style.transform` directly, which an animation on the same
+   property outranks, so nothing ever moved.
+
+   The work is deferred to a frame rather than done in the handler: a pointer
+   can fire far more often than the screen refreshes, and writing a style on
+   every one of those is layout work nobody asked for.
+
+   Coarse pointers are excluded by capability rather than by width, because a
+   tablet is wide and still has no cursor to follow. */
+if(matchMedia("(pointer:fine)").matches &&
+   !matchMedia("(prefers-reduced-motion:reduce)").matches){
   const img = document.querySelector(".keyhole img");
+  let px = 0, py = 0, queued = false;
   addEventListener("pointermove", e => {
-    if(innerWidth < 760) return;
-    const x = e.clientX / innerWidth - .5;
-    const y = e.clientY / innerHeight - .5;
-    img.style.transform = `scale(1.08) translate3d(${x * -1.8}%,${y * -1.4}%,0)`;
-  });
+    px = (e.clientX / innerWidth - .5) * -1.8;
+    py = (e.clientY / innerHeight - .5) * -1.4;
+    if(queued) return;
+    queued = true;
+    requestAnimationFrame(() => {
+      queued = false;
+      img.style.setProperty("--px", px.toFixed(3) + "%");
+      img.style.setProperty("--py", py.toFixed(3) + "%");
+    });
+  }, {passive:true});
 }
 
 /* The eye watches back.

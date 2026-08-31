@@ -576,7 +576,28 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
     <div class="key-glow"></div>
     <div class="key-fit">
     <div class="keyhole">
-      <img src="v/img-cali/keyhole.jpg" srcset="v/img-cali/keyhole.jpg 1x, v/img-cali/keyhole@2x.jpg 2x" alt="">
+      <!-- This photograph is the largest thing on the page by a wide margin and
+           it is what the browser picks as the LCP element, so on a slow phone
+           its download IS the wait: measured 2.86s to paint on Fast 3G against
+           412ms unthrottled, with the @2x file accounting for effectively all
+           of the gap. Almost every real phone is DPR 2 or 3, so almost every
+           real visitor was paying 406 KB.
+
+           AVIF at q60 is 247 KB for the same picture. Lower was tempting - q52
+           is 189 KB - but the whole look of this page is film grain and dark
+           texture, and at q52 the grain visibly smears into plastic. WebP
+           carries the browsers between Safari 14 and 16.3; the JPEG stays for
+           anything older still. fetchpriority tells the browser this is the
+           one image worth the head of the queue. -->
+      <picture>
+        <source type="image/avif"
+                srcset="v/img-cali/keyhole.avif 1x, v/img-cali/keyhole@2x.avif 2x">
+        <source type="image/webp"
+                srcset="v/img-cali/keyhole.webp 1x, v/img-cali/keyhole@2x.webp 2x">
+        <img src="v/img-cali/keyhole.jpg"
+             srcset="v/img-cali/keyhole.jpg 1x, v/img-cali/keyhole@2x.jpg 2x"
+             fetchpriority="high" decoding="async" alt="">
+      </picture>
       <div class="red-wash"></div>
     </div>
       <svg class="key-eye" viewBox="0 0 69.9 100" preserveAspectRatio="none"

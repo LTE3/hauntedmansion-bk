@@ -39,7 +39,7 @@
 <meta name="theme-color" content="#030202">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,500;1,500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   color-scheme:dark;
@@ -67,7 +67,12 @@ a{color:inherit}
 
 /* ---------- HERO / KEYHOLE ---------- */
 .hero{
-  height:100svh;position:relative;overflow:hidden;isolation:isolate;
+  /* Two lines, not one: an engine that does not know svh drops that
+     declaration entirely, and without a vh line underneath it there is no
+     height left at all - .hero collapses to ~410px and the keyhole photo
+     inside it computes to 0x0. vh is wrong by the height of a phone's URL
+     bar; nothing is wrong by the whole page. */
+  height:100vh;height:100svh;position:relative;overflow:hidden;isolation:isolate;
   display:grid;grid-template-rows:auto minmax(0,1fr) auto;
   padding:max(22px,env(safe-area-inset-top)) 18px max(24px,env(safe-area-inset-bottom));
   background:
@@ -102,8 +107,14 @@ a{color:inherit}
    forgettable after, which means low contrast and no colour - the only red on
    this page is the door. */
 .sound{
-  display:grid;place-items:center;width:26px;height:26px;margin:-6px -6px -6px 0;
-  padding:0;border:0;background:none;color:#c7b8ae;opacity:.62;cursor:pointer;
+  /* The icon stays 26px - it is meant to be forgettable. The hit area does
+     not: 26x26 is under the 44px floor and under even the lenient 24px one,
+     and it sits in the corner where thumbs are least accurate. Padding grows
+     the box to 44x44 and the negative margin keeps the icon where it was, so
+     nothing moves on screen. */
+  display:grid;place-items:center;width:26px;height:26px;
+  padding:9px;margin:-15px -15px -15px -9px;box-sizing:content-box;
+  border:0;background:none;color:#c7b8ae;opacity:.62;cursor:pointer;
   -webkit-tap-highlight-color:transparent;transition:opacity .3s var(--ease)
 }
 .sound:hover,.sound:focus-visible{opacity:1}
@@ -135,6 +146,14 @@ a{color:inherit}
   position:absolute;top:50%;left:50%;translate:-50% -50%;
   height:min(100%,var(--keyh),calc(var(--keyw) / .699));
   aspect-ratio:.699
+}
+/* .key-fit has no width of its own - aspect-ratio derives it from the
+   height. An engine without aspect-ratio (Safari before 15, Chrome before
+   88) therefore computes it 0px wide and the photo does not degrade, it
+   disappears. Restate the same number the ratio would have produced. Modern
+   engines never parse inside this block. */
+@supports not (aspect-ratio:1/1){
+  .key-fit{width:var(--keyw);height:calc(var(--keyw) / .699)}
 }
 .keyhole,.key-outline{position:absolute;inset:0;transform:translateZ(0)}
 .keyhole{
@@ -210,7 +229,11 @@ h1{
   -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
   font:700 15px/1 "Space Grotesk",sans-serif;
   box-shadow:0 0 28px rgba(227,48,39,.08);
-  transition:.3s var(--ease)
+  /* transform only. Unqualified, this transitions *all* properties, which
+     includes outline-width - so the keyboard focus ring faded in over 300ms
+     and measured 0px at the moment the button took focus. The press is the
+     only thing here that is meant to move. */
+  transition:transform .3s var(--ease)
 }
 .cta:active{transform:scale(.97)}
 .ghost{
@@ -251,7 +274,8 @@ h1{
 }
 .modal.open{display:grid;place-items:end center}
 .sheet{
-  width:100%;max-width:620px;max-height:calc(100svh - 20px);overflow:auto;
+  width:100%;max-width:620px;
+  max-height:calc(100vh - 20px);max-height:calc(100svh - 20px);overflow:auto;
   background:#0b0706;border:1px solid #512822;
   border-radius:28px 28px 18px 18px;
   padding:22px 20px max(26px,env(safe-area-inset-bottom));
@@ -263,7 +287,10 @@ h1{
   font:700 12px/1 "Space Grotesk";letter-spacing:.14em;text-transform:uppercase;color:#d7c9be
 }
 .close{
-  width:46px;height:46px;border-radius:50%;border:1px solid #4a3832;background:transparent;font-size:25px
+  width:46px;height:46px;border-radius:50%;
+  /* Was #4a3832: 1.82:1 against the sheet, below the 3:1 floor for a control
+     boundary, so the button read as a bare glyph. */
+  border:1px solid #6d5850;background:transparent;font-size:25px
 }
 .sheet h2{
   margin:24px 0 8px;font:700 42px/.94 "Space Grotesk";letter-spacing:-.055em
@@ -276,13 +303,54 @@ h1{
   width:100%;height:58px;border:1px solid #6d5850;border-radius:14px;
   background:#070504;color:#fff;padding:0 16px;font-size:18px;outline:0
 }
-.field input:focus-visible{outline:2px solid #ff6b5f;outline-offset:2px}
+/* The sound icon was given this and nothing else was, so every tap on the
+   primary CTA flashed a grey box over it - measured rgba(0,0,0,.4) in
+   WebKit. Focus rings are untouched; this only removes the tap flash. */
+a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
+
+/* iOS and Chrome paint a near-white block over an autofilled field, which on
+   a page this dark reads as a rendering fault. An inset shadow is the only
+   way to cover it and text-fill-color the only way to keep the text
+   readable on top. */
+.field input:-webkit-autofill,
+.field input:-webkit-autofill:hover,
+.field input:-webkit-autofill:focus{
+  -webkit-text-fill-color:#fff;
+  -webkit-box-shadow:0 0 0 1000px #070504 inset;
+  caret-color:#fff
+}
+
+/* Only ever seen with scripting off, where it costs the layout nothing
+   because the alternative is a page that looks finished and does nothing. */
+.noscript-note{
+  position:relative;z-index:9;margin:0;padding:13px 18px;
+  background:#c22119;color:#fff;text-align:center;
+  font:600 14px/1.45 "DM Sans",system-ui,sans-serif
+}
+/* Not one button on this page had a focus ring - measured outline 0px on the
+   CTA, the close, the submit, and a 1.04:1 default on the sound toggle, which
+   is a ring you cannot see. The fields already used this exact treatment; the
+   buttons simply were never given it, so a keyboard visitor got no confirmation
+   of what Enter was about to press. */
+.field input:focus-visible,
+.cta:focus-visible,
+.sound:focus-visible,
+.close:focus-visible,
+.submit:focus-visible{outline:2px solid #ff6b5f;outline-offset:2px}
 .field input:focus{border-color:#bb3730;box-shadow:0 0 0 3px rgba(227,48,39,.22)}
 .submit{
   width:100%;height:60px;border:0;border-radius:14px;background:#c22119;color:#fff;
   font-weight:800;margin-top:4px
 }
 .submit[disabled]{opacity:.65}
+/* .submit is the only interactive element here with no border of its own.
+   Under forced colours its background is replaced and it renders as floating
+   text - still clickable, no longer recognisable as a button. This has to sit
+   after .submit{border:0}: a media query adds no specificity, so placed above
+   it the later rule simply wins and the fix does nothing. */
+@media (forced-colors:active){
+  .submit{border:1px solid ButtonText}
+}
 .err{min-height:21px;color:#ff7a70;font-size:14px;margin:2px 0 8px}
 .fine{font-size:13px!important;color:#85786f!important;margin:11px 0 0!important}
 .success{display:none;padding:72px 0 36px;outline:0}
@@ -344,7 +412,7 @@ h1{
 @keyframes sheetup{from{opacity:0;transform:translateY(70px)}}
 
 @media (max-height:560px){
-  .hero{height:auto;min-height:100svh}
+  .hero{height:auto;min-height:100vh;min-height:100svh}
   .key-fit{--keyh:min(52svh,340px)}
 }
 
@@ -364,7 +432,7 @@ h1{
    is worse - it restores the photo but adds ~200px of column, which pushes the
    button off screen on the short portrait sizes that were already fine. */
 @media (max-height:560px) and (min-width:480px){
-  .hero{height:100svh;
+  .hero{height:100vh;height:100svh;
     grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
     grid-template-rows:auto minmax(0,1fr);
     column-gap:clamp(16px,4vw,48px)}
@@ -475,6 +543,13 @@ h1{
 </style>
 </head>
 <body>
+<noscript>
+  <!-- The invitation is a dialog opened by script. With script off the
+       button does nothing whatsoever and the page still looks complete and
+       inviting, which makes the dead button worse than an absent one. -->
+  <p class="noscript-note">The door needs JavaScript to open. Turn it on and
+    knock again.</p>
+</noscript>
 <div class="grain" aria-hidden="true"></div>
 <main class="hero">
   <div class="topbar">
@@ -747,8 +822,10 @@ function restoreForm(){
   sending = false;
   go.disabled = false;
   go.textContent = "Knock on the door";
-  [form.elements.namedItem("name"), form.email]
-    .forEach(el => el.removeAttribute("aria-invalid"));
+  [form.elements.namedItem("name"), form.email].forEach(el => {
+    el.removeAttribute("aria-invalid");
+    el.removeAttribute("aria-describedby");
+  });
 }
 
 function openModal(){
@@ -871,9 +948,14 @@ paintCount();
 function fail(el, message){
   err.textContent = message;
   el.setAttribute("aria-invalid","true");
+  /* role=alert announces the message once, as it happens. This is for the
+     visitor who arrives at the field afterwards and asks what is wrong with
+     it - without the link the field is marked invalid and says why nowhere. */
+  el.setAttribute("aria-describedby","err");
   el.focus();
   el.addEventListener("input", function(){
     el.removeAttribute("aria-invalid");
+    el.removeAttribute("aria-describedby");
     /* There is one error line for two fields. A listener still pending on a
        field the visitor fixed later would wipe whichever message was showing
        by then - leaving a field marked aria-invalid with no text anywhere
@@ -915,7 +997,10 @@ form.addEventListener("submit", async e => {
     return;
   }
 
-  [nameEl, form.email].forEach(el => el.removeAttribute("aria-invalid"));
+  [nameEl, form.email].forEach(el => {
+    el.removeAttribute("aria-invalid");
+    el.removeAttribute("aria-describedby");
+  });
   if(name.length < 2){ fail(nameEl,"The house wants a name."); return; }
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){
     fail(form.email,"That address will not reach you.");

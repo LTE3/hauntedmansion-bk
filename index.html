@@ -579,6 +579,43 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
   100%{transform:translateY(0) scale(1.07)}
 }
 .key-eye .face-aim{transform-box:fill-box;transform-origin:center}
+/* The fire is in the plate, not here.
+
+   A render throws the light back onto the brow ridge, the nasal bone and the
+   cheek, and that spill is the whole difference between fire in a skull and
+   a sticker on one - no gradient can do it, because CSS does not know where
+   the bone is. What the render cannot do is move, and a fire that does not
+   move is a lamp.
+
+   So this is only the movement. At full strength over a plate that is
+   already lit it doubled the light and the sockets blew out into two orange
+   discs; at .34 it reads as the fire guttering. The two coals run on 1.63s
+   and 2.11s, which share no multiple short enough to notice, so the pair
+   never settles into a beat - a synchronised flicker is a light fitting with
+   two bulbs in it. Both are killed with everything else by the
+   reduced-motion block above, where they come to rest lit but still. */
+.key-eye .ember{opacity:.34}
+.key-eye .ember ellipse{transform-box:fill-box;transform-origin:center}
+.key-eye .ember-l{animation:ember1 1.63s ease-in-out infinite}
+.key-eye .ember-r{animation:ember2 2.11s ease-in-out infinite}
+@keyframes ember1{
+  0%{opacity:.66;transform:scale(.94)}
+  13%{opacity:.98;transform:scale(1.04)}
+  26%{opacity:.72;transform:scale(.97)}
+  44%{opacity:1;transform:scale(1.07)}
+  61%{opacity:.68;transform:scale(.95)}
+  78%{opacity:.92;transform:scale(1.02)}
+  100%{opacity:.66;transform:scale(.94)}
+}
+@keyframes ember2{
+  0%{opacity:.9;transform:scale(1.03)}
+  17%{opacity:.64;transform:scale(.94)}
+  35%{opacity:.97;transform:scale(1.05)}
+  52%{opacity:.7;transform:scale(.96)}
+  70%{opacity:1;transform:scale(1.06)}
+  86%{opacity:.67;transform:scale(.95)}
+  100%{opacity:.9;transform:scale(1.03)}
+}
 @keyframes eyeshow{
   0%{opacity:0}
   14%{opacity:.96}
@@ -667,6 +704,18 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
            aria-hidden="true" focusable="false">
         <defs>
           <clipPath id="eyeclip"><circle cx="34.95" cy="27" r="23.2"/></clipPath>
+          <!-- A coal, not a bulb: white only at the very centre, orange for
+               most of it, and the last third is the red that is already in
+               the door so the spill belongs to the same room. -->
+          <radialGradient id="ember" cx="50%" cy="50%" r="50%">
+            <stop offset="0" stop-color="#ffe2b4" stop-opacity=".92"/>
+            <stop offset=".26" stop-color="#ff8a3c" stop-opacity=".82"/>
+            <stop offset=".6" stop-color="#e33027" stop-opacity=".4"/>
+            <stop offset="1" stop-color="#e33027" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="embersoft" x="-70%" y="-70%" width="240%" height="240%">
+            <feGaussianBlur stdDeviation=".5"/>
+          </filter>
         </defs>
         <g clip-path="url(#eyeclip)">
           <!-- Everything scales together off this one group, from the size of
@@ -691,6 +740,15 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
                    to prevent. -->
               <image href="v/img-cali/face.webp" x="6.80" y="-1.15"
                      width="56.30" height="56.30" preserveAspectRatio="none"/>
+              <!-- Centres measured off the plate's own alpha and luminance,
+                   in viewBox units. Wider than they are tall, because the
+                   socket is. -->
+              <g class="ember">
+                <ellipse class="ember-l" cx="28.47" cy="21.40" rx="8.55" ry="8.83"
+                         fill="url(#ember)" filter="url(#embersoft)"/>
+                <ellipse class="ember-r" cx="37.11" cy="20.60" rx="4.24" ry="8.20"
+                         fill="url(#ember)" filter="url(#embersoft)"/>
+              </g>
             </g>
           </g>
         </g>

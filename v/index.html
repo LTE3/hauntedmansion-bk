@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Sixteen Doors — Haunted Mansion BK</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Same tokens as the house itself, on purpose. This is a back room of that
+   building, not a different one. */
+:root{
+  color-scheme:dark;
+  --ink:#030202;
+  --ink2:#090504;
+  --bone:#f3e8de;
+  --muted:#b9aaa1;
+  --red:#e33027;
+  /* The house red is a 4.56:1 accent, which is fine on a headline and not
+     fine on a 10px uppercase label - at .85 over the card it measured 3.85:1
+     against a 4.5:1 floor for small text. Same hue, lifted until it passes at
+     5.5:1, and used only where the type is small. */
+  --red-l:#f04a3f;
+  --line:rgba(255,255,255,.14);
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box}
+html{background:#000;-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--ink);color:var(--bone);
+  font:500 17px/1.5 "DM Sans",system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:clamp(28px,7vw,72px) clamp(18px,5vw,40px) 96px}
+
+.eyebrow{
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  font:700 11px/1 "Space Grotesk",sans-serif;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);margin:0;
+}
+.eyebrow .dot{
+  display:inline-block;width:7px;height:7px;border-radius:50%;
+  background:var(--red);box-shadow:0 0 12px var(--red);
+  margin-right:9px;vertical-align:1px;
+}
+h1{
+  font:700 clamp(34px,8.5vw,62px)/.94 "Space Grotesk",sans-serif;
+  letter-spacing:-.02em;text-wrap:balance;margin:22px 0 0;
+}
+h1 span{color:var(--red)}
+.dek{color:var(--muted);max-width:56ch;margin:16px 0 0;font-size:16px;line-height:1.6}
+
+.warn{
+  margin:30px 0 0;padding:14px 16px;border:1px solid var(--line);
+  border-left:2px solid var(--red);background:var(--ink2);
+  color:var(--muted);font-size:14px;line-height:1.55;max-width:62ch;
+}
+.warn b{color:var(--bone);font-weight:600}
+
+.grid{
+  list-style:none;margin:44px 0 0;padding:0;display:grid;gap:26px;
+  grid-template-columns:repeat(auto-fill,minmax(258px,1fr));
+}
+.card a{
+  display:block;text-decoration:none;color:inherit;
+  border:1px solid var(--line);background:var(--ink2);
+  transition:border-color .3s var(--ease),transform .3s var(--ease);
+}
+.card a:hover,.card a:focus-visible{border-color:rgba(227,48,39,.55);transform:translateY(-3px)}
+.card a:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.shot{position:relative;display:block;aspect-ratio:16/10;overflow:hidden;background:#000}
+.shot img{
+  display:block;width:100%;height:100%;object-fit:cover;
+  filter:saturate(.9) brightness(.92);transition:filter .4s var(--ease);
+}
+.card a:hover .shot img,.card a:focus-visible .shot img{filter:saturate(1) brightness(1.04)}
+.num{
+  position:absolute;left:0;top:0;padding:6px 9px;
+  font:700 11px/1 "Space Grotesk",sans-serif;letter-spacing:.1em;
+  background:rgba(3,2,2,.82);color:var(--muted);
+}
+.badge{
+  position:absolute;right:0;top:0;padding:6px 9px;
+  font:700 10px/1 "Space Grotesk",sans-serif;letter-spacing:.12em;
+  text-transform:uppercase;background:var(--red);color:#fff;
+}
+.meta{padding:14px 15px 16px;border-top:1px solid var(--line)}
+/* An h2 inside a card, so the browser default margin and size have to go -
+   the heading level is here for the reading order, not for the type scale. */
+.name{
+  font:700 15px/1.25 "Space Grotesk",sans-serif;letter-spacing:.01em;margin:0;
+}
+.fam{
+  display:block;margin:7px 0 0;
+  font:700 10px/1 "Space Grotesk",sans-serif;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--red-l);
+}
+.what{margin:9px 0 0;color:var(--muted);font-size:13.5px;line-height:1.5}
+
+.foot{
+  margin:64px 0 0;padding-top:22px;border-top:1px solid var(--line);
+  color:var(--muted);font-size:13.5px;line-height:1.6;max-width:62ch;
+}
+.foot a{color:var(--red);text-decoration:none;border-bottom:1px solid rgba(227,48,39,.4)}
+.foot a:hover,.foot a:focus-visible{border-bottom-color:var(--red)}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow"><span><span class="dot"></span>Haunted Mansion BK &middot; every version</span><span>16 built &middot; 1 shipped</span></p>
+    <h1>Sixteen doors.<br><span>One of them opened.</span></h1>
+    <p class="dek">Every front page built for the house, in the order it was built. They are all still standing and every one of them still works &mdash; the numbers are the sequence, not a ranking.</p>
+    <p class="warn"><b>These are live pages, not mockups.</b> Every form on them writes a real row into the production waitlist table, so every submit button on every one of them is the real one.</p>
+  </header>
+
+  <ul class="grid">
+
+    <li class="card"><a href="14-keyhole.html">
+      <span class="shot"><img src="thumb/14-keyhole.webp" alt="A keyhole shape cut out of black, with a lit red door and two lanterns visible through it." loading="lazy" width="560" height="350"><span class="num">14</span><span class="badge">Live</span></span>
+      <div class="meta"><h2 class="name">Keyhole</h2><span class="fam">The one that shipped</span>
+      <span class="what">Stopped describing the house and made you spy on it. Headline hard left, the hole on the right, and something behind it that looks back.</span></div>
+    </a></li>
+
+    <li class="card"><a href="1-first.html">
+      <span class="shot"><img src="thumb/1-first.webp" alt="A red door at the far end of a dark stone arcade, fog across the floor." loading="lazy" width="560" height="350"><span class="num">01</span></span>
+      <div class="meta"><h2 class="name">First</h2><span class="fam">The arcade</span>
+      <span class="what">The starting point. A red door at the back of a colonnade, fog to the knees, and the line centred over it.</span></div>
+    </a></li>
+
+    <li class="card"><a href="2-depth.html">
+      <span class="shot"><img src="thumb/2-depth.webp" alt="A red door seen down a row of receding stone arches, deep in shadow." loading="lazy" width="560" height="350"><span class="num">02</span></span>
+      <div class="meta"><h2 class="name">Depth</h2><span class="fam">The arcade</span>
+      <span class="what">Same door, more building. The arches recede so the door is at the end of something rather than flat on the page.</span></div>
+    </a></li>
+
+    <li class="card"><a href="3-brooklyn.html">
+      <span class="shot"><img src="thumb/3-brooklyn.webp" alt="A Brooklyn brownstone at night, fire escape on the facade, one doorway lit." loading="lazy" width="560" height="350"><span class="num">03</span></span>
+      <div class="meta"><h2 class="name">Brooklyn</h2><span class="fam">The brownstone</span>
+      <span class="what">Left the haunted-house set and went outside. A real brownstone, a real fire escape, one doorway lit &mdash; a block anybody here would recognise.</span></div>
+    </a></li>
+
+    <li class="card"><a href="4-hallway.html">
+      <span class="shot"><img src="thumb/4-hallway.webp" alt="The doorway of a brownstone at night, glowing warm from a hallway inside." loading="lazy" width="560" height="350"><span class="num">04</span></span>
+      <div class="meta"><h2 class="name">Hallway</h2><span class="fam">The brownstone</span>
+      <span class="what">Closer in, and the light in the doorway pushed until it reads as a hallway you can see down.</span></div>
+    </a></li>
+
+    <li class="card"><a href="5-stairs.html">
+      <span class="shot"><img src="thumb/5-stairs.webp" alt="A brownstone stoop at night with fog banked across the bottom step." loading="lazy" width="560" height="350"><span class="num">05</span></span>
+      <div class="meta"><h2 class="name">Stairs</h2><span class="fam">The brownstone</span>
+      <span class="what">Headline dropped to the lower third so the stoop is the first thing you look at, with the fog banked across the bottom step.</span></div>
+    </a></li>
+
+    <li class="card"><a href="6-editorial.html">
+      <span class="shot"><img src="thumb/6-editorial.webp" alt="A brownstone at night with a serif headline set left over the dark half of the frame." loading="lazy" width="560" height="350"><span class="num">06</span></span>
+      <div class="meta"><h2 class="name">Editorial</h2><span class="fam">The brownstone</span>
+      <span class="what">The first one to stop centring. Left-aligned serif with an italic line under it &mdash; a magazine opener rather than a poster.</span></div>
+    </a></li>
+
+    <li class="card"><a href="7-casefile.html">
+      <span class="shot"><img src="thumb/7-casefile.webp" alt="A brownstone at night with small spaced capitals set into the corner of the frame." loading="lazy" width="560" height="350"><span class="num">07</span></span>
+      <div class="meta"><h2 class="name">Case file</h2><span class="fam">The brownstone</span>
+      <span class="what">Type shrunk to spaced caps and pushed to the corner, so it reads as a label on evidence instead of an advert.</span></div>
+    </a></li>
+
+    <li class="card"><a href="8-poster.html">
+      <span class="shot"><img src="thumb/8-poster.webp" alt="Very large condensed capitals filling the frame, a dark brownstone behind them." loading="lazy" width="560" height="350"><span class="num">08</span></span>
+      <div class="meta"><h2 class="name">Poster</h2><span class="fam">The brownstone</span>
+      <span class="what">The opposite bet. Type as big as it goes, wall to wall, photograph reduced to a ground.</span></div>
+    </a></li>
+
+    <li class="card"><a href="9-original.html">
+      <span class="shot"><img src="thumb/9-original.webp" alt="A lit mansion porch with columns, hanging lanterns and a COMING SOON banner over the door." loading="lazy" width="560" height="350"><span class="num">09</span></span>
+      <div class="meta"><h2 class="name">Original</h2><span class="fam">The porch</span>
+      <span class="what">The porch arrives: columns, lanterns, a COMING SOON banner, figures either side of the steps. The set the later ones keep coming back to.</span></div>
+    </a></li>
+
+    <li class="card"><a href="10-original-poster.html">
+      <span class="shot"><img src="thumb/10-original-poster.webp" alt="A lit mansion porch behind huge condensed poster capitals." loading="lazy" width="560" height="350"><span class="num">10</span></span>
+      <div class="meta"><h2 class="name">Original poster</h2><span class="fam">The porch</span>
+      <span class="what">The poster type from 08 put on the porch from 09, to find out which of the two was doing the work.</span></div>
+    </a></li>
+
+    <li class="card"><a href="11-drawn.html">
+      <span class="shot"><img src="thumb/11-drawn.webp" alt="An illustrated mansion porch with lanterns and a boxed COMING SOON sign." loading="lazy" width="560" height="350"><span class="num">11</span></span>
+      <div class="meta"><h2 class="name">Drawn</h2><span class="fam">The porch</span>
+      <span class="what">The same porch as illustration rather than photograph. Warmer, and markedly less frightening &mdash; which was the useful thing to learn.</span></div>
+    </a></li>
+
+    <li class="card"><a href="12-photo.html">
+      <span class="shot"><img src="thumb/12-photo.webp" alt="A brownstone at night graded cold blue, lit from a single doorway." loading="lazy" width="560" height="350"><span class="num">12</span></span>
+      <div class="meta"><h2 class="name">Photo</h2><span class="fam">The brownstone</span>
+      <span class="what">Graded cold and blue instead of amber. Reads like a police photograph, which is a different kind of wrong to the one we wanted.</span></div>
+    </a></li>
+
+    <li class="card"><a href="13-split.html">
+      <span class="shot"><img src="thumb/13-split.webp" alt="A mansion porch with the fog cleared, columns and lanterns fully visible." loading="lazy" width="560" height="350"><span class="num">13</span></span>
+      <div class="meta"><h2 class="name">Split</h2><span class="fam">The porch</span>
+      <span class="what">Fog pulled back so the whole set is visible at once. Clearer &mdash; and proof that clearer was the wrong direction. 14 came next.</span></div>
+    </a></li>
+
+    <li class="card"><a href="15-livingdoor.html">
+      <span class="shot"><img src="thumb/15-livingdoor.webp" alt="A tall portrait card showing a lit porch, with the words THE HOUSE IS AWAKE beneath it." loading="lazy" width="560" height="350"><span class="num">15</span></span>
+      <div class="meta"><h2 class="name">Living door</h2><span class="fam">Broke the format</span>
+      <span class="what">A portrait card instead of a full-bleed hero, with the claim underneath it. Built for a phone screen and for a feed.</span></div>
+    </a></li>
+
+    <li class="card"><a href="16-thelist.html">
+      <span class="shot"><img src="thumb/16-thelist.webp" alt="A lit mansion porch behind red type reading Not everyone gets in. Put your name down." loading="lazy" width="560" height="350"><span class="num">16</span></span>
+      <div class="meta"><h2 class="name">The list</h2><span class="fam">Broke the format</span>
+      <span class="what">The only one that argues instead of atmospheres. Names come off the list first &mdash; the page is the signup, not a trailer for one.</span></div>
+    </a></li>
+
+  </ul>
+
+  <p class="foot">Fourteen is what <a href="../">the live page</a> is built from. The rest stay up because a version you can still open is worth more than a screenshot of one, and because the case for 14 only makes sense next to what it beat.</p>
+
+</div>
+</body>
+</html>

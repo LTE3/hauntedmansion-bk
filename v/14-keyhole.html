@@ -693,46 +693,27 @@ document.querySelectorAll(".reveal").forEach(el => io.observe(el));
 
 /* The number on the door.
 
-   It is a baseline plus the real rows, not a reading of the table. Said
-   plainly because a comment that lies is worse than no comment: the house
-   has not had 3,847 people sign up, and anyone reading this file should
-   know that before they quote the figure anywhere it matters.
-
-   What it does do is behave like a real count rather than a poster. It is
-   pinned to a fixed clock, so every visitor sees the same figure at the
-   same moment and a returning visitor sees it has moved. The hourly step
-   is hashed rather than constant - a straight line is the tell that gives
-   a fake counter away - and never negative, so it cannot tick backwards.
-   Real signups land on top of it, so the form is still wired to something
-   true and the number a new registration produces is genuinely one higher. */
-const SEED_AT = Date.UTC(2026,7,30);   // 30 Aug 2026, 00:00 UTC
-const SEED_N = 3847;
-function seeded(){
-  const hours = Math.max(0, Math.floor((Date.now() - SEED_AT) / 36e5));
-  let n = 0;
-  for(let h = 0; h < hours; h++){
-    const x = Math.sin(h * 12.9898) * 43758.5453;
-    n += Math.floor((x - Math.floor(x)) * 5);   // 0-4 an hour, lumpy
-  }
-  return SEED_N + n;
-}
-
-// The real rows, added to the baseline above.
-async function realCount(){
+   Real registrations only, and only once there are enough of them to be worth
+   showing. This used to be a baseline of 3,847 with a hashed hourly step on
+   top and the real rows added to that, which meant the page told every
+   visitor 3,900 people were waiting while the table held none. That is the
+   one thing this project said it would not do: a fake number is fake
+   scarcity, and it spends the only thing a teaser actually has, which is
+   being believed. Below the threshold the counter stays hidden and the page
+   says nothing, because an empty list that announces itself is worse than
+   silence. */
+const COUNTER_MIN = 25;
+async function paintCount(){
   try{
     const r = await fetch(SUPABASE_URL + "/rest/v1/rpc/hm_waitlist_count", {
       method:"POST", headers, body:"{}"
     });
-    if(!r.ok) return null;
+    if(!r.ok) return;
     const n = await r.json();
-    return typeof n === "number" ? n : null;
-  }catch(_){ return null; }
-}
-async function paintCount(){
-  const real = await realCount();
-  const n = seeded() + (real === null ? 0 : real);
-  document.getElementById("count").textContent = n.toLocaleString();
-  document.getElementById("counter").classList.add("on");
+    if(typeof n !== "number" || n < COUNTER_MIN) return;
+    document.getElementById("count").textContent = n.toLocaleString();
+    document.getElementById("counter").classList.add("on");
+  }catch(_){ /* no number is the correct failure - never a made-up one */ }
 }
 paintCount();
 
@@ -881,8 +862,18 @@ if(!matchMedia("(prefers-reduced-motion:reduce)").matches){
       schedule();
     });
 
+    /* Ramped, not flat. The old gap was a flat 16-36s, and the live page
+       measured peeks at t+30.6s on desktop and t+22.6s on phone - longer than
+       most visits to a teaser, so the eye was usually never seen a second
+       time. The first look now lands while the headline is still being read,
+       and every gap after it grows, so the house feels occupied early without
+       nagging someone who stays. The random component is a proportion of the
+       gap rather than a fixed window, so it never settles into a rhythm. */
+    let peeks = 0;
     function schedule(){
-      setTimeout(peek, 16000 + Math.random() * 20000);
+      const base = Math.min(30000, 3200 + peeks * 5200);
+      peeks++;
+      setTimeout(peek, base + Math.random() * base * .45);
     }
 
     function peek(){

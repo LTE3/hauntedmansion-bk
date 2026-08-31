@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Every house has a story.</title>
+<title>Every house has a story. | Haunted Mansion BK</title>
 <!-- PREVIEW ONLY: remove this line when the real domain goes live -->
 <meta name="robots" content="noindex, nofollow">
 <meta name="description" content="A house in Bushwick, Brooklyn opens September 25, 2026. Sixty minutes inside. Multiple rooms. One way out. Leave your name before the door opens.">
@@ -103,7 +103,7 @@ a{color:inherit}
    this page is the door. */
 .sound{
   display:grid;place-items:center;width:26px;height:26px;margin:-6px -6px -6px 0;
-  padding:0;border:0;background:none;color:#c7b8ae;opacity:.45;cursor:pointer;
+  padding:0;border:0;background:none;color:#c7b8ae;opacity:.62;cursor:pointer;
   -webkit-tap-highlight-color:transparent;transition:opacity .3s var(--ease)
 }
 .sound:hover,.sound:focus-visible{opacity:1}
@@ -270,12 +270,13 @@ h1{
 .field{display:block;margin:0 0 16px}
 .field span{display:block;margin:0 0 7px;font-size:14px;font-weight:700}
 .field input{
-  width:100%;height:58px;border:1px solid #493832;border-radius:14px;
+  width:100%;height:58px;border:1px solid #6d5850;border-radius:14px;
   background:#070504;color:#fff;padding:0 16px;font-size:18px;outline:0
 }
-.field input:focus{border-color:#bb3730;box-shadow:0 0 0 3px rgba(227,48,39,.13)}
+.field input:focus-visible{outline:2px solid #ff6b5f;outline-offset:2px}
+.field input:focus{border-color:#bb3730;box-shadow:0 0 0 3px rgba(227,48,39,.22)}
 .submit{
-  width:100%;height:60px;border:0;border-radius:14px;background:var(--red);color:#fff;
+  width:100%;height:60px;border:0;border-radius:14px;background:#c22119;color:#fff;
   font-weight:800;margin-top:4px
 }
 .submit[disabled]{opacity:.65}
@@ -441,17 +442,23 @@ h1{
   :root{--bone:#fff;--muted:#f0e9e3;--line:#bbb;--red:#ff554a}
   .hero{background:#000}
   .sheet{background:#000}
+  /* --red brightens here for glows and rules, which is right for them and
+     wrong for a filled button: white on the brighter red is 3.16:1. Stated
+     rather than inherited, so the mode that exists to help does not make the
+     page's only conversion control worse than it was. */
+  .submit{background:#a81a13;color:#fff}
+  .field input{border-color:#8a736a}
 }
 </style>
 </head>
 <body>
 <div class="grain" aria-hidden="true"></div>
-<header class="hero">
+<main class="hero">
   <div class="topbar">
     <div class="brand"><span class="pulse-dot" aria-hidden="true"></span><span>Haunted Mansion BK</span></div>
     <div class="topright">
       <div class="date">09.25.26</div>
-      <button class="sound" type="button" aria-pressed="true" aria-label="Sound on">
+      <button class="sound" type="button" aria-pressed="true" aria-label="Sound">
         <svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor"
              stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4z" fill="currentColor" stroke="none"/>
@@ -560,7 +567,7 @@ h1{
       <button class="cta" data-open>Unlock the invitation</button>
     </div>
   </div>
-</header>
+</main>
 
 
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
@@ -575,9 +582,15 @@ h1{
       <p>Be first to know when the house opens.</p>
 
       <form id="join" novalidate>
+        <!-- A honeypot only works while it is invisible to everything that
+             is not a bot. This was named `company`, which is one of the most
+             recognisable field names there is: password managers and browser
+             autofill fill it on sight and ignore autocomplete="off". Every
+             time that happened to a real person, the page thanked them and
+             wrote no row. The name is now one no heuristic knows. -->
         <div class="trap" aria-hidden="true">
-          <label for="company">Company</label>
-          <input id="company" name="company" type="text" tabindex="-1" autocomplete="off">
+          <label for="hm_ref">Referral code</label>
+          <input id="hm_ref" name="hm_ref" type="text" tabindex="-1" autocomplete="off">
         </div>
 
         <label class="field"><span>Name</span><input id="name" name="name" autocomplete="name" required></label>
@@ -592,7 +605,7 @@ h1{
     </div>
 
     <div class="success" id="done" tabindex="-1" aria-live="polite">
-      <strong>We heard you.</strong>
+      <strong id="done-title">We heard you.</strong>
       <span>We&rsquo;ll contact you when the house is ready.</span>
       <span class="glow">Don&rsquo;t answer the door.</span>
     </div>
@@ -637,8 +650,10 @@ let soundOn = true;
 try{ soundOn = localStorage.getItem("hm-sound") !== "0"; }catch(e){}
 
 function paintSound(){
+  /* Only the state changes here. Putting it in the name too produced
+     "Sound off, toggle button, not pressed" - two negatives that read as the
+     exact opposite of what the button was doing. */
   sound.setAttribute("aria-pressed", soundOn ? "true" : "false");
-  sound.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");
 }
 paintSound();
 
@@ -663,8 +678,27 @@ function playScream(){
   scream.play().catch(() => {});
 }
 
+/* What to give focus back to when the dialog closes. Without this, closing
+   leaves document.activeElement on <body> and a keyboard user who backed out
+   of the invitation is returned to the top of the document. */
+let lastFocus = null;
+/* aria-modal is a hint, not enforcement. Without inert, a screen reader's
+   virtual cursor reads and activates the entire hero straight through an
+   opaque backdrop. */
+const backdropped = [...document.body.children].filter(
+  el => el !== modal && !el.classList.contains("grain"));
+function setInert(on){
+  backdropped.forEach(el => {
+    el.inert = on;
+    if(on) el.setAttribute("aria-hidden", "true");
+    else el.removeAttribute("aria-hidden");
+  });
+}
+
 function openModal(){
   modalTouched = true;
+  lastFocus = document.activeElement;
+  setInert(true);
   playScream();
   modal.classList.add("open");
   document.body.style.overflow = "hidden";
@@ -672,18 +706,45 @@ function openModal(){
 }
 function autoOpenModal(){
   if(modalTouched || modal.classList.contains("open")) return;
+  lastFocus = document.activeElement;
+  setInert(true);
   modal.classList.add("open");
   document.body.style.overflow = "hidden";
   setTimeout(() => document.getElementById("name").focus(), 80);
 }
 function closeModal(){
+  /* Escape is pressed on closed pages too. Without this guard every press
+     anywhere clears the scroll lock and marks the invitation as touched. */
+  if(!modal.classList.contains("open")) return;
   modalTouched = true;
   modal.classList.remove("open");
   document.body.style.overflow = "";
+  setInert(false);
+  if(lastFocus && lastFocus.isConnected) lastFocus.focus();
 }
+
+/* Tab used to walk straight out of the dialog and land on the sound toggle in
+   the topbar - a control underneath an opaque backdrop, invisible and still
+   operable. offsetParent filters out whatever is display:none, so the trap
+   follows the form to the success message instead of holding focus on fields
+   nobody can see any more. */
+const FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]),' +
+                  'select,textarea,[tabindex]:not([tabindex="-1"])';
+modal.addEventListener("keydown", e => {
+  if(e.key !== "Tab") return;
+  const f = [...modal.querySelectorAll(FOCUSABLE)].filter(el => el.offsetParent !== null);
+  if(!f.length) return;
+  const first = f[0], last = f[f.length - 1];
+  if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+  else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+});
 document.querySelectorAll("[data-open]").forEach(btn => btn.addEventListener("click", openModal));
 closeBtn.addEventListener("click", closeModal);
-modal.addEventListener("click", e => { if(e.target === modal) closeModal(); });
+let downOnBackdrop = false;
+modal.addEventListener("mousedown", e => { downOnBackdrop = e.target === modal; });
+modal.addEventListener("click", e => {
+  if(e.target === modal && downOnBackdrop) closeModal();
+});
 addEventListener("keydown", e => { if(e.key === "Escape") closeModal(); });
 
 /* No auto invitation. It used to fire at 5 seconds, which is sooner than
@@ -691,16 +752,24 @@ addEventListener("keydown", e => { if(e.key === "Escape") closeModal(); });
    show a form nobody had asked for yet. The visitor knocks or they do not.
    autoOpenModal is kept so this is one line to reverse. */
 
-// Scroll reveal.
-const io = new IntersectionObserver(entries => {
-  entries.forEach(en => {
-    if(en.isIntersecting){
-      en.target.classList.add("in");
-      io.unobserve(en.target);
-    }
+/* prefers-reduced-motion is read at load in a dozen places here, and someone
+   who turns it on afterwards keeps every animation until they reload. The CSS
+   block covers everything declarative; the eye is driven through the Web
+   Animations API, which *{animation:none!important} cannot reach, so it is
+   cancelled explicitly. */
+matchMedia("(prefers-reduced-motion:reduce)").addEventListener("change", ev => {
+  if(!ev.matches) return;
+  document.querySelectorAll(".key-eye, .key-eye *").forEach(el => {
+    if(el.getAnimations) el.getAnimations().forEach(a => a.cancel());
   });
-}, {threshold:.12});
-document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+  const kimg = document.querySelector(".keyhole img");
+  if(kimg){ kimg.style.removeProperty("--px"); kimg.style.removeProperty("--py"); }
+});
+
+/* The scroll-reveal observer that used to live here observed nothing: the
+   page it was written for had .reveal sections, and this one is a single
+   screen. It was constructing an IntersectionObserver and handing it an empty
+   list on every load. */
 
 /* The number on the door.
 
@@ -747,9 +816,17 @@ form.addEventListener("submit", async e => {
   const email = form.email.value.trim();
   const phone = form.phone.value.trim();
 
-  if(form.elements.namedItem("company").value){
+  /* Silently thanked, and no row written - telling a bot which test it
+     failed only teaches it what to change. This is the only test, and it is
+     one no person can trigger: the field is off-screen, tabindex -1, and now
+     named something no autofill heuristic recognises. A submit-speed check
+     was tried here too and removed - a returning visitor with a password
+     manager can beat any threshold worth setting, and losing one real name
+     costs more than a duplicate row this table already tolerates. */
+  if(form.elements.namedItem("hm_ref").value){
     formbox.style.display = "none";
     done.style.display = "block";
+    modal.setAttribute("aria-labelledby", "done-title");
     done.focus();
     return;
   }
@@ -777,11 +854,18 @@ form.addEventListener("submit", async e => {
     go.disabled = false;
     go.textContent = "Knock on the door";
     err.textContent = "The door stuck. Try again.";
+    /* go.disabled dropped focus to <body> while the request was in flight.
+       role=alert announces the message; this puts the cursor back on the
+       control the message is about. */
+    go.focus();
     return;
   }
 
   formbox.style.display = "none";
   done.style.display = "block";
+  /* Otherwise the dialog is still called "The door is locked. Leave your
+     name." on a screen that has just taken it. */
+  modal.setAttribute("aria-labelledby", "done-title");
   done.focus();
   paintCount();
 });

@@ -24,8 +24,23 @@ stays hidden below `COUNTER_MIN` signups: the number shown is always the real on
 
 ## Before the real domain goes live
 
-- Remove the `robots: noindex` line in `index.html`
-- Point `og:image` back at the production domain
+`hauntedmansionbk.com` is not registered and does not resolve, so every absolute
+URL on the page points at `lte3.github.io/hauntedmansion-bk/` — the address that
+actually serves it. Six things change together, in one commit, on the day the
+domain is bought and serving. Doing any of them early is worse than doing none:
+a canonical pointing at a host no crawler can fetch demotes the live page in
+favour of an address that does not answer.
+
+- `index.html:8` — delete `<meta name="robots" content="noindex, nofollow">`
+- `robots.txt` — delete the `Disallow: /` block and the comment above it
+- `index.html:36` — `canonical`
+- `index.html:20` — `og:url`
+- `index.html:13` — `og:image`
+- `index.html:27` — `twitter:image`
+
+Nothing else is absolute. `site.webmanifest` uses a relative `start_url` and
+`scope`, and the icons and the hero are all relative paths, so they follow the
+domain on their own.
 
 ## The hero image
 

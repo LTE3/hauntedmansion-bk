@@ -616,9 +616,14 @@ h1{
           <input id="hm_ref" name="hm_ref" type="text" tabindex="-1" autocomplete="off">
         </div>
 
-        <label class="field"><span>Name</span><input id="name" name="name" autocomplete="name" required></label>
-        <label class="field"><span>Email</span><input id="email" name="email" type="email" autocomplete="email" required></label>
-        <label class="field"><span>Phone — optional</span><input id="phone" name="phone" type="tel" autocomplete="tel"></label>
+        <!-- Every column behind this form is unbounded text and the insert is open
+             to anon, so a paste of any size is accepted and stored. These caps
+             are deliberately far past any real value - the longest registered
+             surname is well under 120, an address cannot exceed 254 by RFC -
+             so nothing a person can truthfully type is ever truncated. -->
+        <label class="field"><span>Name</span><input id="name" name="name" autocomplete="name" maxlength="120" required></label>
+        <label class="field"><span>Email</span><input id="email" name="email" type="email" autocomplete="email" maxlength="254" required></label>
+        <label class="field"><span>Phone — optional</span><input id="phone" name="phone" type="tel" autocomplete="tel" maxlength="40"></label>
 
         <p class="err" id="err" role="alert"></p>
         <button class="submit" id="go" type="submit">Knock on the door</button>
@@ -728,11 +733,31 @@ function focusFirst(){
   document.getElementById("done").focus();
 }
 
+/* A signup hides the form and shows the thank-you, and that state used to
+   survive a close. Reopening the invitation - the phone handed to a friend,
+   or the same person coming back to add someone - landed on "We heard you."
+   with no route back to the fields and no way out but a reload. That is a
+   signup lost to a screen that says everything worked. */
+function restoreForm(){
+  formbox.style.display = "";
+  done.style.display = "none";
+  modal.setAttribute("aria-labelledby", "modal-title");
+  form.reset();
+  err.textContent = "";
+  sending = false;
+  go.disabled = false;
+  go.textContent = "Knock on the door";
+  [form.elements.namedItem("name"), form.email]
+    .forEach(el => el.removeAttribute("aria-invalid"));
+}
+
 function openModal(){
   modalTouched = true;
   lastFocus = document.activeElement;
   setInert(true);
-  if(document.getElementById("formbox").style.display !== "none") playScream();
+  /* The scream belongs to a first knock, not to a form being handed over. */
+  if(formbox.style.display === "none") restoreForm();
+  else playScream();
   modal.classList.add("open");
   document.body.style.overflow = "hidden";
   setTimeout(focusFirst, 80);
@@ -858,13 +883,21 @@ function fail(el, message){
   }, {once:true});
 }
 
+let sending = false;
 form.addEventListener("submit", async e => {
   e.preventDefault();
+  /* go.disabled does not stop a second submit: a disabled button blocks its
+     own click, not a submission dispatched any other way, and both handlers
+     would run to the first await before either yielded. */
+  if(sending) return;
   err.textContent = "";
 
   const nameEl = form.elements.namedItem("name");
   const name = nameEl.value.trim();
-  const email = form.email.value.trim();
+  /* Addresses are case-insensitive at every provider that matters, so
+     USER@Example.com and user@example.com are one person. Sent as typed they
+     become two rows nothing downstream will ever reconcile. */
+  const email = form.email.value.trim().toLowerCase();
   const phone = form.phone.value.trim();
 
   /* Silently thanked, and no row written - telling a bot which test it
@@ -889,6 +922,7 @@ form.addEventListener("submit", async e => {
     return;
   }
 
+  sending = true;
   go.disabled = true;
   go.textContent = "Opening";
 
@@ -910,6 +944,7 @@ form.addEventListener("submit", async e => {
     });
     if(!r.ok && r.status !== 409) throw new Error(String(r.status));
   }catch(_){
+    sending = false;
     go.disabled = false;
     go.textContent = "Knock on the door";
     err.textContent = "The door stuck. Try again.";
@@ -920,6 +955,7 @@ form.addEventListener("submit", async e => {
     return;
   }
 
+  sending = false;
   formbox.style.display = "none";
   done.style.display = "block";
   /* Otherwise the dialog is still called "The door is locked. Leave your

@@ -134,13 +134,16 @@ a{color:inherit}
 .key-outline{
   z-index:3;height:100%;pointer-events:none;overflow:visible;
   filter:
-    drop-shadow(0 0 8px rgba(227,48,39,.75))
-    drop-shadow(0 0 28px rgba(227,48,39,.48))
-    drop-shadow(0 0 64px rgba(227,48,39,.25))
+    drop-shadow(0 0 3px rgba(255,146,72,.40))
+    drop-shadow(0 0 24px rgba(227,48,39,.26))
+    drop-shadow(0 0 72px rgba(227,48,39,.15))
 }
 /* The beat lives on the path, not the svg, because the halo above is also a
    filter and one of them would overwrite the other. */
-.key-outline path{stroke:var(--red);animation:rimbeat 3.8s infinite}
+/* Thin and translucent. At full --red on a 2px stroke this was a drawn
+   outline of a keyhole sitting on top of the photograph of one. */
+.key-outline path{stroke:rgba(227,48,39,.5);stroke-width:1.1;
+  animation:rimbeat 3.8s infinite}
 .keyhole:before{
   content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
   box-shadow:inset 0 0 70px 20px rgba(0,0,0,.78);
@@ -155,7 +158,7 @@ a{color:inherit}
 }
 .red-wash{
   position:absolute;inset:0;z-index:4;pointer-events:none;
-  background:radial-gradient(circle at 52% 61%,rgba(255,33,23,.2),transparent 20%);
+  background:radial-gradient(circle at 50% 47%,rgba(255,108,52,.12),transparent 22%);
   mix-blend-mode:screen;animation:heartwash 3.8s infinite
 }
 
@@ -361,14 +364,23 @@ h1{
    still holds the copy at the bottom - and faded out low down so the rim's
    light ends above the words instead of crossing them. */
 @media (min-width:900px) and (min-height:700px) and (min-aspect-ratio:1/1){
-  .key-stage{position:absolute;inset:0;margin:0;z-index:1}
-  .key-fit{--keyw:min(46vw,620px)}
+  /* The picture holds the right, the words hold the left and rise to meet it.
+     Out of the grid flow so it can take the hero's whole height; the 1fr row
+     it vacates is where the copy goes. */
+  .key-stage{position:absolute;inset:0 0 0 48%;margin:0;z-index:1}
+  .key-fit{--keyw:min(38vw,560px)}
+  /* Nothing sits under the stem now, so the fade can run most of the way
+     down instead of stopping short of a headline that has moved away. */
   .keyhole,.key-outline{
-    -webkit-mask-image:linear-gradient(to bottom,#000 46%,rgba(0,0,0,.5) 68%,transparent 86%);
-    mask-image:linear-gradient(to bottom,#000 46%,rgba(0,0,0,.5) 68%,transparent 86%)
+    -webkit-mask-image:linear-gradient(to bottom,#000 62%,rgba(0,0,0,.5) 82%,transparent 97%);
+    mask-image:linear-gradient(to bottom,#000 62%,rgba(0,0,0,.5) 82%,transparent 97%)
   }
-  .key-glow{width:min(58vw,760px);top:-2%;bottom:22%}
-  .hero-copy{position:relative;grid-row:3;align-self:end;z-index:9}
+  .key-glow{width:min(44vw,640px);top:-2%;bottom:12%}
+  .hero-copy{
+    position:relative;grid-row:2;align-self:center;
+    max-width:min(40vw,560px);z-index:9
+  }
+  .hero-copy .lead{max-width:34ch}
 }
 
 
@@ -459,11 +471,17 @@ h1{
             <stop offset=".45" stop-color="#000" stop-opacity=".12"/>
             <stop offset="1" stop-color="#000" stop-opacity=".38"/>
           </linearGradient>
+          <!-- lit by the lanterns in the picture, not by a studio -->
           <radialGradient id="sclerag" cx="44%" cy="46%" r="62%">
-            <stop offset="0" stop-color="#9a8b7c"/>
-            <stop offset=".5" stop-color="#6a5347"/>
-            <stop offset="1" stop-color="#2a1f1b"/>
+            <stop offset="0" stop-color="#8a7257"/>
+            <stop offset=".5" stop-color="#553e2c"/>
+            <stop offset="1" stop-color="#1d1512"/>
           </radialGradient>
+          <!-- Nothing seen through a keyhole at night has a vector edge. This
+               is most of what separated the eye from the painting. -->
+          <filter id="eyesoft" x="-25%" y="-25%" width="150%" height="150%">
+            <feGaussianBlur stdDeviation=".23"/>
+          </filter>
           <radialGradient id="irisg" cx="40%" cy="36%" r="70%">
             <stop offset="0" stop-color="#8a6329"/>
             <stop offset=".5" stop-color="#4a2f11"/>
@@ -471,8 +489,8 @@ h1{
           </radialGradient>
           <!-- corners fall away, so only the middle of the eye is legible -->
           <radialGradient id="eyefade" cx="50%" cy="48%" r="52%">
-            <stop offset=".38" stop-color="#000" stop-opacity="0"/>
-            <stop offset=".72" stop-color="#000" stop-opacity=".55"/>
+            <stop offset=".26" stop-color="#000" stop-opacity="0"/>
+            <stop offset=".64" stop-color="#000" stop-opacity=".66"/>
             <stop offset="1" stop-color="#000" stop-opacity="1"/>
           </radialGradient>
           <clipPath id="ball">
@@ -480,6 +498,7 @@ h1{
           </clipPath>
         </defs>
         <g clip-path="url(#eyeclip)">
+          <g filter="url(#eyesoft)">
           <g class="lids" transform="rotate(-5 36.2 26.4)">
             <path d="M23.4 26.6 C28.4 19.4 44.9 19.2 49.1 26.2 C45.2 33.4 28.6 33.8 23.4 26.6 Z"
                   fill="url(#sclerag)"/>
@@ -489,13 +508,13 @@ h1{
                 <circle cx="37.1" cy="26.3" r="5.4" fill="none" stroke="#0d0704"
                         stroke-width=".9" opacity=".9"/>
                 <circle cx="37.1" cy="26.3" r="3.5" fill="#040202"/>
-                <circle cx="35.5" cy="24.6" r=".95" fill="#f6ece0" opacity=".62"/>
-                <circle cx="38.6" cy="28.1" r=".45" fill="#efe6d6" opacity=".28"/>
+                <circle cx="35.5" cy="24.6" r=".72" fill="#e8d3b4" opacity=".38"/>
+                <circle cx="38.6" cy="28.1" r=".38" fill="#dcc9ab" opacity=".16"/>
               </g>
               <path d="M23.4 26.6 C28.4 19.4 44.9 19.2 49.1 26.2 C45.2 33.4 28.6 33.8 23.4 26.6 Z"
                     fill="url(#lidshade)"/>
-              <ellipse cx="36.2" cy="26.4" rx="14" ry="8.6" fill="#e33027"
-                       opacity=".17"/>
+              <ellipse cx="36.2" cy="26.4" rx="14" ry="8.6" fill="#ff8a3c"
+                       opacity=".13"/>
             </g>
             <!-- lid and lashes: the heavy dark edge is what makes it a face -->
             <path d="M23.4 26.6 C28.4 19.4 44.9 19.2 49.1 26.2"
@@ -508,6 +527,7 @@ h1{
               <path d="M45.1 21.7 L46.2 19.9"/>
             </g>
             <ellipse cx="36.2" cy="26.4" rx="14.5" ry="9.5" fill="url(#eyefade)"/>
+          </g>
           </g>
         </g>
       </svg>

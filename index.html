@@ -348,8 +348,22 @@ h1{
   .key-fit{--keyh:min(52svh,340px)}
 }
 
-/* Sideways, and wide enough to stand them next to each other. */
-@media (max-height:560px) and (min-width:680px){
+/* Sideways, and wide enough to stand them next to each other.
+
+   This gate was 680px, which is 13px above an iPhone SE held sideways. Below
+   it the stacked layout applies, and there .hero is height:auto - so the grid
+   row holding .key-stage sizes to its content, .key-fit is position:absolute
+   and contributes none, the row resolves to 0, and .key-fit's
+   height:min(100%,...) resolves that 100% against nothing. The photo did not
+   shrink, it vanished: measured 0x0 at 568x320, 640x360, 667x375 and 480x320,
+   with the button pushed 62px below the fold on every one of them.
+
+   480px is the narrowest landscape phone there is. Measured clean from there
+   up: 480x320, 568x320, 600x360, 640x360, 667x375, 720x360, 736x414, 812x375,
+   852x393, 896x414. Giving .key-stage a min-height instead was tried first and
+   is worse - it restores the photo but adds ~200px of column, which pushes the
+   button off screen on the short portrait sizes that were already fine. */
+@media (max-height:560px) and (min-width:480px){
   .hero{height:100svh;
     grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
     grid-template-rows:auto minmax(0,1fr);

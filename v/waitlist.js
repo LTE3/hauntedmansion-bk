@@ -47,7 +47,10 @@
      Built here rather than in the markup so the two candidates cannot ship
      without it. */
   var pot = document.createElement("input");
-  pot.name = "company";
+  /* Not "company": a password manager fills that one despite
+     autocomplete="off", and a filled pot silently discards the row. The
+     name has to match no autofill category at all. */
+  pot.name = "hm_ref";
   pot.tabIndex = -1;
   pot.autocomplete = "off";
   pot.setAttribute("aria-hidden", "true");

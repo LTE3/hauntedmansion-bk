@@ -622,8 +622,8 @@ button{letter-spacing:.18em;font-size:.72rem;font-weight:500}
 
     <form class="form rise" id="join" tabindex="-1" novalidate>
       <div class="trap" aria-hidden="true">
-        <label for="company">Company</label>
-        <input id="company" name="company" type="text" tabindex="-1" autocomplete="off">
+        <label for="hm_ref">Referral code</label>
+        <input id="hm_ref" name="hm_ref" type="text" tabindex="-1" autocomplete="off">
       </div>
       <div class="field">
         <input id="name" name="name" type="text" inputmode="text" autocomplete="name"
@@ -845,7 +845,7 @@ form.addEventListener("submit", async (e) => {
 
   // Anything that filled the honeypot is not a person. Accept it silently -
   // telling a bot it was caught only teaches whoever wrote it.
-  if(form.elements.namedItem("company").value){ finish(); return; }
+  if(form.elements.namedItem("hm_ref").value){ finish(); return; }
 
   [nameEl, form.email].forEach(function(el){ el.removeAttribute("aria-invalid"); });
 

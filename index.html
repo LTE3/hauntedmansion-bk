@@ -182,7 +182,12 @@ a{color:inherit}
 }
 .keyhole img{
   width:100%;height:100%;object-fit:cover;object-position:center;
-  filter:brightness(.88) saturate(.86) contrast(1.05);
+  /* Down again. The porch is meant to be the only lit thing for a block and
+     it was reading like a lobby - bright enough that the keyhole looked like
+     a window rather than a hole into somewhere you should not go. Contrast
+     comes up as the level comes down, so what is left is the lanterns and
+     the door rather than an evenly dim picture of everything. */
+  filter:brightness(.72) saturate(.84) contrast(1.12);
   transform:scale(1.06);
   animation:housebreath 8s var(--ease) infinite alternate;
   will-change:transform
@@ -744,9 +749,9 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
                    in viewBox units. Wider than they are tall, because the
                    socket is. -->
               <g class="ember">
-                <ellipse class="ember-l" cx="28.47" cy="21.40" rx="8.55" ry="8.83"
+                <ellipse class="ember-l" cx="32.98" cy="26.50" rx="6.41" ry="4.13"
                          fill="url(#ember)" filter="url(#embersoft)"/>
-                <ellipse class="ember-r" cx="37.11" cy="20.60" rx="4.24" ry="8.20"
+                <ellipse class="ember-r" cx="39.38" cy="25.00" rx="6.63" ry="2.00"
                          fill="url(#ember)" filter="url(#embersoft)"/>
               </g>
             </g>
@@ -863,8 +868,13 @@ let modalTouched = false;
    returning null, and a scream is not worth taking the page down over. */
 const sound = document.querySelector(".sound");
 let scream = null;
-let soundOn = true;
-try{ soundOn = localStorage.getItem("hm-sound") !== "0"; }catch(e){}
+/* Off unless asked for. The sound itself is not good enough to be the first
+   thing a stranger meets, and a bad scream is worse than silence - it turns
+   a room somebody was taking seriously into a website. The toggle stays, so
+   the machinery is one better recording away from being worth turning on;
+   the default is what changed, not the feature. */
+let soundOn = false;
+try{ soundOn = localStorage.getItem("hm-sound") === "1"; }catch(e){}
 
 function paintSound(){
   /* Only the state changes here. Putting it in the name too produced

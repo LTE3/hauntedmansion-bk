@@ -205,7 +205,9 @@ h1{
   min-height:58px;padding:0 22px;border-radius:999px;
   border:1px solid rgba(255,89,78,.72);
   background:rgba(92,8,6,.38);
-  backdrop-filter:blur(14px);
+  /* iOS Safari before 18 knows only the prefixed spelling, and iOS is
+     most of what a flyer or an Instagram link sends here. */
+  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
   font:700 15px/1 "Space Grotesk",sans-serif;
   box-shadow:0 0 28px rgba(227,48,39,.08);
   transition:.3s var(--ease)
@@ -244,7 +246,8 @@ h1{
 /* ---------- MODAL ---------- */
 .modal{
   display:none;position:fixed;inset:0;z-index:300;
-  background:rgba(0,0,0,.86);backdrop-filter:blur(18px);padding:10px
+  background:rgba(0,0,0,.86);padding:10px;
+  -webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)
 }
 .modal.open{display:grid;place-items:end center}
 .sheet{
@@ -422,11 +425,17 @@ h1{
 }
 /* Two frames apart, because a blink that takes longer than that reads as a
    character falling asleep. */
+/* The rotate is carried in the keyframes, not left to the presentation
+   attribute on the element. An animation with fill:both applies its 0%
+   keyframe during the delay too, so transform:scaleY(1) overrode the
+   attribute's rotate(-5) from the first painted frame - and with JS off the
+   forwards fill held it there for good, which meant the lid sat untilted on
+   exactly the no-JS path these keyframes exist to serve. */
 @keyframes eyeblink{
-  0%,44%{transform:scaleY(1)}
-  48%{transform:scaleY(.06)}
-  53%{transform:scaleY(1)}
-  100%{transform:scaleY(1)}
+  0%,44%{transform:rotate(-5deg) scaleY(1)}
+  48%{transform:rotate(-5deg) scaleY(.06)}
+  53%{transform:rotate(-5deg) scaleY(1)}
+  100%{transform:rotate(-5deg) scaleY(1)}
 }
 /* It finds you, then holds. */
 @keyframes eyelook{
@@ -695,14 +704,24 @@ function setInert(on){
   });
 }
 
+/* After a successful submit the form is display:none, so focusing the name
+   field is a no-op - and setInert has just blurred the opener, so focus
+   landed on <body>, outside the dialog it had opened. Focus whatever is
+   actually on screen. */
+function focusFirst(){
+  const nameEl = document.getElementById("name");
+  if(nameEl && nameEl.offsetParent !== null){ nameEl.focus(); return; }
+  document.getElementById("done").focus();
+}
+
 function openModal(){
   modalTouched = true;
   lastFocus = document.activeElement;
   setInert(true);
-  playScream();
+  if(document.getElementById("formbox").style.display !== "none") playScream();
   modal.classList.add("open");
   document.body.style.overflow = "hidden";
-  setTimeout(() => document.getElementById("name").focus(), 80);
+  setTimeout(focusFirst, 80);
 }
 function autoOpenModal(){
   if(modalTouched || modal.classList.contains("open")) return;
@@ -710,7 +729,7 @@ function autoOpenModal(){
   setInert(true);
   modal.classList.add("open");
   document.body.style.overflow = "hidden";
-  setTimeout(() => document.getElementById("name").focus(), 80);
+  setTimeout(focusFirst, 80);
 }
 function closeModal(){
   /* Escape is pressed on closed pages too. Without this guard every press
@@ -755,15 +774,28 @@ addEventListener("keydown", e => { if(e.key === "Escape") closeModal(); });
 /* prefers-reduced-motion is read at load in a dozen places here, and someone
    who turns it on afterwards keeps every animation until they reload. The CSS
    block covers everything declarative; the eye is driven through the Web
-   Animations API, which *{animation:none!important} cannot reach, so it is
-   cancelled explicitly. */
+   Animations API, which *{animation:none!important} cannot reach.
+
+   The first version of this cancelled whatever animations existed at the
+   instant of the flip, which was the wrong shape twice over. The eye is
+   asleep between peeks - most of the wall clock - so usually there was
+   nothing to cancel and the pending timer just built fresh ones. And when
+   the flip did land mid-peek, cancel() fires oncancel rather than onfinish,
+   so the onfinish that puts the eye back to sleep never ran: the render loop
+   re-armed itself forever against an element that would never be shown
+   again, while the peek chain was dead so it never came back.
+
+   So this sets a flag the eye's own scheduler reads, and the eye stops
+   itself. window.hmQuiet is the whole contract - it is checked before a peek
+   is scheduled, before one starts, and inside the render loop. */
+window.hmQuiet = matchMedia("(prefers-reduced-motion:reduce)").matches;
 matchMedia("(prefers-reduced-motion:reduce)").addEventListener("change", ev => {
-  if(!ev.matches) return;
-  document.querySelectorAll(".key-eye, .key-eye *").forEach(el => {
-    if(el.getAnimations) el.getAnimations().forEach(a => a.cancel());
-  });
+  window.hmQuiet = ev.matches;
   const kimg = document.querySelector(".keyhole img");
-  if(kimg){ kimg.style.removeProperty("--px"); kimg.style.removeProperty("--py"); }
+  if(kimg && ev.matches){
+    kimg.style.removeProperty("--px");
+    kimg.style.removeProperty("--py");
+  }
 });
 
 /* The scroll-reveal observer that used to live here observed nothing: the
@@ -803,7 +835,12 @@ function fail(el, message){
   el.focus();
   el.addEventListener("input", function(){
     el.removeAttribute("aria-invalid");
-    err.textContent = "";
+    /* There is one error line for two fields. A listener still pending on a
+       field the visitor fixed later would wipe whichever message was showing
+       by then - leaving a field marked aria-invalid with no text anywhere
+       saying why, which is unrecoverable for a screen reader. Only clear the
+       message this call actually wrote. */
+    if(err.textContent === message) err.textContent = "";
   }, {once:true});
 }
 
@@ -843,6 +880,14 @@ form.addEventListener("submit", async e => {
 
   try{
     const r = await fetch(SUPABASE_URL + "/rest/v1/hm_waitlist", {
+      /* Without this a stalled connection never rejects, so the catch below
+         never runs: the button stays disabled reading "Opening", the error
+         line stays empty, and focus is already gone. That is the ordinary
+         mobile failure - not a clean error, just nothing coming back - and
+         it was the one failure the page had no recovery from. Ten seconds is
+         far longer than this insert has ever taken and far shorter than a
+         person will wait before deciding the page is broken. */
+      signal: AbortSignal.timeout(10000),
       method:"POST",
       headers:Object.assign({},headers,{Prefer:"return=minimal"}),
       body:JSON.stringify({
@@ -882,17 +927,23 @@ form.addEventListener("submit", async e => {
 
    Coarse pointers are excluded by capability rather than by width, because a
    tablet is wide and still has no cursor to follow. */
-if(matchMedia("(pointer:fine)").matches &&
-   !matchMedia("(prefers-reduced-motion:reduce)").matches){
+/* Reduced motion is checked inside the write, not around the listener, for
+   the same reason as the eye: a listener that was never attached cannot
+   start working when the setting is turned off. (pointer:fine) is checked
+   live too - a tablet that gets a mouse plugged into it changes answer. */
+{
   const img = document.querySelector(".keyhole img");
+  const fine = matchMedia("(pointer:fine)");
   let px = 0, py = 0, queued = false;
   addEventListener("pointermove", e => {
+    if(!fine.matches || window.hmQuiet) return;
     px = (e.clientX / innerWidth - .5) * -1.8;
     py = (e.clientY / innerHeight - .5) * -1.4;
     if(queued) return;
     queued = true;
     requestAnimationFrame(() => {
       queued = false;
+      if(window.hmQuiet) return;
       img.style.setProperty("--px", px.toFixed(3) + "%");
       img.style.setProperty("--py", py.toFixed(3) + "%");
     });
@@ -908,10 +959,13 @@ if(matchMedia("(pointer:fine)").matches &&
    and preserveAspectRatio is none, so a fraction across the box is a fraction
    across the viewBox and the conversion is a multiply.
 
-   Reduced motion gets none of this. The eye stays at opacity 0 there, which
-   is what the base rule already says and what the reduce block already
-   enforces by killing every animation. */
-if(!matchMedia("(prefers-reduced-motion:reduce)").matches){
+   Reduced motion gets none of this: the eye stays at opacity 0, enforced by
+   window.hmQuiet at every point where a peek would be scheduled, started or
+   painted. It is deliberately NOT a gate around this whole block - built
+   only when the setting happens to be off at load, the eye could never come
+   back for a visitor who turned it off later, and turning it off for a page
+   you want to look at properly is the commoner direction. */
+{
   const eye = document.querySelector(".key-eye");
   const iris = eye && eye.querySelector(".iris");
   const lids = eye && eye.querySelector(".lids");
@@ -924,9 +978,21 @@ if(!matchMedia("(prefers-reduced-motion:reduce)").matches){
 
     iris.style.animation = "none";        // ours now
 
+    /* The rect only moves when the layout does, so it is cached rather than
+       measured per event. getBoundingClientRect forces a style and layout
+       flush; doing that on every pointermove is the exact cost the parallax
+       above goes out of its way to avoid, and this did it even while the eye
+       was invisible. Invalidated on resize, and re-read once per peek, which
+       covers the only two ways it can change. */
+    let rect = null;
+    const remeasure = () => { rect = null; };
+    addEventListener("resize", remeasure, {passive:true});
+    addEventListener("orientationchange", remeasure, {passive:true});
+
     addEventListener("pointermove", e => {
-      const r = eye.getBoundingClientRect();
-      if(!r.width) return;
+      if(!awake) return;                     // nothing to aim while it is shut
+      const r = rect || (rect = eye.getBoundingClientRect());
+      if(!r.width){ rect = null; return; }
       const dx = (e.clientX - r.left) / r.width * 69.9 - IRIS_X;
       const dy = (e.clientY - r.top) / r.height * 100 - IRIS_Y;
       const d = Math.hypot(dx, dy) || 1;
@@ -948,6 +1014,11 @@ if(!matchMedia("(prefers-reduced-motion:reduce)").matches){
     }
 
     function frame(t){
+      /* Reduced motion turned on while the loop was running. Returning
+         without re-arming is what actually drains it - the old code cancelled
+         the opacity animation instead, which killed its onfinish and left
+         this running forever. */
+      if(window.hmQuiet){ raf = 0; awake = false; eye.style.opacity = "0"; return; }
       if(++still > 130) drift(t);
       cx += (tx - cx) * .10;
       cy += (ty - cy) * .10;
@@ -955,6 +1026,18 @@ if(!matchMedia("(prefers-reduced-motion:reduce)").matches){
       raf = awake ? requestAnimationFrame(frame) : 0;
     }
     raf = requestAnimationFrame(frame);
+
+    /* The peek chain is normally started by the handoff below, which waits on
+       the CSS opening run. Under reduced motion that run is suppressed and
+       the handoff never fires - so the chain is started here instead, and
+       peek() reschedules without painting for as long as the setting is on.
+       One pending timer is what it costs to be able to notice it going off. */
+    if(window.hmQuiet){
+      eye.style.animation = "none";
+      lids.style.animation = "none";
+      eye.style.opacity = "0";
+      awake = false;
+    }
 
     function blink(at){
       setTimeout(() => lids.animate(
@@ -983,16 +1066,23 @@ if(!matchMedia("(prefers-reduced-motion:reduce)").matches){
        nagging someone who stays. The random component is a proportion of the
        gap rather than a fixed window, so it never settles into a rhythm. */
     let peeks = 0;
+    let peekTimer = 0;
     function schedule(){
       const base = Math.min(30000, 3200 + peeks * 5200);
       peeks++;
-      setTimeout(peek, base + Math.random() * base * .45);
+      peekTimer = setTimeout(peek, base + Math.random() * base * .45);
     }
 
     function peek(){
+      /* Checked here rather than only at load: someone who turns reduced
+         motion on mid-visit had the pending timer fire anyway and got a
+         fresh, full-strength peek. Rescheduling rather than returning means
+         turning the setting back off brings the eye back without a reload. */
+      if(window.hmQuiet){ eye.style.opacity = "0"; return schedule(); }
       if(document.hidden) return schedule();   // do not spend a visit on a tab nobody is looking at
       awake = true;
       still = 0;
+      rect = null;                           // the layout may have moved since the last peek
       /* Open already aimed. The loop stops while the eye is shut, so without
          this it opens pointing wherever it was five visits ago and then swings
          across to find you - which reads as a machine catching up. Snapping
@@ -1001,10 +1091,14 @@ if(!matchMedia("(prefers-reduced-motion:reduce)").matches){
       cx = tx; cy = ty;
       if(!raf) raf = requestAnimationFrame(frame);
       blink(900); blink(3400);
-      eye.animate(
+      const look = eye.animate(
         [{opacity:0},{opacity:.96,offset:.13},{opacity:.96,offset:.82},{opacity:0}],
         {duration:5200, easing:"linear", fill:"both"}
-      ).onfinish = () => { awake = false; schedule(); };
+      );
+      /* onfinish, not oncancel - so nothing here may cancel this animation.
+         Reduced motion stops the eye by flag, and the run is allowed to
+         finish out its five seconds at opacity 0. */
+      look.onfinish = () => { awake = false; schedule(); };
     }
   }
 }

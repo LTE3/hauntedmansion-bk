@@ -182,12 +182,18 @@ a{color:inherit}
 }
 .keyhole img{
   width:100%;height:100%;object-fit:cover;object-position:center;
-  /* Down again. The porch is meant to be the only lit thing for a block and
-     it was reading like a lobby - bright enough that the keyhole looked like
-     a window rather than a hole into somewhere you should not go. Contrast
-     comes up as the level comes down, so what is left is the lanterns and
-     the door rather than an evenly dim picture of everything. */
-  filter:brightness(.72) saturate(.84) contrast(1.12);
+  /* Down a long way, and the skull is why it can go. The skull is an SVG
+     layer over this photograph rather than part of it, so taking the picture
+     down does not take the skull with it: the mansion goes to almost nothing
+     and the thing standing in front of it does not move at all. At .72 the
+     porch was still a lit scene competing with the face; at .44 what survives
+     is the two lanterns, the COMING SOON board and the edge of the door, and
+     the brightest thing anywhere in the frame is a pair of eyes.
+
+     Saturation comes down and contrast goes up with the level, because
+     dimming alone flattens - it turns a lit porch into a grey one. This keeps
+     the few lit things lit and lets everything else go. */
+  filter:brightness(.44) saturate(.76) contrast(1.24);
   transform:scale(1.06);
   animation:housebreath 8s var(--ease) infinite alternate;
   will-change:transform
@@ -545,15 +551,16 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
 
 /* The eye.
 
-   These keyframes are the no-JS version: it comes up to the hole, stares,
-   and the light goes - both timed off one 3.6s run so the arrival cannot
-   drift outside the window it is visible in. When script is available the
+   These keyframes are the no-JS version: nothing for two seconds, then it
+   arrives in four tenths of one, stares through the sign-up opening at five
+   seconds, and goes - both timed off one 4.5s run at the same 2s delay, so
+   the arrival cannot drift outside the window it is visible in. When script is available the
    same walk runs again on every peek and the head is turned towards the
    pointer while it is there - see "it watches back" at the bottom of the
    page. */
 .key-eye{
   position:absolute;inset:0;z-index:2;height:100%;pointer-events:none;
-  opacity:0;animation:eyeshow 3.6s var(--ease) .5s 1 both;
+  opacity:0;animation:eyeshow 4.5s linear 2s 1 both;
   filter:drop-shadow(0 0 6px rgba(0,0,0,.9))
 }
 /* Somebody walks up to the hole and looks through it.
@@ -573,14 +580,29 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
    in, not it disappearing. Under prefers-reduced-motion the
    reduce block below kills this along with everything else. */
 .key-eye .face-in{transform-box:fill-box;transform-origin:center;
-  animation:facecome 3.6s var(--ease) .5s 1 both}
-@keyframes facecome{
-  0%{transform:translateY(1.4px) scale(.2)}
-  9%{transform:translateY(-.6px) scale(.33)}
-  17%{transform:translateY(.9px) scale(.5)}
-  25%{transform:translateY(-.4px) scale(.78)}
-  33%{transform:translateY(0) scale(1)}
-  80%{transform:translateY(0) scale(1)}
+  animation:facefly 4.5s linear 2s 1 both}
+/* 4.5s, and the whole flight is the first tenth of it - 0.4s, arriving at
+   2.4s on the page clock. The easing is per-keyframe rather than one curve
+   across the run, because the three parts want opposite curves: the approach
+   accelerates (something coming at you subtends more angle per second the
+   closer it gets, so a linear scale reads as slowing down), the overshoot
+   stops hard, and the recoil settles. One expo-out across all of it gave a
+   skull that decelerated into frame, which is a camera push, not a charge.
+
+   It goes past full size to 1.14 and comes back under to .97 before it
+   settles. That fifth of a second of recoil is what makes it hit something
+   rather than arrive at it. Then it holds, unmoving, from 0.9s until 3.9s -
+   the sign-up opens at 5s on the page clock, which is 3s into this hold, so
+   it is still there and still staring when the sheet comes up. */
+@keyframes facefly{
+  0%{transform:translateY(2.6px) scale(.1);
+     animation-timing-function:cubic-bezier(.55,.02,.85,.35)}
+  9%{transform:translateY(0) scale(1.14);
+     animation-timing-function:cubic-bezier(.2,.9,.3,1)}
+  15%{transform:translateY(.35px) scale(.97);
+      animation-timing-function:cubic-bezier(.3,0,.2,1)}
+  21%{transform:translateY(0) scale(1)}
+  88%{transform:translateY(0) scale(1)}
   100%{transform:translateY(0) scale(1.07)}
 }
 .key-eye .face-aim{transform-box:fill-box;transform-origin:center}
@@ -621,13 +643,15 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
   86%{opacity:.67;transform:scale(.95)}
   100%{opacity:.9;transform:scale(1.03)}
 }
+/* Renaming this breaks the page silently: the script at the bottom listens
+   for animationend and compares e.animationName to the string "eyeshow" to
+   know when the opening run is over. Miss it and the eye is left holding
+   opacity 0 under a fill and the peek chain never starts. */
 @keyframes eyeshow{
   0%{opacity:0}
-  14%{opacity:.96}
-  74%{opacity:.96}
+  6%{opacity:.96}
+  88%{opacity:.96}
   100%{opacity:0}
-}
-  40%,100%{transform:translateX(0)}
 }
 
 @media(prefers-reduced-motion:reduce){
@@ -1160,7 +1184,7 @@ form.addEventListener("submit", async e => {
     el.removeAttribute("aria-invalid");
     el.removeAttribute("aria-describedby");
   });
-  if(name.length < 2){ fail(nameEl,"The house wants a name."); return; }
+  if(name.length < 1){ fail(nameEl,"The house wants a name."); return; }
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){
     fail(form.email,"That address will not reach you.");
     return;

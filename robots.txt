@@ -3,4 +3,7 @@
 User-agent: *
 Disallow: /
 
-Sitemap: https://hauntedmansionbk.com/sitemap.xml
+# No Sitemap line. There was one, pointing at a sitemap.xml that has never
+# existed on a domain that does not resolve - two dead ends in one
+# directive. A one-page site does not need one; if the house ever grows
+# past one page, add the file first and the line second.

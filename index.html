@@ -276,6 +276,7 @@ h1{
 .sheet{
   width:100%;max-width:620px;
   max-height:calc(100vh - 20px);max-height:calc(100svh - 20px);overflow:auto;
+  scroll-padding-bottom:180px;
   background:#0b0706;border:1px solid #512822;
   border-radius:28px 28px 18px 18px;
   padding:22px 20px max(26px,env(safe-area-inset-bottom));
@@ -338,6 +339,7 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
    buttons simply were never given it, so a keyboard visitor got no confirmation
    of what Enter was about to press. */
 .field input:focus-visible,
+.fine a:focus-visible,
 .cta:focus-visible,
 .sound:focus-visible,
 .close:focus-visible,
@@ -356,8 +358,33 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
 @media (forced-colors:active){
   .submit{border:1px solid ButtonText}
 }
+/* The one part of this sheet that may never scroll away. On any phone
+   shorter than about 700px the button sat below the sheet's visible edge, and
+   because the sheet scrolls internally there was no page scrollbar and no cut
+   line to hint at it - the form simply appeared to have no send button.
+   Sticking the footer to the bottom of the scrollport fixes it at every
+   height rather than at the two or three a media query would name, and it
+   holds in the case that breaks those worst: the on-screen keyboard open,
+   with the visible area suddenly half what it was.
+   The colour is .sheet's own background, repeated because the fields have to
+   pass behind this opaquely. */
+.sheet-foot{
+  position:-webkit-sticky;position:sticky;bottom:0;z-index:1;
+  background:#0b0706;padding-top:6px
+}
+/* Softens the cut, and reads as "there is more above" rather than as a seam. */
+.sheet-foot::before{
+  content:"";position:absolute;left:0;right:0;top:-28px;height:28px;
+  pointer-events:none;background:linear-gradient(to top,#0b0706,rgba(11,7,6,0))
+}
 .err{min-height:21px;color:#ff7a70;font-size:14px;margin:2px 0 8px}
 .fine{font-size:13px!important;color:#85786f!important;margin:11px 0 0!important}
+/* Underlined, not recoloured: .fine sets its colour with !important and it
+   is the only colour in the paragraph, so a link that relied on colour
+   alone would not read as one. */
+.fine a{text-decoration:underline;text-underline-offset:2px;
+  text-decoration-color:#5d534b}
+.fine a:hover{text-decoration-color:#b9aaa1}
 .success{display:none;padding:72px 0 36px;outline:0}
 .success strong{display:block;font:700 44px/.95 "Space Grotesk";letter-spacing:-.055em}
 .success span{display:block;margin-top:12px;color:var(--muted)}
@@ -415,6 +442,29 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
   65%,100%{transform:translateY(100%)}
 }
 @keyframes sheetup{from{opacity:0;transform:translateY(70px)}}
+
+/* Everything in the sheet, one notch down, for phones shorter than a 6.
+   Measured: at 375x667 the sheet held 833px of content in 645px of room and
+   at 320x568 it held 852 in 546. Nothing here is a new idea about the design
+   - it is the same layout at the size a short screen can hold, so the form
+   arrives whole instead of arriving half and asking to be scrolled.
+   740px catches the 667, 640 and 568 phones and clears the 844 ones, which
+   need none of it. */
+@media (max-height:740px){
+  .sheet{padding-top:14px;padding-bottom:max(18px,env(safe-area-inset-bottom))}
+  .sheet h2{font-size:30px;margin:12px 0 6px}
+  .sheet p:not([class]){font-size:15px;margin-bottom:13px}
+  .field{margin-bottom:10px}
+  .field span{margin-bottom:5px}
+  .field input{height:50px}
+  /* The reserved line for an error is worth 25px of three visible fields
+     here. It grows the footer upward when it fires, so the button does not
+     move out from under a thumb - the cost of dropping the reservation is a
+     shift in the copy above it, not in the target. */
+  .err{min-height:0;margin:0 0 6px}
+  .submit{height:54px}
+  .fine{margin-top:7px!important}
+}
 
 @media (max-height:560px){
   .hero{height:auto;min-height:100vh;min-height:100svh}
@@ -726,9 +776,19 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
         <label class="field"><span>Email</span><input id="email" name="email" type="email" autocomplete="email" maxlength="254" required></label>
         <label class="field"><span>Phone — optional</span><input id="phone" name="phone" type="tel" autocomplete="tel" maxlength="40"></label>
 
+        <div class="sheet-foot">
         <p class="err" id="err" role="alert"></p>
         <button class="submit" id="go" type="submit">Knock on the door</button>
-        <p class="fine">Early access. No spam.</p>
+        <!-- target=_blank on purpose: this sits under a form someone has
+             already typed into, and navigating the tab away to read a
+             policy throws that away. The consent line lives here rather
+             than on the field because this is the last thing read before
+             the button. -->
+        <p class="fine">Early access. No spam. Leave a number only if you
+          want a text when the door opens &mdash; reply STOP any time.
+          <a href="privacy.html" target="_blank" rel="noopener">What we
+          keep</a>.</p>
+        </div>
         <div class="counter" id="counter"><strong id="count">—</strong> people are waiting to enter.</div>
       </form>
     </div>

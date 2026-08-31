@@ -108,7 +108,7 @@
     if (pot.value) { finish(); return; }
 
     [nameEl, emailEl].forEach(function (el) { el && el.removeAttribute("aria-invalid"); });
-    if (name.length < 2) { fail(nameEl, "The house wants a name."); return; }
+    if (name.length < 1) { fail(nameEl, "The house wants a name."); return; }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
       fail(emailEl, "That address will not reach you.");
       return;

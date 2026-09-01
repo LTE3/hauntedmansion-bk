@@ -1,10 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-4WsVjzuf4HRSvHJ/7JoD3NnEpD5127Xn3wOaQ5uIguU=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'none'; connect-src 'none'; frame-src 'none'; object-src 'none'">
-<meta name="referrer" content="no-referrer">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-4WsVjzuf4HRSvHJ/7JoD3NnEpD5127Xn3wOaQ5uIguU=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'none'; connect-src 'none'; frame-src 'none'; object-src 'none'"><meta name="referrer" content="no-referrer"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>What we keep</title>
 <meta name="robots" content="noindex, nofollow">
 <meta name="description" content="What the waitlist for the house collects, why, and how to be taken off it.">
@@ -104,16 +101,21 @@ a:focus-visible{outline:2px solid #ff6b5f;outline-offset:3px}
 <main>
   <p class="eyebrow">The House &middot; Bushwick, Brooklyn</p>
   <h1>What we keep</h1>
-  <p class="standfirst">There is one form on this site. It exists so we can tell
-    you when the house opens. This page says exactly what it collects and what
-    happens to it, in the same number of words it actually takes.</p>
+  <p class="standfirst">One form, on the front page, so we can tell you when
+    the house opens. This page says exactly what it collects and what happens
+    to it, in the same number of words it actually takes. Design preview pages
+    linked from this site carry the same form and write to the same list; they
+    collect a name and an email address and nothing else.</p>
 
   <h2>What the form collects</h2>
   <ul>
     <li><strong>Your name</strong> and <strong>your email address</strong>,
       because you typed them.</li>
-    <li><strong>Your phone number</strong>, only if you chose to give it. The
-      field is optional and the form works without it.</li>
+    <li><strong>Your phone number</strong>, only if you typed one
+      <em>and</em> ticked the box next to it. The field is optional, the form
+      works without it, and if the box is left unticked the number is never
+      sent anywhere &mdash; it stays in the page and goes when you close the
+      tab.</li>
     <li><strong>Your browser&rsquo;s user-agent string</strong> &mdash; the line
       your browser sends to every site it visits, naming itself and your
       operating system. We store it with your signup so we can tell a real
@@ -121,15 +123,20 @@ a:focus-visible{outline:2px solid #ff6b5f;outline-offset:3px}
     <li><strong>The time you signed up.</strong></li>
   </ul>
   <p>That is the whole list. There is no tracking pixel on this site, no
-    analytics, no advertising tag and no cookie. The only thing kept in your
-    browser is whether you turned the sound off, so the page can remember.</p>
+    analytics, no advertising tag and no cookie. Two things are kept in your
+    own browser and sent nowhere: whether you turned the sound off, so the page
+    can remember, and &mdash; on the preview pages only &mdash; a note that the
+    opening animation already played, so it does not play twice in one visit.
+    That second one is gone when you close the tab.</p>
 
   <h2>What we do with it</h2>
   <p>We email you about this house: when it opens, when tickets go up, and
-    little else. If you gave a phone number we may text you the same kind of
-    thing. <strong>Giving your number is not a condition of anything</strong>
-    &mdash; you can join the list, and buy a ticket, without one. Message and
-    data rates may apply; reply STOP to any text to stop them, or HELP for
+    little else. If you ticked the box and left a number, we may send you
+    recurring automated marketing texts about the same things &mdash; opening
+    night and ticket on-sales. Message frequency varies.
+    <strong>Giving your number is not a condition of anything</strong> &mdash;
+    you can join the list, and buy a ticket, without one. Message and data
+    rates may apply; reply STOP to any text to stop them, or HELP for
     help.</p>
   <p class="aside">We do not sell this list, rent it, trade it, or hand it to
     another company to market to you. It is a list of people who want to know
@@ -137,9 +144,11 @@ a:focus-visible{outline:2px solid #ff6b5f;outline-offset:3px}
 
   <h2>Who else touches it</h2>
   <ul>
-    <li><strong>Supabase</strong> stores the list. It is a database host acting
-      on our instructions; the list is not readable with the key published in
-      this page.</li>
+    <li><strong>Supabase</strong> stores the list. It is a database host
+      acting on our instructions. The key published in this page can do
+      exactly two things: add a row to the list, and ask how many rows there
+      are. It cannot read the list, change it, or delete any part of it, and
+      the database refuses those before it is asked who is asking.</li>
     <li><strong>GitHub Pages</strong> serves this site and, like every web
       server, sees the IP address of anyone who loads it.</li>
     <li><strong>Google Fonts</strong> serves two typefaces, which means Google
@@ -172,7 +181,7 @@ a:focus-visible{outline:2px solid #ff6b5f;outline-offset:3px}
     start collecting something not on the list above &mdash; we will say so in
     an email before it happens, not after.</p>
 
-  <p class="updated">Last updated 31 August 2026.</p>
+  <p class="updated">Last updated 1 September 2026.</p>
   <a class="back" href="/hauntedmansion-bk/">Back to the door</a>
 </main>
 </body>

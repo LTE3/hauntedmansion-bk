@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-vxkY0+4sphKQs6tJcUMkMVDcw6vAKaOkTAI3X7ox654=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-+i09nQ/BeW0KfXV2c0jlIj+nH8IbjKkBBRMQ8iBhT1g='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-x11N72J6eUij4JzxmMNvYlPWym8B3Jl41nJ7+eZx0rM=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-LBHZO+qxanLVTTs5IViT1yC8nwyBDYbjgfqYJXZzL/Q='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Every house has a story. | Haunted Mansion BK</title>
@@ -352,6 +352,7 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
    buttons simply were never given it, so a keyboard visitor got no confirmation
    of what Enter was about to press. */
 .field input:focus-visible,
+.tick input:focus-visible,
 .fine a:focus-visible,
 .cta:focus-visible,
 .sound:focus-visible,
@@ -391,6 +392,14 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
   pointer-events:none;background:linear-gradient(to top,#0b0706,rgba(11,7,6,0))
 }
 .err{min-height:21px;color:#ff7a70;font-size:14px;margin:2px 0 8px}
+.consent{margin:-4px 0 16px;animation:consentin .34s var(--ease) both}
+/* The row, not the box, is the target: 22px of checkbox is a miss on a
+   thumb, and a 44px label around it is a hit anywhere along the sentence. */
+.tick{display:flex;gap:11px;align-items:center;min-height:44px;cursor:pointer}
+.tick input{width:22px;height:22px;flex:none;margin:0;accent-color:#c22119}
+.tick span{font-size:15px;font-weight:600;line-height:1.3}
+.consent .fine{margin-top:2px!important}
+@keyframes consentin{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
 .fine{font-size:13px!important;color:#85786f!important;margin:11px 0 0!important}
 /* Underlined, not recoloured: .fine sets its colour with !important and it
    is the only colour in the paragraph, so a link that relied on colour
@@ -835,6 +844,21 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
         <label class="field"><span>Email</span><input id="email" name="email" type="email" autocomplete="email" maxlength="254" required></label>
         <label class="field"><span>Phone — optional</span><input id="phone" name="phone" type="tel" autocomplete="tel" maxlength="40"></label>
 
+        <!-- Hidden until the phone field has something in it. The disclosure
+             has to be at the point of collection, and this is that point;
+             showing it to the majority who never type a number would be a
+             page of statute under an optional field for no one's benefit.
+             Unchecked always: a pre-ticked box is not an affirmative act. -->
+        <div class="consent" id="consent" hidden>
+          <label class="tick"><input type="checkbox" id="sms" name="sms">
+            <span>Text me when the house opens.</span></label>
+          <p class="fine">Recurring automated marketing texts from Haunted
+            Mansion BK at the number above &mdash; opening night and ticket
+            on-sales. Frequency varies. Message and data rates may apply.
+            Not a condition of entry or of any purchase. Reply STOP to stop,
+            HELP for help. Leave this unticked and your number is not kept.</p>
+        </div>
+
         <div class="sheet-foot">
         <p class="err" id="err" role="alert"></p>
         <button class="submit" id="go" type="submit">Knock on the door</button>
@@ -843,8 +867,7 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
              policy throws that away. The consent line lives here rather
              than on the field because this is the last thing read before
              the button. -->
-        <p class="fine">Early access. No spam. Leave a number only if you
-          want a text when the door opens &mdash; reply STOP any time.
+        <p class="fine">Early access. No spam.
           <a href="privacy.html" target="_blank" rel="noopener">What we
           keep</a>.</p>
         </div>
@@ -1151,6 +1174,20 @@ function fail(el, message){
 }
 
 let sending = false;
+/* Reveal the consent block the moment there is a number to consent about,
+   and never take it away again - a visitor who backspaces the field should
+   not watch a paragraph of statute flicker in and out. `hidden` rather than
+   a class because the page has a Content-Security-Policy with no
+   'unsafe-inline' for styles, and hidden is a DOM property, not a style
+   attribute. Under prefers-reduced-motion the global animation:none rule
+   takes the entrance away; the block still appears, it just does not move. */
+{
+  const phoneEl = form.phone, consent = document.getElementById("consent");
+  phoneEl.addEventListener("input", () => {
+    if(consent.hidden && phoneEl.value.trim()) consent.hidden = false;
+  });
+}
+
 form.addEventListener("submit", async e => {
   e.preventDefault();
   /* go.disabled does not stop a second submit: a disabled button blocks its
@@ -1166,6 +1203,10 @@ form.addEventListener("submit", async e => {
      become two rows nothing downstream will ever reconcile. */
   const email = form.email.value.trim().toLowerCase();
   const phone = form.phone.value.trim();
+  /* No tick, no number. Not an error and not a blocked submit - the label
+     said this would happen, and turning someone away from a waitlist over a
+     checkbox costs a real signup to protect a number nobody asked for. */
+  const sms = document.getElementById("sms").checked;
 
   /* Silently thanked, and no row written - telling a bot which test it
      failed only teaches it what to change. This is the only test, and it is
@@ -1209,7 +1250,7 @@ form.addEventListener("submit", async e => {
       method:"POST",
       headers:Object.assign({},headers,{Prefer:"return=minimal"}),
       body:JSON.stringify({
-        name, email, phone:phone || null, user_agent:navigator.userAgent
+        name, email, phone:(sms && phone) || null, user_agent:navigator.userAgent
       })
     });
     if(!r.ok && r.status !== 409) throw new Error(String(r.status));

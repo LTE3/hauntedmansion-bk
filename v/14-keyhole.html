@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-1rmMJilCuZ1TwNRsybAfo0p7My4XsoltKvCGN2zlx4Y=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-Rjt0i4trpys9fP0m5QIS/Ihq/b54ce5HwcR0qvt6S6g=' 'sha256-1oGPMkb2b4tcoPZJR81I+ESCABWKgLC8VNYWHMmbATU='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-1rmMJilCuZ1TwNRsybAfo0p7My4XsoltKvCGN2zlx4Y=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-Rjt0i4trpys9fP0m5QIS/Ihq/b54ce5HwcR0qvt6S6g=' 'sha256-bWFIl+ACek5xMNzpVyU7iBNRbMbHcBZBO+SxsKGZO2Q='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
 <meta name="referrer" content="no-referrer">
 <script>
 /* PREVIEW HARNESS - not part of any shipped version of this page.
@@ -603,7 +603,7 @@ h1{
 
         <p class="err" id="err" role="alert"></p>
         <button class="submit" id="go" type="submit">Knock on the door</button>
-        <p class="fine">Early access. Limited tickets. No spam. Leave a number only if you want a text when the house opens &mdash; reply STOP any time. <a href="../privacy.html" target="_blank" rel="noopener">What we keep.</a></p>
+        <p class="fine">Early access. Limited tickets. No spam. This is a preview page and a number typed here is not kept. <a href="../privacy.html" target="_blank" rel="noopener">What we keep.</a></p>
         <div class="counter" id="counter"><strong id="count">—</strong> people are waiting to enter.</div>
       </form>
     </div>
@@ -789,7 +789,7 @@ form.addEventListener("submit", async e => {
       method:"POST",
       headers:Object.assign({},headers,{Prefer:"return=minimal"}),
       body:JSON.stringify({
-        name, email, phone:phone || null, user_agent:navigator.userAgent
+        name, email, phone: null, user_agent:navigator.userAgent
       })
     });
     if(!r.ok && r.status !== 409) throw new Error(String(r.status));

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-s/HAUcQDCxYPIMeTgx1r7gtT+Ac2DtgfplfJzRFnfaE=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-Rjt0i4trpys9fP0m5QIS/Ihq/b54ce5HwcR0qvt6S6g=' 'sha256-UKoHdMx8V76GYCmUPN3EsOB2YDjhS4KdMZQ3qV1dvRc=' 'sha256-l9l7CS178xsLqklm/zU2NJTVNyxxDWrsllA/0s5Tkqc='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-s/HAUcQDCxYPIMeTgx1r7gtT+Ac2DtgfplfJzRFnfaE=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-Rjt0i4trpys9fP0m5QIS/Ihq/b54ce5HwcR0qvt6S6g=' 'sha256-UKoHdMx8V76GYCmUPN3EsOB2YDjhS4KdMZQ3qV1dvRc=' 'sha256-NRD3CIdVDantoXzdDZAEiHkkx7f72nwy1NsD5PPZ110='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; manifest-src 'self'">
 <meta name="referrer" content="no-referrer">
 <script>
 /* PREVIEW HARNESS - not part of any shipped version of this page.
@@ -589,7 +589,7 @@ button[disabled]{opacity:.45;cursor:wait}
       </div>
       <p class="err" id="err" role="alert"></p>
       <button type="submit" id="go">Get on the list</button>
-      <p class="fine">Early access. Limited tickets. No spam. Leave a number only if you want a text when the house opens &mdash; reply STOP any time. <a href="../privacy.html" target="_blank" rel="noopener">What we keep.</a></p>
+      <p class="fine">Early access. Limited tickets. No spam. This is a preview page and a number typed here is not kept. <a href="../privacy.html" target="_blank" rel="noopener">What we keep.</a></p>
     </form>
 
     <div class="done" id="done" tabindex="-1" aria-live="polite">
@@ -815,7 +815,7 @@ form.addEventListener("submit", async (e) => {
       // No upsert: PostgREST's merge-duplicates needs an UPDATE policy, and nobody
       // should be able to rewrite a row on this table. A repeat signup 409s instead.
       headers: Object.assign({}, headers, {Prefer:"return=minimal"}),
-      body: JSON.stringify({name: name, email: email, phone: phone || null, user_agent: navigator.userAgent})
+      body: JSON.stringify({name: name, email: email, phone: null, user_agent: navigator.userAgent})
     });
     // A duplicate is not a failure: they are already on the list either way.
     if(!r.ok && r.status !== 409) throw new Error(String(r.status));

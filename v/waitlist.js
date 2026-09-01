@@ -123,7 +123,7 @@
       method: "POST",
       headers: Object.assign({}, headers, { Prefer: "return=minimal" }),
       body: JSON.stringify({
-        name: name, email: email, phone: phone || null,
+        name: name, email: email, phone: null,
         user_agent: navigator.userAgent
       })
     }).then(function (r) {

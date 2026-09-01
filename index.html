@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-x11N72J6eUij4JzxmMNvYlPWym8B3Jl41nJ7+eZx0rM=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-LBHZO+qxanLVTTs5IViT1yC8nwyBDYbjgfqYJXZzL/Q='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-x11N72J6eUij4JzxmMNvYlPWym8B3Jl41nJ7+eZx0rM=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-wmwXjq79Rxdgn20rNes9SmPxSgnVr2etp/HOYtCYxhs='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Every house has a story. | Haunted Mansion BK</title>
@@ -1253,12 +1253,23 @@ form.addEventListener("submit", async e => {
         name, email, phone:(sms && phone) || null, user_agent:navigator.userAgent
       })
     });
-    if(!r.ok && r.status !== 409) throw new Error(String(r.status));
-  }catch(_){
+    if(!r.ok && r.status !== 409){
+      /* The throttle lives in the database and answers 500 with SQLSTATE
+         53400. It is worth telling those two failures apart: one is a
+         connection that might work on the next tap, and the other will not
+         work again until the window closes, so "try again" is the one
+         instruction guaranteed to be wrong. */
+      let code = "";
+      try{ code = (await r.json()).code || ""; }catch(_){}
+      throw new Error(code === "53400" ? "throttled" : String(r.status));
+    }
+  }catch(e){
     sending = false;
     go.disabled = false;
     go.textContent = "Knock on the door";
-    err.textContent = "The door stuck. Try again.";
+    err.textContent = e && e.message === "throttled"
+      ? "Too many names from this connection. Give it a few minutes."
+      : "The door stuck. Try again.";
     /* go.disabled dropped focus to <body> while the request was in flight.
        role=alert announces the message; this puts the cursor back on the
        control the message is about. */

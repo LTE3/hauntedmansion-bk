@@ -319,6 +319,8 @@ button:hover,button:focus-visible{background:#170907;border-color:var(--blood-li
   box-shadow:0 0 34px -12px rgba(201,52,42,.75);outline:none}
 button[disabled]{opacity:.45;cursor:wait}
 .fine{margin:1.4rem 0 0;font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ash)}
+.fine a{color:var(--bone-dim);text-decoration:underline;text-underline-offset:2px}
+.fine a:hover,.fine a:focus-visible{color:var(--bone)}
 .err{margin:.2rem 0 0;font-size:.8rem;letter-spacing:.14em;color:#a4453a;min-height:1.2em}
 
 /* confirmation. Crossfaded rather than switched: the form leaves, a beat
@@ -564,22 +566,22 @@ button[disabled]{opacity:.45;cursor:wait}
       </div>
       <div class="field">
         <input id="name" name="name" type="text" inputmode="text" autocomplete="name"
-               placeholder=" " aria-describedby="err" required>
+               placeholder=" " aria-describedby="err" maxlength="120" required>
         <label for="name">Name</label>
       </div>
       <div class="field">
         <input id="email" name="email" type="email" inputmode="email" autocomplete="email"
-               placeholder=" " aria-describedby="err" required>
+               placeholder=" " aria-describedby="err" maxlength="254" required>
         <label for="email">Email</label>
       </div>
       <div class="field">
         <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel"
-               placeholder=" ">
+               placeholder=" " maxlength="40">
         <label for="phone">Phone number</label>
       </div>
       <p class="err" id="err" role="alert"></p>
       <button type="submit" id="go">Get on the list</button>
-      <p class="fine">Early access. Limited tickets. No spam.</p>
+      <p class="fine">Early access. Limited tickets. No spam. Leave a number only if you want a text when the house opens &mdash; reply STOP any time. <a href="../privacy.html" target="_blank" rel="noopener">What we keep.</a></p>
     </form>
 
     <div class="done" id="done" tabindex="-1" aria-live="polite">
@@ -759,6 +761,7 @@ const err   = document.getElementById("err");
 const go    = document.getElementById("go");
 const done  = document.getElementById("done");
 const knock = document.getElementById("knock");
+let sending = false;
 
 function fail(el, message){
   err.textContent = message;
@@ -773,6 +776,7 @@ function fail(el, message){
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+  if(sending) return;
   err.textContent = "";
   // form.name is the form's own name attribute, not the field. Go through elements.
   const nameEl = form.elements.namedItem("name");
@@ -795,6 +799,7 @@ form.addEventListener("submit", async (e) => {
 
   go.disabled = true;
   go.textContent = "Opening";
+  sending = true;
 
   try{
     const r = await fetch(SUPABASE_URL + "/rest/v1/hm_waitlist", {
@@ -807,12 +812,14 @@ form.addEventListener("submit", async (e) => {
     // A duplicate is not a failure: they are already on the list either way.
     if(!r.ok && r.status !== 409) throw new Error(String(r.status));
   }catch(_){
+    sending = false;
     go.disabled = false;
     go.textContent = "Get on the list";
     err.textContent = "The door stuck. Try again.";
     return;
   }
 
+  sending = false;
   finish();
   paintCount();
 });

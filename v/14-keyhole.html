@@ -290,6 +290,8 @@ h1{
 .submit[disabled]{opacity:.65}
 .err{min-height:21px;color:#ff7a70;font-size:14px;margin:2px 0 8px}
 .fine{font-size:13px!important;color:#85786f!important;margin:11px 0 0!important}
+.fine a{color:#85786f;text-decoration:underline;text-underline-offset:2px}
+.fine a:hover,.fine a:focus-visible{color:var(--bone)}
 .success{display:none;padding:72px 0 36px;outline:0}
 .success strong{display:block;font:700 44px/.95 "Space Grotesk";letter-spacing:-.055em}
 .success span{display:block;margin-top:12px;color:var(--muted)}
@@ -593,13 +595,13 @@ h1{
           <input id="hm_ref" name="hm_ref" type="text" tabindex="-1" autocomplete="off">
         </div>
 
-        <label class="field"><span>Name</span><input id="name" name="name" autocomplete="name" required></label>
-        <label class="field"><span>Email</span><input id="email" name="email" type="email" autocomplete="email" required></label>
-        <label class="field"><span>Phone — optional</span><input id="phone" name="phone" type="tel" autocomplete="tel"></label>
+        <label class="field"><span>Name</span><input id="name" name="name" autocomplete="name" maxlength="120" required></label>
+        <label class="field"><span>Email</span><input id="email" name="email" type="email" autocomplete="email" maxlength="254" required></label>
+        <label class="field"><span>Phone — optional</span><input id="phone" name="phone" type="tel" autocomplete="tel" maxlength="40"></label>
 
         <p class="err" id="err" role="alert"></p>
         <button class="submit" id="go" type="submit">Knock on the door</button>
-        <p class="fine">Early access. Limited tickets. No spam.</p>
+        <p class="fine">Early access. Limited tickets. No spam. Leave a number only if you want a text when the house opens &mdash; reply STOP any time. <a href="../privacy.html" target="_blank" rel="noopener">What we keep.</a></p>
         <div class="counter" id="counter"><strong id="count">—</strong> people are waiting to enter.</div>
       </form>
     </div>
@@ -630,6 +632,7 @@ const formbox = document.getElementById("formbox");
 const err = document.getElementById("err");
 const go = document.getElementById("go");
 let modalTouched = false;
+let sending = false;
 
 /* The scream.
 
@@ -753,6 +756,7 @@ function fail(el, message){
 
 form.addEventListener("submit", async e => {
   e.preventDefault();
+  if(sending) return;
   err.textContent = "";
 
   const nameEl = form.elements.namedItem("name");
@@ -776,6 +780,7 @@ form.addEventListener("submit", async e => {
 
   go.disabled = true;
   go.textContent = "Opening";
+  sending = true;
 
   try{
     const r = await fetch(SUPABASE_URL + "/rest/v1/hm_waitlist", {
@@ -787,12 +792,14 @@ form.addEventListener("submit", async e => {
     });
     if(!r.ok && r.status !== 409) throw new Error(String(r.status));
   }catch(_){
+    sending = false;
     go.disabled = false;
     go.textContent = "Knock on the door";
     err.textContent = "The door stuck. Try again.";
     return;
   }
 
+  sending = false;
   formbox.style.display = "none";
   done.style.display = "block";
   done.focus();

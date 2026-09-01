@@ -42,6 +42,7 @@
   var done = d.done ? document.querySelector(d.done) : null;
   var go = (d.submit && form.querySelector(d.submit)) || form.querySelector("button");
   var goLabel = d.submitLabel || (go && go.textContent.trim()) || "Send";
+  var sending = false;
 
   /* A bot fills in every field it can see, including the ones a person cannot.
      Built here rather than in the markup so the two candidates cannot ship
@@ -96,6 +97,7 @@
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
+    if (sending) return;
     err.textContent = "";
 
     var nameEl = field("name"), emailEl = field("email"), phoneEl = field("phone");
@@ -114,6 +116,7 @@
       return;
     }
 
+    sending = true;
     if (go) { go.disabled = true; go.textContent = "Opening"; }
 
     fetch(URL_ + "/rest/v1/hm_waitlist", {
@@ -127,9 +130,11 @@
       /* 409 is the same address twice. That is a person who already signed
          up, not an error to show them. */
       if (!r.ok && r.status !== 409) throw new Error(String(r.status));
+      sending = false;
       finish();
       paintCount();
     }).catch(function () {
+      sending = false;
       if (go) { go.disabled = false; go.textContent = goLabel; }
       err.textContent = "The door stuck. Try again.";
     });

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Write the Content-Security-Policy meta into each page, hashes and all.
+r"""Write the Content-Security-Policy meta into every page, hashes and all.
 
     python tools/csp.py            # rewrite the policies
     python tools/csp.py --check    # fail if any page's policy is stale
@@ -7,127 +7,148 @@
 GitHub Pages serves static files and gives us no control over response
 headers, so the policy has to travel in the document as
 <meta http-equiv="Content-Security-Policy">. That works for everything here
-except frame-ancestors, which is specified as ignored in meta - clickjacking
-has to be handled another way and is noted at the bottom of this file.
+except frame-ancestors, which is specified as ignored in meta; see the note at
+the bottom of this file.
 
-Why this is a script and not four hand-typed meta tags: the policy names the
+Why this is a script and not twenty hand-typed meta tags: the policy names the
 sha256 of every inline <script> and <style> on the page, so editing one
 character of CSS invalidates the hash and the entire stylesheet stops
-applying - silently, with a console error nobody reads and a page that looks
+applying - silently, with a console message nobody reads and a page that looks
 like the CSS 404'd. Any hand-edit to these files must be followed by a run of
-this script, and --check in a pre-push hook or by hand catches the times it
-was not.
+this script, and --check catches the times it was not.
 
-The hash covers the element's text content *after* the HTML parser has seen
-it, not the bytes on disk. That distinction is the whole trap: these files are
+The trap, found the hard way: the hash covers the element's text content
+*after* the HTML parser has seen it, not the bytes on disk. These files are
 stored with CRLF, but the parser's input-stream preprocessing turns every CRLF
 into a single LF before any element content exists, so the browser hashes
 LF-only text. Hashing the file bytes verbatim gives a digest that is right
-about the file and wrong about the page, and the only symptom is an unstyled
-page. So: the files are read and written as bytes and never normalised on
-disk, and newlines are normalised only on the way into the hash.
+about the file and wrong about the page. The files stay CRLF on disk; only the
+hash input is normalised.
 """
-import base64, hashlib, io, os, re, sys
+import base64, glob, hashlib, io, os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SUPABASE = "https://tqeunmqnaoyrerkbhokk.supabase.co"
 FONTS_CSS = "https://fonts.googleapis.com"
 FONTS_FILES = "https://fonts.gstatic.com"
 
-# Per page: does it talk to the database, and does it load media or a manifest.
-PAGES = {
-    "index.html":   dict(connect=True,  media=True),
-    "privacy.html": dict(connect=False, media=False),
-    "404.html":     dict(connect=False, media=False),
-    "v/index.html": dict(connect=False, media=False),
-}
+# Every page in the site, found rather than listed. A hand-kept table is one
+# more thing to forget to update, and a page missing from it ships with no
+# policy at all - the failure that looks exactly like success.
+PAGES = ["index.html", "privacy.html", "404.html"] + sorted(
+    os.path.relpath(f, ROOT).replace(os.sep, "/")
+    for f in glob.glob(os.path.join(ROOT, "v", "*.html")))
 
 TAG = re.compile(rb"<(script|style)(?![a-zA-Z-])([^>]*)>(.*?)</\1\s*>", re.S | re.I)
-META = re.compile(rb'[ \t]*<meta http-equiv="Content-Security-Policy"[^>]*>\r?\n', re.I)
-REFERRER = re.compile(rb'[ \t]*<meta name="referrer"[^>]*>\r?\n', re.I)
-ANCHOR = re.compile(rb"(<meta charset=[^>]*>\r?\n)", re.I)
+# The trailing newline is optional on all three: two of the variant pages are
+# minified onto single lines, so a pattern that insists on one silently
+# matches nothing there and the old policy is never removed before the new one
+# is inserted.
+META = re.compile(rb'[ \t]*<meta http-equiv="Content-Security-Policy"[^>]*>(\r?\n)?', re.I)
+REFERRER = re.compile(rb'[ \t]*<meta name="referrer"[^>]*>(\r?\n)?', re.I)
+ANCHOR = re.compile(rb"<meta charset=[^>]*>", re.I)
 
 
 def sha(body):
-    # See the CRLF note at the top of this file. This is the parser's
-    # own newline normalisation, reproduced: CRLF and a lone CR both
-    # become LF. Without it every hash on every page is wrong.
-    body = body.replace(b'\r\n', b'\n').replace(b'\r', b'\n')
+    # The parser's own newline normalisation, reproduced: CRLF and a lone CR
+    # both become LF. See the note at the top. Without this every hash on
+    # every page is wrong and every page renders unstyled.
+    body = body.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
     return "'sha256-%s'" % base64.b64encode(hashlib.sha256(body).digest()).decode()
 
 
-def policy(html, opts):
-    scripts, styles = [], []
+def policy(html):
+    """Derive the policy from what the page actually contains.
+
+    Asking the file beats keeping a table beside it: a page that starts
+    loading audio, or stops talking to the database, gets the right policy on
+    the next run instead of the policy someone remembered to update.
+    """
+    scripts, styles, external_script = [], [], False
     for m in TAG.finditer(html):
         kind, attrs, body = m.group(1).lower(), m.group(2), m.group(3)
         if b"src=" in attrs or b"href=" in attrs:
-            continue          # external, covered by a host source instead
+            # An external file, covered by a host source rather than a hash.
+            external_script = external_script or kind == b"script"
+            continue
         (scripts if kind == b"script" else styles).append(sha(body))
+    if external_script:
+        scripts.append("'self'")
+
+    # A page reaches the database either directly or through waitlist.js.
+    connect = SUPABASE.encode() in html or b"waitlist.js" in html
+    media = bool(re.search(rb"new Audio|<audio|<video", html, re.I))
+    manifest = b'rel="manifest"' in html
 
     d = [
         # Nothing loads unless a directive below names it. Everything the page
-        # actually uses is enumerated, so an injected <img>, <iframe>, ping,
+        # actually uses is enumerated, so an injected iframe, image, ping,
         # websocket or worker has no fetch directive to fall back to.
         "default-src 'none'",
         # A single injected <base> would otherwise repoint every relative URL
-        # on the page - all of the images, the audio, the stylesheet.
+        # on the page at once - the images, the audio, the stylesheet.
         "base-uri 'none'",
         # The form is submitted by fetch, never natively. Blocking native
-        # submission also stops the no-JS fallback path, which would have put
-        # the visitor's name and email in a URL query string.
+        # submission also closes the no-JS fallback path, which would have put
+        # the visitor's name and email into a URL query string.
         "form-action 'none'",
-        "img-src 'self' data:",       # data: is the inline SVG favicon
+        "img-src 'self' data:",        # data: is the inline SVG favicon
         "style-src %s %s" % (" ".join(styles), FONTS_CSS),
         "font-src %s" % FONTS_FILES,
         "script-src %s" % (" ".join(scripts) if scripts else "'none'"),
-        "connect-src %s" % (SUPABASE if opts["connect"] else "'none'"),
+        "connect-src %s" % (SUPABASE if connect else "'none'"),
         "frame-src 'none'",
         "object-src 'none'",
     ]
-    if opts["media"]:
-        d += ["media-src 'self'", "manifest-src 'self'"]
+    if media:
+        d.append("media-src 'self'")
+    if manifest:
+        d.append("manifest-src 'self'")
     return "; ".join(d)
 
 
-def render(html, opts):
-    tags = (
-        '<meta http-equiv="Content-Security-Policy" content="%s">\n'
-        '<meta name="referrer" content="no-referrer">\n' % policy(html, opts)
-    ).encode()
-    if b"\r\n" in html:
-        tags = tags.replace(b"\n", b"\r\n")
+def render(html):
+    p = policy(html)
     html = META.sub(b"", REFERRER.sub(b"", html))
     m = ANCHOR.search(html)
     assert m, "no <meta charset> to anchor to"
-    return html[:m.end(1)] + tags + html[m.end(1):]
+
+    # Follow the file's own shape rather than imposing one. Most pages are
+    # laid out a tag per line; two of the variants are minified onto a single
+    # line, and pushing newlines into the middle of those would be a
+    # gratuitous diff on a file this script is not otherwise rewriting.
+    eol = b"\r\n" if html[m.end():m.end() + 2] == b"\r\n" else b""
+    tags = (b'<meta http-equiv="Content-Security-Policy" content="' + p.encode()
+            + b'">' + eol + b'<meta name="referrer" content="no-referrer">' + eol)
+    at = m.end() + len(eol)
+    return html[:at] + tags + html[at:]
 
 
 check = "--check" in sys.argv
-bad = 0
-for name, opts in PAGES.items():
+stale = []
+for name in PAGES:
     p = os.path.join(ROOT, name.replace("/", os.sep))
     cur = io.open(p, "rb").read()
-    new = render(cur, opts)
+    new = render(cur)
     if cur == new:
-        print("  ok      %s" % name)
         continue
-    bad += 1
-    if check:
-        print("  STALE   %s" % name)
-    else:
+    stale.append(name)
+    if not check:
         io.open(p, "wb").write(new)
-        print("  written %s" % name)
 
-if check and bad:
-    sys.exit("\n%d page(s) have a stale policy. Run: python tools/csp.py" % bad)
-print("\n%d page(s) %s" % (len(PAGES), "checked" if check else "up to date"))
+verb = "stale" if check else "written"
+for n in stale:
+    print("  %-8s %s" % (verb, n))
+print("\n%d page(s) checked, %d %s" % (len(PAGES), len(stale), verb))
+if check and stale:
+    sys.exit("\nRun: python tools/csp.py")
 
 # Not covered here, deliberately:
 #
 #   frame-ancestors  Ignored in a meta tag by specification, so the page can
-#                    still be framed. GitHub Pages sends no X-Frame-Options
-#                    either. Worth a real header once the site moves behind a
-#                    host that can send one.
+#                    still be framed, and GitHub Pages sends no
+#                    X-Frame-Options either. Needs a real header, which needs
+#                    a host that can send one.
 #   Trusted Types    require-trusted-types-for would be the next rung up, but
-#                    the page builds no HTML from strings - every insertion is
-#                    textContent - so there is nothing for it to protect yet.
+#                    nothing here builds HTML from strings - every insertion
+#                    is textContent - so there is nothing for it to protect.

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-Y3BHkvOwqmn/7dGcc0Wds87W8Nhpblwav6xAR9L8ZcA=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'none'; connect-src 'none'; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-0maBXuHDQh/8MpatQCt+uRtZ08WktBxh5L3u5lxIx8A=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-HhkYxQ2arGjTtOyEEO4Zb5ESxGp35vL/Nt8c+m62HU4='; connect-src 'none'; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
@@ -27,15 +27,26 @@
   --red-l:#f04a3f;
   --line:rgba(255,255,255,.14);
   --ease:cubic-bezier(.16,1,.3,1);
+  /* One gutter for the header and the reel, so the first phone lines up with
+     the first letter of the headline above it. */
+  --gutter:clamp(18px,5vw,40px);
+  /* Width of one phone. On a phone this leaves a sliver of the next one
+     showing at the edge, which is the only instruction anyone needs. */
+  --w:min(68vw,320px);
+  --gap:18px;
 }
+@media(min-width:1260px){:root{--gutter:calc((100vw - 1180px) / 2 + 40px)}}
+@media(min-width:900px){:root{--w:260px;--gap:26px}}
+
 *{box-sizing:border-box}
 html{background:#000;-webkit-text-size-adjust:100%}
 body{
   margin:0;background:var(--ink);color:var(--bone);
   font:500 17px/1.5 "DM Sans",system-ui,sans-serif;
-  -webkit-font-smoothing:antialiased;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
 }
-.wrap{max-width:1180px;margin:0 auto;padding:clamp(28px,7vw,72px) clamp(18px,5vw,40px) 96px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 var(--gutter)}
+header.wrap{padding-top:clamp(26px,6vw,64px)}
 
 .eyebrow{
   display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
@@ -48,127 +59,228 @@ body{
   margin-right:9px;vertical-align:1px;
 }
 h1{
-  font:700 clamp(34px,8.5vw,62px)/.94 "Space Grotesk",sans-serif;
-  letter-spacing:-.02em;text-wrap:balance;margin:22px 0 0;
+  font:700 clamp(32px,8vw,60px)/.94 "Space Grotesk",sans-serif;
+  letter-spacing:-.02em;text-wrap:balance;margin:20px 0 0;
 }
 h1 span{color:var(--red)}
-.dek{color:var(--muted);max-width:56ch;margin:16px 0 0;font-size:16px;line-height:1.6}
+.dek{color:var(--muted);max-width:58ch;margin:34px 0 0;font-size:15.5px;line-height:1.6}
+
+/* The reel head: where you are, how to move, what a tap does. */
+.reel-head{
+  display:flex;justify-content:space-between;align-items:flex-end;gap:16px;
+  margin:22px 0 14px;
+}
+.count{
+  font:700 clamp(24px,5vw,34px)/1 "Space Grotesk",sans-serif;letter-spacing:-.03em;
+  font-variant-numeric:tabular-nums;
+}
+.count span{color:var(--muted);font-size:.5em;letter-spacing:.02em;margin-left:4px;vertical-align:.12em}
+.how{margin:6px 0 0;color:var(--muted);font-size:13px;line-height:1.5;max-width:30ch}
+.nav{display:flex;gap:8px;flex:none}
+.nav button{
+  width:46px;height:46px;border-radius:50%;border:1px solid var(--line);
+  background:transparent;color:var(--bone);cursor:pointer;font:inherit;
+  display:grid;place-items:center;
+  transition:border-color .3s var(--ease),background .3s var(--ease),transform .3s var(--ease);
+}
+.nav button:hover{border-color:rgba(227,48,39,.6);background:rgba(227,48,39,.08)}
+.nav button:active{transform:scale(.94)}
+.nav button:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.nav svg{width:18px;height:18px;display:block}
+
+/* The reel. Horizontal, snapping, one phone per swipe. The list goes edge to
+   edge so a phone can sit in the gutter, but the snap padding brings each one
+   to rest in line with the text above. */
+.reel{
+  list-style:none;margin:0;padding:6px var(--gutter) 10px;
+  display:flex;gap:var(--gap);
+  overflow-x:auto;overflow-y:hidden;
+  scroll-snap-type:x mandatory;scroll-padding-inline:var(--gutter);
+  scrollbar-width:none;-webkit-overflow-scrolling:touch;
+}
+.reel::-webkit-scrollbar{display:none}
+.slide{flex:0 0 var(--w);scroll-snap-align:start}
+@media(max-width:899px){
+  .reel{padding-inline:calc((100vw - var(--w)) / 2)}
+  .slide{scroll-snap-align:center}
+}
+
+/* The phone is the link. It is drawn as a bezel and nothing else - a real
+   render inside a thin dark frame - because the render is what is being
+   judged, and a plastic device mock-up would be judging it for you. */
+.phone{
+  display:block;position:relative;aspect-ratio:390/844;
+  padding:6px;border-radius:30px;background:#0c0908;
+  border:1px solid rgba(255,255,255,.2);
+  box-shadow:0 34px 60px -28px rgba(0,0,0,.95);
+  transition:transform .45s var(--ease),border-color .3s var(--ease),box-shadow .45s var(--ease);
+}
+.phone:hover,.phone:focus-visible{
+  transform:translateY(-4px);border-color:rgba(227,48,39,.6);
+  box-shadow:0 40px 70px -28px rgba(0,0,0,1),0 0 0 6px rgba(227,48,39,.07);
+}
+.phone:focus-visible{outline:2px solid var(--red);outline-offset:4px}
+.phone img{
+  display:block;width:100%;height:100%;object-fit:cover;border-radius:24px;
+  background:#000;
+}
+.badge{
+  position:absolute;right:16px;top:16px;padding:6px 9px;border-radius:999px;
+  font:700 10px/1 "Space Grotesk",sans-serif;letter-spacing:.12em;
+  text-transform:uppercase;background:var(--red);color:#fff;
+}
+
+.meta{padding:16px 4px 0}
+.num{
+  font:700 11px/1 "Space Grotesk",sans-serif;letter-spacing:.14em;color:var(--red-l);
+}
+/* An h2 inside a card, so the browser default margin and size have to go -
+   the heading level is here for the reading order, not for the type scale. */
+.name{
+  font:700 19px/1.2 "Space Grotesk",sans-serif;letter-spacing:-.01em;margin:6px 0 0;
+}
+.fam{
+  display:block;margin:6px 0 0;
+  font:700 10px/1 "Space Grotesk",sans-serif;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted);
+}
+.what{margin:10px 0 0;color:var(--muted);font-size:13.5px;line-height:1.5}
 
 .warn{
-  margin:30px 0 0;padding:14px 16px;border:1px solid var(--line);
+  margin:28px 0 0;padding:14px 16px;border:1px solid var(--line);
   border-left:2px solid var(--red);background:var(--ink2);
   color:var(--muted);font-size:14px;line-height:1.55;max-width:62ch;
 }
 .warn b{color:var(--bone);font-weight:600}
-
-.grid{
-  list-style:none;margin:44px 0 0;padding:0;display:grid;gap:26px;
-  grid-template-columns:repeat(auto-fill,minmax(258px,1fr));
-}
-.card a{
-  display:block;text-decoration:none;color:inherit;
-  border:1px solid var(--line);background:var(--ink2);
-  transition:border-color .3s var(--ease),transform .3s var(--ease);
-}
-.card a:hover,.card a:focus-visible{border-color:rgba(227,48,39,.55);transform:translateY(-3px)}
-.card a:focus-visible{outline:2px solid var(--red);outline-offset:3px}
-.shot{position:relative;display:block;aspect-ratio:16/10;overflow:hidden;background:#000}
-.shot img{
-  display:block;width:100%;height:100%;object-fit:cover;
-  filter:saturate(.9) brightness(.92);transition:filter .4s var(--ease);
-}
-.card a:hover .shot img,.card a:focus-visible .shot img{filter:saturate(1) brightness(1.04)}
-.num{
-  position:absolute;left:0;top:0;padding:6px 9px;
-  font:700 11px/1 "Space Grotesk",sans-serif;letter-spacing:.1em;
-  background:rgba(3,2,2,.82);color:var(--muted);
-}
-.badge{
-  position:absolute;right:0;top:0;padding:6px 9px;
-  font:700 10px/1 "Space Grotesk",sans-serif;letter-spacing:.12em;
-  text-transform:uppercase;background:var(--red);color:#fff;
-}
-.meta{padding:14px 15px 16px;border-top:1px solid var(--line)}
-/* An h2 inside a card, so the browser default margin and size have to go -
-   the heading level is here for the reading order, not for the type scale. */
-.name{
-  font:700 15px/1.25 "Space Grotesk",sans-serif;letter-spacing:.01em;margin:0;
-}
-.fam{
-  display:block;margin:7px 0 0;
-  font:700 10px/1 "Space Grotesk",sans-serif;letter-spacing:.13em;
-  text-transform:uppercase;color:var(--red-l);
-}
-.what{margin:9px 0 0;color:var(--muted);font-size:13.5px;line-height:1.5}
-
 .foot{
-  margin:64px 0 0;padding-top:22px;border-top:1px solid var(--line);
+  margin:40px 0 0;padding:22px 0 96px;border-top:1px solid var(--line);
   color:var(--muted);font-size:13.5px;line-height:1.6;max-width:62ch;
 }
 .foot a{color:var(--red);text-decoration:none;border-bottom:1px solid rgba(227,48,39,.4)}
 .foot a:hover,.foot a:focus-visible{border-bottom-color:var(--red)}
 
-@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media(prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+  .reel{scroll-behavior:auto}
+}
 </style>
 </head>
 <body>
+
+<header class="wrap">
+  <p class="eyebrow"><span><span class="dot"></span>Haunted Mansion BK &middot; every version</span><span>21 built &middot; 7 standing</span></p>
+  <h1>Seven doors.<br><span>Fourteen came down.</span></h1>
+
+  <div class="reel-head">
+    <div>
+      <p class="count" aria-live="polite"><b id="cur">1</b><span>/ 7</span></p>
+      <p class="how">Swipe, or use the arrows. Tap a phone to open it.</p>
+    </div>
+    <div class="nav">
+      <button type="button" id="prev" aria-label="Previous version"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <button type="button" id="next" aria-label="Next version"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<ul class="reel" id="reel" aria-label="The seven versions, as they look on a phone">
+
+  <li class="slide">
+    <a class="phone" href="17-wideopen.html" aria-labelledby="n17">
+      <img src="thumb/17-wideopen-phone.webp" width="780" height="1688" alt="The house full-screen at night, porch lit red, the words The lights are already on over the path.">
+      <span class="badge">New</span>
+    </a>
+    <div class="meta"><span class="num">17</span><h2 class="name" id="n17">Wide open</h2><span class="fam">The house</span>
+    <p class="what">The first one built on the footage from the set. Nothing cropped, nothing hidden &mdash; the whole house, and the type kept small enough to stay out of its way.</p></div>
+  </li>
+
+  <li class="slide">
+    <a class="phone" href="18-plate.html" aria-labelledby="n18">
+      <img src="thumb/18-plate-phone.webp" width="780" height="1688" alt="The house as a small framed print at the top of the screen, with a serif headline beneath it." loading="lazy">
+      <span class="badge">New</span>
+    </a>
+    <div class="meta"><span class="num">18</span><h2 class="name" id="n18">Plate</h2><span class="fam">The house</span>
+    <p class="what">Stops pretending a portrait photograph is a wallpaper and hangs it instead. The copy is a museum label, and the restraint is what does the frightening.</p></div>
+  </li>
+
+  <li class="slide">
+    <a class="phone" href="19-porchlight.html" aria-labelledby="n19">
+      <img src="thumb/19-porchlight-phone.webp" width="780" height="1688" alt="The screen almost black, a small circle of light around the front door, and the words Look long enough and it opens beneath it." loading="lazy">
+      <span class="badge">New</span>
+    </a>
+    <div class="meta"><span class="num">19</span><h2 class="name" id="n19">Porch light</h2><span class="fam">The house</span>
+    <p class="what">What 14 was doing, with the real house instead of a keyhole. Everything but the lit door is masked off, and the mask opens the longer you stay.</p></div>
+  </li>
+
+  <li class="slide">
+    <a class="phone" href="20-notice.html" aria-labelledby="n20">
+      <img src="thumb/20-notice-phone.webp" width="780" height="1688" alt="The house at night filling the top of the screen, a red band reading Notice of occupancy along the bottom." loading="lazy">
+      <span class="badge">New</span>
+    </a>
+    <div class="meta"><span class="num">20</span><h2 class="name" id="n20">Notice</h2><span class="fam">The house</span>
+    <p class="what">The cold one. The photograph is evidence stapled to a municipal notice, and every fact on it is one we can actually stand behind.</p></div>
+  </li>
+
+  <li class="slide">
+    <a class="phone" href="21-approach.html" aria-labelledby="n21">
+      <img src="thumb/21-approach-phone.webp" width="780" height="1688" alt="The words You have walked past it a hundred times above the house, which stands small at the bottom of the screen." loading="lazy">
+      <span class="badge">New</span>
+    </a>
+    <div class="meta"><span class="num">21</span><h2 class="name" id="n21">Approach</h2><span class="fam">The house</span>
+    <p class="what">Motion is the argument. The house starts far off and gets closer as you scroll, until you are at the steps and the only thing left is the door.</p></div>
+  </li>
+
+  <li class="slide">
+    <a class="phone" href="15-livingdoor.html" aria-labelledby="n15">
+      <img src="thumb/15-livingdoor-phone.webp" width="780" height="1688" alt="A tall portrait card showing a lit porch, with the words THE HOUSE IS AWAKE beneath it." loading="lazy">
+    </a>
+    <div class="meta"><span class="num">15</span><h2 class="name" id="n15">Living door</h2><span class="fam">Broke the format</span>
+    <p class="what">A portrait card instead of a full-bleed hero, with the claim underneath it. Built for a phone screen and for a feed.</p></div>
+  </li>
+
+  <li class="slide">
+    <a class="phone" href="16-thelist.html" aria-labelledby="n16">
+      <img src="thumb/16-thelist-phone.webp" width="780" height="1688" alt="A lit mansion porch behind red type reading Not everyone gets in. Put your name down." loading="lazy">
+    </a>
+    <div class="meta"><span class="num">16</span><h2 class="name" id="n16">The list</h2><span class="fam">Broke the format</span>
+    <p class="what">The only one that argues instead of atmospheres. Names come off the list first &mdash; the page is the signup, not a trailer for one.</p></div>
+  </li>
+
+</ul>
+
 <div class="wrap">
-
-  <header>
-    <p class="eyebrow"><span><span class="dot"></span>Haunted Mansion BK &middot; every version</span><span>21 built &middot; 7 standing</span></p>
-    <h1>Seven doors.<br><span>Fourteen came down.</span></h1>
-    <p class="dek">Twenty-one front pages were built for the house. These are the seven still standing: the five newest, which are the first built on a photograph of the actual house rather than on a set dressed to look like one, and the two before them that broke the format. The fourteen that came down are in the repository&rsquo;s history, not on the site. The numbers are the sequence they were built in, not a ranking, and every one of these still works.</p>
-    <p class="warn"><b>These are live pages, not mockups.</b> Every form on them writes a real row into the production waitlist table, so every submit button on every one of them is the real one.</p>
-  </header>
-
-  <ul class="grid">
-
-    <li class="card"><a href="17-wideopen.html">
-      <span class="shot"><img src="thumb/17-wideopen.webp" alt="A wide shot of the mansion at night, porch lit red, a lantern-lined path running up to the front door." loading="lazy" width="560" height="350"><span class="num">17</span><span class="badge">New</span></span>
-      <div class="meta"><h2 class="name">Wide open</h2><span class="fam">The house</span>
-      <span class="what">The first one built on the footage from the set. Nothing cropped, nothing hidden - the whole house, and the type kept small enough to stay out of its way.</span></div>
-    </a></li>
-
-    <li class="card"><a href="18-plate.html">
-      <span class="shot"><img src="thumb/18-plate.webp" alt="The mansion photographed at night, hung as a print on a black mat beside a gallery label." loading="lazy" width="560" height="350"><span class="num">18</span><span class="badge">New</span></span>
-      <div class="meta"><h2 class="name">Plate</h2><span class="fam">The house</span>
-      <span class="what">Stops pretending a portrait photograph is a wallpaper and hangs it instead. The copy is a museum label, and the restraint is what does the frightening.</span></div>
-    </a></li>
-
-    <li class="card"><a href="19-porchlight.html">
-      <span class="shot"><img src="thumb/19-porchlight.webp" alt="Almost all black, with a circle of light around the mansion's lit doorway and lanterns." loading="lazy" width="560" height="350"><span class="num">19</span><span class="badge">New</span></span>
-      <div class="meta"><h2 class="name">Porch light</h2><span class="fam">The house</span>
-      <span class="what">What 14 was doing, with the real house instead of a keyhole. Everything but the lit door is masked off, and the mask opens the longer you stay.</span></div>
-    </a></li>
-
-    <li class="card"><a href="20-notice.html">
-      <span class="shot"><img src="thumb/20-notice.webp" alt="The mansion greyed out behind a document with a red banner reading Notice of occupancy." loading="lazy" width="560" height="350"><span class="num">20</span><span class="badge">New</span></span>
-      <div class="meta"><h2 class="name">Notice</h2><span class="fam">The house</span>
-      <span class="what">The cold one. The photograph is evidence stapled to a municipal notice, and every fact on it is one we can actually stand behind.</span></div>
-    </a></li>
-
-    <li class="card"><a href="21-approach.html">
-      <span class="shot"><img src="thumb/21-approach.webp" alt="The mansion small and distant in a black field, with the words You have walked past it a hundred times." loading="lazy" width="560" height="350"><span class="num">21</span><span class="badge">New</span></span>
-      <div class="meta"><h2 class="name">Approach</h2><span class="fam">The house</span>
-      <span class="what">Motion is the argument. The house starts far off and gets closer as you scroll, until you are at the steps and the only thing left is the door.</span></div>
-    </a></li>
-
-    <li class="card"><a href="15-livingdoor.html">
-      <span class="shot"><img src="thumb/15-livingdoor.webp" alt="A tall portrait card showing a lit porch, with the words THE HOUSE IS AWAKE beneath it." loading="lazy" width="560" height="350"><span class="num">15</span></span>
-      <div class="meta"><h2 class="name">Living door</h2><span class="fam">Broke the format</span>
-      <span class="what">A portrait card instead of a full-bleed hero, with the claim underneath it. Built for a phone screen and for a feed.</span></div>
-    </a></li>
-
-    <li class="card"><a href="16-thelist.html">
-      <span class="shot"><img src="thumb/16-thelist.webp" alt="A lit mansion porch behind red type reading Not everyone gets in. Put your name down." loading="lazy" width="560" height="350"><span class="num">16</span></span>
-      <div class="meta"><h2 class="name">The list</h2><span class="fam">Broke the format</span>
-      <span class="what">The only one that argues instead of atmospheres. Names come off the list first &mdash; the page is the signup, not a trailer for one.</span></div>
-    </a></li>
-
-  </ul>
-
+  <p class="dek">Twenty-one front pages were built for the house. These are the seven still standing, shown the way nearly everyone will meet them: on a phone. 17 to 21 are the newest and the first built on a photograph of the actual house. 15 and 16 are the two before them that broke the format. The rest are in the repository&rsquo;s history, not on the site.</p>
+  <p class="warn"><b>These are live pages, not mockups.</b> Every form on them writes a real row into the production waitlist table, so every submit button on every one of them is the real one.</p>
   <p class="foot"><a href="../">The live page</a> is still built from fourteen, the keyhole, which came down from this gallery with the rest of the first fourteen. It stays on the front door until one of these replaces it. The five newest are the only ones built on the house itself.</p>
-
 </div>
+
+<script>
+/* Arrows and the counter. Without script the reel still swipes and snaps,
+   the counter just reads 1 and the arrows do nothing - nothing here is
+   load-bearing. */
+(function(){
+  var reel = document.getElementById("reel");
+  var cur = document.getElementById("cur");
+  var slides = [].slice.call(reel.children);
+  var still = matchMedia("(prefers-reduced-motion: reduce)");
+  function step(){
+    var cs = getComputedStyle(reel);
+    return slides[0].getBoundingClientRect().width + (parseFloat(cs.columnGap) || 0);
+  }
+  function go(dir){
+    reel.scrollBy({left: dir * step(), behavior: still.matches ? "auto" : "smooth"});
+  }
+  document.getElementById("prev").addEventListener("click", function(){ go(-1); });
+  document.getElementById("next").addEventListener("click", function(){ go(1); });
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (e.isIntersecting) cur.textContent = slides.indexOf(e.target) + 1;
+      });
+    }, {root: reel, threshold: .6});
+    slides.forEach(function(s){ io.observe(s); });
+  }
+})();
+</script>
 </body>
 </html>

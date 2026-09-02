@@ -23,7 +23,7 @@
 })();
 </script>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-EIy+qoubtThxZy8vf2nZsbU+qazgkxPROua+cQ+qldQ=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-Rjt0i4trpys9fP0m5QIS/Ihq/b54ce5HwcR0qvt6S6g=' 'sha256-cy/magVvFvv8o0sTep6F4MOlDXuhafpfkSd4Cu+Oss0=' 'sha256-LEqZ9iXdcFkR5xbxvJZAxvjbCAU8TQ0+w9xU+D4PkyQ=' 'self'; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-l7tTaN4yePk9vtsElpqI/uz9xSW5jTNqYFTnzTjD4XI=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-Rjt0i4trpys9fP0m5QIS/Ihq/b54ce5HwcR0qvt6S6g=' 'sha256-cy/magVvFvv8o0sTep6F4MOlDXuhafpfkSd4Cu+Oss0=' 'sha256-LEqZ9iXdcFkR5xbxvJZAxvjbCAU8TQ0+w9xU+D4PkyQ=' 'self'; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050303">
@@ -47,8 +47,16 @@
    on the balcony rail. Cover plus object-position pins the front door under
    the hole at every size, which is the only thing this design has to get
    right. */
-.lamp{position:absolute;inset:0;z-index:-2;--cx:50%;--cy:35%}
-.lamp img{width:100%;height:100%;object-fit:cover;object-position:50% 44%;
+/* On a phone the picture takes the top 58svh and the words take the rest, so
+   the hole and the headline never want the same pixels - the first cut had
+   the kicker sitting on the lit porch, red on red. cover into a 390x489 box
+   crops the sidewalk and puts the front door at about 65% of the box, which
+   is where the hole is; the container mask fades the picture's cut bottom
+   edge into the ground the copy sits on. */
+.lamp{position:absolute;inset:0 0 auto 0;height:58svh;z-index:-2;--cx:50%;--cy:65%;
+  -webkit-mask-image:linear-gradient(180deg,#000 74%,transparent);
+  mask-image:linear-gradient(180deg,#000 74%,transparent)}
+.lamp img{width:100%;height:100%;object-fit:cover;object-position:50% 38%;
   /* --open runs 0 to 1 and both the mask stop and the exposure ride it, so the
      house does not only get bigger, it gets brighter - the way something does
      when you stop squinting at it. */
@@ -59,9 +67,12 @@
 /* On a phone the hole sits above the copy and the copy sits on the floor;
    on a wide screen they go side by side. Either way the headline never lands
    on top of the lit door, which is the one part of the picture worth seeing. */
-@media(min-width:900px){.lamp{--cx:70%;--cy:50%}}
+@media(min-width:900px){
+  .lamp{inset:0;height:auto;--cx:70%;--cy:50%;-webkit-mask-image:none;mask-image:none}
+  .lamp img{object-position:50% 44%}
+}
 
-.glow{position:absolute;left:var(--gx,50%);top:var(--gy,35%);translate:-50% -50%;
+.glow{position:absolute;left:var(--gx,50%);top:var(--gy,38%);translate:-50% -50%;
   z-index:-3;width:min(86vw,540px);aspect-ratio:1;border-radius:50%;
   background:radial-gradient(closest-side,rgba(223,45,37,.3),transparent 70%);
   filter:blur(40px);animation:pulse 6s ease-in-out infinite}
@@ -70,9 +81,9 @@
 
 .copy{position:relative;max-width:620px}
 @media(min-width:900px){.copy{max-width:min(46vw,560px)}}
-.kicker{margin:0 0 16px;font:600 11px/1 "Space Grotesk",sans-serif;
+.kicker{margin:0 0 12px;font:600 11px/1 "Space Grotesk",sans-serif;
   letter-spacing:.24em;text-transform:uppercase;color:var(--red)}
-h1{margin:0;font:400 clamp(38px,7.4vw,80px)/.92 "Archivo Black",Impact,sans-serif;
+h1{margin:0;font:400 clamp(36px,7.4vw,80px)/.92 "Archivo Black",Impact,sans-serif;
   letter-spacing:-.028em;text-transform:uppercase;text-wrap:balance}
 h1 span{color:var(--red);text-shadow:0 0 34px rgba(223,45,37,.55)}
 .lead{margin:22px 0 0;max-width:40ch;color:#c4b6ac;

@@ -23,7 +23,7 @@
 })();
 </script>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-osjmtlez55HuNAK6jA7PUHKG2P2D1U/AvwaZb70qyPI=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-Rjt0i4trpys9fP0m5QIS/Ihq/b54ce5HwcR0qvt6S6g=' 'sha256-cy/magVvFvv8o0sTep6F4MOlDXuhafpfkSd4Cu+Oss0=' 'self'; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-nOSAL1MeTal9TFDbPluojSvGVFrwPkxLRUnftDmOgvc=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-Rjt0i4trpys9fP0m5QIS/Ihq/b54ce5HwcR0qvt6S6g=' 'sha256-cy/magVvFvv8o0sTep6F4MOlDXuhafpfkSd4Cu+Oss0=' 'self'; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050303">
@@ -45,6 +45,18 @@
   filter:grayscale(.5) brightness(.78) contrast(1.14)}
 .ev:after{content:"";position:absolute;inset:0;
   background:linear-gradient(180deg,rgba(5,3,3,.78),rgba(5,3,3,.34) 45%,rgba(5,3,3,.88))}
+/* On a phone the sheet is taller than the screen, and centred it covered the
+   photograph completely - a text page. So the picture is pinned to the
+   viewport at the size it fills honestly, the first screen is the house with
+   the red band of the notice showing along the bottom edge, and the sheet
+   slides up over the evidence as you read. The grade lifts to match: it is
+   the hero now, not the backdrop. */
+@media(max-width:899px){
+  .hero{align-content:end;padding-top:70svh}
+  .ev{position:fixed}
+  .ev img{object-position:50% 50%;filter:grayscale(.35) brightness(.88) contrast(1.12)}
+  .ev:after{background:linear-gradient(180deg,rgba(5,3,3,.44),rgba(5,3,3,.08) 42%,rgba(5,3,3,.5) 74%,rgba(5,3,3,.92))}
+}
 
 .sheet{width:min(760px,100%);margin:0 auto;border:1px solid var(--line);
   background:rgba(6,4,4,.9);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}

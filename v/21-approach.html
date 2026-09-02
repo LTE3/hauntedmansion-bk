@@ -23,7 +23,7 @@
 })();
 </script>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-1W0f1eho2hRXP0xmLPibFCMZUL3rqD3dC3EVJyWay/g=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-Rjt0i4trpys9fP0m5QIS/Ihq/b54ce5HwcR0qvt6S6g=' 'sha256-cy/magVvFvv8o0sTep6F4MOlDXuhafpfkSd4Cu+Oss0=' 'sha256-/V9ghvovtaWfaJZr1m2qtJmJgH14ieOXMaW6bJUfHrc=' 'self'; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-ODki0oid2f+Af/r2WUhMtoZ2LQeTsS3pQWbP3X0hS/g=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-Rjt0i4trpys9fP0m5QIS/Ihq/b54ce5HwcR0qvt6S6g=' 'sha256-cy/magVvFvv8o0sTep6F4MOlDXuhafpfkSd4Cu+Oss0=' 'sha256-/V9ghvovtaWfaJZr1m2qtJmJgH14ieOXMaW6bJUfHrc=' 'self'; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050303">
@@ -59,6 +59,15 @@
 .l2{top:14svh;opacity:0;opacity:clamp(0,calc(1 - abs(var(--p,0) - .45) * 6),1)}
 .l3{bottom:16svh;opacity:clamp(0,calc((var(--p,0) - .74) * 5),1)}
 .l3 p{color:var(--red)}
+/* A portrait picture on a portrait screen has no reason to start small. It
+   also stands on the bottom edge rather than floating in the middle, so the
+   path stays under your feet as the house comes up to meet you, and the
+   headline has the top of the screen to itself. */
+@media(max-width:899px){
+  .frame{align-items:end}
+  .frame img{height:calc(66svh + var(--p,0) * 92svh);transform:none}
+  .l1,.l2{top:11svh}
+}
 
 .gate{position:relative;z-index:4;padding:clamp(48px,9vh,96px) clamp(18px,5vw,60px) clamp(30px,6vh,64px);
   text-align:center;background:linear-gradient(180deg,transparent,var(--bg) 32%)}

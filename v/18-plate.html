@@ -23,7 +23,7 @@
 })();
 </script>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-WwOZIqGRKP/QMvTTS2TywocbDnpRLj9K7kY12PP+sGI=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-Rjt0i4trpys9fP0m5QIS/Ihq/b54ce5HwcR0qvt6S6g=' 'sha256-cy/magVvFvv8o0sTep6F4MOlDXuhafpfkSd4Cu+Oss0=' 'self'; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-XlMwuGOtRIEAqgGXZhgh/YAtb49I28enDiQBXH4wqOw=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-Rjt0i4trpys9fP0m5QIS/Ihq/b54ce5HwcR0qvt6S6g=' 'sha256-cy/magVvFvv8o0sTep6F4MOlDXuhafpfkSd4Cu+Oss0=' 'self'; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050303">
@@ -55,7 +55,10 @@
    a phone the headline lands under the fold - the first thing you see is a
    photograph with no idea attached to it. Small enough that both are in the
    same look. */
-@media(max-width:879px){.mat{max-width:min(268px,60vw)}}
+@media(max-width:879px){
+  .hero{padding-top:84px}
+  .mat{max-width:min(280px,68vw)}
+}
 
 .label{max-width:46ch}
 .sig{margin:0 0 18px;font:600 10px/1 "Space Grotesk",sans-serif;

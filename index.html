@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-fpn+HyQi4ouEf1L7yVOZgpkb9iX/4xsL4n6SiyuVplE=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-BywC1xr0txZMI6JNHsOXr3//YCwfXrrNVqJYKEJEV3E='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-KIAR6XdiZqpaZvCbhm4LTU2+h4jdfleMo2CfMNcR1gs=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-EnVwSILaJ4XDS09ZUj/S8o0klHLQ8rKQwqNjnihgEgQ='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Every house has a story. | Haunted Mansion BK</title>
@@ -830,6 +830,53 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
 .key-outline path{transition:opacity 1.1s var(--ease)}
 .key-stage.ecl .key-outline path{opacity:.42;transition:opacity .5s var(--ease)}
 
+/* ---- and then it leaves ----------------------------------------------
+
+   Set once, when a name goes into the database, and never taken off. The
+   last line of the success message is "Don't answer the door", which
+   until now was a sentence. Close the sheet on a house that has gone out
+   and it is a description of something that has already happened.
+
+   Deliberately not the eclipse again. An eclipse is a body in the way and
+   it ends when the body moves; this is the light going off, and the
+   difference between them is entirely that this one does not come back.
+   Hence linear over 3.4s rather than the eased half-second above -
+   nothing is arriving, a house is draining - and hence no matching rule
+   to remove it anywhere in the file.
+
+   Not black, though it was written black first. Pitch black is a page
+   that has finished, and reads as a bug on any screen in daylight; what
+   is wanted is a house that is still standing there with the power cut.
+   .keyhole at .18 leaves the porch at about a sixth of lit, which is
+   enough to make out a door and not enough to make out anything at it -
+   the two porch lamps survive as points, which is the whole picture.
+   The bloom, which is the only part that was never a real light but the
+   house's own aura, goes to almost nothing, because that is the part
+   that was alive.
+
+   The rim is the exception and does not follow the rest down. It was set
+   to .2 first, on the reasoning that an unlit house has an unlit outline,
+   and at .2 on a stroke already carrying alpha .5 it disappeared: the
+   keyhole stopped being a keyhole and the frame read as a page that had
+   failed to paint rather than a house that had gone out. .4 is the point
+   where the shape survives its own darkness. The outline is not a light
+   on the building, it is the edge of the thing being looked through, and
+   there is no version of this where the audience stops looking.
+
+   The heartbeat stops with it. Four elements have been pulsing on a
+   3.8s cycle since the page loaded and every one of them is paused here
+   on the same line - the breath in the photograph included. It is a
+   quieter change than the darkness and a worse one: the house does not
+   only go out, it stops. */
+.key-stage.gone .key-glow{filter:blur(26px) brightness(.05);transition:filter 3.4s linear}
+.key-stage.gone .red-wash{filter:brightness(0);transition:filter 3.4s linear}
+.key-stage.gone .keyhole{filter:drop-shadow(0 0 18px rgba(227,48,39,.45)) drop-shadow(0 0 60px rgba(227,48,39,.20)) brightness(.18);transition:filter 3.4s linear}
+.key-stage.gone .key-outline path{opacity:.4;transition:opacity 3.4s linear}
+.key-stage.gone .key-glow,
+.key-stage.gone .red-wash,
+.key-stage.gone .keyhole img,
+.key-stage.gone .key-outline path{animation-play-state:paused}
+
 @media(prefers-reduced-motion:reduce){
   *,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
   .reveal{opacity:1;transform:none;filter:none}
@@ -1491,6 +1538,15 @@ form.addEventListener("submit", async e => {
   sending = false;
   formbox.style.display = "none";
   done.style.display = "block";
+  /* The house goes out behind the sheet, and stays out. It happens while
+     the message is covering it, which is the right way round: this is not
+     a thing to watch happen, it is a thing to find has happened when the
+     sheet is closed. hmGone is read by the peek chain, which ends rather
+     than pauses - whatever was at the door is not there any more, and the
+     line this message finishes on is about where it went instead. */
+  window.hmGone = true;
+  const kstage = document.querySelector(".key-stage");
+  if(kstage) kstage.classList.add("gone");
   /* Otherwise the dialog is still called "The door is locked. Leave your
      name." on a screen that has just taken it. */
   modal.setAttribute("aria-labelledby", "done-title");
@@ -1621,7 +1677,7 @@ form.addEventListener("submit", async e => {
          past a running animation, so they have to be cancelled outright or
          the face stays up for the rest of its five seconds. Cancel does not
          fire onfinish, so the chain is continued by hand. */
-      if(window.hmQuiet){
+      if(window.hmQuiet || window.hmGone){
         raf = 0; awake = false;
         if(look){ look.cancel(); look = null; }
         if(walk){ walk.cancel(); walk = null; }
@@ -1630,7 +1686,12 @@ form.addEventListener("submit", async e => {
            come back with it. Left on, the house would stay dark around a hole
            with nothing in it for as long as the visitor kept the setting. */
         if(stage) stage.classList.remove("ecl");
-        schedule();
+        /* Reduced motion is a setting and can be turned back off, so that
+           branch keeps a timer alive to notice. This one cannot be undone -
+           the name is already in the database - so the chain is allowed to
+           end here rather than waking every half minute to decide again
+           that there is nothing to do. */
+        if(!window.hmGone) schedule();
         return;
       }
       if(++still > 130) drift(t);
@@ -1691,6 +1752,10 @@ form.addEventListener("submit", async e => {
     }
 
     function peek(){
+      /* The last timer, fired after the house went out. It is not that the
+         eye is suppressed while something else is true - there is nothing
+         behind the door to look through it any more. No reschedule. */
+      if(window.hmGone) return;
       /* Checked here rather than only at load: someone who turns reduced
          motion on mid-visit had the pending timer fire anyway and got a
          fresh, full-strength peek. Rescheduling rather than returning means

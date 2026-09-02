@@ -830,20 +830,6 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
           <g class="face-in">
             <!-- and this one turns, when there is a pointer to turn towards -->
             <g class="face-aim">
-              <!-- Square, and placed by its own geometry rather than by eye:
-                   the plate is cropped to 1.34x the height of the head it
-                   contains, so a 56.3-unit box puts a 42-unit head dead in
-                   the middle of a 46.4-unit hole, with room at the temples.
-                   preserveAspectRatio="none" because the parent svg is
-                   stretched to the keyhole and the porch behind it stretches
-                   with it - a face that stayed square while the door did not
-                   would be the one thing in the picture that was not there.
-
-                   Nothing is drawn over it. The falloff at its edges is in
-                   the file's own alpha channel, where it belongs - a
-                   vignette rect laid on top was a black square over a lit
-                   porch, which is exactly the thing the vignette was there
-                   to prevent. -->
               <!-- Placed by its own geometry, not by eye: the plate is a
                    square cropped so the pupil is dead centre, so a 46-unit box
                    centred on (34.95, 26) puts the pupil on the axis of a

@@ -1,0 +1,52 @@
+# NOT ACTIVE AT THIS PATH. GitHub only runs a workflow that lives at
+# .github/workflows/test.yml, and it refuses a push to that path from an
+# OAuth token without the `workflow` scope - which this machine's token
+# does not have. So the file ships here and gets renamed on github.com,
+# where the browser session is not subject to that restriction:
+#   Code tab -> ci/test.yml -> pencil -> put .github/workflows/test.yml
+#   in the filename box -> Commit changes.
+# A pre-commit hook only protects the machine it is installed on, and this
+# repo publishes straight to GitHub Pages on push - there is no review step
+# between a bad commit and the live site. So the same checks run here too,
+# where they cannot be skipped with --no-verify and do not depend on anyone
+# having set their clone up correctly.
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # The suite drives a real browser because most of what can break on this
+      # page - a filter that snaps instead of interpolating, an animation
+      # outranking a class, a contrast ratio - is only observable in one.
+      - name: Install Chromium
+        run: |
+          python -m pip install --quiet playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Tests
+        run: python tools/test_page.py
+
+      # Scans the whole tree, not just the push, so a credential committed
+      # before this workflow existed is still caught.
+      - name: No live credentials
+        run: python tools/secretscan.py --all

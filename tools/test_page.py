@@ -197,6 +197,14 @@ def test_browser():
     # Threading, not TCPServer: a page holding a connection open blocked
     # every later navigation until it timed out.
     handler = http.server.SimpleHTTPRequestHandler
+    # HTTP/1.1, so the socket is kept alive and closed on agreement. The 1.0
+    # default closes after every response, and on Windows a close with bytes
+    # still unread sends an RST rather than a FIN: Chromium reports that as
+    # ERR_CONNECTION_RESET against whichever asset was in flight, and the
+    # no-console-errors check fails on a race in the test rig instead of on
+    # anything wrong with the page. Content-Length is already sent, so 1.1
+    # needs nothing else from us.
+    handler.protocol_version = "HTTP/1.1"
     http.server.ThreadingHTTPServer.allow_reuse_address = True
     http.server.ThreadingHTTPServer.daemon_threads = True
     srv = http.server.ThreadingHTTPServer(("127.0.0.1", 0), handler)

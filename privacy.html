@@ -195,13 +195,15 @@ a:focus-visible{outline:2px solid #ff6b5f;outline-offset:3px}
     is collected here, and the company to address any of the requests below to.
     Every &ldquo;we&rdquo; on this page means them.</p>
 
-  <!-- A consumer Gmail rather than an address at one of our own
-       domains, because it is the only inbox that actually receives.
-       pulsetix.ai has an empty zone and pulsetix.com belongs to someone
-       else, so mail to either one bounces. This is the address a GDPR or
-       CCPA request has to reach, so it has to be one that works today.
-       Swap it for admin@pulsetix.ai only once MX is live there and a test
-       message has actually landed. -->
+  <!-- A consumer Gmail rather than an address at one of our own domains,
+       because it is the only inbox confirmed to receive. pulsetix.com
+       belongs to someone else. pulsetix.ai is ours, on Spaceship, and its
+       zone is not empty - it carries Google Workspace MX, so mail to
+       admin@pulsetix.ai is routed, not bounced; a test sent 2026-09-02 drew
+       no bounce over the next two days. That is evidence it was accepted,
+       not evidence anyone can read it, and this is the address a GDPR or
+       CCPA request has to reach. Swap it for admin@pulsetix.ai once someone
+       has opened that mailbox and seen the test sitting in it. -->
   <h2>Getting off the list</h2>
   <p>Every email we send has an unsubscribe link, and one click is enough. You
     can also write to us and ask to be removed, to be told what we hold about

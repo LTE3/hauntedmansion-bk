@@ -1,10 +1,3 @@
-# NOT ACTIVE AT THIS PATH. GitHub only runs a workflow that lives at
-# .github/workflows/test.yml, and it refuses a push to that path from an
-# OAuth token without the `workflow` scope - which this machine's token
-# does not have. So the file ships here and gets renamed on github.com,
-# where the browser session is not subject to that restriction:
-#   Code tab -> ci/test.yml -> pencil -> put .github/workflows/test.yml
-#   in the filename box -> Commit changes.
 # A pre-commit hook only protects the machine it is installed on, and this
 # repo publishes straight to GitHub Pages on push - there is no review step
 # between a bad commit and the live site. So the same checks run here too,

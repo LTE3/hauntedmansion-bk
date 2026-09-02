@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-ZgnhlwVmce8IAcZFHvfnnltWfEfoGz8eu5aPmmdSIP0=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-wmwXjq79Rxdgn20rNes9SmPxSgnVr2etp/HOYtCYxhs='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-DdRQS7YhFW2ALXjj7aR3gs09p1hKmnSRNyyQHgJns2Y=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-1xsyRUUsH04hOPNlg6LINDng98yB85eWQjTXIBa/r60='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Every house has a story. | Haunted Mansion BK</title>
@@ -18,7 +18,7 @@
      shape on the first pass. -->
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="A keyhole cut out of the dark. Behind it, a lit door at the top of a stair, and a face.">
+<meta property="og:image:alt" content="A keyhole cut out of the dark. Behind it, a lit door at the top of a stair, and an eye looking back.">
 <meta property="og:url" content="https://lte3.github.io/hauntedmansion-bk/">
 <meta property="og:type" content="website">
 <!-- Without this Slack labels the unfurl with the bare hostname, which reads
@@ -27,7 +27,7 @@
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://lte3.github.io/hauntedmansion-bk/v/img-cali/card.jpg">
-<meta name="twitter:image:alt" content="A keyhole cut out of the dark. Behind it, a lit door at the top of a stair, and a face.">
+<meta name="twitter:image:alt" content="A keyhole cut out of the dark. Behind it, a lit door at the top of a stair, and an eye looking back.">
 <!-- Both of these named hauntedmansionbk.com, which is not registered and
      does not resolve. That is inert only while the noindex above is on: take
      it off with the canonical still pointing at a host no crawler can fetch,
@@ -609,9 +609,9 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
 /* The eye.
 
    These keyframes are the no-JS version: nothing for two seconds, then it
-   arrives in four tenths of one, stares through the sign-up opening at five
+   opens in four tenths of one, stares through the sign-up opening at five
    seconds, and goes - both timed off one 4.5s run at the same 2s delay, so
-   the arrival cannot drift outside the window it is visible in. When script is available the
+   the opening cannot drift outside the window it is visible in. When script is available the
    same walk runs again on every peek and the head is turned towards the
    pointer while it is there - see "it watches back" at the bottom of the
    page. */
@@ -620,83 +620,88 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
   opacity:0;animation:eyeshow 4.5s linear 2s 1 both;
   filter:drop-shadow(0 0 6px rgba(0,0,0,.9))
 }
-/* Somebody walks up to the hole and looks through it.
-   Scaled about the middle of the head, from far enough back to read as
-   distance rather than as a zoom, and carrying a small vertical bob that
-   damps out as it arrives - four falling steps, because a face that grows
-   along a smooth curve is a camera move and a face that bobs is a person.
+/* An eye does not charge at you. It opens.
 
-   It lands a third of the way in and then does nothing for half the run,
-   which is the part that matters: arriving is not frightening, being arrived
-   and not leaving is. The first cut landed it at 58% against an opacity that
-   starts going at 74%, so it was fully there for four tenths of a second and
-   then gone. Same shape as the scripted peeks below, for the same reason.
+   The skull that used to be here flew at the hole, which was right for a
+   skull and wrong for this: a thing that travels is a thing you can watch
+   coming, and the whole point of an eye in a door is that it was already
+   there. So the lid, not the distance - a squash on Y, because the plate
+   carries its own lids and lashes and squashing it closed is what a lid
+   does to an eye from the front.
 
-   It keeps going that last seven per cent after it has stopped and while the
-   opacity is already falling, so the last thing that happens is it leaning
-   in, not it disappearing. Under prefers-reduced-motion the
-   reduce block below kills this along with everything else. */
+   It overshoots open and settles back, which is the difference between a
+   lid lifting and a shutter. Then it holds, unmoving, for the rest of the
+   run: opening is not frightening, being open and not blinking is. Same
+   shape as the scripted peeks below, for the same reason.
+
+   It keeps going that last seven per cent after it has stopped and while
+   the opacity is already falling, so the last thing that happens is it
+   leaning in, not it disappearing. Under prefers-reduced-motion the reduce
+   block below kills this along with everything else. */
 .key-eye .face-in{transform-box:fill-box;transform-origin:center;
-  animation:facefly 4.5s linear 2s 1 both}
-/* 4.5s, and the whole flight is the first tenth of it - 0.4s, arriving at
-   2.4s on the page clock. The easing is per-keyframe rather than one curve
-   across the run, because the three parts want opposite curves: the approach
-   accelerates (something coming at you subtends more angle per second the
-   closer it gets, so a linear scale reads as slowing down), the overshoot
-   stops hard, and the recoil settles. One expo-out across all of it gave a
-   skull that decelerated into frame, which is a camera push, not a charge.
+  animation:eyeopen 4.5s linear 2s 1 both, blink 7.9s linear 6.9s infinite}
+/* 4.5s, and the whole opening is the first fifth of it - 0.85s, done by
+   2.85s on the page clock. It sits shut for the first 4% rather than
+   starting to move at zero, because a lid that is already lifting when the
+   light arrives has been open the whole time and you just could not see it.
 
-   It goes past full size to 1.14 and comes back under to .97 before it
-   settles. That fifth of a second of recoil is what makes it hit something
-   rather than arrive at it. Then it holds, unmoving, from 0.9s until 3.9s -
-   the sign-up opens at 5s on the page clock, which is 3s into this hold, so
-   it is still there and still staring when the sheet comes up. */
-@keyframes facefly{
-  0%{transform:translateY(2.6px) scale(.1);
-     animation-timing-function:cubic-bezier(.55,.02,.85,.35)}
-  9%{transform:translateY(0) scale(1.14);
-     animation-timing-function:cubic-bezier(.2,.9,.3,1)}
-  15%{transform:translateY(.35px) scale(.97);
-      animation-timing-function:cubic-bezier(.3,0,.2,1)}
-  21%{transform:translateY(0) scale(1)}
-  88%{transform:translateY(0) scale(1)}
-  100%{transform:translateY(0) scale(1.07)}
+   It goes past open to 1.07 and comes back under to .97 before it settles.
+   That fifth of a second is the difference between a lid and a shutter.
+   Then it holds, unmoving, until 88% - the sign-up opens at 5s on the page
+   clock, which is well inside that hold, so it is still open and still
+   looking at you when the sheet comes up. */
+@keyframes eyeopen{
+  0%{transform:scaleY(.02)}
+  4%{transform:scaleY(.02)}
+  9%{transform:scaleY(1.07)}
+  14%{transform:scaleY(.97)}
+  19%{transform:scaleY(1)}
+  88%{transform:scaleY(1)}
+  100%{transform:scaleY(1.05)}
+}
+/* Nine per cent of 7.9s is 0.71s of blink in every eight seconds, and the
+   close is faster than the open because that is the way round a real lid
+   works. Long enough apart that you are not watching a loop; often enough
+   that you cannot decide it is a photograph. It runs on the same element as
+   the opening, so the two multiply rather than fight - during the first 4.5s
+   the opening run wins the property outright, which is why the delay puts
+   the first blink after it. */
+@keyframes blink{
+  0%,91%{transform:scaleY(1)}
+  93.4%{transform:scaleY(.03)}
+  96.6%{transform:scaleY(1)}
+  100%{transform:scaleY(1)}
 }
 .key-eye .face-aim{transform-box:fill-box;transform-origin:center}
 /* The fire is in the plate, not here.
 
-   A render throws the light back onto the brow ridge, the nasal bone and the
-   cheek, and that spill is the whole difference between fire in a skull and
-   a sticker on one - no gradient can do it, because CSS does not know where
-   the bone is. What the render cannot do is move, and a fire that does not
-   move is a lamp.
+   The photograph already has a red iris lit from inside it, and that is the
+   part no gradient can do: a render knows where the wet of the eye is and
+   where the lid throws a shadow, and CSS does not. What the photograph
+   cannot do is move, and a light that does not move is a lamp.
 
-   So this is only the movement. At full strength over a plate that is
-   already lit it doubled the light and the sockets blew out into two orange
-   discs; at .34 it reads as the fire guttering. The two coals run on 1.63s
-   and 2.11s, which share no multiple short enough to notice, so the pair
-   never settles into a beat - a synchronised flicker is a light fitting with
-   two bulbs in it. Both are killed with everything else by the
-   reduced-motion block above, where they come to rest lit but still. */
-.key-eye .ember{opacity:.92}
-/* The spill. Lower opacity over a far larger radius, so it lifts the brow and
-   the top of the cheekbone the way a light inside the skull would, instead of
-   stopping at the socket's edge. It carries the same two flicker cycles as the
-   coals so the light and its source never disagree. */
-.key-eye .ember-halo{opacity:.42;mix-blend-mode:screen}
-.key-eye .ember ellipse,.key-eye .ember-halo ellipse{
-  transform-box:fill-box;transform-origin:center}
-.key-eye .ember-l{animation:ember1 1.63s ease-in-out infinite}
-.key-eye .ember-r{animation:ember2 2.11s ease-in-out infinite}
-@keyframes ember1{
-  0%{opacity:.66;transform:scale(.94)}
-  13%{opacity:.98;transform:scale(1.04)}
-  26%{opacity:.72;transform:scale(.97)}
-  44%{opacity:1;transform:scale(1.07)}
-  61%{opacity:.68;transform:scale(.95)}
-  78%{opacity:.92;transform:scale(1.02)}
-  100%{opacity:.66;transform:scale(.94)}
-}
+   So this is only the movement, plus the part of the light that leaves the
+   hole. One ellipse, wider than the iris and blurred well past it, screened
+   over the plate so it lifts the lower lid and the inner corner rather than
+   stopping at the iris edge. At full strength over a plate that is already
+   lit it doubled the light and the iris blew out into a flat disc; the
+   keyframes hold it between .64 and 1 of a .26 base, which reads as the fire
+   guttering behind the eye.
+
+   Nothing is drawn over the centre. Anything there fills in the pupil, and
+   the pupil is the one part that has to stay a hole.
+
+   It is killed with everything else by the reduced-motion block below, where
+   it comes to rest lit but still.
+
+   The blend lives here and not in a style attribute on the ellipse: the
+   page's CSP has no 'unsafe-hashes', so an inline style attribute is blocked
+   outright and the blend silently does not happen. It fails invisibly - the
+   ellipse still paints, just flat over the plate - so it is exactly the kind
+   of thing that survives a look and not a console. */
+.key-eye .ember-spill{opacity:.26;mix-blend-mode:screen;
+  animation:ember2 2.11s ease-in-out infinite}
+.key-eye .ember-spill{transform-box:fill-box;transform-origin:center}
 @keyframes ember2{
   0%{opacity:.9;transform:scale(1.03)}
   17%{opacity:.64;transform:scale(.94)}
@@ -796,14 +801,17 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
            aria-hidden="true" focusable="false">
         <defs>
           <clipPath id="eyeclip"><circle cx="34.95" cy="27" r="23.2"/></clipPath>
-          <!-- A coal, not a bulb: white only at the very centre, orange for
-               most of it, and the last third is the red that is already in
-               the door so the spill belongs to the same room. -->
+          <!-- Red, and red almost immediately. The white core is kept to a
+               tiny fraction of the radius purely so the centre reads as hot
+               rather than flat; past that the whole coal is the same red
+               that is already in the door, so the spill belongs to the room
+               it is in. An orange midtone was tried here and read as
+               firelight, which is a warmer thing than this house wants. -->
           <radialGradient id="ember" cx="50%" cy="50%" r="50%">
-            <stop offset="0" stop-color="#fff4e0" stop-opacity="1"/>
-            <stop offset=".22" stop-color="#ffa14a" stop-opacity=".96"/>
-            <stop offset=".55" stop-color="#f0362a" stop-opacity=".66"/>
-            <stop offset="1" stop-color="#e33027" stop-opacity="0"/>
+            <stop offset="0" stop-color="#ffe8e4" stop-opacity="1"/>
+            <stop offset=".14" stop-color="#ff5a4a" stop-opacity=".97"/>
+            <stop offset=".46" stop-color="#e8161a" stop-opacity=".72"/>
+            <stop offset="1" stop-color="#c20d12" stop-opacity="0"/>
           </radialGradient>
           <filter id="embersoft" x="-70%" y="-70%" width="240%" height="240%">
             <feGaussianBlur stdDeviation=".62"/>
@@ -836,27 +844,26 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
                    vignette rect laid on top was a black square over a lit
                    porch, which is exactly the thing the vignette was there
                    to prevent. -->
-              <image href="v/img-cali/face.webp" x="6.80" y="-1.15"
-                     width="56.30" height="56.30" preserveAspectRatio="none"/>
-              <!-- Centres measured off the plate's own alpha and luminance,
-                   in viewBox units. Wider than they are tall, because the
-                   socket is. -->
-              <!-- Held apart on purpose. At a wider radius the two blooms met
-                   over the nose bridge and became one lamp behind a skull
-                   instead of two eyes in one, so each is kept inside its own
-                   socket and the bridge stays dark between them. -->
-              <g class="ember-halo">
-                <ellipse class="ember-l" cx="32.60" cy="26.10" rx="8.90" ry="7.10"
-                         fill="url(#ember)" filter="url(#emberbloom)"/>
-                <ellipse class="ember-r" cx="40.10" cy="25.10" rx="9.10" ry="6.60"
-                         fill="url(#ember)" filter="url(#emberbloom)"/>
-              </g>
-              <g class="ember">
-                <ellipse class="ember-l" cx="32.60" cy="26.10" rx="7.10" ry="4.70"
-                         fill="url(#ember)" filter="url(#embersoft)"/>
-                <ellipse class="ember-r" cx="40.10" cy="25.10" rx="7.30" ry="3.30"
-                         fill="url(#ember)" filter="url(#embersoft)"/>
-              </g>
+              <!-- Placed by its own geometry, not by eye: the plate is a
+                   square cropped so the pupil is dead centre, so a 46-unit box
+                   centred on (34.95, 26) puts the pupil on the axis of a
+                   46.4-unit hole with the lids and lashes inside the rim.
+                   preserveAspectRatio="none" because the parent svg is
+                   stretched to the keyhole and the porch behind it stretches
+                   with it - an eye that stayed square while the door did not
+                   would be the one thing in the picture that was not there.
+
+                   Nothing is drawn over it. The falloff at its edges is in the
+                   file's own alpha channel, where it belongs. -->
+              <image href="v/img-cali/eye.webp" x="11.95" y="3.05"
+                     width="46.00" height="46.00" preserveAspectRatio="none"/>
+              <!-- The iris is already red in the plate; this is the light it
+                   throws back out of the hole, and it is the same coal the
+                   rest of the page burns. Only the outer bloom, and nothing
+                   over the centre: anything there fills in the pupil, and the
+                   pupil is the one part that has to stay a hole. -->
+              <ellipse class="ember-spill" cx="35.20" cy="25.60" rx="8.60" ry="7.40"
+                       fill="url(#ember)" filter="url(#emberbloom)"/>
             </g>
           </g>
         </g>
@@ -1555,18 +1562,23 @@ form.addEventListener("submit", async e => {
          eye that is already looking at you. */
       cx = tx; cy = ty;
       if(!raf) raf = requestAnimationFrame(frame);
-      /* The approach again, on the peek's own clock. Its own animation
-         rather than a second keyframe on the opacity run, because the two
-         want different easings: the light comes up linearly and the face
-         does not travel linearly. */
+      /* The opening again, on the peek's own clock. Its own animation rather
+         than a second keyframe on the opacity run, because the two want
+         different easings: the light comes up linearly and a lid does not.
+
+         This one has to win the transform outright while it runs. The CSS
+         blink is still ticking on the same element, and a Web Animations
+         effect beats a CSS animation on the cascade, so the two do not fight
+         - but only for as long as this is alive. fill:"both" holds it open
+         until the chain hands back. */
       walk = facein.animate(
-        [{transform:"translateY(1.4px) scale(.2)"},
-         {transform:"translateY(-.6px) scale(.33)", offset:.09},
-         {transform:"translateY(.9px) scale(.5)", offset:.17},
-         {transform:"translateY(-.4px) scale(.78)", offset:.25},
-         {transform:"translateY(0px) scale(1)", offset:.33},
-         {transform:"translateY(0px) scale(1)", offset:.8},
-         {transform:"translateY(0px) scale(1.07)"}],
+        [{transform:"scaleY(.02)"},
+         {transform:"scaleY(.02)", offset:.04},
+         {transform:"scaleY(1.07)", offset:.09},
+         {transform:"scaleY(.97)", offset:.14},
+         {transform:"scaleY(1)", offset:.19},
+         {transform:"scaleY(1)", offset:.8},
+         {transform:"scaleY(1.05)"}],
         {duration:5200, easing:"cubic-bezier(.16,1,.3,1)", fill:"both"}
       );
       look = eye.animate(

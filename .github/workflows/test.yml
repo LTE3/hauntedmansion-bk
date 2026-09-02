@@ -18,15 +18,27 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      # Pinned to commit SHAs rather than version tags. A tag is a pointer and
+      # can be moved: anyone who takes over one of these repos, or an action
+      # release that is republished, changes what runs here without a single
+      # line of this file changing. These are GitHub's own actions and the risk
+      # is small, but they run with the repo checked out and this is the only
+      # thing standing between a push and the live site. The comment beside
+      # each SHA is what it pointed at when it was pinned, and is the thing to
+      # check against when bumping.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.12"
 
-      - uses: actions/setup-node@v4
+      # Node is here for one test: it parses the page's inline JS with
+      # node --check, and skips itself if node is missing. A skip in CI reads
+      # as a pass, so the runtime has to actually be installed for that check
+      # to mean anything. 24 because 20 went end-of-life in April 2026.
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "20"
+          node-version: "24"
 
       # The suite drives a real browser because most of what can break on this
       # page - a filter that snaps instead of interpolating, an animation

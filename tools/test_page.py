@@ -88,6 +88,36 @@ def test_static():
                     missing.append("%s -> %s" % (page, ref))
     check("every @font-face file exists", not missing, ", ".join(missing))
 
+    # The share card is the whole of the page for anyone who only ever sees the
+    # link. It is declared 1200x630 in the head so a scraper can lay the unfurl
+    # out before the file arrives, and if the file stops being that size the
+    # declaration turns into a lie that reflows or letterboxes the card in
+    # every client at once. Read the real size out of the JPEG rather than
+    # trusting the tag: a bad card still renders, it just renders wrong, and
+    # nothing else in this suite ever opens the file.
+    card = re.search(r'og:image" content="[^"]*/([^"/?]+)(?:\?[^"]*)?"', s)
+    got = None
+    if card:
+        path = os.path.join(ROOT, "v", "img-cali", card.group(1))
+        if os.path.exists(path):
+            with open(path, "rb") as f:
+                blob = f.read()
+            # SOF0/1/2/9/10 carry the dimensions; every other marker is skipped
+            # by its own length. DRI, APPn and the rest are variable-length and
+            # walking them is the only way to land on the right one.
+            i = 2
+            while i < len(blob) - 9 and blob[i] == 0xFF:
+                m = blob[i + 1]
+                if m in (0xC0, 0xC1, 0xC2, 0xC9, 0xCA):
+                    got = (int.from_bytes(blob[i + 7:i + 9], "big"),
+                           int.from_bytes(blob[i + 5:i + 7], "big"))
+                    break
+                i += 2 + int.from_bytes(blob[i + 2:i + 4], "big")
+    want = (int(re.search(r'og:image:width" content="(\d+)"', s).group(1)),
+            int(re.search(r'og:image:height" content="(\d+)"', s).group(1)))
+    check("share card is the size the head says it is", got == want,
+          "file %s, declared %s" % (got, want))
+
     r = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "secretscan.py"), "--all"],
                        capture_output=True, text=True, cwd=ROOT)
     check("no live credentials in tracked files", r.returncode == 0, r.stdout.strip()[-300:])

@@ -1,1 +1,0 @@
-{"query":"select table_schema||'.'||table_name as t from information_schema.tables where table_schema in ('public') order by 1"}

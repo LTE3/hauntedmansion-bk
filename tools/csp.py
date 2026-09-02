@@ -80,6 +80,25 @@ def policy(html):
     media = bool(re.search(rb"new Audio|<audio|<video", html, re.I))
     manifest = b'rel="manifest"' in html
 
+    # Where the fonts come from is now different page to page: the live
+    # pages carry their own woff2 files and the variant snapshots under v/
+    # still pull theirs from Google. Derive it instead of naming one, or
+    # self-hosting a page leaves a third-party host standing in its policy
+    # with nothing on the page using it. A remote stylesheet implies the
+    # font host too, because the page never names gstatic - that URL is
+    # inside the CSS Google serves.
+    # Matched on the href, not the bare hostname: the self-hosted pages
+    # explain in a comment where their fonts used to come from, and a
+    # substring test read that sentence as a live dependency and put
+    # Google back in the policy of the page that had just left.
+    linked = b'href="' + FONTS_CSS.encode() in html
+    remote_css = [FONTS_CSS] if linked else []
+    fonts = []
+    if b".woff2" in html:
+        fonts.append("'self'")
+    if remote_css or b'href="' + FONTS_FILES.encode() in html:
+        fonts.append(FONTS_FILES)
+
     d = [
         # Nothing loads unless a directive below names it. Everything the page
         # actually uses is enumerated, so an injected iframe, image, ping,
@@ -93,8 +112,8 @@ def policy(html):
         # the visitor's name and email into a URL query string.
         "form-action 'none'",
         "img-src 'self' data:",        # data: is the inline SVG favicon
-        "style-src %s %s" % (" ".join(styles), FONTS_CSS),
-        "font-src %s" % FONTS_FILES,
+        "style-src %s" % " ".join(styles + remote_css),
+        "font-src %s" % (" ".join(fonts) if fonts else "'none'"),
         "script-src %s" % (" ".join(scripts) if scripts else "'none'"),
         "connect-src %s" % (SUPABASE if connect else "'none'"),
         "frame-src 'none'",

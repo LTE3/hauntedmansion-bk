@@ -59,6 +59,35 @@ def test_static():
     check("CSP hashes match inline style/script bodies", r.returncode == 0 and "0 stale" in r.stdout,
           (r.stdout + r.stderr).strip()[-300:])
 
+    # The three live pages carry their own fonts. That is worth a test
+    # rather than a comment: a stylesheet link is the single easiest
+    # thing to paste back in, it costs a DNS lookup, a handshake and a
+    # round trip before the first font byte is requested, and it puts
+    # every visitor's IP in front of a third party on a site that
+    # publishes a page about what it collects. The CSP is checked too,
+    # because a policy that still names a host nothing uses is how the
+    # link gets back in without anything appearing to break.
+    for page in ("index.html", "privacy.html", "404.html"):
+        with open(os.path.join(ROOT, page), encoding="utf-8") as f:
+            p = f.read()
+        csp = re.search(r'Content-Security-Policy" content="([^"]+)"', p)
+        fs = re.search(r"font-src ([^;]+)", csp.group(1)).group(1) if csp else ""
+        check("%s serves its own fonts" % page,
+              "fonts.googleapis.com/css2" not in p and ".woff2" in p
+              and fs.strip() == "'self'",
+              "font-src %r" % fs)
+
+    # Every face named in an @font-face has to exist on disk. A page that
+    # references a missing woff2 does not fail loudly - it silently falls
+    # back to system-ui and nobody notices until the screenshots look off.
+    missing = []
+    for page in ("index.html", "privacy.html", "404.html"):
+        with open(os.path.join(ROOT, page), encoding="utf-8") as f:
+            for ref in re.findall(r"url\((fonts/[^)]+\.woff2)\)", f.read()):
+                if not os.path.exists(os.path.join(ROOT, ref)):
+                    missing.append("%s -> %s" % (page, ref))
+    check("every @font-face file exists", not missing, ", ".join(missing))
+
     r = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "secretscan.py"), "--all"],
                        capture_output=True, text=True, cwd=ROOT)
     check("no live credentials in tracked files", r.returncode == 0, r.stdout.strip()[-300:])

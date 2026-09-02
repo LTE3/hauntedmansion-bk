@@ -2,17 +2,34 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-pvSvgaxXYuAg7kzEBf+F1x1Hdr8BsdbZBdXZCF3p2tE=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'none'; connect-src 'none'; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-I6y1wgEBG19lFUTVSt2EUTDkb7CQjiozPnJptpcE2A8='; font-src 'self'; script-src 'none'; connect-src 'none'; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Nothing down this hall.</title>
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#050505">
 <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23050505"/><path d="M6 30V13L16 5l10 8v17z" fill="none" stroke="%233a332c" stroke-width="2"/><rect x="13" y="18" width="6" height="12" fill="%23c2702f"/></svg>'>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400&family=Cormorant+Garamond:wght@300&display=swap" rel="stylesheet">
+<link rel="preload" as="font" type="font/woff2" href="fonts/cormorant-garamond-300-latin.woff2" crossorigin>
 <style>
+/* The typefaces, served from this origin.
+
+   They used to come from fonts.googleapis.com, which meant a DNS lookup, a
+   TLS handshake and a stylesheet round trip had to finish before the browser
+   even learned the URL of a single font file - 376ms of blocked render, at
+   the front of a page whose entire job is to be looked at immediately. It
+   also handed every visitor's IP address to a third party, on a site that
+   publishes a page saying what it collects.
+
+   These are the same files byte for byte: fetched from Google, exactly the
+   woff2s the link tag pulled. What is gone is the faces nothing selected -
+   the link asked for seven and four were ever used. font-display:swap keeps
+   the words readable while they load, and the unicode-range split means the
+   accented file is fetched only if a glyph in it is actually needed, which
+   for most visitors is never. */
+@font-face{font-family:"Cinzel";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/cinzel-400-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:"Cinzel";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/cinzel-400-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:"Cormorant Garamond";font-style:normal;font-weight:300;font-display:swap;src:url(fonts/cormorant-garamond-300-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:"Cormorant Garamond";font-style:normal;font-weight:300;font-display:swap;src:url(fonts/cormorant-garamond-300-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
 :root{
   color-scheme:dark;
   --ink:#050505;

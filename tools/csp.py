@@ -117,7 +117,14 @@ def render(html):
     # laid out a tag per line; two of the variants are minified onto a single
     # line, and pushing newlines into the middle of those would be a
     # gratuitous diff on a file this script is not otherwise rewriting.
-    eol = b"\r\n" if html[m.end():m.end() + 2] == b"\r\n" else b""
+    #
+    # Both newline flavours have to be recognised, not just CRLF. These
+    # files are authored on Windows but git stores them with LF, so a
+    # Linux clone - CI included - reads LF, is told every page is
+    # minified, and collapses the tags onto one line: 17 pages stale
+    # forever there, while Windows silently puts them back.
+    nxt = html[m.end():m.end() + 2]
+    eol = b"\r\n" if nxt == b"\r\n" else (b"\n" if nxt[:1] == b"\n" else b"")
     tags = (b'<meta http-equiv="Content-Security-Policy" content="' + p.encode()
             + b'">' + eol + b'<meta name="referrer" content="no-referrer">' + eol)
     at = m.end() + len(eol)

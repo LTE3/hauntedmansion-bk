@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-xKdNWEIY0p70dFEIyQ93J5doHDTtwtfA8ZH3M3P96Cg=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-wmwXjq79Rxdgn20rNes9SmPxSgnVr2etp/HOYtCYxhs='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-ZgnhlwVmce8IAcZFHvfnnltWfEfoGz8eu5aPmmdSIP0=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-wmwXjq79Rxdgn20rNes9SmPxSgnVr2etp/HOYtCYxhs='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Every house has a story. | Haunted Mansion BK</title>
@@ -678,8 +678,14 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
    never settles into a beat - a synchronised flicker is a light fitting with
    two bulbs in it. Both are killed with everything else by the
    reduced-motion block above, where they come to rest lit but still. */
-.key-eye .ember{opacity:.34}
-.key-eye .ember ellipse{transform-box:fill-box;transform-origin:center}
+.key-eye .ember{opacity:.92}
+/* The spill. Lower opacity over a far larger radius, so it lifts the brow and
+   the top of the cheekbone the way a light inside the skull would, instead of
+   stopping at the socket's edge. It carries the same two flicker cycles as the
+   coals so the light and its source never disagree. */
+.key-eye .ember-halo{opacity:.42;mix-blend-mode:screen}
+.key-eye .ember ellipse,.key-eye .ember-halo ellipse{
+  transform-box:fill-box;transform-origin:center}
 .key-eye .ember-l{animation:ember1 1.63s ease-in-out infinite}
 .key-eye .ember-r{animation:ember2 2.11s ease-in-out infinite}
 @keyframes ember1{
@@ -794,13 +800,19 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
                most of it, and the last third is the red that is already in
                the door so the spill belongs to the same room. -->
           <radialGradient id="ember" cx="50%" cy="50%" r="50%">
-            <stop offset="0" stop-color="#ffe2b4" stop-opacity=".92"/>
-            <stop offset=".26" stop-color="#ff8a3c" stop-opacity=".82"/>
-            <stop offset=".6" stop-color="#e33027" stop-opacity=".4"/>
+            <stop offset="0" stop-color="#fff4e0" stop-opacity="1"/>
+            <stop offset=".22" stop-color="#ffa14a" stop-opacity=".96"/>
+            <stop offset=".55" stop-color="#f0362a" stop-opacity=".66"/>
             <stop offset="1" stop-color="#e33027" stop-opacity="0"/>
           </radialGradient>
           <filter id="embersoft" x="-70%" y="-70%" width="240%" height="240%">
-            <feGaussianBlur stdDeviation=".5"/>
+            <feGaussianBlur stdDeviation=".62"/>
+          </filter>
+          <!-- The coal is the source; this is what the coal throws. Blurred
+               far wider than the socket so the light reads as coming out of
+               the skull rather than as a shape drawn on it. -->
+          <filter id="emberbloom" x="-160%" y="-160%" width="420%" height="420%">
+            <feGaussianBlur stdDeviation="3.1"/>
           </filter>
         </defs>
         <g clip-path="url(#eyeclip)">
@@ -829,10 +841,20 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
               <!-- Centres measured off the plate's own alpha and luminance,
                    in viewBox units. Wider than they are tall, because the
                    socket is. -->
+              <!-- Held apart on purpose. At a wider radius the two blooms met
+                   over the nose bridge and became one lamp behind a skull
+                   instead of two eyes in one, so each is kept inside its own
+                   socket and the bridge stays dark between them. -->
+              <g class="ember-halo">
+                <ellipse class="ember-l" cx="32.60" cy="26.10" rx="8.90" ry="7.10"
+                         fill="url(#ember)" filter="url(#emberbloom)"/>
+                <ellipse class="ember-r" cx="40.10" cy="25.10" rx="9.10" ry="6.60"
+                         fill="url(#ember)" filter="url(#emberbloom)"/>
+              </g>
               <g class="ember">
-                <ellipse class="ember-l" cx="32.98" cy="26.50" rx="6.41" ry="4.13"
+                <ellipse class="ember-l" cx="32.60" cy="26.10" rx="7.10" ry="4.70"
                          fill="url(#ember)" filter="url(#embersoft)"/>
-                <ellipse class="ember-r" cx="39.38" cy="25.00" rx="6.63" ry="2.00"
+                <ellipse class="ember-r" cx="40.10" cy="25.10" rx="7.30" ry="3.30"
                          fill="url(#ember)" filter="url(#embersoft)"/>
               </g>
             </g>

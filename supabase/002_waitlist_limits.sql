@@ -6,10 +6,14 @@
 -- those exists for anything that is not a browser, and the endpoint, the key
 -- and the table name are all public.
 --
--- Nothing here can reject a row the page itself would send. Every limit is
--- either the exact maxlength the form already enforces or the exact regex it
--- already tests, which is what makes these safe to add to a live table: the
--- only submissions they can turn away are ones no visitor could have made.
+-- Most of what follows mirrors the form exactly - the same maxlength, the same
+-- regex - so it can only turn away submissions no visitor could have made.
+-- Two limits do not mirror anything, and it is worth being straight about
+-- which: the 1024 on user_agent has no counterpart in the form at all, and the
+-- lower bound of 3 on email is a floor the form never tests. Both are set far
+-- outside the range a real browser produces, but "no form equivalent" and
+-- "cannot reject a real visitor" are different claims, and only the first one
+-- is provable by reading this file.
 
 -- ---------------------------------------------------------------------------
 -- 1. Only the four columns the form actually sends.
@@ -52,32 +56,29 @@ alter table public.hm_waitlist
     check (email ~ '^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]{2,}$');
 
 -- ---------------------------------------------------------------------------
--- NOT APPLIED: a per-IP rate limit.
+-- SUPERSEDED: the per-IP rate limit this file declined to write.
 --
--- The obvious next step is a BEFORE INSERT trigger counting recent rows from
--- current_setting('request.headers')::json->>'x-forwarded-for'. It is left
--- here unapplied on purpose, because its failure mode points the wrong way.
--- A shared network - a venue, a dorm, a carrier-grade NAT - presents one
--- address for everyone behind it, so any threshold low enough to stop a script
--- is low enough to turn away real people standing next to each other, and the
--- page would tell them they had signed up when it had written nothing. The
--- unique index on lower(email) already forces a flood to invent a fresh
--- address per row, and the limits above cap what each row can weigh.
+-- This section used to argue against a per-IP throttle, on the grounds that a
+-- shared network - a venue, a dorm, a carrier-grade NAT - presents one address
+-- for everyone behind it, so any threshold low enough to stop a script would
+-- also turn away real people standing next to each other.
 --
--- If it is wanted later, the honest version is generous and observable rather
--- than tight and silent:
+-- 004_rate_limit.sql applied one anyway, because the argument was answered
+-- rather than ignored:
 --
---   create or replace function public.hm_waitlist_throttle()
---   returns trigger language plpgsql security definer set search_path = public as $$
---   declare ip text := split_part(
---     coalesce(current_setting('request.headers', true)::json->>'x-forwarded-for',''), ',', 1);
---   begin
---     if ip <> '' and (select count(*) from public.hm_waitlist
---                      where ip_hash = md5(ip) and created_at > now() - interval '1 hour') >= 30
---     then raise exception 'rate limited' using errcode = '54000'; end if;
---     new.ip_hash := md5(ip);
---     return new;
---   end $$;
+--   * The threshold is 40 inserts per ten minutes, not the 30-per-hour this
+--     section used to sketch. That is generous enough for a crowded room and
+--     still cheap enough that a script gets nowhere.
+--   * It is not silent. The trigger raises SQLSTATE 53400, and index.html
+--     tells that apart from a network failure so it can stop saying "try
+--     again" to the one person for whom trying again is guaranteed to fail.
+--   * It stores no address. That sketch wrote md5(ip) into a permanent
+--     ip_hash column on the waitlist itself, which is a visitor log with extra
+--     steps and an unsalted one at that. The applied version keeps a salted
+--     SHA-256 in a separate table, deletes it ten minutes later, and never
+--     attaches it to the signup.
 --
--- which needs an ip_hash column, a real decision about what the page shows
--- when it fires, and a number chosen against expected launch-night traffic.
+-- Read 004_rate_limit.sql for what is actually on the database. The remaining
+-- true statements from this section: the unique index on lower(email) still
+-- forces a flood to invent a fresh address per row, and the limits above still
+-- cap what each row can weigh.

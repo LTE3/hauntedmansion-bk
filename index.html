@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-DdRQS7YhFW2ALXjj7aR3gs09p1hKmnSRNyyQHgJns2Y=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-1xsyRUUsH04hOPNlg6LINDng98yB85eWQjTXIBa/r60='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-fpn+HyQi4ouEf1L7yVOZgpkb9iX/4xsL4n6SiyuVplE=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-BywC1xr0txZMI6JNHsOXr3//YCwfXrrNVqJYKEJEV3E='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Every house has a story. | Haunted Mansion BK</title>
@@ -135,7 +135,7 @@ a{color:inherit}
 .key-glow{
   position:absolute;top:-4%;bottom:-4%;left:50%;translate:-50% 0;width:min(86vw,470px);
   background:radial-gradient(ellipse at 50% 48%,rgba(227,48,39,.22),rgba(227,48,39,.08) 25%,transparent 67%);
-  filter:blur(26px);animation:glowbreath 3.8s infinite
+  filter:blur(26px);animation:glowbreath 3.8s infinite, eclglow 4.5s linear 2s 1
 }
 /* Geometry shared with .key-outline: the stroke has to sit exactly where the
    mask cuts, so anything that resizes one resizes both. */
@@ -159,6 +159,7 @@ a{color:inherit}
 }
 .keyhole,.key-outline{position:absolute;inset:0;transform:translateZ(0)}
 .keyhole{
+  animation:eclhole 4.5s linear 2s 1;
   clip-path:polygon(80.04% 100.00%,68.19% 47.35%,70.18% 46.42%,72.07% 45.39%,73.85% 44.26%,75.52% 43.06%,77.06% 41.78%,78.46% 40.42%,79.73% 39.00%,80.86% 37.52%,81.83% 35.99%,82.65% 34.42%,83.31% 32.81%,83.81% 31.17%,84.15% 29.51%,84.31% 27.84%,84.31% 26.16%,84.15% 24.49%,83.81% 22.83%,83.31% 21.19%,82.65% 19.58%,81.83% 18.01%,80.86% 16.48%,79.73% 15.00%,78.46% 13.58%,77.06% 12.22%,75.52% 10.94%,73.85% 9.74%,72.07% 8.61%,70.18% 7.58%,68.19% 6.65%,66.12% 5.81%,63.97% 5.07%,61.74% 4.45%,59.46% 3.93%,57.14% 3.52%,54.78% 3.23%,52.40% 3.06%,50.00% 3.00%,47.60% 3.06%,45.22% 3.23%,42.86% 3.52%,40.54% 3.93%,38.26% 4.45%,36.03% 5.07%,33.88% 5.81%,31.81% 6.65%,29.82% 7.58%,27.93% 8.61%,26.15% 9.74%,24.48% 10.94%,22.94% 12.22%,21.54% 13.58%,20.27% 15.00%,19.14% 16.48%,18.17% 18.01%,17.35% 19.58%,16.69% 21.19%,16.19% 22.83%,15.85% 24.49%,15.69% 26.16%,15.69% 27.84%,15.85% 29.51%,16.19% 31.17%,16.69% 32.81%,17.35% 34.42%,18.17% 35.99%,19.14% 37.52%,20.27% 39.00%,21.54% 40.42%,22.94% 41.78%,24.48% 43.06%,26.15% 44.26%,27.93% 45.39%,29.82% 46.42%,31.81% 47.35%,31.81% 47.35%,19.96% 100.00%);
   filter:drop-shadow(0 0 18px rgba(227,48,39,.45)) drop-shadow(0 0 60px rgba(227,48,39,.20))
 }
@@ -176,7 +177,7 @@ a{color:inherit}
 /* Thin and translucent. At full --red on a 2px stroke this was a drawn
    outline of a keyhole sitting on top of the photograph of one. */
 .key-outline path{stroke:rgba(227,48,39,.5);stroke-width:1.1;
-  animation:rimbeat 3.8s infinite}
+  animation:rimbeat 3.8s infinite, eclrim 4.5s linear 2s 1}
 .keyhole:before{
   content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
   box-shadow:inset 0 0 70px 20px rgba(0,0,0,.78);
@@ -203,7 +204,7 @@ a{color:inherit}
 .red-wash{
   position:absolute;inset:0;z-index:4;pointer-events:none;
   background:radial-gradient(circle at 50% 47%,rgba(255,108,52,.12),transparent 22%);
-  mix-blend-mode:screen;animation:heartwash 3.8s infinite
+  mix-blend-mode:screen;animation:heartwash 3.8s infinite, eclwash 4.5s linear 2s 1
 }
 
 .hero-copy{
@@ -231,6 +232,34 @@ h1{
 }
 .lead{
   margin:15px 0 18px;max-width:31ch;font-size:18px;line-height:1.42;color:#ded2c8
+}
+/* The only number on the page, and it is arithmetic. It can be shown
+   precisely because it is not a lever: it counts down to a date that is
+   already printed in the line above it, and nothing about it gets scarcer as
+   it falls. There is no count of places left and there is not going to be
+   one - a number that exists to make somebody hurry is worth less than the
+   thing it is selling.
+
+   Sized and spaced off .kicker rather than .lead, because it is the same kind
+   of object: a label about the page, not a sentence in it. It takes the
+   house's heartbeat so it is part of the room and not a widget dropped into
+   it. Pulled up tight under the lead - the lead's own bottom margin is the
+   gap before the button, and this belongs to the sentence, not to the gap.
+
+   Not var(--red), and this is the reason: --red is #e33027, which is the
+   headline's colour, and the headline gets away with it by being 38px and up
+   - large text only owes 3:1. This is 13px, so it owes 4.5:1, and measured
+   against the actual pixels behind it here it returns 4.54:1 on the median
+   background and 3.78:1 over the brightest part of the bloom the glow throws
+   under this line. It fails exactly where the page is prettiest. #ff594e is
+   already the button's border, so nothing new enters the palette, and it
+   measures 6.53:1 and 5.44:1 on those same two samples. */
+.dayline{
+  margin:-8px 0 18px;
+  font:700 13px/1.2 "Space Grotesk",sans-serif;
+  letter-spacing:.16em;text-transform:uppercase;color:#ff594e;
+  text-shadow:0 0 8px rgba(227,48,39,.6),0 0 26px rgba(227,48,39,.32);
+  animation:hearttext 3.8s infinite
 }
 .actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .cta{
@@ -592,8 +621,15 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
   .key-stage{position:absolute;inset:0 0 0 48%;margin:0;z-index:1}
   .key-fit{--keyw:min(38vw,560px)}
   /* Nothing sits under the stem now, so the fade can run most of the way
-     down instead of stopping short of a headline that has moved away. */
-  .keyhole,.key-outline{
+     down instead of stopping short of a headline that has moved away.
+
+     .key-eye is masked with them, and has to be: the eclipse fills the
+     stem with black, and a black wedge painted to the bottom of a hole
+     that has itself faded out by 97% is a shape sitting on the glow with
+     nothing behind it. Whatever fades the hole fades what plugs it. The
+     eye is at y<=49 and the mask is opaque to 62%, so nothing that is
+     meant to be seen goes anywhere near it. */
+  .keyhole,.key-outline,.key-eye{
     -webkit-mask-image:linear-gradient(to bottom,#000 62%,rgba(0,0,0,.5) 82%,transparent 97%);
     mask-image:linear-gradient(to bottom,#000 62%,rgba(0,0,0,.5) 82%,transparent 97%)
   }
@@ -722,6 +758,78 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
   100%{opacity:0}
 }
 
+/* ---- the eclipse ------------------------------------------------------
+
+   Something standing at a keyhole stops the light. Until now the eye
+   arrived and the porch behind it stayed lit, which was the one thing in
+   this picture that was not true: a lit hole with an eye in it is a
+   picture of an eye. A dark one is a picture of somebody on the other
+   side of a door.
+
+   The body is never drawn. It is read from what it blocks - which is
+   also why it survives being looked at twice, where a drawn body would
+   not. Two black shapes inside .key-eye cover the aperture exactly, on
+   the same corners .key-outline strokes, and because they live inside
+   .key-eye they inherit its opacity for nothing: they arrive and leave
+   on the eye's own clock, in the CSS opening run and in every scripted
+   peek, without a line of script knowing they exist.
+
+   What they cannot cover is the light that has already left the hole -
+   the ambient bloom, the halo on the rim, the wash - which is blurred
+   far outside .key-fit. That is dimmed rather than occluded, and each
+   one is dimmed through a property nothing else on it is animating:
+   filter where the heartbeat has opacity, opacity where the heartbeat
+   has filter. The house keeps beating while it goes dark, which is worse
+   than it stopping.
+
+   Twice, because there are two clocks and only one of them is scripted.
+   The keyframes below run once on the same 4.5s/2s schedule as eyeshow
+   and are what everybody sees at two seconds, including a visitor with
+   no script at all - the occluders alone would have given them a black
+   hole inside a red halo, which is a light bulb. The class is for the
+   scripted peeks, sixteen seconds later at the earliest, so the two
+   never overlap and neither has to know about the other. Both are gone
+   under prefers-reduced-motion, where the eye never appears either.
+
+   Asymmetric, .5s down and 1.1s back: light stops the instant a body is
+   in the way, and returns at the speed of the thing leaving. The eye
+   takes about a second to fade, and what comes back up behind it is the
+   porch exactly as it was, empty. That is the half that should keep
+   somebody up - the arriving is a fright, the leaving is a fact. */
+@keyframes eclglow{
+  0%,4%{filter:blur(26px)}
+  10%,86%{filter:blur(26px) brightness(.20)}
+  100%{filter:blur(26px)}
+}
+@keyframes eclwash{
+  0%,4%{filter:none}
+  10%,86%{filter:brightness(.16)}
+  100%{filter:none}
+}
+@keyframes eclhole{
+  0%,4%{filter:drop-shadow(0 0 18px rgba(227,48,39,.45)) drop-shadow(0 0 60px rgba(227,48,39,.20))}
+  10%,86%{filter:drop-shadow(0 0 18px rgba(227,48,39,.45)) drop-shadow(0 0 60px rgba(227,48,39,.20)) brightness(.30)}
+  100%{filter:drop-shadow(0 0 18px rgba(227,48,39,.45)) drop-shadow(0 0 60px rgba(227,48,39,.20))}
+}
+@keyframes eclrim{
+  0%,4%{opacity:1}
+  10%,86%{opacity:.42}
+  100%{opacity:1}
+}
+/* Every pair below is a filter list and its own prefix plus one function,
+   which is the only shape CSS will interpolate: same functions in the
+   same order, the shorter padded with the longer's identity values. Write
+   brightness() first in either one and the whole thing snaps between the
+   two states instead of fading, with no warning anywhere. */
+.key-glow{transition:filter 1.1s var(--ease)}
+.key-stage.ecl .key-glow{filter:blur(26px) brightness(.20);transition:filter .5s var(--ease)}
+.red-wash{transition:filter 1.1s var(--ease)}
+.key-stage.ecl .red-wash{filter:brightness(.16);transition:filter .5s var(--ease)}
+.keyhole{transition:filter 1.1s var(--ease)}
+.key-stage.ecl .keyhole{filter:drop-shadow(0 0 18px rgba(227,48,39,.45)) drop-shadow(0 0 60px rgba(227,48,39,.20)) brightness(.30);transition:filter .5s var(--ease)}
+.key-outline path{transition:opacity 1.1s var(--ease)}
+.key-stage.ecl .key-outline path{opacity:.42;transition:opacity .5s var(--ease)}
+
 @media(prefers-reduced-motion:reduce){
   *,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
   .reveal{opacity:1;transform:none;filter:none}
@@ -823,6 +931,34 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
             <feGaussianBlur stdDeviation="3.1"/>
           </filter>
         </defs>
+        <!-- What the body blocks. Not a shape invented for the effect: the
+             disc is the arc .key-outline strokes (r 24 about 34.95,27, which
+             is where that path's large arc resolves) and the trapezoid is its
+             four stem corners verbatim, so the two together are the aperture
+             and exactly the aperture. The photograph behind them is cut on
+             those same numbers - .keyhole's clip-path polygon is 80.04% and
+             68.19% and 31.81% and 19.96% of 69.9, which is 55.95, 47.67,
+             22.23, 13.95 - so there is nothing to line up by eye and nothing
+             to keep in sync later, because a change to any of them is a
+             change to all of them or the hole stops being a hole.
+
+             Above .keyhole and below .key-outline, which is what makes this
+             work without moving anything: .keyhole makes its own stacking
+             context with its filter, so .red-wash's z-index 4 is trapped
+             inside it and .key-eye at z-index 2 paints over the whole porch.
+             The rim at z-index 3 still paints over these, so the stroke
+             survives the dark and the edge of the hole stays legible - and
+             its 1.1px non-scaling stroke sits right on the seam, where it
+             covers whatever half-pixel the scaling leaves.
+
+             Drawn before .face-in and outside the clip, so the lid closing
+             does not open the hole back up: the eye shuts, and the doorway
+             behind it stays blocked, because whoever it belongs to has not
+             gone anywhere. Black rather than the door's colour on purpose -
+             this is not a dark surface, it is the absence of the light that
+             was coming through. -->
+        <circle class="ecl-plug" cx="34.95" cy="27" r="24" fill="#000"/>
+        <path class="ecl-plug" d="M 47.67 47.35 L 55.95 100 L 13.95 100 L 22.23 47.35 Z" fill="#000"/>
         <g clip-path="url(#eyeclip)">
           <!-- Everything scales together off this one group, from the size of
                somebody at the far end of a hall to the size of somebody with
@@ -866,6 +1002,17 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
     <p class="kicker">You shouldn&rsquo;t be looking.</p>
     <h1>Some doors were closed <span class="glow">for a reason.</span></h1>
     <p class="lead">A house in Bushwick, Brooklyn opens September 25. Sixty minutes inside. Multiple rooms. One way out.</p>
+    <!-- data-opens is the same 25th of September as the sentence above it and
+         as both meta descriptions in the head. Four places, and they move
+         together or the page argues with itself.
+
+         Ships hidden and empty. The number is not written here because a
+         number written here is only right on the day it was written, and the
+         one rule this page has about numbers is that it does not print one it
+         cannot stand behind. The only thing that can un-hide this element is
+         the code that has just worked out what it says, so a visitor with no
+         script sees no line at all rather than a stale one. -->
+    <p class="dayline" data-opens="2026-09-25" hidden></p>
     <div class="actions">
       <button class="cta" data-open>Unlock the invitation</button>
     </div>
@@ -1406,6 +1553,14 @@ form.addEventListener("submit", async e => {
    you want to look at properly is the commoner direction. */
 {
   const eye = document.querySelector(".key-eye");
+  /* The eclipse's other half. The two black shapes in the SVG ride the eye's
+     own opacity and need nobody; this is only for the light that escaped the
+     hole before the eye got there, which is blurred well outside .key-fit and
+     cannot be covered by anything inside it. Toggled on .key-stage because
+     that is the one element that contains all four of them - the bloom, the
+     photo's halo, the wash and the rim. The first opening run does the same
+     thing in CSS, so a visitor with no script still gets it. */
+  const stage = document.querySelector(".key-stage");
   /* Two nested groups: the outer one is walked in by the keyframes, the
      inner one is aimed from here. Separate elements because they are separate
      transforms on separate clocks, and one element cannot hold two. */
@@ -1471,6 +1626,10 @@ form.addEventListener("submit", async e => {
         if(look){ look.cancel(); look = null; }
         if(walk){ walk.cancel(); walk = null; }
         eye.style.opacity = "0";
+        /* The eye is being taken off the screen mid-peek, so the porch has to
+           come back with it. Left on, the house would stay dark around a hole
+           with nothing in it for as long as the visitor kept the setting. */
+        if(stage) stage.classList.remove("ecl");
         schedule();
         return;
       }
@@ -1540,6 +1699,12 @@ form.addEventListener("submit", async e => {
       if(document.hidden) return schedule();   // do not spend a visit on a tab nobody is looking at
       awake = true;
       still = 0;
+      /* Before the lid, not with it. The light goes first because the body
+         reaches the door before the eye opens against it, and half a second
+         of a porch going dark with nothing yet visible in the hole is the
+         whole idea: by the time there is something to see, you have already
+         been told it is there. */
+      if(stage) stage.classList.add("ecl");
       rect = null;                           // the layout may have moved since the last peek
       /* Open already aimed. The loop stops while the eye is shut, so without
          this it opens pointing wherever it was five visits ago and then swings
@@ -1575,7 +1740,14 @@ form.addEventListener("submit", async e => {
          motion, in frame() above - calls schedule() itself, because cancel
          does not fire either handler and the chain has to survive somebody
          turning the setting back off. */
-      look.onfinish = () => { awake = false; look = null; walk = null; schedule(); };
+      look.onfinish = () => {
+        awake = false; look = null; walk = null;
+        /* And the porch comes back up, over 1.1s against the .5s it took to
+           go - and comes back exactly as it was. Nothing is left behind and
+           nothing is different, which is the part worth being unsettled by. */
+        if(stage) stage.classList.remove("ecl");
+        schedule();
+      };
     }
 
     /* Arming the chain, for the visitor who arrived with reduced motion on.
@@ -1590,6 +1762,49 @@ form.addEventListener("submit", async e => {
        ReferenceError off the temporal dead zone, and the throw takes every
        statement after it in this block down with it. */
     if(window.hmQuiet) schedule();
+  }
+}
+
+/* How far off the 25th is, and nothing else.
+
+   The page's only number, and the rule it was built under is that a number is
+   either true or absent. So this is not a countdown in the sense the word
+   usually means here: there is no clock running down to a deadline that
+   quietly resets, and no count of places remaining, because both of those are
+   inventions and an invented number cheapens the real date standing next to
+   it. This is subtraction against a day that has been printed in the copy
+   since the first draft.
+
+   Calendar days, not elapsed hours. Both ends are pinned to UTC midnight of
+   their own local calendar date, which asks "how many dates from now" rather
+   than "how many 24-hour periods" - so an hour of daylight saving between now
+   and the 25th cannot move the answer, and somebody loading this at 11pm
+   reads the same number as somebody loading it at 1am the same night. Their
+   own calendar and not the door's, deliberately: a visitor three time zones
+   east really does have one fewer day of waiting than the house does.
+
+   It fails by disappearing. A wrong clock, a date already past, no script, a
+   missing or malformed attribute - every one of those leaves the element
+   hidden and leaves the sentence above it to do the work, which it already
+   did on its own before any of this existed. */
+{
+  const el = document.querySelector(".dayline");
+  const opens = el && el.getAttribute("data-opens");
+  const m = opens && /^(\d{4})-(\d{2})-(\d{2})$/.exec(opens);
+  if(m){
+    const now = new Date();
+    const n = Math.round(
+      (Date.UTC(+m[1], +m[2] - 1, +m[3]) -
+       Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())) / 86400000
+    );
+    /* Three states and a silence. "Tonight" rather than "0 days remain",
+       because zero is a number a machine writes; and nothing at all once the
+       date is behind us, since a teaser still counting after the thing has
+       opened is the clearest sign available that nobody is home. */
+    if(n > 1) el.textContent = n + " days remain";
+    else if(n === 1) el.textContent = "One day remains";
+    else if(n === 0) el.textContent = "Tonight";
+    if(n >= 0) el.hidden = false;
   }
 }
 </script>

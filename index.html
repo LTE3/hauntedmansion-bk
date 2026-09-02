@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-x11N72J6eUij4JzxmMNvYlPWym8B3Jl41nJ7+eZx0rM=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-wmwXjq79Rxdgn20rNes9SmPxSgnVr2etp/HOYtCYxhs='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-xKdNWEIY0p70dFEIyQ93J5doHDTtwtfA8ZH3M3P96Cg=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-wmwXjq79Rxdgn20rNes9SmPxSgnVr2etp/HOYtCYxhs='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Every house has a story. | Haunted Mansion BK</title>
@@ -286,10 +286,20 @@ h1{
   -webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)
 }
 .modal.open{display:grid;place-items:end center}
+/* Flex column with the footer as its own row, rather than one scrollport with
+   a sticky footer floating inside it. The sticky version could not work: an
+   element stuck to bottom:0 sits at the bottom of the scrollport at every
+   scroll offset, so at rest it painted over whatever was in the port's bottom
+   strip - which on a landscape phone was the phone field. Measured at 844x390,
+   the footer's edge landed 36px into a 50px input: fourteen pixels showed, and
+   a tap at the field's centre hit the footer. Adding flow margin above the
+   footer does not fix it, because the footer is not where its flow position
+   says it is. Giving the footer a row of its own does, at every height,
+   because the scrollport then ends where the footer begins. */
 .sheet{
   width:100%;max-width:620px;
-  max-height:calc(100vh - 20px);max-height:calc(100svh - 20px);overflow:auto;
-  scroll-padding-bottom:180px;
+  max-height:calc(100vh - 20px);max-height:calc(100svh - 20px);
+  display:flex;flex-direction:column;overflow:hidden;
   background:#0b0706;border:1px solid #512822;
   border-radius:28px 28px 18px 18px;
   padding:22px 20px max(26px,env(safe-area-inset-bottom));
@@ -382,14 +392,50 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
    with the visible area suddenly half what it was.
    The colour is .sheet's own background, repeated because the fields have to
    pass behind this opaquely. */
+/* The three rows of the sheet. Only the middle one scrolls; min-height:0 on
+   each flex ancestor is what lets it, since a flex item's default minimum size
+   is its content and without this the chain refuses to shrink and the sheet
+   grows past its own max-height instead. */
+#formbox,#join{display:flex;flex-direction:column;min-height:0;flex:1 1 auto}
+.sheet-top{flex:none}
+.sheet-scroll{
+  flex:1 1 auto;min-height:0;overflow:auto;
+  scroll-padding-block:20px;
+  -webkit-overflow-scrolling:touch;
+  /* The padding is what keeps the fade honest: at rest the top 12px and the
+     bottom 18px of the scrollport are padding, so the gradient is eating empty
+     space and nothing looks dimmed. It only bites once content is actually
+     travelling under that edge, which is exactly when a fade should appear. */
+  padding:12px 0 18px;
+  /* The old sticky footer drew a gradient over its seam so the cut read as
+     "there is more above" rather than as a seam. The seam is now this
+     container's own edge, and without the same treatment it slices field
+     labels mid-word at the bottom of the port, which reads as a rendering
+     fault rather than as something to scroll. Fading the last 18px restores
+     the original intent. Kept short so it never touches a focus ring on a
+     field sitting fully inside the port. */
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 12px,#000 calc(100% - 18px),transparent 100%);
+          mask-image:linear-gradient(to bottom,transparent 0,#000 12px,#000 calc(100% - 18px),transparent 100%)
+}
+/* Nothing to fade when there is nothing to scroll. */
+@media (min-height:845px){
+  .sheet-scroll{-webkit-mask-image:none;mask-image:none}
+}
 .sheet-foot{
-  position:-webkit-sticky;position:sticky;bottom:0;z-index:1;
+  flex:none;z-index:1;
   background:#0b0706;padding-top:6px
 }
 /* Softens the cut, and reads as "there is more above" rather than as a seam. */
 .sheet-foot::before{
   content:"";position:absolute;left:0;right:0;top:-28px;height:28px;
   pointer-events:none;background:linear-gradient(to top,#0b0706,rgba(11,7,6,0))
+}
+.sheet-foot{position:relative}
+/* On a landscape phone the headline alone can take a third of the sheet, and
+   every pixel it gives back is a pixel the fields get. */
+@media (max-height:500px){
+  .sheet h2{font-size:30px}
+  .sheet{padding-top:14px}
 }
 .err{min-height:21px;color:#ff7a70;font-size:14px;margin:2px 0 8px}
 .consent{margin:-4px 0 16px;animation:consentin .34s var(--ease) both}
@@ -824,6 +870,7 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
       <p>Be first to know when the house opens.</p>
 
       <form id="join" novalidate>
+        <div class="sheet-scroll">
         <!-- A honeypot only works while it is invisible to everything that
              is not a bot. This was named `company`, which is one of the most
              recognisable field names there is: password managers and browser
@@ -859,6 +906,9 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
             HELP for help. Leave this unticked and your number is not kept.</p>
         </div>
 
+        <div class="counter" id="counter"><strong id="count">—</strong> people are waiting to enter.</div>
+        </div><!-- /.sheet-scroll -->
+
         <div class="sheet-foot">
         <p class="err" id="err" role="alert"></p>
         <button class="submit" id="go" type="submit">Knock on the door</button>
@@ -871,7 +921,6 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
           <a href="privacy.html" target="_blank" rel="noopener">What we
           keep</a>.</p>
         </div>
-        <div class="counter" id="counter"><strong id="count">—</strong> people are waiting to enter.</div>
       </form>
     </div>
 

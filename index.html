@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-KIAR6XdiZqpaZvCbhm4LTU2+h4jdfleMo2CfMNcR1gs=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-EnVwSILaJ4XDS09ZUj/S8o0klHLQ8rKQwqNjnihgEgQ='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-yCZNcdjWazcm2dGuv9hZ5k4vYkLDy1WrkbEzvwxFFnk=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-EnVwSILaJ4XDS09ZUj/S8o0klHLQ8rKQwqNjnihgEgQ='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Every house has a story. | Haunted Mansion BK</title>
@@ -867,11 +867,24 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
    3.8s cycle since the page loaded and every one of them is paused here
    on the same line - the breath in the photograph included. It is a
    quieter change than the darkness and a worse one: the house does not
-   only go out, it stops. */
-.key-stage.gone .key-glow{filter:blur(26px) brightness(.05);transition:filter 3.4s linear}
-.key-stage.gone .red-wash{filter:brightness(0);transition:filter 3.4s linear}
-.key-stage.gone .keyhole{filter:drop-shadow(0 0 18px rgba(227,48,39,.45)) drop-shadow(0 0 60px rgba(227,48,39,.20)) brightness(.18);transition:filter 3.4s linear}
-.key-stage.gone .key-outline path{opacity:.4;transition:opacity 3.4s linear}
+   only go out, it stops.
+
+   The !important on the four values is load-bearing and was put there by
+   a failing test, not by preference. Three of these elements also carry
+   a one-shot eclipse animation that runs from 2s to 6.5s after load and
+   animates the same properties this rule sets. An animation outranks an
+   ordinary declaration, so for those first seconds the eclipse was
+   winning; and because the line below pauses animations rather than
+   ending them, pausing froze the eclipse on whatever frame it had
+   reached and held it there permanently. Submitting the form four
+   seconds after load left the porch stopped mid-eclipse forever instead
+   of going dark. !important is the one thing that outranks a running
+   animation, which lets the pause keep the stopped-breath effect
+   without also deciding the brightness. */
+.key-stage.gone .key-glow{filter:blur(26px) brightness(.05)!important;transition:filter 3.4s linear}
+.key-stage.gone .red-wash{filter:brightness(0)!important;transition:filter 3.4s linear}
+.key-stage.gone .keyhole{filter:drop-shadow(0 0 18px rgba(227,48,39,.45)) drop-shadow(0 0 60px rgba(227,48,39,.20)) brightness(.18)!important;transition:filter 3.4s linear}
+.key-stage.gone .key-outline path{opacity:.4!important;transition:opacity 3.4s linear}
 .key-stage.gone .key-glow,
 .key-stage.gone .red-wash,
 .key-stage.gone .keyhole img,

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-yCZNcdjWazcm2dGuv9hZ5k4vYkLDy1WrkbEzvwxFFnk=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-EnVwSILaJ4XDS09ZUj/S8o0klHLQ8rKQwqNjnihgEgQ='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-/kXamxC+61kyWKsg8wIw9gArN9CAJxc1o2CdE4Eb/tU=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-brJgPt4dmKRMPhkM59vz0BbQ9nRirrY/7TsBW+3DSDM='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Every house has a story. | Haunted Mansion BK</title>
@@ -183,6 +183,17 @@ a{color:inherit}
   box-shadow:inset 0 0 70px 20px rgba(0,0,0,.78);
   background:linear-gradient(180deg,rgba(0,0,0,.08),transparent 40%,rgba(0,0,0,.18))
 }
+/* If the photograph never arrives - a 404 after a bad deploy, a blocked
+   host, a phone that drops the connection mid-download - the keyhole is
+   left as a hole. The skull and the rim are separate layers and still
+   draw, but the thing they are drawn over is gone and the interior falls
+   through to the page. This goes in its place: not a placeholder graphic
+   and not a broken-image icon, but the same dark red the porch throws, so
+   the frame reads as a doorway too dark to make out rather than as a
+   missing file. */
+.keyhole.noimg{background:radial-gradient(118% 88% at 50% 63%,#3a1410 0%,#1c0a08 46%,#0b0706 100%)}
+.keyhole.noimg img{display:none}
+
 .keyhole img{
   width:100%;height:100%;object-fit:cover;object-position:center;
   /* Down a long way, and the skull is why it can go. The skull is an SVG
@@ -311,8 +322,15 @@ h1{
 /* ---------- MODAL ---------- */
 .modal{
   display:none;position:fixed;inset:0;z-index:300;
-  background:rgba(0,0,0,.86);padding:10px;
-  -webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)
+  /* .62 and 10px, not .86 and 18px. The sheet is anchored to the bottom, so
+     what covered the keyhole was never the sheet - it was this. At .86 over
+     18px of blur the porch, the eye and the eclipse were all gone, and the
+     invitation arrived from nowhere in particular. The eye is deliberately
+     still open at 5s when this comes up; that only means anything if it can
+     be seen. The sheet carries its own opaque background, so nothing here
+     changes the contrast of a single word in it. */
+  background:rgba(0,0,0,.62);padding:10px;
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)
 }
 .modal.open{display:grid;place-items:end center}
 /* Flex column with the footer as its own row, rather than one scrollport with
@@ -478,9 +496,16 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
 .fine{font-size:13px!important;color:#85786f!important;margin:11px 0 0!important}
 /* Underlined, not recoloured: .fine sets its colour with !important and it
    is the only colour in the paragraph, so a link that relied on colour
-   alone would not read as one. */
+   alone would not read as one.
+
+   #6C6057 rather than the #5d534b this used to be. A non-text element
+   carrying meaning has to reach 3:1 against its background (WCAG 1.4.11),
+   and this underline is the only thing marking the link: at #5d534b on
+   #0b0706 it was 2.68:1, so the one cue that said 'link' was itself the
+   part that failed. #6C6057 is 3.3:1 and still reads as a dim rule, not
+   as a second colour competing with the sentence. */
 .fine a{text-decoration:underline;text-underline-offset:2px;
-  text-decoration-color:#5d534b}
+  text-decoration-color:#6C6057}
 .fine a:hover{text-decoration-color:#b9aaa1}
 .success{display:none;padding:72px 0 36px;outline:0}
 .success strong{display:block;font:700 44px/.95 "Space Grotesk";letter-spacing:-.055em}
@@ -751,9 +776,13 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
    for animationend and compares e.animationName to the string "eyeshow" to
    know when the opening run is over. Miss it and the eye is left holding
    opacity 0 under a fill and the peek chain never starts. */
+/* One per cent in, twelve out - 45ms against 540ms. The fade up used to take
+   270ms, which spanned the lid's whole shut period and most of its lift, so
+   the eye arrived already opening and the shut-lid beat above was never
+   actually seen. A fright has no ramp. It lands, then it leaves slowly. */
 @keyframes eyeshow{
   0%{opacity:0}
-  6%{opacity:.96}
+  1%{opacity:.96}
   88%{opacity:.96}
   100%{opacity:0}
 }
@@ -981,9 +1010,6 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
             <stop offset=".46" stop-color="#e8161a" stop-opacity=".72"/>
             <stop offset="1" stop-color="#c20d12" stop-opacity="0"/>
           </radialGradient>
-          <filter id="embersoft" x="-70%" y="-70%" width="240%" height="240%">
-            <feGaussianBlur stdDeviation=".62"/>
-          </filter>
           <!-- The coal is the source; this is what the coal throws. Blurred
                far wider than the socket so the light reads as coming out of
                the skull rather than as a shape drawn on it. -->
@@ -1392,6 +1418,23 @@ matchMedia("(prefers-reduced-motion:reduce)").addEventListener("change", ev => {
     kimg.style.removeProperty("--py");
   }
 });
+
+/* The photograph is one file on one host and nothing on this page degrades
+   gracefully without it - see .keyhole.noimg in the stylesheet. An error
+   listener on its own is not enough: the img carries fetchpriority=high and
+   sits above this script in the document, so it can finish failing before
+   this line ever runs, and error does not replay for a late listener. Hence
+   the complete/naturalWidth check as well. It is here rather than an onerror
+   attribute on the tag because the CSP has no 'unsafe-hashes' and inline
+   handlers are refused. */
+(() => {
+  const kh = document.querySelector(".keyhole img");
+  if(!kh) return;
+  const hole = kh.closest(".keyhole");
+  const failed = () => hole.classList.add("noimg");
+  kh.addEventListener("error", failed);
+  if(kh.complete && kh.naturalWidth === 0) failed();
+})();
 
 /* The scroll-reveal observer that used to live here observed nothing: the
    page it was written for had .reveal sections, and this one is a single
@@ -1811,7 +1854,7 @@ form.addEventListener("submit", async e => {
         {duration:5200, easing:"cubic-bezier(.16,1,.3,1)", fill:"both"}
       );
       look = eye.animate(
-        [{opacity:0},{opacity:.96,offset:.13},{opacity:.96,offset:.82},{opacity:0}],
+        [{opacity:0},{opacity:.96,offset:.01},{opacity:.96,offset:.82},{opacity:0}],
         {duration:5200, easing:"linear", fill:"both"}
       );
       /* onfinish, not oncancel. The one place that cancels this - reduced

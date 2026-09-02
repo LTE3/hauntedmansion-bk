@@ -312,7 +312,52 @@ def _browser_cases(b, url):
           "%s:1" % ratios.get(".dayline"))
     check("lead paragraph contrast >= 4.5:1", ratios.get(".lead", 0) >= 4.5, "%s:1" % ratios.get(".lead"))
     check("headline contrast >= 3:1 (large text)", ratios.get("h1", 0) >= 3.0, "%s:1" % ratios.get("h1"))
+
+    # The privacy link's underline is the only thing marking it as a link -
+    # .fine sets the paragraph colour with !important and the link inherits
+    # it, so there is no colour difference to fall back on. That makes the
+    # underline a non-text element carrying meaning, which owes 3:1 (WCAG
+    # 1.4.11), and it shipped at 2.68:1. Measured, not eyeballed, because the
+    # value that failed looked perfectly fine on the machine it was chosen on.
+    ul = pg.evaluate("""() => {
+        const lum = c => { const v = c.map(x => { x /= 255;
+              return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); });
+            return 0.2126*v[0] + 0.7152*v[1] + 0.0722*v[2]; };
+        const rgb = s => s.match(/\\d+/g).slice(0, 3).map(Number);
+        const a = document.querySelector('.fine a');
+        if (!a) return null;
+        const cs = getComputedStyle(a);
+        if (cs.textDecorationLine.indexOf('underline') < 0) return 0;
+        const fg = lum(rgb(cs.textDecorationColor));
+        const bg = lum([12, 5, 5]);
+        return Math.round(((Math.max(fg,bg)+0.05)/(Math.min(fg,bg)+0.05)) * 100) / 100;
+    }""")
+    check("privacy link underline >= 3:1 (its only link cue)",
+          ul is not None and ul >= 3.0, "%s:1" % ul)
     pg.close()
+
+    # --- the photograph does not arrive -------------------------------------
+    # One file on one host, and it is the entire picture. Aborting the request
+    # is the real failure, not a simulated one: every candidate in the
+    # <picture> is blocked, so the img fires error exactly as it would after a
+    # bad deploy. Without the fallback the keyhole is a transparent hole with a
+    # skull floating in it.
+    fp = b.new_page(viewport={"width": 430, "height": 932})
+    fp.route("**/keyhole*", lambda route: route.abort())
+    fp.goto(url, wait_until="load")
+    fp.wait_for_timeout(900)
+    fell = fp.evaluate("""() => {
+        const h = document.querySelector('.keyhole');
+        if (!h) return null;
+        return {cls: h.classList.contains('noimg'),
+                bg: getComputedStyle(h).backgroundImage,
+                shown: getComputedStyle(h.querySelector('img')).display};
+    }""")
+    check("keyhole paints a fallback when the photograph fails",
+          bool(fell) and fell["cls"] and "gradient" in fell["bg"]
+          and fell["shown"] == "none",
+          str(fell))
+    fp.close()
 
 
 def main():

@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>
+/* PREVIEW HARNESS - not part of any shipped version of this page.
+   Injected only into the copies under /v/ so the cycler behaves like five
+   first visits instead of one visit and four reruns:
+     1. the intro ceremony is keyed to sessionStorage, which is per-origin, so
+        without this the second version you open would skip its own opening.
+     2. the signup form writes a real row. Inside the cycler frame it must not.
+   Both only apply when framed, so opening a /v/ link directly still gives you
+   the honest page, real form and all. */
+(function(){
+  if (window.top === window.self) return;
+  try { sessionStorage.removeItem("hm.lit"); } catch(e){}
+  var f = window.fetch;
+  window.fetch = function(u, o){
+    if (String(u).indexOf("supabase.co") > -1)
+      return Promise.resolve(new Response('[{"id":0}]', {status:201,
+        headers:{"content-type":"application/json"}}));
+    return f.apply(this, arguments);
+  };
+})();
+</script>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-ZQCLiEmqcwV7kCY2g2cBngEaRjB05I0vDvgQaZzZm3M=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-Rjt0i4trpys9fP0m5QIS/Ihq/b54ce5HwcR0qvt6S6g=' 'sha256-cy/magVvFvv8o0sTep6F4MOlDXuhafpfkSd4Cu+Oss0=' 'sha256-jAk5YCoFAetQ4uPlmX/Qvo1zl5FIes52KipiSwBUZoE=' 'self'; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050303">
+<meta name="robots" content="noindex,nofollow">
+<title>Thread &mdash; Haunted Mansion BK</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#050303;--fg:#f5eee7;--muted:#b8aaa0;--red:#df2d25;--line:rgba(255,255,255,.15);--ease:cubic-bezier(.16,1,.3,1)}
+.stage{position:relative;min-height:100svh;display:grid;place-items:center;isolation:isolate}
+.device{position:relative;width:100%;min-height:100svh}
+@media(min-width:700px){
+  .stage{padding:40px 20px}
+  .stage:before{content:"";position:fixed;inset:0;z-index:-1;
+    background:#000 center/cover no-repeat url(img-house/house-blur.jpg);opacity:.55}
+  .stage:after{content:"";position:fixed;inset:0;z-index:-1;
+    background:radial-gradient(80% 70% at 50% 40%,transparent,rgba(0,0,0,.8))}
+  .device{width:430px;min-height:0;height:min(900px,calc(100svh - 80px));
+    border-radius:46px;border:1px solid rgba(255,255,255,.22);overflow:hidden;
+    box-shadow:0 60px 120px -40px rgba(0,0,0,1),0 0 0 8px #0c0908}
+}
+
+.chat{display:grid;grid-template-rows:auto 1fr auto;background:#070404;
+  height:100svh;min-height:0;overflow:hidden;
+  font-family:-apple-system,"SF Pro Text",Inter,system-ui,sans-serif}
+@media(min-width:700px){.chat{height:min(900px,calc(100svh - 80px))}}
+.chead{display:flex;align-items:center;gap:12px;padding:max(52px,env(safe-area-inset-top)) 16px 12px;
+  border-bottom:1px solid var(--line);background:rgba(12,7,7,.9)}
+.avatar{width:42px;height:42px;border-radius:50%;flex:none;position:relative;overflow:hidden;
+  background:linear-gradient(180deg,#3a2f2c,#241c1a)}
+.avatar:before{content:"";position:absolute;left:50%;top:9px;width:16px;height:16px;
+  border-radius:50%;background:#7a6a64;transform:translateX(-50%)}
+.avatar:after{content:"";position:absolute;left:50%;top:27px;width:30px;height:30px;
+  border-radius:50%;background:#7a6a64;transform:translateX(-50%)}
+.who{margin:0;font-size:15px;font-weight:600}
+.where{margin:2px 0 0;font-size:12px;color:var(--muted)}
+.chead .dayline{margin-left:auto;text-align:right;font-size:10px}
+.msgs{list-style:none;margin:0;padding:18px 14px 12px;overflow:auto;
+  display:flex;flex-direction:column;gap:6px;scroll-behavior:smooth}
+.msgs li{max-width:78%;animation:pop .45s var(--ease) both}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+.msgs li span{display:block;padding:10px 14px;font-size:16px;line-height:1.35;border-radius:20px}
+.in{align-self:flex-start}
+.in span{background:#262020;color:#f5eee7;border-bottom-left-radius:6px}
+.out{align-self:flex-end}
+.out span{background:var(--red);color:#fff;border-bottom-right-radius:6px}
+.msgs li.pic{width:56%;max-width:56%}
+.pic img{display:block;width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;object-position:50% 46%;border-radius:20px;
+  border-bottom-left-radius:6px;border:1px solid var(--line)}
+.stamp{align-self:flex-end;margin:2px 4px 0;font-size:11px;color:var(--muted);font-weight:500}
+.typing span{display:flex;gap:4px;align-items:center;min-height:38px;width:60px;justify-content:center}
+.typing i{width:7px;height:7px;border-radius:50%;background:#8a7a72;animation:dotty 1.2s ease-in-out infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes dotty{0%,60%,to{opacity:.35;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+.js .msgs li{display:none}
+.js .msgs li.show,.js .msgs li.typing{display:block}
+.reply{padding:10px 12px max(14px,env(safe-area-inset-bottom));border-top:1px solid var(--line);
+  background:rgba(12,7,7,.9)}
+.field{display:flex;align-items:center;width:100%;min-height:50px;padding:0 6px 0 18px;
+  border:1px solid #3a2f2c;border-radius:26px;background:#100a0a;color:#f5eee7;cursor:pointer;
+  font-size:16px;text-align:left;transition:border-color .3s var(--ease)}
+.field:hover,.field:focus-visible{border-color:var(--red)}
+.field span{flex:1}
+.send{width:36px;height:36px;border-radius:50%;background:var(--red);position:relative;flex:none;
+  box-shadow:0 0 16px rgba(223,45,37,.5)}
+.send:after{content:"";position:absolute;left:50%;top:50%;width:9px;height:9px;
+  border-left:2.5px solid #fff;border-top:2.5px solid #fff;transform:translate(-50%,-30%) rotate(45deg)}
+*{box-sizing:border-box}
+html{background:#000;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+button,input{font:inherit}button{color:inherit}
+img{display:block;max-width:100%}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+
+/* Over everything, modal included. The plate is a 2x upscale and grain is what
+   an upscale wants: it puts high-frequency detail back where the resampler
+   took it out, so the softness reads as film rather than as a picture that is
+   too small for the screen it is on. */
+.grain{position:fixed;inset:-50%;z-index:80;pointer-events:none;opacity:.055;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
+  animation:grain .18s steps(2) infinite}
+@keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(-4%,3%)}50%{transform:translate(3%,-4%)}75%{transform:translate(-3%,-2%)}to{transform:translate(2%,4%)}}
+
+.top{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;
+  justify-content:space-between;align-items:center;gap:16px;
+  padding:17px clamp(16px,4vw,40px);
+  font:600 11px/1 "Space Grotesk",system-ui,sans-serif;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted);
+  background:linear-gradient(180deg,rgba(5,3,3,.74),transparent)}
+.top .dot{display:inline-block;width:6px;height:6px;border-radius:50%;
+  background:var(--red);box-shadow:0 0 10px var(--red);margin-right:9px}
+
+/* Ships hidden and empty on purpose. The only thing that can fill it in is the
+   code that has just worked out what it says, so a visitor with no script sees
+   no line at all rather than a stale one. Nothing on this page prints a number
+   it cannot stand behind. */
+.dayline{margin:0;font:600 11px/1 "Space Grotesk",system-ui,sans-serif;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--red)}
+.dayline[hidden]{display:none}
+
+.modal{position:fixed;inset:0;z-index:90;display:none;place-items:center;
+  padding:20px;background:rgba(2,1,1,.86);
+  -webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px)}
+.modal.open{display:grid}
+.panel{width:min(460px,100%);max-height:92vh;overflow:auto;padding:26px;
+  border:1px solid var(--line);border-radius:20px;background:#0a0706;
+  font:500 17px/1.5 "DM Sans",system-ui,sans-serif}
+.modal-top{display:flex;justify-content:space-between;align-items:center;gap:14px}
+.modal .kicker{margin:0;font:600 11px/1 "Space Grotesk",sans-serif;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.modal h2{font:600 38px/.96 "Space Grotesk",sans-serif;letter-spacing:-.04em;margin:22px 0 8px}
+.modal .sub{color:var(--muted);margin:0 0 26px;font-size:17px}
+.close{width:44px;height:44px;flex:none;border-radius:50%;border:1px solid var(--line);
+  background:transparent;font-size:24px;line-height:1;cursor:pointer}
+label{display:block;margin:0 0 18px}
+label span{display:block;font:600 12px/1 "Space Grotesk",sans-serif;
+  letter-spacing:.1em;text-transform:uppercase;color:#d4c5ba;margin-bottom:8px}
+label i{font-style:normal;opacity:.6}
+input{width:100%;min-height:56px;border:1px solid #493a34;border-radius:13px;
+  background:#080605;color:#fff;padding:0 16px;font-size:17px;outline:0}
+input:focus{border-color:#b63b33;box-shadow:0 0 0 3px rgba(223,45,37,.14)}
+.submit{width:100%;min-height:58px;border:0;border-radius:13px;background:var(--red);
+  color:#fff;font-weight:700;margin-top:4px;cursor:pointer}
+.submit[disabled]{opacity:.6;cursor:default}
+.note{font-size:13px;color:#857970;margin:12px 0 0;line-height:1.5}
+.note a{color:#857970;text-decoration:underline;text-underline-offset:2px}
+.note a:hover,.note a:focus-visible{color:var(--fg)}
+.success{display:none;padding:38px 0 24px}
+.success strong{display:block;font:600 40px/.95 "Space Grotesk",sans-serif;letter-spacing:-.04em}
+.success span{display:block;margin-top:12px;color:var(--muted)}
+
+.footer{position:relative;z-index:5;padding:34px clamp(16px,4vw,40px) 54px;
+  color:#82756c;font:500 11px/1.7 "Space Grotesk",system-ui,sans-serif;
+  letter-spacing:.16em;text-transform:uppercase;border-top:1px solid var(--line);
+  background:var(--bg)}
+.footer a{color:#82756c;text-decoration:underline;text-underline-offset:3px}
+.footer a:hover,.footer a:focus-visible{color:var(--fg)}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<main class="stage"><div class="device chat" id="chat">
+  <header class="chead"><i class="avatar" aria-hidden="true"></i>
+    <div><p class="who">Unknown number</p><p class="where">Bushwick, Brooklyn</p></div>
+    <p class="dayline" data-opens="2026-09-25" hidden></p>
+  </header>
+  <ol class="msgs" id="msgs" aria-live="polite">
+    <li class="in"><span>you walked past it again tonight.</span></li>
+    <li class="in pic"><img src="img-house/house.jpg" width="960" height="1696" alt="The house at night: a two-storey porch under a red-lit balcony, lanterns burning either side of the front door, carved pumpkins along the steps and a lit path running up to them."></li>
+    <li class="in"><span>the one with the lights on.</span></li>
+    <li class="out"><span>who is this?</span></li>
+    <li class="in"><span>nobody lives there. sixty minutes inside, several rooms, one way out.</span></li>
+    <li class="in"><span>september 25.</span></li>
+    <li class="in"><span>the address goes to the list. not to you. not yet.</span></li>
+    <li class="stamp">Delivered</li>
+  </ol>
+  <div class="reply"><button class="field" type="button" data-open><span>Put your name down</span><i class="send" aria-hidden="true"></i></button></div>
+</div></main>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+<div class="panel">
+<div class="modal-top"><p class="kicker">Private waitlist</p><button class="close" type="button" aria-label="Close">&times;</button></div>
+<div id="formwrap">
+<h2 id="modal-title">Knock on the door.</h2>
+<p class="sub">Leave your name. The house will answer when it&rsquo;s ready.</p>
+<form id="form">
+<label><span>Your name</span><input name="name" autocomplete="name" maxlength="120" required></label>
+<label><span>Your email</span><input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+<label><span>Phone <i>(optional)</i></span><input name="phone" type="tel" autocomplete="tel" maxlength="40"></label>
+<button class="submit" type="submit">Enter the waitlist</button>
+<p class="note">Early access. Limited tickets. No spam. <a href="../privacy.html" target="_blank" rel="noopener">What we keep.</a></p>
+</form></div>
+<div class="success" id="success" tabindex="-1"><strong>We heard you.</strong><span>Don&rsquo;t answer the door.</span></div>
+</div></div>
+<footer class="footer">Bushwick, Brooklyn &middot; September 25, 2026 &middot; <a href="index.html">every version</a></footer>
+<script>
+(function(){
+  var el=document.querySelector('.dayline');
+  if(el&&el.dataset.opens){
+    /* Fixed to New York, not to the reader. The house opens on the 25th here
+       whatever clock they are on, and a browser in Sydney counting from its
+       own midnight is a day out for half of every day. */
+    var n=Math.ceil((new Date(el.dataset.opens+'T20:00:00-04:00')-new Date())/864e5);
+    if(n>1){el.textContent=n+' days remain';el.hidden=false}
+    else if(n===1){el.textContent='1 day remains';el.hidden=false}
+    else if(n===0){el.textContent='Tonight';el.hidden=false}
+  }
+  var modal=document.getElementById('modal'),shutBtn=modal.querySelector('.close'),
+      first=modal.querySelector('input'),touched=false;
+  function open(){touched=true;modal.classList.add('open');document.body.style.overflow='hidden';setTimeout(function(){first.focus()},80)}
+  function shut(){touched=true;modal.classList.remove('open');document.body.style.overflow=''}
+  document.querySelectorAll('[data-open]').forEach(function(b){b.addEventListener('click',open)});
+  shutBtn.addEventListener('click',shut);
+  modal.addEventListener('click',function(e){if(e.target===modal)shut()});
+  addEventListener('keydown',function(e){if(e.key==='Escape'&&modal.classList.contains('open'))shut()});
+  /* Opens itself once if nobody has touched it, and never again - a panel that
+     comes back every time you dismiss it is a different kind of haunting to
+     the one we are selling. */
+  setTimeout(function(){if(!touched)open()},9000);
+})();
+</script>
+<script src="waitlist.js" data-form="#form" data-formbox="#formwrap" data-done="#success" data-submit=".submit" data-submit-label="Enter the waitlist"></script>
+<script>
+/* One bubble at a time. With script off, or motion reduced, the thread is
+   simply all there. */
+(function(){
+  var chat=document.getElementById('chat'),list=document.getElementById('msgs');
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  chat.classList.add('js');
+  var items=[].slice.call(list.children),i=0,typing=document.createElement('li');
+  typing.className='in typing';typing.innerHTML='<span><i></i><i></i><i></i></span>';
+  function next(){
+    if(i>=items.length)return;
+    var li=items[i++],incoming=li.classList.contains('in');
+    if(incoming){list.appendChild(typing);list.scrollTop=list.scrollHeight;}
+    setTimeout(function(){
+      if(typing.parentNode)list.removeChild(typing);
+      li.classList.add('show');list.scrollTop=list.scrollHeight;
+      setTimeout(next,li.classList.contains('stamp')?0:380);
+    },incoming?(li.classList.contains('pic')?900:620):260);
+  }
+  setTimeout(next,500);
+})();
+</script>
+</body>
+</html>

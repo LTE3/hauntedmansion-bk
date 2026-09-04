@@ -1,5 +1,8 @@
 /* The real waitlist, for the candidate pages that were built without one.
 
+   Every page that loads this gets the same text-consent block under its
+   phone field and the same rule: no tick, no number stored.
+
    Living Door and The List were drawn as pictures of a signup: their forms
    hid themselves and showed a thank-you, and nobody's name went anywhere.
    This is the same flow the live page and the keyhole already run - same
@@ -64,6 +67,48 @@
   err.style.cssText = "min-height:1.2em;margin:8px 0 0;color:#ff6a5e;font-size:14px";
   form.appendChild(err);
 
+  /* Text consent, shown only once a number is typed, and never pre-ticked.
+     The same words as the live page: the disclosure has to sit at the point
+     of collection, and a marketing text needs prior express written consent
+     (TCPA). A number with the box left unticked is never sent anywhere - see
+     the submit handler. Built here rather than in the markup so no page can
+     ship a phone field without it. Styles are set on the elements because
+     the pages' policies hash their stylesheets and allow no style attribute
+     in markup; setting .style from script is permitted and is not the same
+     thing. */
+  var phoneField = field("phone"), smsEl = null;
+  if (phoneField) {
+    var consent = document.createElement("div");
+    consent.className = "consent";
+    consent.hidden = true;
+    consent.style.cssText = "margin:-4px 0 14px";
+    var tick = document.createElement("label");
+    tick.style.cssText = "display:flex;gap:11px;align-items:center;margin:0;min-height:44px;cursor:pointer;" +
+      "font-size:15px;font-weight:600;line-height:1.3;letter-spacing:0;text-transform:none;color:inherit";
+    smsEl = document.createElement("input");
+    smsEl.type = "checkbox";
+    smsEl.name = "sms";
+    smsEl.style.cssText = "width:22px;height:22px;flex:none;margin:0;accent-color:#c22119";
+    var tickText = document.createElement("span");
+    tickText.textContent = "Text me when the house opens.";
+    tickText.style.cssText = "display:inline;font:inherit;letter-spacing:0;text-transform:none;color:inherit;opacity:1";
+    tick.appendChild(smsEl);
+    tick.appendChild(tickText);
+    var fine = document.createElement("p");
+    fine.style.cssText = "margin:4px 0 0;font-size:13px;line-height:1.45;color:inherit";
+    fine.textContent = "Recurring automated marketing texts from Pulse Ticketing LLC at the number above \u2014 " +
+      "opening night and ticket on-sales. Frequency varies. Message and data rates may apply. " +
+      "Not a condition of entry or of any purchase. Reply STOP to stop, HELP for help. " +
+      "Leave this unticked and your number is not kept.";
+    consent.appendChild(tick);
+    consent.appendChild(fine);
+    var after = phoneField.closest("label") || phoneField;
+    after.parentNode.insertBefore(consent, after.nextSibling);
+    phoneField.addEventListener("input", function () {
+      if (consent.hidden && phoneField.value.trim()) consent.hidden = false;
+    });
+  }
+
   function field(name) { return form.elements.namedItem(name); }
 
   function fail(el, message) {
@@ -123,7 +168,8 @@
       method: "POST",
       headers: Object.assign({}, headers, { Prefer: "return=minimal" }),
       body: JSON.stringify({
-        name: name, email: email, phone: null,
+        /* Kept only with the tick. Unticked, the number stays in the page. */
+        name: name, email: email, phone: (smsEl && smsEl.checked && phone) || null,
         user_agent: navigator.userAgent
       })
     }).then(function (r) {

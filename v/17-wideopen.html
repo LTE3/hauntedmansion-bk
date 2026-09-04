@@ -23,17 +23,34 @@
 })();
 </script>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-f7ncNPyU3KzIRx0T+r1KiBBaHsvQtpxxYEdobEbRgoU=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-Rjt0i4trpys9fP0m5QIS/Ihq/b54ce5HwcR0qvt6S6g=' 'sha256-cy/magVvFvv8o0sTep6F4MOlDXuhafpfkSd4Cu+Oss0=' 'self'; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-Y1s0ZbPtAO7zMxyEYaxSGtAPHf0oJtgCmbBCMpxt8hc=' 'sha256-HW6QoE7sons5Q05BsBOZBfsqj7XwzytrfUSyC/ZwTEI='; font-src 'self'; script-src 'sha256-Rjt0i4trpys9fP0m5QIS/Ihq/b54ce5HwcR0qvt6S6g=' 'sha256-cy/magVvFvv8o0sTep6F4MOlDXuhafpfkSd4Cu+Oss0=' 'self'; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050303">
 <meta name="robots" content="noindex,nofollow">
 <title>Wide open &mdash; Haunted Mansion BK</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500&family=DM+Sans:wght@400;500&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet">
 <style>
-:root{color-scheme:dark;--bg:#050303;--fg:#f5eee7;--muted:#b8aaa0;--red:#df2d25;--line:rgba(255,255,255,.15);--ease:cubic-bezier(.16,1,.3,1)}
+/* Typefaces served from this origin: the same woff2 files Google's
+   stylesheet pointed at, so nothing leaves the site to draw a word.
+   Written by tools/selfhost_fonts.py; run it again after a generator
+   rewrites this page. */
+/* latin-ext */ @font-face {font-family: 'DM Sans'; font-style: normal; font-weight: 400; font-display: swap; src: url(fonts/dmsans-400-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+/* latin */ @font-face {font-family: 'DM Sans'; font-style: normal; font-weight: 400; font-display: swap; src: url(fonts/dmsans-400-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+/* latin-ext */ @font-face {font-family: 'DM Sans'; font-style: normal; font-weight: 500; font-display: swap; src: url(fonts/dmsans-400-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+/* latin */ @font-face {font-family: 'DM Sans'; font-style: normal; font-weight: 500; font-display: swap; src: url(fonts/dmsans-400-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+/* latin-ext */ @font-face {font-family: 'Oswald'; font-style: normal; font-weight: 300; font-display: swap; src: url(fonts/oswald-300-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+/* latin */ @font-face {font-family: 'Oswald'; font-style: normal; font-weight: 300; font-display: swap; src: url(fonts/oswald-300-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+/* latin-ext */ @font-face {font-family: 'Oswald'; font-style: normal; font-weight: 400; font-display: swap; src: url(fonts/oswald-300-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+/* latin */ @font-face {font-family: 'Oswald'; font-style: normal; font-weight: 400; font-display: swap; src: url(fonts/oswald-300-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+/* latin-ext */ @font-face {font-family: 'Oswald'; font-style: normal; font-weight: 500; font-display: swap; src: url(fonts/oswald-300-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+/* latin */ @font-face {font-family: 'Oswald'; font-style: normal; font-weight: 500; font-display: swap; src: url(fonts/oswald-300-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+/* latin-ext */ @font-face {font-family: 'Space Grotesk'; font-style: normal; font-weight: 500; font-display: swap; src: url(fonts/spacegrotesk-400-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+/* latin */ @font-face {font-family: 'Space Grotesk'; font-style: normal; font-weight: 500; font-display: swap; src: url(fonts/spacegrotesk-400-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+/* latin-ext */ @font-face {font-family: 'Space Grotesk'; font-style: normal; font-weight: 600; font-display: swap; src: url(fonts/spacegrotesk-400-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+/* latin */ @font-face {font-family: 'Space Grotesk'; font-style: normal; font-weight: 600; font-display: swap; src: url(fonts/spacegrotesk-400-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+</style>
+<style>
+:root{color-scheme:dark;--bg:#050303;--fg:#f5eee7;--muted:#b8aaa0;--red:#df2d25;--red-text:#e4362e;--line:rgba(255,255,255,.15);--ease:cubic-bezier(.16,1,.3,1)}
 .hero{position:relative;min-height:100svh;display:grid;
   grid-template-rows:1fr auto;isolation:isolate;overflow:hidden}
 
@@ -91,6 +108,9 @@ button,input{font:inherit}button{color:inherit}
 img{display:block;max-width:100%}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--red);outline-offset:3px}
+/* Read by assistive tech, drawn nowhere: the pages whose picture carries the
+   heading still need one for a screen reader to land on. */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
 
 /* Over everything, modal included. The plate is a 2x upscale and grain is what
    an upscale wants: it puts high-frequency detail back where the resampler
@@ -115,7 +135,7 @@ a{color:inherit}
    no line at all rather than a stale one. Nothing on this page prints a number
    it cannot stand behind. */
 .dayline{margin:0;font:600 11px/1 "Space Grotesk",system-ui,sans-serif;
-  letter-spacing:.2em;text-transform:uppercase;color:var(--red)}
+  letter-spacing:.2em;text-transform:uppercase;color:var(--red-text)}
 .dayline[hidden]{display:none}
 
 .modal{position:fixed;inset:0;z-index:90;display:none;place-items:center;
@@ -161,7 +181,7 @@ input:focus{border-color:#b63b33;box-shadow:0 0 0 3px rgba(223,45,37,.14)}
 </head>
 <body>
 <div class="grain" aria-hidden="true"></div>
-<div class="top"><span><i class="dot"></i>Haunted Mansion BK</span><p class="dayline" data-opens="2026-09-25" hidden></p></div>
+<header class="top"><span><i class="dot"></i>Haunted Mansion BK</span><p class="dayline" data-opens="2026-09-25" hidden></p></header>
 <main class="hero">
   <div class="bleed" aria-hidden="true"></div>
   <img class="plate" src="img-house/house.jpg" width="960" height="1696" alt="The house at night: a two-storey porch under a red-lit balcony, lanterns burning either side of the front door, carved pumpkins along the steps and a lit path running up to them.">
@@ -185,7 +205,7 @@ input:focus{border-color:#b63b33;box-shadow:0 0 0 3px rgba(223,45,37,.14)}
 <label><span>Your email</span><input name="email" type="email" autocomplete="email" maxlength="254" required></label>
 <label><span>Phone <i>(optional)</i></span><input name="phone" type="tel" autocomplete="tel" maxlength="40"></label>
 <button class="submit" type="submit">Enter the waitlist</button>
-<p class="note">Early access. Limited tickets. No spam. <a href="../privacy.html" target="_blank" rel="noopener">What we keep.</a></p>
+<p class="note">Early access. No spam. 13 and over. <a href="../privacy.html" target="_blank" rel="noopener">What we keep.</a></p>
 </form></div>
 <div class="success" id="success" tabindex="-1"><strong>We heard you.</strong><span>Don&rsquo;t answer the door.</span></div>
 </div></div>

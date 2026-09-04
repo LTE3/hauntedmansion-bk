@@ -2,14 +2,31 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-0maBXuHDQh/8MpatQCt+uRtZ08WktBxh5L3u5lxIx8A=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-Miox6VwVy5xMlH7JAJwkgxjfVjzDyCiqIBSbIlvWWhc='; connect-src 'none'; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-SELo4N74YsiKeHDXtgbTZ43kJs5LMEh/Z346jLSCTeA=' 'sha256-XPjzXWqsKIiRdGYjkJWPkzUh2FDYP1/hg1O3OGWasA4='; font-src 'self'; script-src 'sha256-Miox6VwVy5xMlH7JAJwkgxjfVjzDyCiqIBSbIlvWWhc='; connect-src 'none'; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Seventeen Doors — Haunted Mansion BK</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Typefaces served from this origin: the same woff2 files Google's
+   stylesheet pointed at, so nothing leaves the site to draw a word.
+   Written by tools/selfhost_fonts.py; run it again after a generator
+   rewrites this page. */
+/* latin-ext */ @font-face {font-family: 'DM Sans'; font-style: normal; font-weight: 400; font-display: swap; src: url(fonts/dmsans-400-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+/* latin */ @font-face {font-family: 'DM Sans'; font-style: normal; font-weight: 400; font-display: swap; src: url(fonts/dmsans-400-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+/* latin-ext */ @font-face {font-family: 'DM Sans'; font-style: normal; font-weight: 500; font-display: swap; src: url(fonts/dmsans-400-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+/* latin */ @font-face {font-family: 'DM Sans'; font-style: normal; font-weight: 500; font-display: swap; src: url(fonts/dmsans-400-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+/* latin-ext */ @font-face {font-family: 'DM Sans'; font-style: normal; font-weight: 600; font-display: swap; src: url(fonts/dmsans-400-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+/* latin */ @font-face {font-family: 'DM Sans'; font-style: normal; font-weight: 600; font-display: swap; src: url(fonts/dmsans-400-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+/* latin-ext */ @font-face {font-family: 'DM Sans'; font-style: normal; font-weight: 700; font-display: swap; src: url(fonts/dmsans-400-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+/* latin */ @font-face {font-family: 'DM Sans'; font-style: normal; font-weight: 700; font-display: swap; src: url(fonts/dmsans-400-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+/* latin-ext */ @font-face {font-family: 'Space Grotesk'; font-style: normal; font-weight: 500; font-display: swap; src: url(fonts/spacegrotesk-400-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+/* latin */ @font-face {font-family: 'Space Grotesk'; font-style: normal; font-weight: 500; font-display: swap; src: url(fonts/spacegrotesk-400-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+/* latin-ext */ @font-face {font-family: 'Space Grotesk'; font-style: normal; font-weight: 600; font-display: swap; src: url(fonts/spacegrotesk-400-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+/* latin */ @font-face {font-family: 'Space Grotesk'; font-style: normal; font-weight: 600; font-display: swap; src: url(fonts/spacegrotesk-400-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+/* latin-ext */ @font-face {font-family: 'Space Grotesk'; font-style: normal; font-weight: 700; font-display: swap; src: url(fonts/spacegrotesk-400-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+/* latin */ @font-face {font-family: 'Space Grotesk'; font-style: normal; font-weight: 700; font-display: swap; src: url(fonts/spacegrotesk-400-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+</style>
 <style>
 /* Same tokens as the house itself, on purpose. This is a back room of that
    building, not a different one. */
@@ -127,7 +144,7 @@ h1 span{color:var(--red)}
 .badge{
   position:absolute;right:16px;top:16px;padding:6px 9px;border-radius:999px;
   font:700 10px/1 "Space Grotesk",sans-serif;letter-spacing:.12em;
-  text-transform:uppercase;background:var(--red);color:#fff;
+  text-transform:uppercase;background:#d9261e;color:#fff;
 }
 
 .meta{padding:16px 4px 0}
@@ -183,6 +200,7 @@ h1 span{color:var(--red)}
   </div>
 </header>
 
+<main>
 <ul class="reel" id="reel" aria-label="The seventeen versions, as they look on a phone">
 
   <li class="slide">
@@ -337,6 +355,7 @@ h1 span{color:var(--red)}
   <p class="warn"><b>These are live pages, not mockups.</b> Every form on them writes a real row into the production waitlist table, so every submit button on every one of them is the real one.</p>
   <p class="foot"><a href="../">The live page</a> is still built from fourteen, the keyhole, which came down from this gallery with the rest of the first fourteen. It stays on the front door until one of these replaces it. The fifteen newest are the only ones built on the house itself.</p>
 </div>
+</main>
 
 <script>
 /* Arrows and the counter. Without script the reel still swipes and snaps,

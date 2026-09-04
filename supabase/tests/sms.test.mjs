@@ -101,6 +101,12 @@ test("twilio signature matches Twilio's published example", async () => {
     CallSid: "CA1234567890ABCDE", Caller: "+12349013030", Digits: "1234", From: "+12349013030", To: "+18005551212",
   });
   assert.equal(sig, "0/KCTR6DLpKmkAf8muzZqo1nDgQ=");
+  // And the vector from twilio-python's own request-validator tests: same
+  // token and URL, different Caller/From.
+  const sig2 = await twilioSignature("12345", "https://mycompany.com/myapp.php?foo=1&bar=2", {
+    CallSid: "CA1234567890ABCDE", Caller: "+14158675309", Digits: "1234", From: "+14158675309", To: "+18005551212",
+  });
+  assert.equal(sig2, "RSOYDt4T1cUTdK1PDd93/VVr8B8=");
 });
 
 test("timingSafeEqual", () => {

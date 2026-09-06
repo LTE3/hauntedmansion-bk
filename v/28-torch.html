@@ -23,7 +23,7 @@
 })();
 </script>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-xy3/NSfOVUoQOEjIBVkZC18loAHsfbQPjjrUnMM8u9c=' 'sha256-rDcLPgJ0PyC1/D92GPR8lOibyVDWaTsCQPLRRFNPHg4='; font-src 'self'; script-src 'sha256-Rjt0i4trpys9fP0m5QIS/Ihq/b54ce5HwcR0qvt6S6g=' 'sha256-cy/magVvFvv8o0sTep6F4MOlDXuhafpfkSd4Cu+Oss0=' 'sha256-y4TxayRfu4t3i3JSdjo09EV/SmcCIR+nQySaX6TYH90=' 'self'; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-xy3/NSfOVUoQOEjIBVkZC18loAHsfbQPjjrUnMM8u9c=' 'sha256-6+7X0HXjcoEEM+3/hPpe1HNUVQ67TBBpPJVW5ceia9g='; font-src 'self'; script-src 'sha256-Rjt0i4trpys9fP0m5QIS/Ihq/b54ce5HwcR0qvt6S6g=' 'sha256-cy/magVvFvv8o0sTep6F4MOlDXuhafpfkSd4Cu+Oss0=' 'sha256-Xc31EgcHuPlJCvmGk8JVPM8HCePjE+qoPRxovzUrnJk=' 'self'; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050303">
@@ -49,30 +49,44 @@
 </style>
 <style>
 :root{color-scheme:dark;--bg:#050303;--fg:#f5eee7;--muted:#b8aaa0;--red:#df2d25;--red-text:#e4362e;--line:rgba(255,255,255,.15);--ease:cubic-bezier(.16,1,.3,1)}
+/* --r scales every radius of the beam. Registered so it tweens: the torch
+   sputters on over a second and a half, and a finger held down opens it wider
+   for as long as it stays. Without registration the keyframes step instead of
+   tween, which still reads as a flicker and still ends at 1. */
+@property --r{syntax:"<number>";inherits:true;initial-value:1}
 .dark{position:relative;height:100svh;overflow:hidden;isolation:isolate;touch-action:pan-y;
-  --x:50%;--y:62%;cursor:crosshair}
-.dark img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 45%;z-index:-2}
+  --x:50%;--y:62%;--r:1;cursor:crosshair;
+  animation:flick 1.4s linear .3s backwards;transition:--r .45s var(--ease)}
+.dark.held{--r:1.3}
+@keyframes flick{0%,14%{--r:0}20%{--r:.9}27%{--r:.12}36%{--r:.12}42%{--r:1}50%{--r:.5}58%{--r:1}100%{--r:1}}
+.dark img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 45%;z-index:-2;
+  -webkit-touch-callout:none;-webkit-user-select:none;user-select:none;-webkit-user-drag:none}
 .off{filter:brightness(.16) saturate(.55)}
 .on{z-index:-1;
-  -webkit-mask-image:radial-gradient(circle at var(--x) var(--y),#000 0,#000 52px,rgba(0,0,0,.6) 100px,transparent 175px);
-  mask-image:radial-gradient(circle at var(--x) var(--y),#000 0,#000 52px,rgba(0,0,0,.6) 100px,transparent 175px)}
+  -webkit-mask-image:radial-gradient(circle at var(--x) var(--y),#000 0,#000 calc(52px * var(--r)),rgba(0,0,0,.6) calc(100px * var(--r)),transparent calc(175px * var(--r)));
+  mask-image:radial-gradient(circle at var(--x) var(--y),#000 0,#000 calc(52px * var(--r)),rgba(0,0,0,.6) calc(100px * var(--r)),transparent calc(175px * var(--r)))}
 .beam{position:absolute;inset:0;z-index:-1;pointer-events:none;
-  background:radial-gradient(circle at var(--x) var(--y),rgba(255,224,190,.16),rgba(255,224,190,.05) 120px,transparent 260px)}
+  background:radial-gradient(circle at var(--x) var(--y),rgba(255,224,190,.16),rgba(255,224,190,.05) calc(120px * var(--r)),transparent calc(260px * var(--r)))}
 .copy{position:absolute;left:0;right:0;bottom:0;padding:0 clamp(18px,5vw,64px) clamp(30px,6vw,64px);
   background:linear-gradient(180deg,transparent,rgba(5,3,3,.88) 60%);padding-top:80px;pointer-events:none}
 .copy>*{pointer-events:auto}
-.k{margin:0 0 12px;font:600 11px/1 "Space Grotesk",sans-serif;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
-h1{margin:0;font:800 clamp(44px,12vw,96px)/.9 Syne,system-ui,sans-serif;letter-spacing:-.04em;text-wrap:balance}
+.k{margin:0 0 12px;font:600 11px/1 "Space Grotesk",sans-serif;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);
+  animation:rise .55s var(--ease) .9s backwards}
+h1{margin:0;font:800 clamp(44px,12vw,96px)/.9 Syne,system-ui,sans-serif;letter-spacing:-.04em;text-wrap:balance;
+  animation:rise .64s var(--ease) .98s backwards}
 h1 em{font-style:normal;color:var(--red)}
-.lead{margin:16px 0 0;max-width:40ch;color:#cbbdb3;font:400 15px/1.55 "DM Sans",system-ui,sans-serif}
+.lead{margin:16px 0 0;max-width:40ch;color:#cbbdb3;font:400 15px/1.55 "DM Sans",system-ui,sans-serif;
+  animation:rise .73s var(--ease) 1.06s backwards}
 .cta{margin:22px 0 0;min-height:56px;padding:0 28px;border:0;border-radius:999px;background:var(--red);color:#fff;cursor:pointer;
   font:600 12px/1 "Space Grotesk",sans-serif;letter-spacing:.18em;text-transform:uppercase;
-  transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+  transition:transform .3s var(--ease),box-shadow .3s var(--ease);
+  animation:rise .7s var(--ease) 1.14s backwards}
 .cta:hover,.cta:focus-visible{transform:translateY(-2px);box-shadow:0 12px 30px -10px rgba(223,45,37,.8)}
+.cta:active{transform:scale(.97);transition-duration:.12s}
 *{box-sizing:border-box}
 html{background:#000;-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--fg);overflow-x:hidden;-webkit-font-smoothing:antialiased}
-button,input{font:inherit}button{color:inherit}
+button,input{font:inherit}button{color:inherit;-webkit-tap-highlight-color:transparent}
 img{display:block;max-width:100%}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--red);outline-offset:3px}
@@ -94,7 +108,8 @@ a{color:inherit}
   padding:17px clamp(16px,4vw,40px);
   font:600 11px/1 "Space Grotesk",system-ui,sans-serif;letter-spacing:.16em;
   text-transform:uppercase;color:var(--muted);
-  background:linear-gradient(180deg,rgba(5,3,3,.74),transparent)}
+  background:linear-gradient(180deg,rgba(5,3,3,.74),transparent);
+  animation:fadein .6s var(--ease) .15s backwards}
 .top .dot{display:inline-block;width:6px;height:6px;border-radius:50%;
   background:var(--red);box-shadow:0 0 10px var(--red);margin-right:9px}
 
@@ -105,37 +120,53 @@ a{color:inherit}
 .dayline{margin:0;font:600 11px/1 "Space Grotesk",system-ui,sans-serif;
   letter-spacing:.2em;text-transform:uppercase;color:var(--red-text)}
 .dayline[hidden]{display:none}
+.dayline:not([hidden]){animation:fadein .7s var(--ease)}
 
-.modal{position:fixed;inset:0;z-index:90;display:none;place-items:center;
-  padding:20px;background:rgba(2,1,1,.86);
-  -webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px)}
-.modal.open{display:grid}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+/* A sheet on a phone, a panel on a desk. Transitions rather than keyframes so
+   a tap on the close button mid-rise reverses from wherever it is. The
+   visibility delay keeps it out of the tab order and the accessibility tree
+   until the fade has finished. */
+.modal{position:fixed;inset:0;z-index:90;display:grid;place-items:end center;
+  padding:10px 10px max(10px,env(safe-area-inset-bottom));background:rgba(2,1,1,.86);
+  -webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);
+  visibility:hidden;opacity:0;
+  transition:opacity .26s cubic-bezier(.77,0,.175,1),visibility 0s linear .26s}
+.modal.open{visibility:visible;opacity:1;transition:opacity .24s var(--ease)}
 .panel{width:min(460px,100%);max-height:92vh;overflow:auto;padding:26px;
   border:1px solid var(--line);border-radius:20px;background:#0a0706;
-  font:500 17px/1.5 "DM Sans",system-ui,sans-serif}
+  font:500 17px/1.5 "DM Sans",system-ui,sans-serif;
+  transform:translateY(104%);transition:transform .3s cubic-bezier(.77,0,.175,1)}
+.modal.open .panel{transform:none;transition:transform .52s var(--ease)}
+@media(min-width:700px){.modal{place-items:center;padding:20px}.panel{transform:translateY(28px) scale(.985)}}
 .modal-top{display:flex;justify-content:space-between;align-items:center;gap:14px}
 .modal .kicker{margin:0;font:600 11px/1 "Space Grotesk",sans-serif;
   letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 .modal h2{font:600 38px/.96 "Space Grotesk",sans-serif;letter-spacing:-.04em;margin:22px 0 8px}
 .modal .sub{color:var(--muted);margin:0 0 26px;font-size:17px}
 .close{width:44px;height:44px;flex:none;border-radius:50%;border:1px solid var(--line);
-  background:transparent;font-size:24px;line-height:1;cursor:pointer}
+  background:transparent;font-size:24px;line-height:1;cursor:pointer;transition:transform .2s var(--ease)}
+.close:active{transform:scale(.94)}
 label{display:block;margin:0 0 18px}
 label span{display:block;font:600 12px/1 "Space Grotesk",sans-serif;
   letter-spacing:.1em;text-transform:uppercase;color:#d4c5ba;margin-bottom:8px}
 label i{font-style:normal;opacity:.6}
 input{width:100%;min-height:56px;border:1px solid #493a34;border-radius:13px;
-  background:#080605;color:#fff;padding:0 16px;font-size:17px;outline:0}
+  background:#080605;color:#fff;padding:0 16px;font-size:17px;outline:0;
+  transition:border-color .2s var(--ease),box-shadow .2s var(--ease)}
 input:focus{border-color:#b63b33;box-shadow:0 0 0 3px rgba(223,45,37,.14)}
 .submit{width:100%;min-height:58px;border:0;border-radius:13px;background:var(--red);
-  color:#fff;font-weight:700;margin-top:4px;cursor:pointer}
+  color:#fff;font-weight:700;margin-top:4px;cursor:pointer;transition:transform .2s var(--ease)}
+.submit:active{transform:scale(.985)}
 .submit[disabled]{opacity:.6;cursor:default}
 .note{font-size:13px;color:#857970;margin:12px 0 0;line-height:1.5}
 .note a{color:#857970;text-decoration:underline;text-underline-offset:2px}
 .note a:hover,.note a:focus-visible{color:var(--fg)}
 .success{display:none;padding:38px 0 24px}
-.success strong{display:block;font:600 40px/.95 "Space Grotesk",sans-serif;letter-spacing:-.04em}
-.success span{display:block;margin-top:12px;color:var(--muted)}
+.success strong{display:block;font:600 40px/.95 "Space Grotesk",sans-serif;letter-spacing:-.04em;
+  animation:rise .6s var(--ease) .05s backwards}
+.success span{display:block;margin-top:12px;color:var(--muted);animation:rise .6s var(--ease) .3s backwards}
 
 .footer{position:relative;z-index:5;padding:34px clamp(16px,4vw,40px) 54px;
   color:#82756c;font:500 11px/1.7 "Space Grotesk",system-ui,sans-serif;
@@ -205,21 +236,40 @@ input:focus{border-color:#b63b33;box-shadow:0 0 0 3px rgba(223,45,37,.14)}
 </script>
 <script src="waitlist.js" data-form="#form" data-formbox="#formwrap" data-done="#success" data-submit=".submit" data-submit-label="Enter the waitlist"></script>
 <script>
-/* The beam follows a finger or a mouse. Before either arrives it walks the
-   path up to the door by itself, once, and waits there. */
+/* The beam follows a finger or a mouse, with a little lag, the way a torch in
+   a hand does rather than a cursor. Holding it down opens the beam wider.
+   Before anyone touches it, it walks the path up to the door by itself, once,
+   and waits there. */
 (function(){
-  var el=document.getElementById('dark'),held=false,t0=performance.now();
-  function set(x,y){el.style.setProperty('--x',x+'px');el.style.setProperty('--y',y+'px')}
-  function at(e){var r=el.getBoundingClientRect(),p=e.touches?e.touches[0]:e;set(p.clientX-r.left,p.clientY-r.top)}
-  el.addEventListener('mousemove',function(e){held=true;at(e)});
-  el.addEventListener('touchstart',function(e){held=true;at(e)},{passive:true});
-  el.addEventListener('touchmove',function(e){at(e)},{passive:true});
+  var el=document.getElementById('dark'),held=false,wasTouch=false,t0=performance.now()+400;
+  var tx,ty,cx,cy,raf=0;
+  function paint(){el.style.setProperty('--x',cx.toFixed(1)+'px');el.style.setProperty('--y',cy.toFixed(1)+'px')}
+  function step(){
+    cx+=(tx-cx)*.22;cy+=(ty-cy)*.22;paint();
+    if(Math.abs(tx-cx)+Math.abs(ty-cy)>.3)raf=requestAnimationFrame(step);
+    else{cx=tx;cy=ty;paint();raf=0}
+  }
+  function aim(x,y){tx=x;ty=y;if(cx===undefined){cx=x;cy=y;paint();return}if(!raf)raf=requestAnimationFrame(step)}
+  function at(e){var r=el.getBoundingClientRect();aim(e.clientX-r.left,e.clientY-r.top)}
+  el.addEventListener('pointerdown',function(e){
+    if(e.target.closest('button,a'))return;
+    if(e.pointerType==='mouse'&&e.button!==0)return;
+    held=true;wasTouch=e.pointerType==='touch';el.classList.add('held');at(e);
+  });
+  el.addEventListener('pointermove',function(e){
+    if(e.pointerType==='mouse'){held=true;at(e)}
+    else if(el.classList.contains('held'))at(e);
+  },{passive:true});
+  function release(){el.classList.remove('held')}
+  addEventListener('pointerup',release);addEventListener('pointercancel',release);
+  el.addEventListener('pointerleave',release);
+  el.addEventListener('contextmenu',function(e){if(wasTouch)e.preventDefault()});
   if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
   function walk(now){
     if(held)return;
-    var k=Math.min(1,(now-t0)/5200),e=1-Math.pow(1-k,3),w=el.clientWidth,h=el.clientHeight;
+    var k=Math.min(1,Math.max(0,(now-t0)/5200)),e=1-Math.pow(1-k,3),w=el.clientWidth,h=el.clientHeight;
     // from the foot of the path to the door, with a little sway
-    set(w*(.5+Math.sin(e*6.28)*.06),h*(.9-e*.33));
+    cx=tx=w*(.5+Math.sin(e*6.28)*.06);cy=ty=h*(.9-e*.33);paint();
     if(k<1)requestAnimationFrame(walk);
   }
   requestAnimationFrame(walk);

@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>
+/* PREVIEW HARNESS - not part of any shipped version of this page.
+   Injected only into the copies under /v/ so the cycler behaves like five
+   first visits instead of one visit and four reruns:
+     1. the intro ceremony is keyed to sessionStorage, which is per-origin, so
+        without this the second version you open would skip its own opening.
+     2. the signup form writes a real row. Inside the cycler frame it must not.
+   Both only apply when framed, so opening a /v/ link directly still gives you
+   the honest page, real form and all. */
+(function(){
+  if (window.top === window.self) return;
+  try { sessionStorage.removeItem("hm.lit"); } catch(e){}
+  var f = window.fetch;
+  window.fetch = function(u, o){
+    if (String(u).indexOf("supabase.co") > -1)
+      return Promise.resolve(new Response('[{"id":0}]', {status:201,
+        headers:{"content-type":"application/json"}}));
+    return f.apply(this, arguments);
+  };
+})();
+</script>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-tTOApBtQm6+IW8XRu79YEH7KhYIZDsy2H9fRJ92ruFM=' 'sha256-YVmaxpbL2V2l7aW8mw232zQguFbEmginlCT6MrgLvSw='; font-src 'self'; script-src 'sha256-Rjt0i4trpys9fP0m5QIS/Ihq/b54ce5HwcR0qvt6S6g=' 'sha256-cy/magVvFvv8o0sTep6F4MOlDXuhafpfkSd4Cu+Oss0=' 'sha256-yjiB0+F4veYDMGSU3+GJvGKqXw1MfpluYUTG7c6le3Q=' 'self'; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050303">
+<meta name="robots" content="noindex,nofollow">
+<title>Lock screen &mdash; Haunted Mansion BK</title>
+<style>
+/* Typefaces served from this origin: the same woff2 files Google's
+   stylesheet pointed at, so nothing leaves the site to draw a word.
+   Written by tools/selfhost_fonts.py; run it again after a generator
+   rewrites this page. */
+/* latin-ext */ @font-face {font-family: 'Inter'; font-style: normal; font-weight: 200; font-display: swap; src: url(fonts/inter-200-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+/* latin */ @font-face {font-family: 'Inter'; font-style: normal; font-weight: 200; font-display: swap; src: url(fonts/inter-200-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+/* latin-ext */ @font-face {font-family: 'Inter'; font-style: normal; font-weight: 400; font-display: swap; src: url(fonts/inter-200-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+/* latin */ @font-face {font-family: 'Inter'; font-style: normal; font-weight: 400; font-display: swap; src: url(fonts/inter-200-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+/* latin-ext */ @font-face {font-family: 'Inter'; font-style: normal; font-weight: 500; font-display: swap; src: url(fonts/inter-200-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+/* latin */ @font-face {font-family: 'Inter'; font-style: normal; font-weight: 500; font-display: swap; src: url(fonts/inter-200-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+/* latin-ext */ @font-face {font-family: 'Inter'; font-style: normal; font-weight: 600; font-display: swap; src: url(fonts/inter-200-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+/* latin */ @font-face {font-family: 'Inter'; font-style: normal; font-weight: 600; font-display: swap; src: url(fonts/inter-200-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+</style>
+<style>*{box-sizing:border-box}
+html{background:#000;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+button,input{font:inherit}button{color:inherit;-webkit-tap-highlight-color:transparent}
+img{display:block;max-width:100%}
+a{color:inherit}
+a:hover,a:focus-visible{color:var(--fg)}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+
+/* Over everything, modal included. The plate is a 2x upscale and grain is what
+   an upscale wants: it puts high-frequency detail back where the resampler
+   took it out, so the softness reads as film rather than as a picture that is
+   too small for the screen it is on. */
+.grain{position:fixed;inset:-50%;z-index:80;pointer-events:none;opacity:.055;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
+  animation:grain .18s steps(2) infinite}
+@keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(-4%,3%)}50%{transform:translate(3%,-4%)}75%{transform:translate(-3%,-2%)}to{transform:translate(2%,4%)}}
+
+/* The curtain: the page is black until the first frame is ready to be looked
+   at, then it lifts. Opacity only, so nothing in the scene has to move. */
+.curtain{position:fixed;inset:0;z-index:70;pointer-events:none;background:#000;
+  opacity:1;transition:opacity 1.9s cubic-bezier(.22,1,.36,1)}
+.curtain.up{opacity:0}
+
+.top{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;
+  justify-content:space-between;align-items:center;gap:16px;
+  padding:17px clamp(16px,4vw,40px);
+  font:600 11px/1 "Space Grotesk",system-ui,sans-serif;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted);
+  background:linear-gradient(180deg,rgba(5,3,3,.74),transparent)}
+.top .dot{display:inline-block;width:6px;height:6px;border-radius:50%;
+  background:var(--red);box-shadow:0 0 10px var(--red);margin-right:9px;
+  animation:beat 3.4s ease-in-out infinite}
+@keyframes beat{0%,to{opacity:.5}50%{opacity:1}}
+
+/* Ships hidden and empty on purpose. The only thing that can fill it in is the
+   code that has just worked out what it says, so a visitor with no script sees
+   no line at all rather than a stale one. Nothing on this page prints a number
+   it cannot stand behind. */
+.dayline{margin:0;font:600 11px/1 "Space Grotesk",system-ui,sans-serif;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--red-text)}
+.dayline[hidden]{display:none}
+.dayline:not([hidden]){animation:fadein .7s var(--ease)}
+
+/* Every reveal on these pages is one of these two, offset in 90ms steps, so
+   the whole page reads as one movement instead of eight. */
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+
+/* THE SHEET. A sheet on a phone, a panel on a desk. Transitions rather than
+   keyframes so a tap on the close button mid-rise reverses from wherever it
+   is, and so a finger dragging it down can take over the transform. The
+   visibility delay keeps it out of the tab order and the accessibility tree
+   until the fade has finished. */
+.modal{position:fixed;inset:0;z-index:90;display:grid;place-items:end center;
+  padding:10px 10px max(10px,env(safe-area-inset-bottom));background:rgba(2,1,1,.86);
+  -webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);
+  visibility:hidden;opacity:0;
+  transition:opacity .26s cubic-bezier(.77,0,.175,1),visibility 0s linear .26s}
+.modal.open{visibility:visible;opacity:1;transition:opacity .24s var(--ease)}
+.panel{position:relative;width:min(460px,100%);max-height:92vh;overflow:auto;
+  padding:8px 26px 26px;overscroll-behavior:contain;
+  border:1px solid var(--line);border-radius:20px;background:#0a0706;
+  font:500 17px/1.5 "DM Sans",system-ui,sans-serif;
+  box-shadow:0 -30px 90px -30px rgba(0,0,0,.9);
+  transform:translateY(104%);transition:transform .3s cubic-bezier(.77,0,.175,1)}
+.modal.open .panel{transform:none;transition:transform .62s cubic-bezier(.16,1,.3,1)}
+/* Dragged: the finger owns the transform, so no transition at all. */
+.modal.drag .panel{transition:none}
+@media(min-width:700px){.modal{place-items:center;padding:20px}.panel{transform:translateY(28px) scale(.985)}}
+/* The grab bar. Drag it, or the header, or flick anywhere in the top strip. */
+.grab{display:block;width:44px;height:4px;margin:6px auto 12px;border-radius:3px;
+  background:rgba(255,255,255,.28);touch-action:none;cursor:grab}
+.modal.drag .grab{background:rgba(255,255,255,.5)}
+.modal-top{display:flex;justify-content:space-between;align-items:center;gap:14px;touch-action:none}
+.modal .kicker{margin:0;font:600 11px/1 "Space Grotesk",sans-serif;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.modal h2{font:600 38px/.96 "Space Grotesk",sans-serif;letter-spacing:-.04em;margin:22px 0 8px}
+.modal .sub{color:var(--muted);margin:0 0 26px;font-size:17px}
+.close{width:44px;height:44px;flex:none;border-radius:50%;border:1px solid var(--line);
+  background:transparent;font-size:24px;line-height:1;cursor:pointer;transition:transform .2s var(--ease)}
+.close:active{transform:scale(.94)}
+label{display:block;margin:0 0 18px}
+label span{display:block;font:600 12px/1 "Space Grotesk",sans-serif;
+  letter-spacing:.1em;text-transform:uppercase;color:#d4c5ba;margin-bottom:8px}
+label i{font-style:normal;opacity:.6}
+input{width:100%;min-height:56px;border:1px solid #493a34;border-radius:13px;
+  background:#080605;color:#fff;padding:0 16px;font-size:17px;outline:0;
+  transition:border-color .2s var(--ease),box-shadow .2s var(--ease)}
+input:focus{border-color:#b63b33;box-shadow:0 0 0 3px rgba(223,45,37,.14)}
+.submit{width:100%;min-height:58px;border:0;border-radius:13px;background:var(--red);
+  color:#fff;font-weight:700;margin-top:4px;cursor:pointer;transition:transform .2s var(--ease)}
+.submit:active{transform:scale(.985)}
+.submit[disabled]{opacity:.6;cursor:default}
+.note{font-size:13px;color:#857970;margin:12px 0 0;line-height:1.5}
+.note a{color:#857970;text-decoration:underline;text-underline-offset:2px}
+.note a:hover,.note a:focus-visible{color:var(--fg)}
+
+/* The contents arrive after the sheet does, 55ms apart, so the rise reads as
+   one object carrying its parts up rather than a page appearing. */
+.modal.open .grab{animation:fadein .4s var(--ease) .1s backwards}
+.modal.open .modal-top{animation:rise .5s var(--ease) .16s backwards}
+.modal.open #modal-title{animation:rise .5s var(--ease) .215s backwards}
+.modal.open #formwrap .sub{animation:rise .5s var(--ease) .27s backwards}
+.modal.open #formwrap label:nth-of-type(1){animation:rise .5s var(--ease) .325s backwards}
+.modal.open #formwrap label:nth-of-type(2){animation:rise .5s var(--ease) .38s backwards}
+.modal.open #formwrap label:nth-of-type(3){animation:rise .5s var(--ease) .435s backwards}
+.modal.open #formwrap .submit{animation:rise .5s var(--ease) .49s backwards}
+.modal.open #formwrap .note{animation:fadein .6s var(--ease) .56s backwards}
+
+.success{display:none;padding:38px 0 24px;position:relative}
+.success strong{display:block;font:600 40px/.95 "Space Grotesk",sans-serif;letter-spacing:-.04em;
+  animation:rise .7s var(--ease) .34s backwards}
+.success span{display:block;margin-top:12px;color:var(--muted);animation:rise .7s var(--ease) .48s backwards}
+/* A light runs across the sheet ahead of the words, and the sheet's edge goes
+   cold: the house has taken the name and gone quiet. */
+.modal.won .panel{border-color:rgba(150,190,210,.28);transition:border-color 1.6s linear .4s}
+.sweep{position:absolute;inset:-40px -30px;pointer-events:none;opacity:0;
+  background:linear-gradient(100deg,transparent 36%,rgba(255,238,220,.5) 50%,transparent 64%);
+  transform:translateX(-120%)}
+.modal.won .sweep{animation:sweep 1.05s cubic-bezier(.3,0,.2,1) .02s}
+@keyframes sweep{0%{opacity:0;transform:translateX(-120%)}18%{opacity:1}80%{opacity:1}to{opacity:0;transform:translateX(120%)}}
+
+.footer{position:relative;z-index:5;padding:34px clamp(16px,4vw,40px) 54px;
+  color:#82756c;font:500 11px/1.7 "Space Grotesk",system-ui,sans-serif;
+  letter-spacing:.16em;text-transform:uppercase;border-top:1px solid var(--line);
+  background:var(--bg)}
+.footer a{color:#82756c;text-decoration:underline;text-underline-offset:3px}
+.footer a:hover,.footer a:focus-visible{color:var(--fg)}
+
+:root{color-scheme:dark;--bg:#050303;--fg:#f5eee7;--muted:#b8aaa0;--red:#df2d25;--red-text:#e4362e;--line:rgba(255,255,255,.15);--ease:cubic-bezier(.16,1,.3,1)}
+.stage{position:relative;min-height:100svh;display:grid;place-items:center;isolation:isolate}
+.device{position:relative;width:100%;min-height:100svh;transform-origin:50% 100%;
+  transition:transform .7s var(--ease)}
+@media(min-width:700px){
+  .stage{padding:40px 20px}
+  .stage:before{content:"";position:fixed;inset:0;z-index:-1;
+    background:#000 center/cover no-repeat url(img-house/house-blur.jpg);opacity:.55}
+  .stage:after{content:"";position:fixed;inset:0;z-index:-1;
+    background:radial-gradient(80% 70% at 50% 40%,transparent,rgba(0,0,0,.8))}
+  .device{width:430px;min-height:0;height:min(900px,calc(100svh - 80px));
+    border-radius:46px;border:1px solid rgba(255,255,255,.22);overflow:hidden;
+    box-shadow:0 60px 120px -40px rgba(0,0,0,1),0 0 0 8px #0c0908}
+}
+
+.lock{display:grid;grid-template-rows:auto auto 1fr auto;overflow:hidden;
+  padding:max(58px,env(safe-area-inset-top)) 14px 16px;
+  font-family:-apple-system,"SF Pro Text",Inter,system-ui,sans-serif}
+/* The screen wakes the way a phone lifted off a table does: the wallpaper
+   settles in from a touch too close, then keeps drifting, very slowly, for as
+   long as anyone is looking at it. */
+.wall{position:absolute;inset:0;z-index:-3;width:100%;height:100%;object-fit:cover;object-position:50% 40%;
+  transform:scale(1.06);opacity:0;
+  transition:opacity 1.3s var(--ease),transform 2.4s cubic-bezier(.22,1,.36,1)}
+.go .wall{opacity:1;transform:none;animation:drift 46s ease-in-out 2.6s infinite}
+@keyframes drift{0%,to{transform:scale(1.03) translate3d(-1.2%,0,0)}
+  50%{transform:scale(1.05) translate3d(1.2%,-1%,0)}}
+/* The porch is still burning behind the glass. */
+.warm{position:absolute;left:50%;top:44%;translate:-50% -50%;z-index:-2;
+  width:120%;aspect-ratio:1;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(223,45,37,.22),transparent 66%);
+  filter:blur(30px);opacity:0;transition:opacity 2s linear}
+.go .warm{opacity:1;animation:breathe 9s ease-in-out 2s infinite}
+@keyframes breathe{0%,to{opacity:.5}50%{opacity:1}}
+.veil{position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(5,3,3,.5),rgba(5,3,3,.05) 40%,rgba(5,3,3,.35) 100%)}
+/* Two screen-level layers: the flash as the notification lands, and the
+   auto-dim that a phone does to itself when nobody has touched it. Both are
+   opacity, so the wallpaper underneath never re-renders. */
+.flash{position:absolute;inset:0;z-index:1;pointer-events:none;background:#fff8ef;opacity:0}
+.lock.ping .flash{animation:ping .5s cubic-bezier(.2,0,.2,1)}
+@keyframes ping{0%{opacity:0}10%{opacity:.16}30%{opacity:.05}to{opacity:0}}
+.dimmer{position:absolute;inset:0;z-index:2;pointer-events:none;background:#000;
+  opacity:0;transition:opacity 1.6s linear}
+.lock.dim .dimmer{opacity:.66}
+.lock.peek .dimmer{opacity:.34;transition:opacity .3s var(--ease)}
+.lock.cold .dimmer{opacity:.2;transition:opacity 2.4s linear}
+.lock.cold .warm{opacity:.1}
+
+.clock{position:relative;z-index:3;text-align:center;color:#fff;text-shadow:0 2px 24px rgba(0,0,0,.5);
+  transition:transform .6s var(--ease),opacity .6s var(--ease)}
+.lock.peek .clock{opacity:.5;transform:scale(.97)}
+.date{margin:0;font-size:19px;font-weight:600;min-height:1.3em}
+.time{margin:2px 0 0;font-size:clamp(76px,22vw,92px);font-weight:200;line-height:1;
+  letter-spacing:-.035em;font-variant-numeric:tabular-nums;min-height:1em}
+.go .time{animation:rise .9s var(--ease) .5s backwards}
+.go .date{animation:rise .8s var(--ease) .62s backwards}
+
+.notif{position:relative;z-index:3;margin:26px 0 0;width:100%;text-align:left;cursor:pointer;
+  border:1px solid rgba(255,255,255,.14);border-radius:24px;padding:14px 16px 16px;
+  background:rgba(40,26,26,.5);color:#fff;touch-action:none;
+  -webkit-backdrop-filter:blur(26px) saturate(1.5);backdrop-filter:blur(26px) saturate(1.5);
+  box-shadow:0 20px 50px -20px rgba(0,0,0,.8);
+  transform:translateY(-26px) scale(.97);opacity:0;
+  transition:transform .5s var(--ease),opacity .4s var(--ease),background .35s var(--ease)}
+/* It arrives late, after the clock, because that is the order a phone does it
+   in - and it overshoots by a hair on the way down. */
+.lock.rang .notif{opacity:1;transform:none;
+  transition:transform .78s cubic-bezier(.18,1.28,.4,1),opacity .5s var(--ease)}
+.lock.peek .notif{transform:scale(1.035);transition:transform .32s var(--ease)}
+/* While a finger is dragging it, the finger owns the transform. */
+.lock.pull .notif{transition:none}
+.notif:hover,.notif:focus-visible{background:rgba(50,32,32,.62)}
+.app{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;
+  letter-spacing:.02em;color:rgba(255,255,255,.8);text-transform:uppercase}
+.app em{margin-left:auto;font-style:normal;font-weight:500;text-transform:none;
+  color:rgba(255,255,255,.55)}
+.ico{width:20px;height:20px;border-radius:6px;background:var(--red);flex:none;
+  display:grid;place-items:center;box-shadow:0 0 14px rgba(223,45,37,.6)}
+.ico:after{content:"";width:6px;height:6px;border-radius:50%;background:#fff;
+  animation:beat 3.4s ease-in-out infinite}
+.notif strong{display:block;margin:10px 0 3px;font-size:16px;font-weight:600;letter-spacing:-.01em}
+.notif .body{display:block;font-size:15px;line-height:1.35;color:rgba(255,255,255,.86);font-weight:400}
+.notif .dayline{display:block;margin-top:10px;font-family:inherit;letter-spacing:.06em;font-size:11px;color:#e9453d}
+
+.hint{position:relative;z-index:3;align-self:end;justify-self:center;margin:0 0 14px;
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+  color:rgba(255,255,255,.7);font-size:13px;font-weight:500;
+  transition:opacity .4s var(--ease)}
+.go .hint{animation:fadein .9s var(--ease) 2.6s backwards}
+.hint i{display:block;width:11px;height:11px;border-left:1.5px solid currentColor;
+  border-top:1.5px solid currentColor;transform:rotate(45deg);
+  animation:nudge 2.6s ease-in-out infinite}
+@keyframes nudge{0%,to{opacity:.45;transform:rotate(45deg) translate3d(0,2px,0)}
+  50%{opacity:1;transform:rotate(45deg) translate3d(0,-3px,0)}}
+/* Once the notification has been taken the instruction has done its job. */
+.lock.touched .hint{opacity:0;pointer-events:none}
+.home{position:relative;z-index:3;display:block;justify-self:center;width:134px;height:5px;
+  border-radius:3px;background:rgba(255,255,255,.75);touch-action:none;
+  transition:transform .5s var(--ease)}
+.go .home{animation:fadein .7s var(--ease) 2.1s backwards}
+.lock.pull .home{transform:translateY(-4px) scaleX(1.06)}
+/* Behind the sheet the whole phone gives up a little ground. */
+.lock.back{transform:scale(.965)}
+
+@media(prefers-reduced-motion:reduce){
+  .wall{opacity:1!important;transform:none!important}
+  .notif{opacity:1!important;transform:none!important}
+  .warm{opacity:.6!important}
+  .dimmer{opacity:0!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .curtain{opacity:0!important;display:none!important}
+  .grain{opacity:.04}
+}
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<main class="stage"><h1 class="sr">Haunted Mansion BK. Bushwick, Brooklyn. Opens September 25, 2026.</h1><div class="device lock" id="lock">
+  <img class="wall" src="img-house/house.jpg" width="960" height="1696" alt="The house at night: a two-storey porch under a red-lit balcony, lanterns burning either side of the front door, carved pumpkins along the steps and a lit path running up to them.">
+  <div class="warm" aria-hidden="true"></div>
+  <div class="veil" aria-hidden="true"></div>
+  <div class="flash" aria-hidden="true"></div>
+  <div class="dimmer" aria-hidden="true"></div>
+  <div class="clock"><p class="date" id="ldate"></p><p class="time" id="ltime"></p></div>
+  <button class="notif" id="notif" type="button" data-open>
+    <span class="app"><i class="ico" aria-hidden="true"></i>Haunted Mansion BK<em class="when">now</em></span>
+    <strong>The house is awake.</strong>
+    <span class="body">Bushwick, Brooklyn. September 25, 2026. Sixty minutes inside, several rooms, one way out. The list finds out first, and so does the address.</span>
+    <span class="dayline" data-opens="2026-09-25" hidden></span>
+  </button>
+  <p class="hint"><i aria-hidden="true"></i>Swipe up to open</p>
+  <i class="home" id="home" aria-hidden="true"></i>
+</div></main>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+<div class="panel">
+<i class="grab" aria-hidden="true"></i>
+<div class="modal-top"><p class="kicker">Private waitlist</p><button class="close" type="button" aria-label="Close">&times;</button></div>
+<div id="formwrap">
+<h2 id="modal-title">Knock on the door.</h2>
+<p class="sub">Leave your name. The house will answer when it&rsquo;s ready.</p>
+<form id="form">
+<label><span>Your name</span><input name="name" autocomplete="name" maxlength="120" required></label>
+<label><span>Your email</span><input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+<label><span>Phone <i>(optional)</i></span><input name="phone" type="tel" autocomplete="tel" maxlength="40"></label>
+<button class="submit" type="submit">Enter the waitlist</button>
+<p class="note">Early access. No spam. 13 and over. <a href="../privacy.html" target="_blank" rel="noopener">What we keep.</a></p>
+</form></div>
+<div class="success" id="success" tabindex="-1"><strong>We heard you.</strong><span>Don&rsquo;t answer the door.</span></div>
+</div></div>
+<footer class="footer">Bushwick, Brooklyn &middot; September 25, 2026 &middot; <a href="index.html">every version</a></footer>
+<div class="curtain" aria-hidden="true"></div>
+<script>
+(function(){
+  var el=document.querySelector('.dayline');
+  if(el&&el.dataset.opens){
+    /* Fixed to New York, not to the reader. The house opens on the 25th here
+       whatever clock they are on, and a browser in Sydney counting from its
+       own midnight is a day out for half of every day. */
+    var n=Math.ceil((new Date(el.dataset.opens+'T20:00:00-04:00')-new Date())/864e5);
+    if(n>1){el.textContent=n+' days remain';el.hidden=false}
+    else if(n===1){el.textContent='1 day remains';el.hidden=false}
+    else if(n===0){el.textContent='Tonight';el.hidden=false}
+  }
+  var modal=document.getElementById('modal'),shutBtn=modal.querySelector('.close'),
+      first=modal.querySelector('input'),touched=false;
+  function open(){touched=true;modal.classList.add('open');document.body.style.overflow='hidden';setTimeout(function(){first.focus()},80)}
+  function shut(){touched=true;modal.classList.remove('open');document.body.style.overflow=''}
+  document.querySelectorAll('[data-open]').forEach(function(b){b.addEventListener('click',open)});
+  shutBtn.addEventListener('click',shut);
+  modal.addEventListener('click',function(e){if(e.target===modal)shut()});
+  addEventListener('keydown',function(e){if(e.key==='Escape'&&modal.classList.contains('open'))shut()});
+  /* Opens itself once if nobody has touched it, and never again - a panel that
+     comes back every time you dismiss it is a different kind of haunting to
+     the one we are selling. */
+  setTimeout(function(){if(!touched)open()},9000);
+})();
+</script>
+<script src="waitlist.js" data-form="#form" data-formbox="#formwrap" data-done="#success" data-submit=".submit" data-submit-label="Enter the waitlist"></script>
+<script>
+/* The parts every one of these three pages shares: the curtain lift that
+   starts the page's own reveals, the sheet's physics, the knock, and the
+   success moment. It talks to the page-specific block below through events on
+   the document (hm:sheet, hm:won, hm:knock) so neither half has to know how
+   the other one is built, and it never touches the form: waitlist.js owns
+   that, and the block above owns opening and closing the modal. */
+(function () {
+  var rm = matchMedia("(prefers-reduced-motion:reduce)").matches;
+  var root = document.documentElement;
+  var modal = document.getElementById("modal");
+  var panel = modal && modal.querySelector(".panel");
+  var closeBtn = modal && modal.querySelector(".close");
+  var curtain = document.querySelector(".curtain");
+
+  /* Nothing moves until the picture is actually there. .go is what every
+     staggered reveal on the page is keyed to, so the copy lands while the
+     house is still settling rather than over a black rectangle. Without
+     script the page is simply already visible, which is the honest fallback. */
+  var lifted = false;
+  function lift() {
+    if (lifted) return;
+    lifted = true;
+    root.classList.add("go");
+    if (curtain) curtain.classList.add("up");
+    say("hm:go");
+  }
+  if (rm) lift();
+  else {
+    if (document.readyState === "complete") setTimeout(lift, 60);
+    else addEventListener("load", function () { setTimeout(lift, 60); });
+    setTimeout(lift, 1400);
+  }
+
+  function say(name, detail) {
+    document.dispatchEvent(new CustomEvent(name, { detail: detail || null }));
+  }
+
+  /* The sheet. Opening and closing is the other block's job; this watches the
+     class it sets and tells the scene, so the room can pull back behind it. */
+  if (modal && panel) {
+    var wasOpen = false;
+    new MutationObserver(function () {
+      var open = modal.classList.contains("open");
+      if (open === wasOpen) return;
+      wasOpen = open;
+      if (open) { panel.style.transform = ""; panel.scrollTop = 0; }
+      say("hm:sheet", { open: open });
+    }).observe(modal, { attributes: true, attributeFilter: ["class"] });
+
+    /* Drag the grab bar or the header down to dismiss: past 96px or on a
+       flick it goes, otherwise it springs back from wherever the finger let
+       go. The finger owns the transform while it is down, which is why .drag
+       kills the transition. */
+    var id = null, y0 = 0, dy = 0, t0 = 0, last = 0, lastT = 0;
+    function grabbable(t) { return t.closest(".grab,.modal-top") && !t.closest(".close"); }
+    panel.addEventListener("pointerdown", function (e) {
+      if (id !== null || !grabbable(e.target)) return;
+      id = e.pointerId; y0 = e.clientY; dy = 0; last = 0;
+      t0 = lastT = e.timeStamp;
+      modal.classList.add("drag");
+      try { panel.setPointerCapture(id); } catch (x) { }
+    });
+    panel.addEventListener("pointermove", function (e) {
+      if (e.pointerId !== id) return;
+      var raw = e.clientY - y0;
+      /* Upwards has nowhere to go, so it gets a fifth of the movement. */
+      dy = raw > 0 ? raw : raw * .2;
+      last = dy; lastT = e.timeStamp;
+      panel.style.transform = "translateY(" + dy.toFixed(1) + "px)";
+    });
+    function end(e) {
+      if (e.pointerId !== id) return;
+      id = null;
+      modal.classList.remove("drag");
+      var v = (e.timeStamp - t0) > 0 ? last / (e.timeStamp - t0) : 0;
+      if (dy > 96 || v > .55) {
+        closeBtn.click();
+        requestAnimationFrame(function () { panel.style.transform = ""; });
+      } else {
+        panel.style.transform = "";
+      }
+    }
+    panel.addEventListener("pointerup", end);
+    panel.addEventListener("pointercancel", end);
+  }
+
+  /* The knock: three decaying hits off the button's own edge. */
+  document.querySelectorAll(".cta").forEach(function (b) {
+    b.addEventListener("pointerdown", function () {
+      if (rm) return;
+      b.classList.remove("knock");
+      void b.offsetWidth;
+      b.classList.add("knock");
+      say("hm:knock");
+    });
+    b.addEventListener("animationend", function (e) {
+      if (e.animationName === "knock") b.classList.remove("knock");
+    });
+  });
+
+  /* waitlist.js announces success by setting display on #success and nothing
+     else. Watching that attribute is how the room finds out without anyone
+     reaching into the form. */
+  var done = document.getElementById("success");
+  if (done) {
+    var sweep = document.createElement("i");
+    sweep.className = "sweep";
+    done.appendChild(sweep);
+    new MutationObserver(function () {
+      if (done.style.display !== "block" || modal.classList.contains("won")) return;
+      modal.classList.add("won");
+      say("hm:won");
+    }).observe(done, { attributes: true, attributeFilter: ["style"] });
+  }
+})();
+
+/* Lock screen. The reader's own clock, in their own format: nothing here is a
+   claim. The notification's "now" ages honestly too - after a minute on the
+   page it says so, because a notification that is still "now" ten minutes
+   later is a fake. Everything else is the phone behaving like a phone: it
+   wakes, something lands on it, it dims itself when it is ignored, it wakes
+   again the moment it is touched, and the invitation can be lifted off the
+   screen with a finger. */
+(function () {
+  var lock = document.getElementById("lock");
+  var notif = document.getElementById("notif");
+  var home = document.getElementById("home");
+  var t = document.getElementById("ltime"), d = document.getElementById("ldate");
+  var w = document.querySelector(".when"), t0 = Date.now();
+  var rm = matchMedia("(prefers-reduced-motion:reduce)").matches;
+
+  function tick() {
+    var n = new Date();
+    t.textContent = n.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }).replace(/\s?[AP]M$/i, "");
+    d.textContent = n.toLocaleDateString([], { weekday: "long", month: "long", day: "numeric" });
+    var m = Math.floor((Date.now() - t0) / 6e4);
+    if (w && m > 0) w.textContent = m + "m ago";
+  }
+  tick(); setInterval(tick, 15000);
+
+  /* The screen lights for the notification a beat before it lands. */
+  document.addEventListener("hm:go", function () {
+    if (rm) { lock.classList.add("rang"); return; }
+    setTimeout(function () { lock.classList.add("ping"); }, 1180);
+    setTimeout(function () { lock.classList.add("rang"); }, 1260);
+  });
+
+  /* Auto-dim, then wake on any touch. A phone that stays at full brightness
+     forever is the one thing a lock screen never does. */
+  var idle = 0;
+  function wake() {
+    lock.classList.remove("dim");
+    clearTimeout(idle);
+    if (rm) return;
+    idle = setTimeout(function () { lock.classList.add("dim"); }, 15000);
+  }
+  ["pointerdown", "pointermove", "keydown", "wheel", "touchstart"].forEach(function (n) {
+    addEventListener(n, wake, { passive: true });
+  });
+  wake();
+
+  /* Press and hold: the notification comes forward and the screen behind it
+     goes back, the way a phone previews something under a thumb. Let go and
+     it settles; a tap still opens the sheet, which is the other block's job. */
+  var id = null, y0 = 0, dy = 0, tDown = 0, held = 0, dragging = false;
+  function down(e) {
+    if (id !== null) return;
+    id = e.pointerId; y0 = e.clientY; dy = 0; dragging = false; tDown = e.timeStamp;
+    if (!rm) held = setTimeout(function () { lock.classList.add("peek"); }, 130);
+    try { e.currentTarget.setPointerCapture(id); } catch (x) { }
+  }
+  function move(e) {
+    if (e.pointerId !== id) return;
+    var raw = e.clientY - y0;
+    if (!dragging && raw < -7) { dragging = true; lock.classList.add("pull"); clearTimeout(held); lock.classList.remove("peek"); }
+    if (!dragging) return;
+    /* Down has nowhere to go. Up carries the card with the finger, damped. */
+    dy = raw < 0 ? raw : raw * .2;
+    if (e.currentTarget === notif) notif.style.transform = "translateY(" + dy.toFixed(1) + "px)";
+    else home.style.transform = "translateY(" + Math.max(-14, dy / 3).toFixed(1) + "px)";
+  }
+  function up(e) {
+    if (e.pointerId !== id) return;
+    id = null; clearTimeout(held);
+    lock.classList.remove("peek");
+    lock.classList.remove("pull");
+    var v = (e.timeStamp - tDown) > 0 ? -dy / (e.timeStamp - tDown) : 0;
+    notif.style.transform = "";
+    home.style.transform = "";
+    if (dragging && (dy < -52 || v > .5)) notif.click();
+  }
+  [notif, home].forEach(function (el) {
+    el.addEventListener("pointerdown", down);
+    el.addEventListener("pointermove", move);
+    el.addEventListener("pointerup", up);
+    el.addEventListener("pointercancel", up);
+  });
+
+  document.addEventListener("hm:sheet", function (e) {
+    var open = !!(e.detail && e.detail.open);
+    if (open) { lock.classList.add("touched"); wake(); }
+    lock.classList.toggle("back", open && !rm);
+  });
+  document.addEventListener("hm:won", function () { lock.classList.add("cold"); clearTimeout(idle); });
+})();
+
+</script>
+</body>
+</html>

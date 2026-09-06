@@ -23,7 +23,7 @@
 })();
 </script>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-jDoFvrXRHhus1f4iYnqx4RqtDHbw/WmYgkDqw4daW5c=' 'sha256-47I58Qw3BVCe4681rzRn12p+aq1pXFFmFrHNiCetdDE='; font-src 'self'; script-src 'sha256-Rjt0i4trpys9fP0m5QIS/Ihq/b54ce5HwcR0qvt6S6g=' 'sha256-cy/magVvFvv8o0sTep6F4MOlDXuhafpfkSd4Cu+Oss0=' 'sha256-IH7HIK6oJ37bLy9BWgTs18E8llXqXhK81O16RyvXraE=' 'self'; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-jDoFvrXRHhus1f4iYnqx4RqtDHbw/WmYgkDqw4daW5c=' 'sha256-47I58Qw3BVCe4681rzRn12p+aq1pXFFmFrHNiCetdDE='; font-src 'self'; script-src 'sha256-Rjt0i4trpys9fP0m5QIS/Ihq/b54ce5HwcR0qvt6S6g=' 'sha256-cy/magVvFvv8o0sTep6F4MOlDXuhafpfkSd4Cu+Oss0=' 'sha256-N2CbjoJ7mYYOjRdb6SAAl0lzh0cOI24buUhRwMljot8=' 'self'; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050303">
@@ -336,7 +336,6 @@ h1 span{color:var(--red);text-shadow:0 0 calc(16px + var(--open) * 26px) rgba(22
     <h1>Look long enough <span>and it opens.</span></h1>
     <p class="lead">Sixty minutes inside. Multiple rooms. One way out. September 25, 2026, and the list is how you find out first.</p>
     <button class="cta" type="button" data-open>Enter the waitlist</button>
-    <p class="whisper">Hold the picture to lean in.</p>
   </div>
 </main>
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
@@ -509,7 +508,6 @@ h1 span{color:var(--red);text-shadow:0 0 calc(16px + var(--open) * 26px) rgba(22
    decoration, the house is the content. */
 (function () {
   var hero = document.getElementById("hero");
-  var whisper = hero.querySelector(".whisper");
   var rm = matchMedia("(prefers-reduced-motion:reduce)").matches;
   var tweens = !!(window.CSS && CSS.registerProperty);
   var used = false, knockT = 0;

@@ -23,7 +23,7 @@
 })();
 </script>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-jDoFvrXRHhus1f4iYnqx4RqtDHbw/WmYgkDqw4daW5c=' 'sha256-M8GDm/KeRp4ThsNPd6zYqbdanOAn4MxTaHbu4UKb5Kw='; font-src 'self'; script-src 'sha256-Rjt0i4trpys9fP0m5QIS/Ihq/b54ce5HwcR0qvt6S6g=' 'sha256-cy/magVvFvv8o0sTep6F4MOlDXuhafpfkSd4Cu+Oss0=' 'sha256-S09AIRbkmhz/hgVZlckX9Uoj7HB07c4hIkMPcsckJLQ=' 'self'; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-jDoFvrXRHhus1f4iYnqx4RqtDHbw/WmYgkDqw4daW5c=' 'sha256-47I58Qw3BVCe4681rzRn12p+aq1pXFFmFrHNiCetdDE='; font-src 'self'; script-src 'sha256-Rjt0i4trpys9fP0m5QIS/Ihq/b54ce5HwcR0qvt6S6g=' 'sha256-cy/magVvFvv8o0sTep6F4MOlDXuhafpfkSd4Cu+Oss0=' 'sha256-IH7HIK6oJ37bLy9BWgTs18E8llXqXhK81O16RyvXraE=' 'self'; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050303">
@@ -47,93 +47,14 @@
 /* latin-ext */ @font-face {font-family: 'Space Grotesk'; font-style: normal; font-weight: 600; font-display: swap; src: url(fonts/spacegrotesk-400-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
 /* latin */ @font-face {font-family: 'Space Grotesk'; font-style: normal; font-weight: 600; font-display: swap; src: url(fonts/spacegrotesk-400-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
 </style>
-<style>
-:root{color-scheme:dark;--bg:#050303;--fg:#f5eee7;--muted:#b8aaa0;--red:#df2d25;--red-text:#e4362e;--line:rgba(255,255,255,.15);--ease:cubic-bezier(.16,1,.3,1)}
-/* Registered so the browser can tween the number itself. A gradient inside a
-   mask does not interpolate, so the earlier version, which transitioned the
-   mask-image, opened in five visible jumps. Tweening --open and letting the
-   mask read it every frame is what makes the light bloom. --boost rides on top
-   for a finger held on the picture, or a mouse near the light. */
-@property --open{syntax:"<number>";inherits:true;initial-value:0}
-@property --boost{syntax:"<number>";inherits:true;initial-value:0}
-.hero{position:relative;min-height:100svh;display:grid;align-items:end;
-  padding:clamp(84px,12vh,118px) clamp(18px,5vw,60px) clamp(44px,8vh,80px);
-  isolation:isolate;overflow:hidden;touch-action:pan-y;--open:0;--boost:0;
-  transition:--open 8s cubic-bezier(.55,0,.35,1),--boost .9s var(--ease)}
-.hero.lit{--open:1}
-@media(min-width:900px){.hero{align-items:center}}
-
-/* The image fills the viewport and cover does the cropping, so the mask can be
-   positioned against the screen instead of against the picture. The first
-   version sized the image at 118% of the box and put the mask at 57% of the
-   image, which meant the hole moved every time the window changed shape - on a
-   phone it landed on the walkway and lit nothing, and on a desktop it landed
-   on the balcony rail. Cover plus object-position pins the front door under
-   the hole at every size, which is the only thing this design has to get
-   right. */
-/* On a phone the picture takes the top 58svh and the words take the rest, so
-   the hole and the headline never want the same pixels - the first cut had
-   the kicker sitting on the lit porch, red on red. cover into a 390x489 box
-   crops the sidewalk and puts the front door at about 65% of the box, which
-   is where the hole is; the container mask fades the picture's cut bottom
-   edge into the ground the copy sits on. */
-.lamp{position:absolute;inset:0 0 auto 0;height:58svh;z-index:-2;--cx:50%;--cy:65%;
-  -webkit-mask-image:linear-gradient(180deg,#000 74%,transparent);
-  mask-image:linear-gradient(180deg,#000 74%,transparent)}
-.lamp img{width:100%;height:100%;object-fit:cover;object-position:50% 38%;
-  /* --open runs 0 to 1 and both the mask stop and the exposure ride it, so the
-     house does not only get bigger, it gets brighter - the way something does
-     when you stop squinting at it. */
-  --lit:min(1,calc(var(--open) + var(--boost)));
-  -webkit-mask-image:radial-gradient(circle at var(--cx) var(--cy),#000 calc(5% + var(--lit) * 29%),transparent calc(17% + var(--lit) * 41%));
-  mask-image:radial-gradient(circle at var(--cx) var(--cy),#000 calc(5% + var(--lit) * 29%),transparent calc(17% + var(--lit) * 41%));
-  filter:brightness(calc(.8 + var(--lit) * .5)) contrast(1.08);
-  -webkit-touch-callout:none;-webkit-user-select:none;user-select:none;-webkit-user-drag:none;
-  transition:transform .9s var(--ease)}
-.hero.held .lamp img{transform:scale(1.04)}
-/* On a phone the hole sits above the copy and the copy sits on the floor;
-   on a wide screen they go side by side. Either way the headline never lands
-   on top of the lit door, which is the one part of the picture worth seeing. */
-@media(min-width:900px){
-  .lamp{inset:0;height:auto;--cx:70%;--cy:50%;-webkit-mask-image:none;mask-image:none}
-  .lamp img{object-position:50% 44%}
-}
-
-.glow{position:absolute;left:var(--gx,50%);top:var(--gy,38%);translate:-50% -50%;
-  z-index:-3;width:min(86vw,540px);aspect-ratio:1;border-radius:50%;
-  background:radial-gradient(closest-side,rgba(223,45,37,.3),transparent 70%);
-  filter:blur(40px);animation:pulse 6s ease-in-out infinite}
-@media(min-width:900px){.glow{--gx:70%;--gy:50%}}
-@keyframes pulse{0%,to{opacity:.55}50%{opacity:1}}
-
-.copy{position:relative;max-width:620px}
-@media(min-width:900px){.copy{max-width:min(46vw,560px)}}
-.kicker{margin:0 0 12px;font:600 11px/1 "Space Grotesk",sans-serif;
-  letter-spacing:.24em;text-transform:uppercase;color:var(--red-text);
-  animation:rise .55s var(--ease) .5s backwards}
-h1{margin:0;font:400 clamp(36px,7.4vw,80px)/.92 "Archivo Black",Impact,sans-serif;
-  letter-spacing:-.028em;text-transform:uppercase;text-wrap:balance;
-  animation:rise .64s var(--ease) .58s backwards}
-h1 span{color:var(--red);text-shadow:0 0 calc(16px + var(--open) * 22px) rgba(223,45,37,calc(.3 + var(--open) * .3))}
-.lead{margin:22px 0 0;max-width:40ch;color:#c4b6ac;
-  font:400 clamp(15px,1.9vw,18px)/1.6 Inter,system-ui,sans-serif;
-  animation:rise .73s var(--ease) .66s backwards}
-.cta{margin:30px 0 0;min-height:58px;padding:0 30px;border:0;border-radius:999px;
-  background:var(--red);color:#fff;cursor:pointer;
-  font:600 12px/1 "Space Grotesk",sans-serif;letter-spacing:.16em;text-transform:uppercase;
-  box-shadow:0 0 0 0 rgba(223,45,37,.5);transition:box-shadow .4s var(--ease),transform .3s var(--ease);
-  animation:rise .7s var(--ease) .74s backwards}
-.cta:hover,.cta:focus-visible{transform:translateY(-2px);box-shadow:0 0 40px 0 rgba(223,45,37,.5)}
-.cta:active{transform:scale(.97);transition-duration:.12s}
-*{box-sizing:border-box}
+<style>*{box-sizing:border-box}
 html{background:#000;-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--fg);overflow-x:hidden;-webkit-font-smoothing:antialiased}
 button,input{font:inherit}button{color:inherit;-webkit-tap-highlight-color:transparent}
 img{display:block;max-width:100%}
 a{color:inherit}
+a:hover,a:focus-visible{color:var(--fg)}
 :focus-visible{outline:2px solid var(--red);outline-offset:3px}
-/* Read by assistive tech, drawn nowhere: the pages whose picture carries the
-   heading still need one for a screen reader to land on. */
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
 
 /* Over everything, modal included. The plate is a 2x upscale and grain is what
@@ -145,15 +66,22 @@ a{color:inherit}
   animation:grain .18s steps(2) infinite}
 @keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(-4%,3%)}50%{transform:translate(3%,-4%)}75%{transform:translate(-3%,-2%)}to{transform:translate(2%,4%)}}
 
+/* The curtain: the page is black until the first frame is ready to be looked
+   at, then it lifts. Opacity only, so nothing in the scene has to move. */
+.curtain{position:fixed;inset:0;z-index:70;pointer-events:none;background:#000;
+  opacity:1;transition:opacity 1.9s cubic-bezier(.22,1,.36,1)}
+.curtain.up{opacity:0}
+
 .top{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;
   justify-content:space-between;align-items:center;gap:16px;
   padding:17px clamp(16px,4vw,40px);
   font:600 11px/1 "Space Grotesk",system-ui,sans-serif;letter-spacing:.16em;
   text-transform:uppercase;color:var(--muted);
-  background:linear-gradient(180deg,rgba(5,3,3,.74),transparent);
-  animation:fadein .6s var(--ease) .15s backwards}
+  background:linear-gradient(180deg,rgba(5,3,3,.74),transparent)}
 .top .dot{display:inline-block;width:6px;height:6px;border-radius:50%;
-  background:var(--red);box-shadow:0 0 10px var(--red);margin-right:9px}
+  background:var(--red);box-shadow:0 0 10px var(--red);margin-right:9px;
+  animation:beat 3.4s ease-in-out infinite}
+@keyframes beat{0%,to{opacity:.5}50%{opacity:1}}
 
 /* Ships hidden and empty on purpose. The only thing that can fill it in is the
    code that has just worked out what it says, so a visitor with no script sees
@@ -164,10 +92,14 @@ a{color:inherit}
 .dayline[hidden]{display:none}
 .dayline:not([hidden]){animation:fadein .7s var(--ease)}
 
+/* Every reveal on these pages is one of these two, offset in 90ms steps, so
+   the whole page reads as one movement instead of eight. */
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @keyframes fadein{from{opacity:0}to{opacity:1}}
-/* A sheet on a phone, a panel on a desk. Transitions rather than keyframes so
-   a tap on the close button mid-rise reverses from wherever it is. The
+
+/* THE SHEET. A sheet on a phone, a panel on a desk. Transitions rather than
+   keyframes so a tap on the close button mid-rise reverses from wherever it
+   is, and so a finger dragging it down can take over the transform. The
    visibility delay keeps it out of the tab order and the accessibility tree
    until the fade has finished. */
 .modal{position:fixed;inset:0;z-index:90;display:grid;place-items:end center;
@@ -176,13 +108,21 @@ a{color:inherit}
   visibility:hidden;opacity:0;
   transition:opacity .26s cubic-bezier(.77,0,.175,1),visibility 0s linear .26s}
 .modal.open{visibility:visible;opacity:1;transition:opacity .24s var(--ease)}
-.panel{width:min(460px,100%);max-height:92vh;overflow:auto;padding:26px;
+.panel{position:relative;width:min(460px,100%);max-height:92vh;overflow:auto;
+  padding:8px 26px 26px;overscroll-behavior:contain;
   border:1px solid var(--line);border-radius:20px;background:#0a0706;
   font:500 17px/1.5 "DM Sans",system-ui,sans-serif;
+  box-shadow:0 -30px 90px -30px rgba(0,0,0,.9);
   transform:translateY(104%);transition:transform .3s cubic-bezier(.77,0,.175,1)}
-.modal.open .panel{transform:none;transition:transform .52s var(--ease)}
+.modal.open .panel{transform:none;transition:transform .62s cubic-bezier(.16,1,.3,1)}
+/* Dragged: the finger owns the transform, so no transition at all. */
+.modal.drag .panel{transition:none}
 @media(min-width:700px){.modal{place-items:center;padding:20px}.panel{transform:translateY(28px) scale(.985)}}
-.modal-top{display:flex;justify-content:space-between;align-items:center;gap:14px}
+/* The grab bar. Drag it, or the header, or flick anywhere in the top strip. */
+.grab{display:block;width:44px;height:4px;margin:6px auto 12px;border-radius:3px;
+  background:rgba(255,255,255,.28);touch-action:none;cursor:grab}
+.modal.drag .grab{background:rgba(255,255,255,.5)}
+.modal-top{display:flex;justify-content:space-between;align-items:center;gap:14px;touch-action:none}
 .modal .kicker{margin:0;font:600 11px/1 "Space Grotesk",sans-serif;
   letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 .modal h2{font:600 38px/.96 "Space Grotesk",sans-serif;letter-spacing:-.04em;margin:22px 0 8px}
@@ -205,10 +145,31 @@ input:focus{border-color:#b63b33;box-shadow:0 0 0 3px rgba(223,45,37,.14)}
 .note{font-size:13px;color:#857970;margin:12px 0 0;line-height:1.5}
 .note a{color:#857970;text-decoration:underline;text-underline-offset:2px}
 .note a:hover,.note a:focus-visible{color:var(--fg)}
-.success{display:none;padding:38px 0 24px}
+
+/* The contents arrive after the sheet does, 55ms apart, so the rise reads as
+   one object carrying its parts up rather than a page appearing. */
+.modal.open .grab{animation:fadein .4s var(--ease) .1s backwards}
+.modal.open .modal-top{animation:rise .5s var(--ease) .16s backwards}
+.modal.open #modal-title{animation:rise .5s var(--ease) .215s backwards}
+.modal.open #formwrap .sub{animation:rise .5s var(--ease) .27s backwards}
+.modal.open #formwrap label:nth-of-type(1){animation:rise .5s var(--ease) .325s backwards}
+.modal.open #formwrap label:nth-of-type(2){animation:rise .5s var(--ease) .38s backwards}
+.modal.open #formwrap label:nth-of-type(3){animation:rise .5s var(--ease) .435s backwards}
+.modal.open #formwrap .submit{animation:rise .5s var(--ease) .49s backwards}
+.modal.open #formwrap .note{animation:fadein .6s var(--ease) .56s backwards}
+
+.success{display:none;padding:38px 0 24px;position:relative}
 .success strong{display:block;font:600 40px/.95 "Space Grotesk",sans-serif;letter-spacing:-.04em;
-  animation:rise .6s var(--ease) .05s backwards}
-.success span{display:block;margin-top:12px;color:var(--muted);animation:rise .6s var(--ease) .3s backwards}
+  animation:rise .7s var(--ease) .34s backwards}
+.success span{display:block;margin-top:12px;color:var(--muted);animation:rise .7s var(--ease) .48s backwards}
+/* A light runs across the sheet ahead of the words, and the sheet's edge goes
+   cold: the house has taken the name and gone quiet. */
+.modal.won .panel{border-color:rgba(150,190,210,.28);transition:border-color 1.6s linear .4s}
+.sweep{position:absolute;inset:-40px -30px;pointer-events:none;opacity:0;
+  background:linear-gradient(100deg,transparent 36%,rgba(255,238,220,.5) 50%,transparent 64%);
+  transform:translateX(-120%)}
+.modal.won .sweep{animation:sweep 1.05s cubic-bezier(.3,0,.2,1) .02s}
+@keyframes sweep{0%{opacity:0;transform:translateX(-120%)}18%{opacity:1}80%{opacity:1}to{opacity:0;transform:translateX(120%)}}
 
 .footer{position:relative;z-index:5;padding:34px clamp(16px,4vw,40px) 54px;
   color:#82756c;font:500 11px/1.7 "Space Grotesk",system-ui,sans-serif;
@@ -217,26 +178,170 @@ input:focus{border-color:#b63b33;box-shadow:0 0 0 3px rgba(223,45,37,.14)}
 .footer a{color:#82756c;text-decoration:underline;text-underline-offset:3px}
 .footer a:hover,.footer a:focus-visible{color:var(--fg)}
 
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+:root{color-scheme:dark;--bg:#050303;--fg:#f5eee7;--muted:#b8aaa0;--red:#df2d25;--red-text:#e4362e;--line:rgba(255,255,255,.15);--ease:cubic-bezier(.16,1,.3,1)}
+/* Registered so the browser can tween the numbers itself. A gradient inside a
+   mask does not interpolate, so an earlier version, which transitioned the
+   mask-image, opened in five visible jumps. Tweening --open and letting the
+   mask read it every frame is what makes the light bloom. --boost rides on
+   top for a finger held on the picture: one continuous value from 0 to 1
+   rather than a two-state on and off, so leaning in and easing off both read
+   as a hand rather than a switch. */
+@property --open{syntax:"<number>";inherits:true;initial-value:0}
+@property --boost{syntax:"<number>";inherits:true;initial-value:0}
+
+.hero{position:relative;min-height:100svh;display:grid;align-items:end;
+  padding:clamp(84px,12vh,118px) clamp(18px,5vw,60px) clamp(44px,8vh,80px);
+  isolation:isolate;overflow:hidden;touch-action:pan-y;--open:0;--boost:0;
+  transform-origin:50% 30%;
+  transition:--boost .8s var(--ease),transform .7s var(--ease)}
+@media(min-width:900px){.hero{align-items:center}}
+/* The porch light does not fade up, it strikes: catches, drops out, catches
+   again, then settles over nine seconds. Keyframes on a registered property
+   tween, so the sputter is real light rather than five steps. */
+.hero.lit{animation:strike 9s cubic-bezier(.42,0,.3,1) forwards}
+@keyframes strike{
+  0%{--open:0}4%{--open:.24}7%{--open:.04}11%{--open:.34}14%{--open:.1}
+  19%{--open:.46}26%{--open:.4}44%{--open:.66}70%{--open:.86}to{--open:1}}
+/* Behind the sheet the porch pulls back half a step, the way a room does when
+   something is held up in front of your face. */
+.hero.back{transform:scale(.945)}
+
+/* The image fills the top of the viewport and cover does the cropping, so the
+   mask can be positioned against the screen instead of against the picture:
+   cover plus object-position pins the front door under the hole at every
+   size, which is the only thing this design has to get right. On a phone the
+   picture takes the top 58svh and the words take the rest, so the hole and
+   the headline never want the same pixels. */
+.lamp{position:absolute;inset:0 0 auto 0;height:58svh;z-index:-2;--cx:50%;--cy:65%;
+  -webkit-mask-image:linear-gradient(180deg,#000 74%,transparent);
+  mask-image:linear-gradient(180deg,#000 74%,transparent)}
+.lamp img{width:100%;height:100%;object-fit:cover;object-position:50% 38%;
+  /* --open runs 0 to 1 and both the mask stop and the exposure ride it, so
+     the house does not only get bigger, it gets brighter - the way something
+     does when you stop squinting at it. */
+  --lit:min(1,calc(var(--open) + var(--boost)));
+  -webkit-mask-image:radial-gradient(circle at var(--cx) var(--cy),#000 calc(5% + var(--lit) * 29%),transparent calc(17% + var(--lit) * 41%));
+  mask-image:radial-gradient(circle at var(--cx) var(--cy),#000 calc(5% + var(--lit) * 29%),transparent calc(17% + var(--lit) * 41%));
+  filter:brightness(calc(.8 + var(--lit) * .5)) contrast(1.08);
+  -webkit-touch-callout:none;-webkit-user-select:none;user-select:none;-webkit-user-drag:none;
+  transform:scale(calc(1 + var(--boost) * .12));
+  transition:transform .8s var(--ease)}
+@media(min-width:900px){
+  .lamp{inset:0;height:auto;--cx:70%;--cy:50%;-webkit-mask-image:none;mask-image:none}
+  .lamp img{object-position:50% 44%}
+}
+
+/* Four light layers, all of them opacity: a red bloom that breathes, the
+   lamp's own unsteadiness, the vignette that closes in when a finger leans on
+   the picture, and the flare off a knock. Nothing here is drawn per frame. */
+.glow{position:absolute;left:var(--gx,50%);top:var(--gy,38%);translate:-50% -50%;
+  z-index:-3;width:min(86vw,540px);aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(223,45,37,.32),transparent 70%);
+  filter:blur(40px);opacity:calc(.45 + var(--open) * .45);
+  animation:pulse 6.5s ease-in-out infinite}
+@media(min-width:900px){.glow{--gx:70%;--gy:50%}}
+@keyframes pulse{0%,to{opacity:.6}50%{opacity:1}}
+.flick{position:absolute;left:50%;top:38%;translate:-50% -50%;z-index:-2;
+  width:min(52vw,320px);aspect-ratio:1;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(255,214,168,.22),transparent 72%);
+  filter:blur(22px);opacity:0;animation:flick 7.3s ease-in-out infinite}
+@keyframes flick{0%,to{opacity:.18}9%{opacity:.5}12%{opacity:.12}
+  20%{opacity:.42}23%{opacity:.2}46%{opacity:.55}52%{opacity:.3}74%{opacity:.46}}
+/* Something crosses the light. Not a body, an interruption: two soft shadows
+   on periods that never line up, so the porch is never quite still. */
+.shade{position:absolute;z-index:-2;pointer-events:none;left:0;top:16%;
+  width:60vw;height:34svh;border-radius:50%;filter:blur(30px);
+  background:radial-gradient(closest-side,rgba(3,2,2,.92),transparent 72%);
+  opacity:0;animation:cross 19s cubic-bezier(.45,.05,.55,.95) 6s infinite}
+.shade.b{top:36%;height:22svh;width:44vw;animation-duration:31s;animation-delay:14s}
+@keyframes cross{0%{opacity:0;transform:translateX(-70vw) scale(.9)}
+  12%{opacity:.85}50%{opacity:.95;transform:translateX(30vw) scale(1.05)}
+  88%{opacity:.7}to{opacity:0;transform:translateX(130vw) scale(.9)}}
+.vig{position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(74% 52% at 50% 38%,transparent 34%,rgba(3,2,2,.9));
+  opacity:calc(.34 + var(--boost) * 1.5)}
+.flare{position:absolute;left:50%;top:38%;translate:-50% -50%;z-index:-2;
+  width:min(120vw,760px);aspect-ratio:1;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(255,226,196,.5),transparent 66%);
+  filter:blur(30px);opacity:0}
+.hero.knocked .flare{animation:flare .75s cubic-bezier(.2,0,.2,1)}
+@keyframes flare{0%{opacity:0}8%{opacity:.9}26%{opacity:.25}38%{opacity:.6}to{opacity:0}}
+/* The name is in. The house stops performing. */
+.hero.cold .glow,.hero.cold .flick{opacity:.12;transition:opacity 2.4s linear}
+.hero.cold .vig{opacity:.62;transition:opacity 2.4s linear}
+
+.copy{position:relative;max-width:620px}
+@media(min-width:900px){.copy{max-width:min(46vw,560px)}}
+.kicker{margin:0 0 12px;font:600 11px/1 "Space Grotesk",sans-serif;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--red-text)}
+h1{margin:0;font:400 clamp(36px,7.4vw,80px)/.92 "Archivo Black",Impact,sans-serif;
+  letter-spacing:-.028em;text-transform:uppercase;text-wrap:balance}
+h1 span{color:var(--red);text-shadow:0 0 calc(16px + var(--open) * 26px) rgba(223,45,37,calc(.3 + var(--open) * .32))}
+.lead{margin:22px 0 0;max-width:40ch;color:#c4b6ac;
+  font:400 clamp(15px,1.9vw,18px)/1.6 Inter,system-ui,sans-serif}
+.cta{position:relative;margin:30px 0 0;min-height:58px;padding:0 30px;border:0;border-radius:999px;
+  background:var(--red);color:#fff;cursor:pointer;
+  font:600 12px/1 "Space Grotesk",sans-serif;letter-spacing:.16em;text-transform:uppercase;
+  transition:transform .3s var(--ease)}
+.cta:after{content:"";position:absolute;inset:-2px;border-radius:999px;pointer-events:none;
+  border:1px solid rgba(255,224,200,.9);opacity:0}
+.cta:hover,.cta:focus-visible{transform:translateY(-2px)}
+/* Three hits, each one weaker, and a ring off the button's edge. */
+.cta.knock{animation:knock .66s cubic-bezier(.2,0,.2,1)}
+.cta.knock:after{animation:ring .66s ease-out}
+@keyframes knock{0%{transform:scale(.96)}16%{transform:scale(1.012)}30%{transform:scale(.976)}
+  48%{transform:scale(1.007)}62%{transform:scale(.99)}80%{transform:scale(1.003)}to{transform:none}}
+@keyframes ring{0%{opacity:.95;transform:scale(1)}to{opacity:0;transform:scale(1.42)}}
+/* Said once, to whoever waited. */
+.whisper{margin:20px 0 0;font:400 13px/1.5 Inter,system-ui,sans-serif;letter-spacing:.02em;
+  color:#9d8f86;opacity:0;transform:translateY(8px);
+  transition:opacity 1.4s var(--ease),transform 1.4s var(--ease)}
+.hero.seen .whisper{opacity:1;transform:none}
+
+/* Every reveal waits for the curtain, then arrives 90ms behind the last. */
+.go .top{animation:fadein .9s var(--ease) .25s backwards}
+.go .kicker{animation:rise .6s var(--ease) 1.15s backwards}
+.go h1{animation:rise .72s var(--ease) 1.24s backwards}
+.go .lead{animation:rise .72s var(--ease) 1.33s backwards}
+.go .cta{animation:rise .72s var(--ease) 1.42s backwards}
+
+@media(prefers-reduced-motion:reduce){
+  .hero{--open:1!important}
+  .whisper{opacity:1!important;transform:none!important}
+  .shade,.flick,.flare{display:none!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .curtain{opacity:0!important;display:none!important}
+  .grain{opacity:.04}
+}
 </style>
 </head>
 <body>
 <div class="grain" aria-hidden="true"></div>
 <header class="top"><span><i class="dot"></i>Haunted Mansion BK</span><p class="dayline" data-opens="2026-09-25" hidden></p></header>
-<main class="hero">
+<main class="hero" id="hero">
   <div class="glow" aria-hidden="true"></div>
+  <div class="flick" aria-hidden="true"></div>
+  <div class="flare" aria-hidden="true"></div>
   <div class="lamp" id="lamp">
     <img src="img-house/house.jpg" width="960" height="1696" alt="The house at night: a two-storey porch under a red-lit balcony, lanterns burning either side of the front door, carved pumpkins along the steps and a lit path running up to them.">
   </div>
+  <div class="shade" aria-hidden="true"></div>
+  <div class="shade b" aria-hidden="true"></div>
+  <div class="vig" aria-hidden="true"></div>
   <div class="copy">
     <p class="kicker">Bushwick, Brooklyn</p>
     <h1>Look long enough <span>and it opens.</span></h1>
     <p class="lead">Sixty minutes inside. Multiple rooms. One way out. September 25, 2026, and the list is how you find out first.</p>
     <button class="cta" type="button" data-open>Enter the waitlist</button>
+    <p class="whisper">Hold the picture to lean in.</p>
   </div>
 </main>
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
 <div class="panel">
+<i class="grab" aria-hidden="true"></i>
 <div class="modal-top"><p class="kicker">Private waitlist</p><button class="close" type="button" aria-label="Close">&times;</button></div>
 <div id="formwrap">
 <h2 id="modal-title">Knock on the door.</h2>
@@ -251,6 +356,7 @@ input:focus{border-color:#b63b33;box-shadow:0 0 0 3px rgba(223,45,37,.14)}
 <div class="success" id="success" tabindex="-1"><strong>We heard you.</strong><span>Don&rsquo;t answer the door.</span></div>
 </div></div>
 <footer class="footer">Bushwick, Brooklyn &middot; September 25, 2026 &middot; <a href="index.html">every version</a></footer>
+<div class="curtain" aria-hidden="true"></div>
 <script>
 (function(){
   var el=document.querySelector('.dayline');
@@ -279,37 +385,189 @@ input:focus{border-color:#b63b33;box-shadow:0 0 0 3px rgba(223,45,37,.14)}
 </script>
 <script src="waitlist.js" data-form="#form" data-formbox="#formwrap" data-done="#success" data-submit=".submit" data-submit-label="Enter the waitlist"></script>
 <script>
-/* The light opens on its own over eight seconds, finishing just before the
-   sheet offers itself. A finger held on the picture, or a mouse drifting
-   towards the light, pushes it wider and brighter for as long as it stays;
-   let go and it settles back to wherever the slow open had reached. Reduced
-   motion gets it open from the first frame - the reveal is decoration, the
-   house is the content. */
-(function(){
-  var hero=document.querySelector('.hero');
-  if(matchMedia('(prefers-reduced-motion:reduce)').matches){hero.classList.add('lit');return}
-  if(window.CSS&&CSS.registerProperty){setTimeout(function(){hero.classList.add('lit')},700)}
-  else{
-    /* No registered properties, so nothing tweens: step it, as the first
-       version did. */
-    [900,2000,3300,4600,6100].forEach(function(t,i){setTimeout(function(){hero.style.setProperty('--open',String((i+1)/5))},t)});
+/* The parts every one of these three pages shares: the curtain lift that
+   starts the page's own reveals, the sheet's physics, the knock, and the
+   success moment. It talks to the page-specific block below through events on
+   the document (hm:sheet, hm:won, hm:knock) so neither half has to know how
+   the other one is built, and it never touches the form: waitlist.js owns
+   that, and the block above owns opening and closing the modal. */
+(function () {
+  var rm = matchMedia("(prefers-reduced-motion:reduce)").matches;
+  var root = document.documentElement;
+  var modal = document.getElementById("modal");
+  var panel = modal && modal.querySelector(".panel");
+  var closeBtn = modal && modal.querySelector(".close");
+  var curtain = document.querySelector(".curtain");
+
+  /* Nothing moves until the picture is actually there. .go is what every
+     staggered reveal on the page is keyed to, so the copy lands while the
+     house is still settling rather than over a black rectangle. Without
+     script the page is simply already visible, which is the honest fallback. */
+  var lifted = false;
+  function lift() {
+    if (lifted) return;
+    lifted = true;
+    root.classList.add("go");
+    if (curtain) curtain.classList.add("up");
+    say("hm:go");
   }
-  var boost=0,held=false,wasTouch=false;
-  function setBoost(v){v=Math.max(0,Math.min(.4,v));if(v===boost)return;boost=v;hero.style.setProperty('--boost',v.toFixed(3))}
-  addEventListener('pointermove',function(e){
-    if(held||innerWidth<900||e.pointerType!=='mouse')return;
-    var x=e.clientX/innerWidth;setBoost(x>.5?(x-.5)*.8:0);
-  },{passive:true});
-  function release(){if(!held)return;held=false;hero.classList.remove('held');setBoost(0)}
-  hero.addEventListener('pointerdown',function(e){
-    if(e.target.closest('button,a,input,label'))return;
-    if(e.pointerType==='mouse'&&e.button!==0)return;
-    wasTouch=e.pointerType==='touch';held=true;hero.classList.add('held');setBoost(.35);
+  if (rm) lift();
+  else {
+    if (document.readyState === "complete") setTimeout(lift, 60);
+    else addEventListener("load", function () { setTimeout(lift, 60); });
+    setTimeout(lift, 1400);
+  }
+
+  function say(name, detail) {
+    document.dispatchEvent(new CustomEvent(name, { detail: detail || null }));
+  }
+
+  /* The sheet. Opening and closing is the other block's job; this watches the
+     class it sets and tells the scene, so the room can pull back behind it. */
+  if (modal && panel) {
+    var wasOpen = false;
+    new MutationObserver(function () {
+      var open = modal.classList.contains("open");
+      if (open === wasOpen) return;
+      wasOpen = open;
+      if (open) { panel.style.transform = ""; panel.scrollTop = 0; }
+      say("hm:sheet", { open: open });
+    }).observe(modal, { attributes: true, attributeFilter: ["class"] });
+
+    /* Drag the grab bar or the header down to dismiss: past 96px or on a
+       flick it goes, otherwise it springs back from wherever the finger let
+       go. The finger owns the transform while it is down, which is why .drag
+       kills the transition. */
+    var id = null, y0 = 0, dy = 0, t0 = 0, last = 0, lastT = 0;
+    function grabbable(t) { return t.closest(".grab,.modal-top") && !t.closest(".close"); }
+    panel.addEventListener("pointerdown", function (e) {
+      if (id !== null || !grabbable(e.target)) return;
+      id = e.pointerId; y0 = e.clientY; dy = 0; last = 0;
+      t0 = lastT = e.timeStamp;
+      modal.classList.add("drag");
+      try { panel.setPointerCapture(id); } catch (x) { }
+    });
+    panel.addEventListener("pointermove", function (e) {
+      if (e.pointerId !== id) return;
+      var raw = e.clientY - y0;
+      /* Upwards has nowhere to go, so it gets a fifth of the movement. */
+      dy = raw > 0 ? raw : raw * .2;
+      last = dy; lastT = e.timeStamp;
+      panel.style.transform = "translateY(" + dy.toFixed(1) + "px)";
+    });
+    function end(e) {
+      if (e.pointerId !== id) return;
+      id = null;
+      modal.classList.remove("drag");
+      var v = (e.timeStamp - t0) > 0 ? last / (e.timeStamp - t0) : 0;
+      if (dy > 96 || v > .55) {
+        closeBtn.click();
+        requestAnimationFrame(function () { panel.style.transform = ""; });
+      } else {
+        panel.style.transform = "";
+      }
+    }
+    panel.addEventListener("pointerup", end);
+    panel.addEventListener("pointercancel", end);
+  }
+
+  /* The knock: three decaying hits off the button's own edge. */
+  document.querySelectorAll(".cta").forEach(function (b) {
+    b.addEventListener("pointerdown", function () {
+      if (rm) return;
+      b.classList.remove("knock");
+      void b.offsetWidth;
+      b.classList.add("knock");
+      say("hm:knock");
+    });
+    b.addEventListener("animationend", function (e) {
+      if (e.animationName === "knock") b.classList.remove("knock");
+    });
   });
-  addEventListener('pointerup',release);addEventListener('pointercancel',release);
-  hero.addEventListener('pointerleave',release);
-  hero.addEventListener('contextmenu',function(e){if(wasTouch)e.preventDefault()});
+
+  /* waitlist.js announces success by setting display on #success and nothing
+     else. Watching that attribute is how the room finds out without anyone
+     reaching into the form. */
+  var done = document.getElementById("success");
+  if (done) {
+    var sweep = document.createElement("i");
+    sweep.className = "sweep";
+    done.appendChild(sweep);
+    new MutationObserver(function () {
+      if (done.style.display !== "block" || modal.classList.contains("won")) return;
+      modal.classList.add("won");
+      say("hm:won");
+    }).observe(done, { attributes: true, attributeFilter: ["style"] });
+  }
 })();
+
+/* Porch light. The light strikes itself on over nine seconds; a finger held
+   anywhere on the picture leans in, opening the hole wider and brighter for
+   as long as it stays and easing back off when it goes. Nothing here holds a
+   value it cannot justify: the strike ends lit, the lean ends where it
+   started, and reduced motion is lit from the first frame - the reveal is
+   decoration, the house is the content. */
+(function () {
+  var hero = document.getElementById("hero");
+  var whisper = hero.querySelector(".whisper");
+  var rm = matchMedia("(prefers-reduced-motion:reduce)").matches;
+  var tweens = !!(window.CSS && CSS.registerProperty);
+  var used = false, knockT = 0;
+
+  document.addEventListener("hm:go", function () {
+    if (rm) return;
+    setTimeout(function () {
+      /* No registered properties, so nothing tweens: no sputter either, just
+         get the house lit rather than leave it half masked. */
+      if (tweens) hero.classList.add("lit");
+      else hero.style.setProperty("--open", "1");
+    }, 520);
+    setTimeout(function () { if (!used) hero.classList.add("seen"); }, 3200);
+  });
+
+  /* One continuous value, not a switch: --boost eases up under a finger and
+     eases back when it lifts, and the mask, the exposure, the scale and the
+     vignette all read it. */
+  var held = false, wasTouch = false, boost = 0;
+  function set(v) {
+    v = Math.max(0, Math.min(.46, v));
+    if (Math.abs(v - boost) < .002) return;
+    boost = v; hero.style.setProperty("--boost", v.toFixed(3));
+  }
+  hero.addEventListener("pointerdown", function (e) {
+    if (e.target.closest("button,a,input,label")) return;
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    wasTouch = e.pointerType === "touch";
+    held = true; used = true;
+    hero.classList.remove("seen");
+    set(.42);
+  });
+  function release() { if (!held) return; held = false; set(0); }
+  addEventListener("pointerup", release);
+  addEventListener("pointercancel", release);
+  hero.addEventListener("pointerleave", release);
+  /* On a desktop the light answers a mouse drifting towards it. */
+  addEventListener("pointermove", function (e) {
+    if (held || innerWidth < 900 || e.pointerType !== "mouse") return;
+    var x = e.clientX / innerWidth;
+    set(x > .5 ? (x - .5) * .8 : 0);
+  }, { passive: true });
+  hero.addEventListener("contextmenu", function (e) { if (wasTouch) e.preventDefault(); });
+
+  document.addEventListener("hm:knock", function () {
+    hero.classList.remove("knocked");
+    void hero.offsetWidth;
+    hero.classList.add("knocked");
+    clearTimeout(knockT);
+    knockT = setTimeout(function () { hero.classList.remove("knocked"); }, 900);
+  });
+  document.addEventListener("hm:sheet", function (e) {
+    release();
+    hero.classList.toggle("back", !!(e.detail && e.detail.open) && !rm);
+  });
+  document.addEventListener("hm:won", function () { hero.classList.add("cold"); });
+})();
+
 </script>
 </body>
 </html>

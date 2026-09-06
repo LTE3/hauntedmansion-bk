@@ -23,7 +23,7 @@
 })();
 </script>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-xy3/NSfOVUoQOEjIBVkZC18loAHsfbQPjjrUnMM8u9c=' 'sha256-6+7X0HXjcoEEM+3/hPpe1HNUVQ67TBBpPJVW5ceia9g='; font-src 'self'; script-src 'sha256-Rjt0i4trpys9fP0m5QIS/Ihq/b54ce5HwcR0qvt6S6g=' 'sha256-cy/magVvFvv8o0sTep6F4MOlDXuhafpfkSd4Cu+Oss0=' 'sha256-Xc31EgcHuPlJCvmGk8JVPM8HCePjE+qoPRxovzUrnJk=' 'self'; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-xy3/NSfOVUoQOEjIBVkZC18loAHsfbQPjjrUnMM8u9c=' 'sha256-Ajv/G+uynwSdCnwmQpvqZvQkvjX1XuGqFaQKfz+gsBc='; font-src 'self'; script-src 'sha256-Rjt0i4trpys9fP0m5QIS/Ihq/b54ce5HwcR0qvt6S6g=' 'sha256-cy/magVvFvv8o0sTep6F4MOlDXuhafpfkSd4Cu+Oss0=' 'sha256-CBrx+g10Mhe9KWnCn0jSIfKBjRiwkkXGrp2eQLDKvJ0=' 'self'; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050303">
@@ -47,51 +47,14 @@
 /* latin-ext */ @font-face {font-family: 'Syne'; font-style: normal; font-weight: 800; font-display: swap; src: url(fonts/syne-700-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
 /* latin */ @font-face {font-family: 'Syne'; font-style: normal; font-weight: 800; font-display: swap; src: url(fonts/syne-700-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
 </style>
-<style>
-:root{color-scheme:dark;--bg:#050303;--fg:#f5eee7;--muted:#b8aaa0;--red:#df2d25;--red-text:#e4362e;--line:rgba(255,255,255,.15);--ease:cubic-bezier(.16,1,.3,1)}
-/* --r scales every radius of the beam. Registered so it tweens: the torch
-   sputters on over a second and a half, and a finger held down opens it wider
-   for as long as it stays. Without registration the keyframes step instead of
-   tween, which still reads as a flicker and still ends at 1. */
-@property --r{syntax:"<number>";inherits:true;initial-value:1}
-.dark{position:relative;height:100svh;overflow:hidden;isolation:isolate;touch-action:pan-y;
-  --x:50%;--y:62%;--r:1;cursor:crosshair;
-  animation:flick 1.4s linear .3s backwards;transition:--r .45s var(--ease)}
-.dark.held{--r:1.3}
-@keyframes flick{0%,14%{--r:0}20%{--r:.9}27%{--r:.12}36%{--r:.12}42%{--r:1}50%{--r:.5}58%{--r:1}100%{--r:1}}
-.dark img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 45%;z-index:-2;
-  -webkit-touch-callout:none;-webkit-user-select:none;user-select:none;-webkit-user-drag:none}
-.off{filter:brightness(.16) saturate(.55)}
-.on{z-index:-1;
-  -webkit-mask-image:radial-gradient(circle at var(--x) var(--y),#000 0,#000 calc(52px * var(--r)),rgba(0,0,0,.6) calc(100px * var(--r)),transparent calc(175px * var(--r)));
-  mask-image:radial-gradient(circle at var(--x) var(--y),#000 0,#000 calc(52px * var(--r)),rgba(0,0,0,.6) calc(100px * var(--r)),transparent calc(175px * var(--r)))}
-.beam{position:absolute;inset:0;z-index:-1;pointer-events:none;
-  background:radial-gradient(circle at var(--x) var(--y),rgba(255,224,190,.16),rgba(255,224,190,.05) calc(120px * var(--r)),transparent calc(260px * var(--r)))}
-.copy{position:absolute;left:0;right:0;bottom:0;padding:0 clamp(18px,5vw,64px) clamp(30px,6vw,64px);
-  background:linear-gradient(180deg,transparent,rgba(5,3,3,.88) 60%);padding-top:80px;pointer-events:none}
-.copy>*{pointer-events:auto}
-.k{margin:0 0 12px;font:600 11px/1 "Space Grotesk",sans-serif;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);
-  animation:rise .55s var(--ease) .9s backwards}
-h1{margin:0;font:800 clamp(44px,12vw,96px)/.9 Syne,system-ui,sans-serif;letter-spacing:-.04em;text-wrap:balance;
-  animation:rise .64s var(--ease) .98s backwards}
-h1 em{font-style:normal;color:var(--red)}
-.lead{margin:16px 0 0;max-width:40ch;color:#cbbdb3;font:400 15px/1.55 "DM Sans",system-ui,sans-serif;
-  animation:rise .73s var(--ease) 1.06s backwards}
-.cta{margin:22px 0 0;min-height:56px;padding:0 28px;border:0;border-radius:999px;background:var(--red);color:#fff;cursor:pointer;
-  font:600 12px/1 "Space Grotesk",sans-serif;letter-spacing:.18em;text-transform:uppercase;
-  transition:transform .3s var(--ease),box-shadow .3s var(--ease);
-  animation:rise .7s var(--ease) 1.14s backwards}
-.cta:hover,.cta:focus-visible{transform:translateY(-2px);box-shadow:0 12px 30px -10px rgba(223,45,37,.8)}
-.cta:active{transform:scale(.97);transition-duration:.12s}
-*{box-sizing:border-box}
+<style>*{box-sizing:border-box}
 html{background:#000;-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--fg);overflow-x:hidden;-webkit-font-smoothing:antialiased}
 button,input{font:inherit}button{color:inherit;-webkit-tap-highlight-color:transparent}
 img{display:block;max-width:100%}
 a{color:inherit}
+a:hover,a:focus-visible{color:var(--fg)}
 :focus-visible{outline:2px solid var(--red);outline-offset:3px}
-/* Read by assistive tech, drawn nowhere: the pages whose picture carries the
-   heading still need one for a screen reader to land on. */
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
 
 /* Over everything, modal included. The plate is a 2x upscale and grain is what
@@ -103,15 +66,22 @@ a{color:inherit}
   animation:grain .18s steps(2) infinite}
 @keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(-4%,3%)}50%{transform:translate(3%,-4%)}75%{transform:translate(-3%,-2%)}to{transform:translate(2%,4%)}}
 
+/* The curtain: the page is black until the first frame is ready to be looked
+   at, then it lifts. Opacity only, so nothing in the scene has to move. */
+.curtain{position:fixed;inset:0;z-index:70;pointer-events:none;background:#000;
+  opacity:1;transition:opacity 1.9s cubic-bezier(.22,1,.36,1)}
+.curtain.up{opacity:0}
+
 .top{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;
   justify-content:space-between;align-items:center;gap:16px;
   padding:17px clamp(16px,4vw,40px);
   font:600 11px/1 "Space Grotesk",system-ui,sans-serif;letter-spacing:.16em;
   text-transform:uppercase;color:var(--muted);
-  background:linear-gradient(180deg,rgba(5,3,3,.74),transparent);
-  animation:fadein .6s var(--ease) .15s backwards}
+  background:linear-gradient(180deg,rgba(5,3,3,.74),transparent)}
 .top .dot{display:inline-block;width:6px;height:6px;border-radius:50%;
-  background:var(--red);box-shadow:0 0 10px var(--red);margin-right:9px}
+  background:var(--red);box-shadow:0 0 10px var(--red);margin-right:9px;
+  animation:beat 3.4s ease-in-out infinite}
+@keyframes beat{0%,to{opacity:.5}50%{opacity:1}}
 
 /* Ships hidden and empty on purpose. The only thing that can fill it in is the
    code that has just worked out what it says, so a visitor with no script sees
@@ -122,10 +92,14 @@ a{color:inherit}
 .dayline[hidden]{display:none}
 .dayline:not([hidden]){animation:fadein .7s var(--ease)}
 
+/* Every reveal on these pages is one of these two, offset in 90ms steps, so
+   the whole page reads as one movement instead of eight. */
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @keyframes fadein{from{opacity:0}to{opacity:1}}
-/* A sheet on a phone, a panel on a desk. Transitions rather than keyframes so
-   a tap on the close button mid-rise reverses from wherever it is. The
+
+/* THE SHEET. A sheet on a phone, a panel on a desk. Transitions rather than
+   keyframes so a tap on the close button mid-rise reverses from wherever it
+   is, and so a finger dragging it down can take over the transform. The
    visibility delay keeps it out of the tab order and the accessibility tree
    until the fade has finished. */
 .modal{position:fixed;inset:0;z-index:90;display:grid;place-items:end center;
@@ -134,13 +108,21 @@ a{color:inherit}
   visibility:hidden;opacity:0;
   transition:opacity .26s cubic-bezier(.77,0,.175,1),visibility 0s linear .26s}
 .modal.open{visibility:visible;opacity:1;transition:opacity .24s var(--ease)}
-.panel{width:min(460px,100%);max-height:92vh;overflow:auto;padding:26px;
+.panel{position:relative;width:min(460px,100%);max-height:92vh;overflow:auto;
+  padding:8px 26px 26px;overscroll-behavior:contain;
   border:1px solid var(--line);border-radius:20px;background:#0a0706;
   font:500 17px/1.5 "DM Sans",system-ui,sans-serif;
+  box-shadow:0 -30px 90px -30px rgba(0,0,0,.9);
   transform:translateY(104%);transition:transform .3s cubic-bezier(.77,0,.175,1)}
-.modal.open .panel{transform:none;transition:transform .52s var(--ease)}
+.modal.open .panel{transform:none;transition:transform .62s cubic-bezier(.16,1,.3,1)}
+/* Dragged: the finger owns the transform, so no transition at all. */
+.modal.drag .panel{transition:none}
 @media(min-width:700px){.modal{place-items:center;padding:20px}.panel{transform:translateY(28px) scale(.985)}}
-.modal-top{display:flex;justify-content:space-between;align-items:center;gap:14px}
+/* The grab bar. Drag it, or the header, or flick anywhere in the top strip. */
+.grab{display:block;width:44px;height:4px;margin:6px auto 12px;border-radius:3px;
+  background:rgba(255,255,255,.28);touch-action:none;cursor:grab}
+.modal.drag .grab{background:rgba(255,255,255,.5)}
+.modal-top{display:flex;justify-content:space-between;align-items:center;gap:14px;touch-action:none}
 .modal .kicker{margin:0;font:600 11px/1 "Space Grotesk",sans-serif;
   letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 .modal h2{font:600 38px/.96 "Space Grotesk",sans-serif;letter-spacing:-.04em;margin:22px 0 8px}
@@ -163,10 +145,31 @@ input:focus{border-color:#b63b33;box-shadow:0 0 0 3px rgba(223,45,37,.14)}
 .note{font-size:13px;color:#857970;margin:12px 0 0;line-height:1.5}
 .note a{color:#857970;text-decoration:underline;text-underline-offset:2px}
 .note a:hover,.note a:focus-visible{color:var(--fg)}
-.success{display:none;padding:38px 0 24px}
+
+/* The contents arrive after the sheet does, 55ms apart, so the rise reads as
+   one object carrying its parts up rather than a page appearing. */
+.modal.open .grab{animation:fadein .4s var(--ease) .1s backwards}
+.modal.open .modal-top{animation:rise .5s var(--ease) .16s backwards}
+.modal.open #modal-title{animation:rise .5s var(--ease) .215s backwards}
+.modal.open #formwrap .sub{animation:rise .5s var(--ease) .27s backwards}
+.modal.open #formwrap label:nth-of-type(1){animation:rise .5s var(--ease) .325s backwards}
+.modal.open #formwrap label:nth-of-type(2){animation:rise .5s var(--ease) .38s backwards}
+.modal.open #formwrap label:nth-of-type(3){animation:rise .5s var(--ease) .435s backwards}
+.modal.open #formwrap .submit{animation:rise .5s var(--ease) .49s backwards}
+.modal.open #formwrap .note{animation:fadein .6s var(--ease) .56s backwards}
+
+.success{display:none;padding:38px 0 24px;position:relative}
 .success strong{display:block;font:600 40px/.95 "Space Grotesk",sans-serif;letter-spacing:-.04em;
-  animation:rise .6s var(--ease) .05s backwards}
-.success span{display:block;margin-top:12px;color:var(--muted);animation:rise .6s var(--ease) .3s backwards}
+  animation:rise .7s var(--ease) .34s backwards}
+.success span{display:block;margin-top:12px;color:var(--muted);animation:rise .7s var(--ease) .48s backwards}
+/* A light runs across the sheet ahead of the words, and the sheet's edge goes
+   cold: the house has taken the name and gone quiet. */
+.modal.won .panel{border-color:rgba(150,190,210,.28);transition:border-color 1.6s linear .4s}
+.sweep{position:absolute;inset:-40px -30px;pointer-events:none;opacity:0;
+  background:linear-gradient(100deg,transparent 36%,rgba(255,238,220,.5) 50%,transparent 64%);
+  transform:translateX(-120%)}
+.modal.won .sweep{animation:sweep 1.05s cubic-bezier(.3,0,.2,1) .02s}
+@keyframes sweep{0%{opacity:0;transform:translateX(-120%)}18%{opacity:1}80%{opacity:1}to{opacity:0;transform:translateX(120%)}}
 
 .footer{position:relative;z-index:5;padding:34px clamp(16px,4vw,40px) 54px;
   color:#82756c;font:500 11px/1.7 "Space Grotesk",system-ui,sans-serif;
@@ -175,7 +178,109 @@ input:focus{border-color:#b63b33;box-shadow:0 0 0 3px rgba(223,45,37,.14)}
 .footer a{color:#82756c;text-decoration:underline;text-underline-offset:3px}
 .footer a:hover,.footer a:focus-visible{color:var(--fg)}
 
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+:root{color-scheme:dark;--bg:#050303;--fg:#f5eee7;--muted:#b8aaa0;--red:#df2d25;--red-text:#e4362e;--line:rgba(255,255,255,.15);--ease:cubic-bezier(.16,1,.3,1)}
+/* --r scales every radius of the beam. Registered so it tweens: the torch
+   sputters on over a second and a half, a finger held down opens it wider for
+   as long as it stays, and leaning on it opens it wider still. Without
+   registration the keyframes step instead of tween, which still reads as a
+   flicker and still ends at 1. */
+@property --r{syntax:"<number>";inherits:true;initial-value:1}
+.dark{position:relative;height:100svh;overflow:hidden;isolation:isolate;touch-action:pan-y;
+  --x:50%;--y:62%;--r:1;cursor:crosshair;transform-origin:50% 40%;
+  transition:--r .5s var(--ease),transform .7s var(--ease)}
+.go .dark{animation:flick 1.5s linear .25s backwards}
+@keyframes flick{0%,14%{--r:0}20%{--r:.9}27%{--r:.12}36%{--r:.12}42%{--r:1}50%{--r:.5}58%{--r:1}to{--r:1}}
+.dark.held{--r:1.3}
+.dark.deep{--r:1.62}
+.dark.back{transform:scale(.95)}
+.dark img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 45%;z-index:-3;
+  -webkit-touch-callout:none;-webkit-user-select:none;user-select:none;-webkit-user-drag:none}
+.off{filter:brightness(.16) saturate(.55)}
+.on{z-index:-2;
+  -webkit-mask-image:radial-gradient(circle at var(--x) var(--y),#000 0,#000 calc(52px * var(--r)),rgba(0,0,0,.6) calc(100px * var(--r)),transparent calc(175px * var(--r)));
+  mask-image:radial-gradient(circle at var(--x) var(--y),#000 0,#000 calc(52px * var(--r)),rgba(0,0,0,.6) calc(100px * var(--r)),transparent calc(175px * var(--r)))}
+/* Held back until all three are found, then crossfaded in: the house, lit,
+   with no torch needed. Opacity, so the mask never has to be undone. */
+.full{z-index:-2;opacity:0;transition:opacity 2.6s cubic-bezier(.3,0,.2,1)}
+.dark.lit .full{opacity:1}
+.dark.lit .beam,.dark.lit .core{opacity:0;transition:opacity 1.8s linear}
+.beam{position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(circle at var(--x) var(--y),rgba(255,224,190,.16),rgba(255,224,190,.05) calc(120px * var(--r)),transparent calc(260px * var(--r)))}
+/* The hot centre of the beam, and the flare when the door is knocked on. */
+.core{position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.9;
+  background:radial-gradient(circle at var(--x) var(--y),rgba(255,244,224,.3),transparent calc(38px * var(--r)))}
+.dark.knocked .core{animation:flare .7s cubic-bezier(.2,0,.2,1)}
+@keyframes flare{0%{opacity:.9}10%{opacity:2.2}30%{opacity:1}44%{opacity:1.6}to{opacity:.9}}
+
+/* The three things in the picture worth finding. Placed by script from the
+   image's own geometry, so they stay on the thing they mark at any crop. The
+   nearer the beam gets the more the mark answers; hold it there and it stays
+   found. */
+.spot{position:absolute;z-index:-1;width:104px;height:104px;margin:-52px 0 0 -52px;
+  pointer-events:none;opacity:0;border-radius:50%;
+  transition:opacity .5s var(--ease)}
+.spot .glint{position:absolute;inset:22px;border-radius:50%;border:1px solid rgba(255,214,168,.75);
+  background:radial-gradient(closest-side,rgba(223,45,37,.4),transparent 74%);
+  opacity:.5;transform:scale(.7);transition:opacity .5s var(--ease),transform .6s var(--ease)}
+.spot.found{opacity:1}
+.spot.found .glint{opacity:1;transform:none;animation:pop 1.1s cubic-bezier(.16,1,.3,1)}
+@keyframes pop{0%{opacity:.2;transform:scale(.5)}45%{opacity:1;transform:scale(1.25)}to{opacity:1;transform:none}}
+
+.copy{position:absolute;left:0;right:0;bottom:0;padding:80px clamp(18px,5vw,64px) clamp(30px,6vw,64px);
+  background:linear-gradient(180deg,transparent,rgba(5,3,3,.9) 58%);pointer-events:none}
+.copy>*{pointer-events:auto}
+.k{margin:0 0 12px;font:600 11px/1 "Space Grotesk",sans-serif;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+h1{margin:0;font:800 clamp(44px,12vw,96px)/.9 Syne,system-ui,sans-serif;letter-spacing:-.04em;text-wrap:balance}
+h1 em{font-style:normal;color:var(--red)}
+.lead{margin:16px 0 0;max-width:40ch;color:#cbbdb3;font:400 15px/1.55 "DM Sans",system-ui,sans-serif}
+/* What the beam has turned up, in the reader's own words rather than a score:
+   three marks, and the line the last one earned. No numbers on this page
+   except the date and the one the day counter works out for itself. */
+.finds{display:flex;align-items:center;gap:10px;margin:18px 0 0;min-height:20px}
+.mark{display:block;width:26px;height:2px;border-radius:2px;background:rgba(255,255,255,.18);
+  transform:scaleX(.5);transform-origin:left;transition:transform .5s var(--ease),background .5s var(--ease)}
+.mark.on{background:var(--red);transform:none}
+.note-line{margin:0;font:400 13px/1.4 "DM Sans",system-ui,sans-serif;color:#9d8f86;
+  opacity:0;transform:translateY(6px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.note-line.in{opacity:1;transform:none}
+.payoff{margin:14px 0 0;font:500 15px/1.45 "DM Sans",system-ui,sans-serif;color:#e8dcd2;
+  max-width:34ch;opacity:0;transform:translateY(10px);
+  transition:opacity 1.1s var(--ease) .5s,transform 1.1s var(--ease) .5s}
+.dark.lit .payoff{opacity:1;transform:none}
+
+.cta{position:relative;margin:20px 0 0;min-height:56px;padding:0 28px;border:0;border-radius:999px;
+  background:var(--red);color:#fff;cursor:pointer;
+  font:600 12px/1 "Space Grotesk",sans-serif;letter-spacing:.18em;text-transform:uppercase;
+  transition:transform .3s var(--ease),box-shadow .5s var(--ease)}
+.cta:after{content:"";position:absolute;inset:-2px;border-radius:999px;pointer-events:none;
+  border:1px solid rgba(255,224,200,.9);opacity:0}
+.cta:hover,.cta:focus-visible{transform:translateY(-2px)}
+.dark.lit .cta{box-shadow:0 14px 40px -12px rgba(223,45,37,.9)}
+.cta.knock{animation:knock .66s cubic-bezier(.2,0,.2,1)}
+.cta.knock:after{animation:ring .66s ease-out}
+@keyframes knock{0%{transform:scale(.96)}16%{transform:scale(1.012)}30%{transform:scale(.976)}
+  48%{transform:scale(1.007)}62%{transform:scale(.99)}80%{transform:scale(1.003)}to{transform:none}}
+@keyframes ring{0%{opacity:.95;transform:scale(1)}to{opacity:0;transform:scale(1.42)}}
+
+.go .top{animation:fadein .9s var(--ease) .25s backwards}
+.go .k{animation:rise .6s var(--ease) 1.2s backwards}
+.go h1{animation:rise .72s var(--ease) 1.29s backwards}
+.go .lead{animation:rise .72s var(--ease) 1.38s backwards}
+.go .finds{animation:fadein .8s var(--ease) 1.47s backwards}
+.go .cta{animation:rise .72s var(--ease) 1.56s backwards}
+
+@media(prefers-reduced-motion:reduce){
+  .dark{--r:1!important}
+  .full{opacity:1!important}
+  .beam,.core,.spot{opacity:0!important}
+  .payoff,.note-line{opacity:1!important;transform:none!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .curtain{opacity:0!important;display:none!important}
+  .grain{opacity:.04}
+}
 </style>
 </head>
 <body>
@@ -184,16 +289,25 @@ input:focus{border-color:#b63b33;box-shadow:0 0 0 3px rgba(223,45,37,.14)}
 <main class="dark" id="dark">
   <img class="off" src="img-house/house.jpg" width="960" height="1696" alt="" aria-hidden="true">
   <img class="on" src="img-house/house.jpg" width="960" height="1696" alt="The house at night: a two-storey porch under a red-lit balcony, lanterns burning either side of the front door, carved pumpkins along the steps and a lit path running up to them.">
+  <img class="full" src="img-house/house.jpg" width="960" height="1696" alt="" aria-hidden="true">
   <div class="beam" aria-hidden="true"></div>
+  <div class="core" aria-hidden="true"></div>
+  <i class="spot" id="s1" aria-hidden="true"><b class="glint"></b></i>
+  <i class="spot" id="s2" aria-hidden="true"><b class="glint"></b></i>
+  <i class="spot" id="s3" aria-hidden="true"><b class="glint"></b></i>
   <div class="copy">
     <p class="k">Bushwick, Brooklyn</p>
     <h1>Look for<br><em>yourself.</em></h1>
-    <p class="lead">Drag the light. September 25, 2026. Sixty minutes inside, several rooms, one way out. The address goes to the list.</p>
+    <p class="lead">Drag the light. Three things are waiting in the dark. September 25, 2026. Sixty minutes inside, several rooms, one way out. The address goes to the list.</p>
+    <div class="finds" aria-hidden="true"><i class="mark"></i><i class="mark"></i><i class="mark"></i></div>
+    <p class="note-line" id="line" aria-live="polite"></p>
+    <p class="payoff">That is the whole porch. The rest of it is inside, and the list gets through the door first.</p>
     <button class="cta" type="button" data-open>Enter the waitlist</button>
   </div>
 </main>
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
 <div class="panel">
+<i class="grab" aria-hidden="true"></i>
 <div class="modal-top"><p class="kicker">Private waitlist</p><button class="close" type="button" aria-label="Close">&times;</button></div>
 <div id="formwrap">
 <h2 id="modal-title">Knock on the door.</h2>
@@ -208,6 +322,7 @@ input:focus{border-color:#b63b33;box-shadow:0 0 0 3px rgba(223,45,37,.14)}
 <div class="success" id="success" tabindex="-1"><strong>We heard you.</strong><span>Don&rsquo;t answer the door.</span></div>
 </div></div>
 <footer class="footer">Bushwick, Brooklyn &middot; September 25, 2026 &middot; <a href="index.html">every version</a></footer>
+<div class="curtain" aria-hidden="true"></div>
 <script>
 (function(){
   var el=document.querySelector('.dayline');
@@ -236,44 +351,258 @@ input:focus{border-color:#b63b33;box-shadow:0 0 0 3px rgba(223,45,37,.14)}
 </script>
 <script src="waitlist.js" data-form="#form" data-formbox="#formwrap" data-done="#success" data-submit=".submit" data-submit-label="Enter the waitlist"></script>
 <script>
-/* The beam follows a finger or a mouse, with a little lag, the way a torch in
-   a hand does rather than a cursor. Holding it down opens the beam wider.
-   Before anyone touches it, it walks the path up to the door by itself, once,
-   and waits there. */
-(function(){
-  var el=document.getElementById('dark'),held=false,wasTouch=false,t0=performance.now()+400;
-  var tx,ty,cx,cy,raf=0;
-  function paint(){el.style.setProperty('--x',cx.toFixed(1)+'px');el.style.setProperty('--y',cy.toFixed(1)+'px')}
-  function step(){
-    cx+=(tx-cx)*.22;cy+=(ty-cy)*.22;paint();
-    if(Math.abs(tx-cx)+Math.abs(ty-cy)>.3)raf=requestAnimationFrame(step);
-    else{cx=tx;cy=ty;paint();raf=0}
+/* The parts every one of these three pages shares: the curtain lift that
+   starts the page's own reveals, the sheet's physics, the knock, and the
+   success moment. It talks to the page-specific block below through events on
+   the document (hm:sheet, hm:won, hm:knock) so neither half has to know how
+   the other one is built, and it never touches the form: waitlist.js owns
+   that, and the block above owns opening and closing the modal. */
+(function () {
+  var rm = matchMedia("(prefers-reduced-motion:reduce)").matches;
+  var root = document.documentElement;
+  var modal = document.getElementById("modal");
+  var panel = modal && modal.querySelector(".panel");
+  var closeBtn = modal && modal.querySelector(".close");
+  var curtain = document.querySelector(".curtain");
+
+  /* Nothing moves until the picture is actually there. .go is what every
+     staggered reveal on the page is keyed to, so the copy lands while the
+     house is still settling rather than over a black rectangle. Without
+     script the page is simply already visible, which is the honest fallback. */
+  var lifted = false;
+  function lift() {
+    if (lifted) return;
+    lifted = true;
+    root.classList.add("go");
+    if (curtain) curtain.classList.add("up");
+    say("hm:go");
   }
-  function aim(x,y){tx=x;ty=y;if(cx===undefined){cx=x;cy=y;paint();return}if(!raf)raf=requestAnimationFrame(step)}
-  function at(e){var r=el.getBoundingClientRect();aim(e.clientX-r.left,e.clientY-r.top)}
-  el.addEventListener('pointerdown',function(e){
-    if(e.target.closest('button,a'))return;
-    if(e.pointerType==='mouse'&&e.button!==0)return;
-    held=true;wasTouch=e.pointerType==='touch';el.classList.add('held');at(e);
+  if (rm) lift();
+  else {
+    if (document.readyState === "complete") setTimeout(lift, 60);
+    else addEventListener("load", function () { setTimeout(lift, 60); });
+    setTimeout(lift, 1400);
+  }
+
+  function say(name, detail) {
+    document.dispatchEvent(new CustomEvent(name, { detail: detail || null }));
+  }
+
+  /* The sheet. Opening and closing is the other block's job; this watches the
+     class it sets and tells the scene, so the room can pull back behind it. */
+  if (modal && panel) {
+    var wasOpen = false;
+    new MutationObserver(function () {
+      var open = modal.classList.contains("open");
+      if (open === wasOpen) return;
+      wasOpen = open;
+      if (open) { panel.style.transform = ""; panel.scrollTop = 0; }
+      say("hm:sheet", { open: open });
+    }).observe(modal, { attributes: true, attributeFilter: ["class"] });
+
+    /* Drag the grab bar or the header down to dismiss: past 96px or on a
+       flick it goes, otherwise it springs back from wherever the finger let
+       go. The finger owns the transform while it is down, which is why .drag
+       kills the transition. */
+    var id = null, y0 = 0, dy = 0, t0 = 0, last = 0, lastT = 0;
+    function grabbable(t) { return t.closest(".grab,.modal-top") && !t.closest(".close"); }
+    panel.addEventListener("pointerdown", function (e) {
+      if (id !== null || !grabbable(e.target)) return;
+      id = e.pointerId; y0 = e.clientY; dy = 0; last = 0;
+      t0 = lastT = e.timeStamp;
+      modal.classList.add("drag");
+      try { panel.setPointerCapture(id); } catch (x) { }
+    });
+    panel.addEventListener("pointermove", function (e) {
+      if (e.pointerId !== id) return;
+      var raw = e.clientY - y0;
+      /* Upwards has nowhere to go, so it gets a fifth of the movement. */
+      dy = raw > 0 ? raw : raw * .2;
+      last = dy; lastT = e.timeStamp;
+      panel.style.transform = "translateY(" + dy.toFixed(1) + "px)";
+    });
+    function end(e) {
+      if (e.pointerId !== id) return;
+      id = null;
+      modal.classList.remove("drag");
+      var v = (e.timeStamp - t0) > 0 ? last / (e.timeStamp - t0) : 0;
+      if (dy > 96 || v > .55) {
+        closeBtn.click();
+        requestAnimationFrame(function () { panel.style.transform = ""; });
+      } else {
+        panel.style.transform = "";
+      }
+    }
+    panel.addEventListener("pointerup", end);
+    panel.addEventListener("pointercancel", end);
+  }
+
+  /* The knock: three decaying hits off the button's own edge. */
+  document.querySelectorAll(".cta").forEach(function (b) {
+    b.addEventListener("pointerdown", function () {
+      if (rm) return;
+      b.classList.remove("knock");
+      void b.offsetWidth;
+      b.classList.add("knock");
+      say("hm:knock");
+    });
+    b.addEventListener("animationend", function (e) {
+      if (e.animationName === "knock") b.classList.remove("knock");
+    });
   });
-  el.addEventListener('pointermove',function(e){
-    if(e.pointerType==='mouse'){held=true;at(e)}
-    else if(el.classList.contains('held'))at(e);
-  },{passive:true});
-  function release(){el.classList.remove('held')}
-  addEventListener('pointerup',release);addEventListener('pointercancel',release);
-  el.addEventListener('pointerleave',release);
-  el.addEventListener('contextmenu',function(e){if(wasTouch)e.preventDefault()});
-  if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
-  function walk(now){
-    if(held)return;
-    var k=Math.min(1,Math.max(0,(now-t0)/5200)),e=1-Math.pow(1-k,3),w=el.clientWidth,h=el.clientHeight;
-    // from the foot of the path to the door, with a little sway
-    cx=tx=w*(.5+Math.sin(e*6.28)*.06);cy=ty=h*(.9-e*.33);paint();
-    if(k<1)requestAnimationFrame(walk);
+
+  /* waitlist.js announces success by setting display on #success and nothing
+     else. Watching that attribute is how the room finds out without anyone
+     reaching into the form. */
+  var done = document.getElementById("success");
+  if (done) {
+    var sweep = document.createElement("i");
+    sweep.className = "sweep";
+    done.appendChild(sweep);
+    new MutationObserver(function () {
+      if (done.style.display !== "block" || modal.classList.contains("won")) return;
+      modal.classList.add("won");
+      say("hm:won");
+    }).observe(done, { attributes: true, attributeFilter: ["style"] });
   }
-  requestAnimationFrame(walk);
 })();
+
+/* Torch. The beam follows a finger with a little lag and a little shake, the
+   way a torch in a hand does rather than a cursor. Before anyone touches it,
+   it walks the path up to the door by itself, once, and waits there. Holding
+   it down opens the beam; leaning on it opens it further.
+
+   Three places in the picture answer the light: hold the beam on one and it
+   stays found, and its mark fills. All three, and the house lights itself and
+   the torch is no longer needed. The marks are the reader's own progress
+   through their own picture - the only number on this page is the date, and
+   the one the day counter subtracts for itself. */
+(function () {
+  var el = document.getElementById("dark");
+  var line = document.getElementById("line");
+  var marks = [].slice.call(document.querySelectorAll(".mark"));
+  var rm = matchMedia("(prefers-reduced-motion:reduce)").matches;
+
+  /* Fractions of the plate, not of the screen, so each mark stays on the
+     thing it marks whatever the crop does. */
+  var spots = [
+    { fx: .845, fy: .155, el: document.getElementById("s1"), say: "Something is hanging from the eaves." },
+    { fx: .500, fy: .335, el: document.getElementById("s2"), say: "The balcony door is standing open." },
+    { fx: .490, fy: .625, el: document.getElementById("s3"), say: "The front door is not locked." }
+  ];
+
+  if (rm) { el.classList.add("lit"); return; }
+
+  /* object-fit:cover with object-position 50% 45%, worked out the same way the
+     browser works it out. */
+  function place() {
+    var w = el.clientWidth, h = el.clientHeight, s = Math.max(w / 960, h / 1696);
+    var ox = (w - 960 * s) / 2, oy = (h - 1696 * s) * .45;
+    spots.forEach(function (p) {
+      p.x = ox + p.fx * 960 * s; p.y = oy + p.fy * 1696 * s;
+      p.el.style.left = p.x.toFixed(1) + "px";
+      p.el.style.top = p.y.toFixed(1) + "px";
+    });
+  }
+  place();
+  addEventListener("resize", place, { passive: true });
+
+  var cx, cy, tx, ty, found = 0, touched = false, held = false, wasTouch = false;
+  var deep = 0, raf = 0, prev = 0, walk0 = 0, paused = false;
+
+  function tell(text) {
+    line.classList.remove("in");
+    void line.offsetWidth;
+    line.textContent = text;
+    line.classList.add("in");
+  }
+
+  function find(p, i) {
+    p.found = true; found++;
+    p.el.style.opacity = "";
+    p.el.classList.add("found");
+    marks[i].classList.add("on");
+    tell(p.say);
+    if (found === 3) setTimeout(function () { el.classList.add("lit"); }, 800);
+  }
+
+  function frame(now) {
+    raf = 0;
+    var dt = prev ? Math.min(64, now - prev) : 16; prev = now;
+
+    if (!touched) {
+      /* The walk: foot of the path to the door, with a little sway, once. */
+      var k = Math.max(0, Math.min(1, (now - walk0) / 4600)), e = 1 - Math.pow(1 - k, 3);
+      var w = el.clientWidth, h = el.clientHeight;
+      tx = w * (.5 + Math.sin(e * 6.1) * .07); ty = h * (.9 - e * .29);
+      if (cx === undefined) { cx = tx; cy = ty; }
+    }
+    if (cx === undefined) { schedule(); return; }
+
+    cx += (tx - cx) * .2; cy += (ty - cy) * .2;
+    /* Hand shake: two frequencies, under two pixels, never still. */
+    var jx = Math.sin(now / 231) * 1.1 + Math.sin(now / 97) * .55;
+    var jy = Math.cos(now / 187) * 1 + Math.sin(now / 143) * .5;
+    el.style.setProperty("--x", (cx + jx).toFixed(1) + "px");
+    el.style.setProperty("--y", (cy + jy).toFixed(1) + "px");
+
+    if (found < 3) spots.forEach(function (p, i) {
+      if (p.found) return;
+      var dx = cx - p.x, dy = cy - p.y, d = Math.sqrt(dx * dx + dy * dy);
+      var near = Math.max(0, 1 - d / 160);
+      p.el.style.opacity = (near * near * .95).toFixed(3);
+      if (d < 54) { p.t = (p.t || 0) + dt; if (p.t > 500) find(p, i); }
+      else p.t = Math.max(0, (p.t || 0) - dt * .7);
+    });
+    schedule();
+  }
+  function schedule() { if (!raf && !paused) raf = requestAnimationFrame(frame); }
+  function stop() { paused = true; if (raf) cancelAnimationFrame(raf); raf = 0; prev = 0; }
+  function start() { paused = false; schedule(); }
+
+  document.addEventListener("hm:go", function () { walk0 = performance.now() + 500; start(); });
+  addEventListener("visibilitychange", function () { document.hidden ? stop() : start(); });
+
+  function aim(e) {
+    var r = el.getBoundingClientRect();
+    touched = true; tx = e.clientX - r.left; ty = e.clientY - r.top;
+    if (cx === undefined) { cx = tx; cy = ty; }
+    schedule();
+  }
+  el.addEventListener("pointerdown", function (e) {
+    if (e.target.closest("button,a")) return;
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    held = true; wasTouch = e.pointerType === "touch";
+    el.classList.add("held"); aim(e);
+    clearTimeout(deep);
+    deep = setTimeout(function () { if (held) el.classList.add("deep"); }, 420);
+  });
+  el.addEventListener("pointermove", function (e) {
+    if (e.pointerType === "mouse") { aim(e); }
+    else if (held) aim(e);
+  }, { passive: true });
+  function release() {
+    held = false; clearTimeout(deep);
+    el.classList.remove("held"); el.classList.remove("deep");
+  }
+  addEventListener("pointerup", release);
+  addEventListener("pointercancel", release);
+  el.addEventListener("pointerleave", release);
+  el.addEventListener("contextmenu", function (e) { if (wasTouch) e.preventDefault(); });
+
+  document.addEventListener("hm:knock", function () {
+    el.classList.remove("knocked"); void el.offsetWidth; el.classList.add("knocked");
+    setTimeout(function () { el.classList.remove("knocked"); }, 900);
+  });
+  document.addEventListener("hm:sheet", function (e) {
+    var open = !!(e.detail && e.detail.open);
+    release();
+    el.classList.toggle("back", open);
+    open ? stop() : start();
+  });
+  document.addEventListener("hm:won", function () { el.classList.add("lit"); });
+})();
+
 </script>
 </body>
 </html>

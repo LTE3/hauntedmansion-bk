@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-uLyAOQr2r7EIC2wXx3JuAAMfjKHY1z3BDOTGvzGvZk4='; font-src 'self'; script-src 'sha256-9UyM6js6TfygxhitbmM/47ihxZYomkXbZMHdCbptlB0='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-JNRXlkzzIBm2UgG1IkxX0/7eLBYc0Dryz0EoYTZmIuA='; font-src 'self'; script-src 'sha256-9UyM6js6TfygxhitbmM/47ihxZYomkXbZMHdCbptlB0='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Every house has a story. | Haunted Mansion BK</title>
@@ -672,11 +672,17 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
 }
 
 /* ================= SHORT AND SIDEWAYS ================================= */
-/* Everything in the sheet, one notch down, for phones shorter than a 6.
+/* Everything in the sheet, one notch down, for every phone held upright.
+   The gate was 740px, which is 104px short of the commonest screen there is:
+   at 390x844 the roomy layout put a 118px heading and three 58px fields in a
+   363px port, so the sheet opened showing one and a half fields and 160px of
+   scroll under them. At 845 it covers 844 and the same sheet opens with all
+   three fields and the button in view and nothing to scroll at all. 430x932
+   is above the gate and keeps the roomy layout, where it already fitted.
    Measured: at 375x667 the sheet held 833px of content in 645px of room and
    at 320x568 it held 852 in 546. Nothing here is a new idea about the design,
    it is the same layout at the size a short screen can hold. */
-@media (max-height:740px){
+@media (max-height:845px){
   .sheet{padding-bottom:max(18px,env(safe-area-inset-bottom))}
   .sheet h2{font-size:30px;margin:12px 0 6px}
   .sheet p:not([class]){font-size:15px;margin-bottom:13px}

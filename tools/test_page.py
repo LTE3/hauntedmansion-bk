@@ -20,7 +20,7 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PAGE = os.path.join(ROOT, "index.html")
-OPENS = "2026-09-25"
+OPENS = "2026-10-01"
 
 PASS, FAIL, SKIP = [], [], []
 
@@ -238,10 +238,10 @@ def _browser_cases(b, url):
     # it can only be wrong on days nobody is testing on. So test those days.
     y, m, d = (int(x) for x in OPENS.split("-"))
     cases = [
-        ("2026-09-24", "One day remains"),
-        ("2026-09-25", "Tonight"),
-        ("2026-09-01", "24 days remain"),
-        ("2026-03-01", "208 days remain"),
+        ("2026-09-30", "One day remains"),
+        ("2026-10-01", "Tonight"),
+        ("2026-09-01", "30 days remain"),
+        ("2026-03-01", "214 days remain"),
     ]
     for today, want in cases:
         ty, tm, td = (int(x) for x in today.split("-"))
@@ -257,7 +257,7 @@ def _browser_cases(b, url):
     hidden = pg.evaluate(
         """(o) => {
              const m = /^(\\d{4})-(\\d{2})-(\\d{2})$/.exec(o);
-             const n = Math.round((Date.UTC(+m[1], +m[2]-1, +m[3]) - Date.UTC(2026, 8, 26)) / 86400000);
+             const n = Math.round((Date.UTC(+m[1], +m[2]-1, +m[3]) - Date.UTC(+m[1], +m[2]-1, +m[3] + 1)) / 86400000);
              return n < 0;
            }""", OPENS)
     check("day line hides itself after opening night", hidden)

@@ -47,8 +47,8 @@ test("mask keeps the last four and nothing else worth having", () => {
 });
 
 test("compose adds the sender and the way out, once", () => {
-  const b = compose("Doors open Sept 25. Tickets Friday.");
-  assert.equal(b, "Haunted Mansion BK: Doors open Sept 25. Tickets Friday. Reply STOP to opt out.");
+  const b = compose("Doors open Oct 1. Tickets Friday.");
+  assert.equal(b, "Haunted Mansion BK: Doors open Oct 1. Tickets Friday. Reply STOP to opt out.");
   assert.equal(compose(b), b, "already compliant text is left alone");
   assert.equal(compose("haunted mansion bk here. Reply STOP to end."), "haunted mansion bk here. Reply STOP to end.");
   assert.throws(() => compose("   "), /empty/);

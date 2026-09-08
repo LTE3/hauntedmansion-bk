@@ -108,7 +108,7 @@ A blast, always dry first:
 curl -X POST https://<project>.supabase.co/functions/v1/hm-sms-send \
   -H "apikey: <anon key>" -H "Authorization: Bearer <anon key>" \
   -H "x-hm-token: $HM_SMS_TOKEN" -H "Content-Type: application/json" \
-  -d '{"message":"Doors open Sept 25. Tickets go on sale Friday."}'
+  -d '{"message":"Doors open Oct 1. Tickets go on sale Friday."}'
 ```
 
 Read the count, the body and the segments. Then the same call with

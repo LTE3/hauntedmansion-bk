@@ -1,6 +1,6 @@
 # hauntedmansion-bk
 
-Waitlist teaser for a haunted attraction in Bushwick, Brooklyn. Opens **September 25**.
+Waitlist teaser for a haunted attraction in Bushwick, Brooklyn. Opens **October 1**.
 
 Single self-contained `index.html` — no build step, no dependencies. Fonts come from
 Google Fonts; everything else is inline.

@@ -23,7 +23,7 @@
 })();
 </script>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-XjEhAsPXjONZRtWwd24JR54ds6Dd5k4dudWZV3HXOik=' 'sha256-ti4zr09ojZQQ9doncadQYmwunC5Ym+FcuegSOR95QIM='; font-src 'self'; script-src 'sha256-Rjt0i4trpys9fP0m5QIS/Ihq/b54ce5HwcR0qvt6S6g=' 'sha256-cy/magVvFvv8o0sTep6F4MOlDXuhafpfkSd4Cu+Oss0=' 'sha256-2Ap+nDT4Zrbh9PK50t2Xb2JLROMXE1Xyqv1BxsNXjXc=' 'self'; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-XjEhAsPXjONZRtWwd24JR54ds6Dd5k4dudWZV3HXOik=' 'sha256-ti4zr09ojZQQ9doncadQYmwunC5Ym+FcuegSOR95QIM='; font-src 'self'; script-src 'sha256-Rjt0i4trpys9fP0m5QIS/Ihq/b54ce5HwcR0qvt6S6g=' 'sha256-cy/magVvFvv8o0sTep6F4MOlDXuhafpfkSd4Cu+Oss0=' 'sha256-FKe9HW8fjCUbv++aXHrwt2+9Gw3hK8mtJ1ryb5B5tAk=' 'self'; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050303">
@@ -165,12 +165,12 @@ input:focus{border-color:#b63b33;box-shadow:0 0 0 3px rgba(223,45,37,.14)}
 </head>
 <body>
 <div class="grain" aria-hidden="true"></div>
-<header class="top"><span><i class="dot"></i>Haunted Mansion BK</span><p class="dayline" data-opens="2026-09-25" hidden></p></header>
+<header class="top"><span><i class="dot"></i>Haunted Mansion BK</span><p class="dayline" data-opens="2026-10-01" hidden></p></header>
 <main class="cal">
   <div class="pic"><img src="img-house/roll-balcony.jpg" width="960" height="420" alt="The upper balcony of the house at night, two lanterns burning under a red glow."></div>
   <div class="holes" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-  <header class="mh"><h1><em>September</em><span>2026</span></h1></header>
-  <ol class="grid" id="grid" aria-label="September 2026">
+  <header class="mh"><h1><em>October</em><span>2026</span></h1></header>
+  <ol class="grid" id="grid" aria-label="October 2026">
     <li class="dow">S</li>
     <li class="dow">M</li>
     <li class="dow">T</li>
@@ -180,7 +180,9 @@ input:focus{border-color:#b63b33;box-shadow:0 0 0 3px rgba(223,45,37,.14)}
     <li class="dow">S</li>
     <li class="blank" aria-hidden="true"></li>
     <li class="blank" aria-hidden="true"></li>
-    <li data-d="1"><b>1</b></li>
+    <li class="blank" aria-hidden="true"></li>
+    <li class="blank" aria-hidden="true"></li>
+    <li class="open"><button type="button" data-open aria-label="October 1, opening night. Enter the waitlist."><b>1</b><span>opens</span></button></li>
     <li data-d="2"><b>2</b></li>
     <li data-d="3"><b>3</b></li>
     <li data-d="4"><b>4</b></li>
@@ -204,15 +206,16 @@ input:focus{border-color:#b63b33;box-shadow:0 0 0 3px rgba(223,45,37,.14)}
     <li data-d="22"><b>22</b></li>
     <li data-d="23"><b>23</b></li>
     <li data-d="24"><b>24</b></li>
-    <li class="open"><button type="button" data-open aria-label="September 25, opening night. Enter the waitlist."><b>25</b><span>opens</span></button></li>
+    <li data-d="25"><b>25</b></li>
     <li data-d="26"><b>26</b></li>
     <li data-d="27"><b>27</b></li>
     <li data-d="28"><b>28</b></li>
     <li data-d="29"><b>29</b></li>
     <li data-d="30"><b>30</b></li>
+    <li data-d="31"><b>31</b></li>
   </ol>
   <div class="under">
-    <p class="dayline" data-opens="2026-09-25" hidden></p>
+    <p class="dayline" data-opens="2026-10-01" hidden></p>
     <p class="note"><b>Not a countdown. A date.</b> Bushwick, Brooklyn. Sixty minutes inside, several rooms, one way out. The address goes to the list before it goes anywhere else.</p>
     <button class="cta" type="button" data-open>Enter the waitlist</button>
   </div>
@@ -232,7 +235,7 @@ input:focus{border-color:#b63b33;box-shadow:0 0 0 3px rgba(223,45,37,.14)}
 </form></div>
 <div class="success" id="success" tabindex="-1"><strong>We heard you.</strong><span>Don&rsquo;t answer the door.</span></div>
 </div></div>
-<footer class="footer">Bushwick, Brooklyn &middot; September 25, 2026 &middot; <a href="index.html">every version</a></footer>
+<footer class="footer">Bushwick, Brooklyn &middot; October 1, 2026 &middot; <a href="index.html">every version</a></footer>
 <script>
 (function(){
   var el=document.querySelector('.dayline');
@@ -261,11 +264,11 @@ input:focus{border-color:#b63b33;box-shadow:0 0 0 3px rgba(223,45,37,.14)}
 </script>
 <script src="waitlist.js" data-form="#form" data-formbox="#formwrap" data-done="#success" data-submit=".submit" data-submit-label="Enter the waitlist"></script>
 <script>
-/* Marks today and strikes the days that are gone. Only in September 2026 -
+/* Marks today and strikes the days that are gone. Only in October 2026 -
    any other month, the grid is just a grid. */
 (function(){
   var n=new Date(),y=n.getFullYear(),m=n.getMonth(),d=n.getDate();
-  if(y!==2026||m!==8)return;
+  if(y!==2026||m!==9)return;
   document.querySelectorAll('#grid li[data-d]').forEach(function(li){
     var k=+li.dataset.d;
     if(k<d)li.classList.add('past');

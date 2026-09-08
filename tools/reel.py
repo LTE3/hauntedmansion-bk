@@ -219,7 +219,7 @@ def build_frames(n, outdir, quiet):
                     glow_text(fr, small, f_word, f_word.size * 0.34, W / 2,
                               H * 0.455 + f_num.size * 0.46, RED, a_text, 26, 0.35)
             if a_date > 0:
-                glow_text(fr, "SEPTEMBER 25", f_date, f_date.size * 0.32, W / 2,
+                glow_text(fr, "OCTOBER 1", f_date, f_date.size * 0.32, W / 2,
                           H * 0.795, BONE, a_date * 0.85, 18, 0.20)
             x = np.asarray(fr).astype(np.float32)
 

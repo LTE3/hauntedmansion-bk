@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-5yR0joeldSrLAbIYRvw38Wqfq/Jz7yZA2hOtN6EXWJw='; font-src 'self'; script-src 'sha256-iO0hrrihN84OGabrXYVExCjNB4bElW4EJYg1Ksiruuw='; connect-src 'none'; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-1/xpwr332VO2mDXazkDnI3B1nUyzHO9GDCtiRi8CYUc='; font-src 'self'; script-src 'sha256-iO0hrrihN84OGabrXYVExCjNB4bElW4EJYg1Ksiruuw='; connect-src 'none'; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>The story | Haunted Mansion BK</title>
@@ -162,7 +162,7 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
 
 /* The drawer, as on the door. */
 .drawer{
-  position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;
+  position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;overflow-y:auto;
   padding:max(22px,env(safe-area-inset-top)) 18px max(24px,env(safe-area-inset-bottom));
   background:rgba(3,2,2,.94);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
   visibility:hidden;opacity:0;
@@ -201,6 +201,7 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
 .drawer.open .drawer-nav a:nth-child(4){transition-delay:.18s}
 .drawer.open .drawer-nav a:nth-child(5){transition-delay:.22s}
 .drawer.open .drawer-nav a:nth-child(6){transition-delay:.26s}
+.drawer.open .drawer-nav a:nth-child(7){transition-delay:.3s}
 .drawer-foot{display:grid;gap:18px}
 .drawer-foot .cta{margin:0}
 .drawer-foot p{
@@ -228,6 +229,20 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
 .pull{margin:30px 0 0;font:700 clamp(19px,5.6vw,24px)/1.32 "Cinzel",Georgia,serif;letter-spacing:.02em;text-transform:uppercase;text-wrap:balance}
 .pull em{font-style:normal;color:var(--red-lit)}
 .copy{margin:28px 0 0;max-width:56ch}
+/* The register. Four subjects, one status: a case file numbers its subjects,
+   and the last column repeating is the point. The surname is a bar, not a
+   word, so the redaction reads as a redaction. */
+.register{margin:30px 0 0;padding:20px 18px 6px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.025)}
+.register-head{display:grid;gap:6px;margin:0 0 14px;font:700 11px/1.4 "Space Grotesk",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--red-lit)}
+.register-head .sub{color:var(--muted);letter-spacing:.1em}
+.redact{display:inline-block;padding:0 .35em;border-radius:2px;background:#c7b8ae;color:transparent;user-select:none;vertical-align:-1px}
+.register ol{list-style:none;margin:0;padding:0}
+.register li{
+  display:grid;grid-template-columns:28px 1fr auto;gap:12px;align-items:baseline;padding:13px 0;border-top:1px solid var(--line);
+  font:700 15px/1.2 "Cinzel",Georgia,serif;letter-spacing:.04em;text-transform:uppercase
+}
+.register li span:first-child{font:700 11px/1 "Space Grotesk",sans-serif;letter-spacing:.1em;color:var(--muted);font-variant-numeric:tabular-nums}
+.register li span:last-child{font:700 10.5px/1 "Space Grotesk",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--red-lit)}
 </style>
 </head>
 <body>
@@ -256,6 +271,17 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
   <p class="pull"><em>A family lived here.</em><br>One night, nobody made it out.</p>
   <p class="copy">Behind these walls, a family&rsquo;s life ended in a way no one could explain. The house was sealed, the story faded, and the rooms were left untouched.</p>
   <p class="copy">Now the doors are opening again. You&rsquo;ll move through the home, follow what was left behind, and piece together the night everything changed.</p>
+  <p class="copy">Search the evidence, uncover who the former resident really was, and decide whether the son was the killer&mdash;or the final victim.</p>
+
+  <section class="register" aria-labelledby="reg-h">
+    <p class="register-head" id="reg-h"><span>The <span class="redact">Redacted</span> family</span><span class="sub">File recovered &mdash; Oct. 31, 1998</span></p>
+    <ol>
+      <li><span>01</span>Father<span>Deceased</span></li>
+      <li><span>02</span>Mother<span>Deceased</span></li>
+      <li><span>03</span>Eldest son<span>Deceased</span></li>
+      <li><span>04</span>Youngest child<span>Deceased</span></li>
+    </ol>
+  </section>
 
   <div class="closer">
     <p><em>Some truths should stay buried.</em></p>
@@ -281,6 +307,7 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
   <nav class="drawer-nav" aria-label="Pages">
     <a href="/">The door<span>Home</span></a>
     <a aria-current="page" href="story.html">The story<span>Case file</span></a>
+    <a href="evidence.html">Evidence<span>Six exhibits</span></a>
     <a href="experience.html">The experience<span>One hour inside</span></a>
     <a href="nights.html">Nights<span>October</span></a>
     <a href="location.html">Location<span>Bushwick</span></a>

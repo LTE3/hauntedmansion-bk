@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-5kxyi61SfFU0w/MQqP5AssGRCK0r04KUQEaAtC9tTdw='; font-src 'self'; script-src 'sha256-WYo44dLoelzQY2NA8PeXEi/AK9GKA6Ve1JQDYTyj4T4=' 'sha256-mPtrMIM+BVbm52EHIXdyXD3+zPyp6A4zFANuLG08TgU='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-TPDltnkdC1u+5VyQopceCci4a8M82JmYUTp50unBO48='; font-src 'self'; script-src 'sha256-WYo44dLoelzQY2NA8PeXEi/AK9GKA6Ve1JQDYTyj4T4=' 'sha256-mPtrMIM+BVbm52EHIXdyXD3+zPyp6A4zFANuLG08TgU='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Every house has a story. | Haunted Mansion BK</title>
@@ -161,7 +161,7 @@ body.sheeting .hero{transform:scale(.945) translateY(-14px)}
    grain and under the curtain so the first two seconds still belong to the
    arrival, and over everything else. Opacity only; the links carry the motion. */
 .drawer{
-  position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;
+  position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;overflow-y:auto;
   padding:max(22px,env(safe-area-inset-top)) 18px max(24px,env(safe-area-inset-bottom));
   background:rgba(3,2,2,.94);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
   visibility:hidden;opacity:0;
@@ -201,6 +201,7 @@ body.sheeting .hero{transform:scale(.945) translateY(-14px)}
 .drawer.open .drawer-nav a:nth-child(3){transition-delay:.14s}
 .drawer.open .drawer-nav a:nth-child(4){transition-delay:.18s}
 .drawer.open .drawer-nav a:nth-child(5){transition-delay:.22s}
+.drawer.open .drawer-nav a:nth-child(6){transition-delay:.26s}
 .drawer-foot{display:grid;gap:18px}
 .drawer-foot .cta{width:100%;color:var(--bone);cursor:pointer}
 .drawer-foot p{
@@ -1188,6 +1189,7 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
   </div>
   <nav class="drawer-nav" aria-label="Pages">
     <a href="story.html">The story<span>Case file</span></a>
+    <a href="evidence.html">Evidence<span>Six exhibits</span></a>
     <a href="experience.html">The experience<span>One hour inside</span></a>
     <a href="nights.html">Nights<span>October</span></a>
     <a href="location.html">Location<span>Bushwick</span></a>

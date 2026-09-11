@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-4etQ55bfjmoE/ThK6nAy3TBpaVEkEWwzs/+l4mhBAhY='; font-src 'self'; script-src 'sha256-FKAE9qRLxDlVcF+YT0KiS1xdA+XuH8zoy0Arx/ClI5Y='; connect-src 'none'; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-iDZSdtMpJVdHsQMpJqAtSuUAVQzQDI0wz1/2in0O38w='; font-src 'self'; script-src 'sha256-FKAE9qRLxDlVcF+YT0KiS1xdA+XuH8zoy0Arx/ClI5Y='; connect-src 'none'; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Ask before you knock | Haunted Mansion BK</title>
@@ -162,7 +162,7 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
 
 /* The drawer, as on the door. */
 .drawer{
-  position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;
+  position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;overflow-y:auto;
   padding:max(22px,env(safe-area-inset-top)) 18px max(24px,env(safe-area-inset-bottom));
   background:rgba(3,2,2,.94);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
   visibility:hidden;opacity:0;
@@ -201,6 +201,7 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
 .drawer.open .drawer-nav a:nth-child(4){transition-delay:.18s}
 .drawer.open .drawer-nav a:nth-child(5){transition-delay:.22s}
 .drawer.open .drawer-nav a:nth-child(6){transition-delay:.26s}
+.drawer.open .drawer-nav a:nth-child(7){transition-delay:.3s}
 .drawer-foot{display:grid;gap:18px}
 .drawer-foot .cta{margin:0}
 .drawer-foot p{
@@ -305,6 +306,7 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
   <nav class="drawer-nav" aria-label="Pages">
     <a href="/">The door<span>Home</span></a>
     <a href="story.html">The story<span>Case file</span></a>
+    <a href="evidence.html">Evidence<span>Six exhibits</span></a>
     <a href="experience.html">The experience<span>One hour inside</span></a>
     <a href="nights.html">Nights<span>October</span></a>
     <a href="location.html">Location<span>Bushwick</span></a>

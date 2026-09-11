@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-LqZfNgDBv92yw6vD9phkQ3yKnVeJAZHPizi4w4O+Ot0='; font-src 'self'; script-src 'sha256-iO0hrrihN84OGabrXYVExCjNB4bElW4EJYg1Ksiruuw='; connect-src 'none'; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-E+WFFN3ur/fMH/Ho4uU60rJe1Q7ERvZQocuFGcfhRms='; font-src 'self'; script-src 'sha256-iO0hrrihN84OGabrXYVExCjNB4bElW4EJYg1Ksiruuw='; connect-src 'none'; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Location | Haunted Mansion BK</title>
@@ -162,7 +162,7 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
 
 /* The drawer, as on the door. */
 .drawer{
-  position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;
+  position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;overflow-y:auto;
   padding:max(22px,env(safe-area-inset-top)) 18px max(24px,env(safe-area-inset-bottom));
   background:rgba(3,2,2,.94);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
   visibility:hidden;opacity:0;
@@ -201,6 +201,7 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
 .drawer.open .drawer-nav a:nth-child(4){transition-delay:.18s}
 .drawer.open .drawer-nav a:nth-child(5){transition-delay:.22s}
 .drawer.open .drawer-nav a:nth-child(6){transition-delay:.26s}
+.drawer.open .drawer-nav a:nth-child(7){transition-delay:.3s}
 .drawer-foot{display:grid;gap:18px}
 .drawer-foot .cta{margin:0}
 .drawer-foot p{
@@ -231,6 +232,11 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
 @keyframes mapRing{0%{r:7;opacity:.85}100%{r:26;opacity:0}}
 .map-note{margin:16px 0 0;font:700 12px/1.55 "Space Grotesk",sans-serif;letter-spacing:.04em;text-transform:none;color:var(--muted)}
 .copy{margin:28px 0 0;max-width:56ch}
+/* Two facts the neighbourhood gives away and the address does not. */
+.facts{margin:26px 0 0;padding:0;border-top:1px solid var(--line)}
+.facts div{display:grid;grid-template-columns:88px 1fr;gap:14px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line)}
+.facts dt{margin:0;font:700 11px/1.4 "Space Grotesk",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.facts dd{margin:0;font:700 14px/1.4 "Cinzel",Georgia,serif;letter-spacing:.04em;text-transform:uppercase}
 </style>
 </head>
 <body>
@@ -271,6 +277,11 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
   </div>
   <p class="map-note">The exact address isn&rsquo;t shown here. It goes to the list, sent to confirmed ticket holders only.</p>
 
+  <dl class="facts">
+    <div><dt>Subway</dt><dd>L train &middot; M train</dd></div>
+    <div><dt>Access</dt><dd>18+ with valid photo ID</dd></div>
+  </dl>
+
   <p class="copy">The experience takes place in Bushwick, Brooklyn. Exact arrival details are provided to confirmed ticket holders.</p>
   <p class="copy">Plan to arrive <strong>15 minutes before your scheduled entry.</strong></p>
 
@@ -298,6 +309,7 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
   <nav class="drawer-nav" aria-label="Pages">
     <a href="/">The door<span>Home</span></a>
     <a href="story.html">The story<span>Case file</span></a>
+    <a href="evidence.html">Evidence<span>Six exhibits</span></a>
     <a href="experience.html">The experience<span>One hour inside</span></a>
     <a href="nights.html">Nights<span>October</span></a>
     <a aria-current="page" href="location.html">Location<span>Bushwick</span></a>

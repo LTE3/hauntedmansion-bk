@@ -169,6 +169,17 @@ def test_static():
                             p, re.I))
     check("the neighbourhood clue is present", "BUSHWICK" in s.upper())
 
+    # One drawer, hand-edited on every page. Pin that they agree: every drawer
+    # lists the same pages in the same order (the door omits its own link).
+    navs = {}
+    for page in ROOT_PAGES:
+        with open(os.path.join(ROOT, page), encoding="utf-8") as f:
+            m = re.search(r'<nav class="drawer-nav"[^>]*>(.*?)</nav>', f.read(), re.S)
+        if m:
+            navs[page] = tuple(h for h in re.findall(r'href="([^"]+)"', m.group(1)) if h != "/")
+    check("every drawer lists the same pages in the same order", len(navs) >= 7 and len(set(navs.values())) == 1,
+          "; ".join("%s: %s" % (k, ",".join(v)) for k, v in navs.items()))
+
     # Launch-day switches. These must be ON now and OFF on the 25th; the test
     # states which so nobody has to remember both halves.
     robots = os.path.join(ROOT, "robots.txt")

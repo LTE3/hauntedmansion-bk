@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-kcKEZRysZGEx4EskwTSSEtXPixxjyqh8wb91lTrGa8g='; font-src 'self'; script-src 'sha256-K4/zezhmBrQyVtQFe0hwG/M3p1IcbuGtFxNiOYJ2kfA='; connect-src 'none'; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-fv/tYKcKIuMn0++5NCsspnUbr+gxcKpCM13JrvUu+88='; font-src 'self'; script-src 'sha256-iO0hrrihN84OGabrXYVExCjNB4bElW4EJYg1Ksiruuw='; connect-src 'none'; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Pick your night | Haunted Mansion BK</title>
+<title>The evidence | Haunted Mansion BK</title>
 <!-- PREVIEW ONLY: remove this line when the real domain goes live -->
 <meta name="robots" content="noindex, nofollow">
-<meta name="description" content="October 2026 in Bushwick, Brooklyn. The house opens Thursday, October 1 and runs Thursday through Sunday every week that month. 18+.">
+<meta name="description" content="Six exhibits from the house in Bushwick, Brooklyn: the rooms, the objects, and the footage left behind. October 2026. 18+.">
 <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23050505"/><path d="M6 30V13L16 5l10 8v17z" fill="none" stroke="%233a332c" stroke-width="2"/><rect x="13" y="18" width="6" height="12" fill="%23c2702f"/></svg>'>
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#030202">
@@ -95,6 +95,38 @@ h1{
 }
 h1 em{font-style:normal;color:var(--red-lit)}
 
+/* The questions. One open at a time, and a closed answer is out of the tree
+   for the keyboard and the reader, not only out of sight. */
+.faq{list-style:none;margin:8px 0 0;padding:0;border-top:1px solid var(--line)}
+.faq li{border-bottom:1px solid var(--line);animation:rise .7s var(--ease) backwards}
+.faq li:nth-child(1){animation-delay:.12s}.faq li:nth-child(2){animation-delay:.16s}
+.faq li:nth-child(3){animation-delay:.2s}.faq li:nth-child(4){animation-delay:.24s}
+.faq li:nth-child(5){animation-delay:.28s}.faq li:nth-child(6){animation-delay:.32s}
+.faq li:nth-child(7){animation-delay:.36s}.faq li:nth-child(8){animation-delay:.4s}
+.faq li:nth-child(9){animation-delay:.44s}.faq li:nth-child(10){animation-delay:.48s}
+.faq h2{margin:0;font:inherit}
+.faq-btn{
+  display:flex;justify-content:space-between;align-items:center;gap:16px;width:100%;
+  min-height:56px;padding:17px 0;text-align:left;
+  font:700 13.5px/1.35 "Cinzel",Georgia,serif;letter-spacing:.07em;text-transform:uppercase;color:var(--bone)
+}
+.faq-btn:hover{color:#fff}
+.mark{position:relative;flex:none;width:18px;height:18px;color:#c7b8ae}
+.mark:before,.mark:after{
+  content:"";position:absolute;left:50%;top:50%;width:14px;height:1.5px;margin:-.75px 0 0 -7px;
+  background:currentColor;border-radius:1px;transition:transform .32s var(--ease)
+}
+.mark:after{transform:rotate(90deg)}
+.faq-btn[aria-expanded="true"] .mark{color:var(--red-lit)}
+.faq-btn[aria-expanded="true"] .mark:after{transform:rotate(90deg) scaleX(0)}
+.faq-a{
+  display:grid;grid-template-rows:0fr;visibility:hidden;
+  transition:grid-template-rows .42s var(--ease),visibility 0s linear .42s
+}
+.faq-a.open{grid-template-rows:1fr;visibility:visible;transition:grid-template-rows .42s var(--ease)}
+.faq-a>div{min-height:0;overflow:hidden}
+.faq-a p{margin:0;padding:0 34px 20px 0;color:var(--read);max-width:52ch}
+
 /* The closer and the way in. Same pill as the door, and it goes to the door:
    the list is one form, in one place, opened by one hash. */
 .closer{margin:44px 0 0;text-align:center}
@@ -180,8 +212,9 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
 @media(min-width:720px){.drawer{padding-left:max(18px,calc(50vw - 300px));padding-right:max(18px,calc(50vw - 300px))}}
 
 @keyframes rise{from{opacity:0;transform:translate3d(0,16px,0)}to{opacity:1;transform:none}}
-.menu:focus-visible,.cta:focus-visible,.drawer-close:focus-visible,
+.menu:focus-visible,.faq-btn:focus-visible,.cta:focus-visible,.drawer-close:focus-visible,
 .drawer-nav a:focus-visible,footer a:focus-visible,.drawer-foot a:focus-visible{outline:2px solid #ff6b5f;outline-offset:2px}
+.faq-btn:focus-visible{outline-offset:-2px}
 @media(prefers-reduced-motion:reduce){
   *,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 }
@@ -189,67 +222,27 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
   :root{--bone:#fff;--read:#f0e9e3;--muted:#f0e9e3;--line:#bbb;--red-lit:#ff6b5f}
 }
 
-/* The calendar. Two states only, read at a glance: a night the house is
-   awake for, and a night it isn't. Opening night gets one word, in the
-   only red on the grid, because it's the only date that needs remembering. */
-.lede{margin:14px 0 0;max-width:46ch;color:var(--read)}
-.cal{margin:36px 0 0;animation:rise .8s var(--ease) .1s backwards}
-.cal-head{
-  display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:0 0 12px;
-  font:700 12px/1 "Space Grotesk",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)
+/* evidence.html: six exhibits, no photographs. The numbers are the file's
+   own numbering, so they carry information; the kind label does the work the
+   zip's filter buttons did without a script. */
+.pull{margin:30px 0 0;font:700 clamp(19px,5.6vw,24px)/1.32 "Cinzel",Georgia,serif;letter-spacing:.02em;text-transform:uppercase;text-wrap:balance}
+.pull em{font-style:normal;color:var(--red-lit)}
+.exhibits{list-style:none;margin:30px 0 0;padding:0;border-top:1px solid var(--line)}
+.exhibits li{
+  display:grid;grid-template-columns:52px 1fr;gap:4px 16px;align-items:baseline;
+  padding:22px 0;border-bottom:1px solid var(--line);animation:rise .7s var(--ease) backwards
 }
-.cal-head b{color:var(--bone);font-weight:700;letter-spacing:.02em}
-.cal-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
-.cal-grid li{aspect-ratio:1}
-.cal-dow{
-  aspect-ratio:auto;display:grid;place-items:center;padding:0 0 8px;
-  font:700 10px/1 "Space Grotesk",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)
+.exhibits li:nth-child(1){animation-delay:.12s}.exhibits li:nth-child(2){animation-delay:.18s}
+.exhibits li:nth-child(3){animation-delay:.24s}.exhibits li:nth-child(4){animation-delay:.3s}
+.exhibits li:nth-child(5){animation-delay:.36s}.exhibits li:nth-child(6){animation-delay:.42s}
+.ex-n{
+  grid-row:1/3;align-self:start;font:700 30px/1 "Cinzel",Georgia,serif;letter-spacing:.02em;color:var(--red-lit);
+  font-variant-numeric:tabular-nums
 }
-.cal-blank{visibility:hidden}
-.cal-day{
-  display:grid;place-items:center;gap:2px;border-radius:6px;
-  font:700 15px/1 "Space Grotesk",sans-serif;font-variant-numeric:tabular-nums
-}
-.cal-day.open{color:var(--bone);border:1px solid var(--line)}
-.cal-day.closed{color:var(--muted);opacity:.5}
-.cal-day .tag{font:700 9px/1 "Space Grotesk",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--red-lit)}
-.cal-day.today{box-shadow:inset 0 0 0 1px var(--red-lit)}
-.cal-day.past{opacity:.4}
-.cal-legend{
-  list-style:none;display:flex;flex-wrap:wrap;gap:18px;margin:16px 0 0;padding:0;
-  font:700 11px/1 "Space Grotesk",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)
-}
-.cal-legend li{display:flex;align-items:center;gap:8px}
-.cal-swatch{width:11px;height:11px;border-radius:3px}
-.cal-swatch.is-open{background:var(--bone);border:1px solid var(--line)}
-.cal-swatch.is-closed{background:var(--muted);opacity:.5}
-.cal-note{
-  margin:20px 0 0;font:700 11px/1.6 "Space Grotesk",sans-serif;
-  letter-spacing:.1em;text-transform:uppercase;color:var(--muted)
-}
-/* How far each night has gone. A tint climbs the cell from the floor as the
-   night fills, the figure sits under the date, and a night past nine tenths
-   turns its frame red. The script below writes the figures. */
-.cal-day.open{position:relative;overflow:hidden;isolation:isolate}
-.cal-day .gone{
-  position:absolute;left:1px;right:1px;bottom:1px;z-index:-1;height:var(--fill,0%);
-  background:linear-gradient(to top,rgba(227,48,39,.16),rgba(227,48,39,.4));
-  transition:height .9s var(--ease)
-}
-.cal-day.hot{border-color:rgba(255,89,78,.6)}
-.cal-day.hot .tag{color:var(--bone)}
-.cal-legend li[hidden]{display:none}
-.cal-swatch.is-gone{background:linear-gradient(to top,rgba(227,48,39,.16),rgba(227,48,39,.4));border:1px solid var(--line)}
-.pulse{
-  margin:14px 0 0;font:700 12px/1.6 "Space Grotesk",sans-serif;
-  letter-spacing:.1em;text-transform:uppercase;color:var(--muted)
-}
-.pulse b{color:var(--red-lit);font-weight:700}
-@media(prefers-contrast:more){
-  .cal-day.closed,.cal-day.past{opacity:.65}
-  .cal-swatch.is-closed{opacity:.65}
-  .cal-day .gone,.cal-swatch.is-gone{background:rgba(227,48,39,.55)}
-}
+.ex-kind{font:700 10.5px/1 "Space Grotesk",sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.exhibits h2{margin:0;font:700 15px/1.3 "Cinzel",Georgia,serif;letter-spacing:.06em;text-transform:uppercase;color:var(--bone)}
+.exhibits p{grid-column:2;margin:6px 0 0;color:var(--read);max-width:44ch}
+.exhibits time{font:700 13px/1.5 "Space Grotesk",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--read);font-variant-numeric:tabular-nums}
 </style>
 </head>
 <body>
@@ -264,68 +257,23 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
 
 <main class="page">
   <div class="hero">
-    <p class="eyebrow">Bushwick, Brooklyn &middot; October 2026</p>
-    <h1>Nights<br>the house<br><em>is open</em></h1>
-    <p class="lede">The house opens Thursday, October 1 and runs Thursday through Sunday every week in October. Mondays through Wednesdays the door stays shut.</p>
-    <p class="pulse" id="pulse" hidden></p>
+    <p class="eyebrow">Case archive</p>
+    <h1>The<br><em>Evidence</em></h1>
   </div>
 
-  <div class="cal">
-    <p class="cal-head"><b>October</b><span>2026</span></p>
-    <ol class="cal-grid" id="cal-grid" aria-label="October 2026">
-      <li class="cal-dow" aria-hidden="true">S</li>
-      <li class="cal-dow" aria-hidden="true">M</li>
-      <li class="cal-dow" aria-hidden="true">T</li>
-      <li class="cal-dow" aria-hidden="true">W</li>
-      <li class="cal-dow" aria-hidden="true">T</li>
-      <li class="cal-dow" aria-hidden="true">F</li>
-      <li class="cal-dow" aria-hidden="true">S</li>
-      <li class="cal-blank" aria-hidden="true"></li>
-      <li class="cal-blank" aria-hidden="true"></li>
-      <li class="cal-blank" aria-hidden="true"></li>
-      <li class="cal-blank" aria-hidden="true"></li>
-      <li class="cal-day open opens" data-day="1" aria-label="Thursday, October 1 &mdash; opens"><span class="num">1</span><span class="tag">Opens</span></li>
-      <li class="cal-day open" data-day="2" aria-label="Friday, October 2 &mdash; open"><span class="num">2</span></li>
-      <li class="cal-day open" data-day="3" aria-label="Saturday, October 3 &mdash; open"><span class="num">3</span></li>
-      <li class="cal-day open" data-day="4" aria-label="Sunday, October 4 &mdash; open"><span class="num">4</span></li>
-      <li class="cal-day closed" data-day="5" aria-label="Monday, October 5 &mdash; closed"><span class="num">5</span></li>
-      <li class="cal-day closed" data-day="6" aria-label="Tuesday, October 6 &mdash; closed"><span class="num">6</span></li>
-      <li class="cal-day closed" data-day="7" aria-label="Wednesday, October 7 &mdash; closed"><span class="num">7</span></li>
-      <li class="cal-day open" data-day="8" aria-label="Thursday, October 8 &mdash; open"><span class="num">8</span></li>
-      <li class="cal-day open" data-day="9" aria-label="Friday, October 9 &mdash; open"><span class="num">9</span></li>
-      <li class="cal-day open" data-day="10" aria-label="Saturday, October 10 &mdash; open"><span class="num">10</span></li>
-      <li class="cal-day open" data-day="11" aria-label="Sunday, October 11 &mdash; open"><span class="num">11</span></li>
-      <li class="cal-day closed" data-day="12" aria-label="Monday, October 12 &mdash; closed"><span class="num">12</span></li>
-      <li class="cal-day closed" data-day="13" aria-label="Tuesday, October 13 &mdash; closed"><span class="num">13</span></li>
-      <li class="cal-day closed" data-day="14" aria-label="Wednesday, October 14 &mdash; closed"><span class="num">14</span></li>
-      <li class="cal-day open" data-day="15" aria-label="Thursday, October 15 &mdash; open"><span class="num">15</span></li>
-      <li class="cal-day open" data-day="16" aria-label="Friday, October 16 &mdash; open"><span class="num">16</span></li>
-      <li class="cal-day open" data-day="17" aria-label="Saturday, October 17 &mdash; open"><span class="num">17</span></li>
-      <li class="cal-day open" data-day="18" aria-label="Sunday, October 18 &mdash; open"><span class="num">18</span></li>
-      <li class="cal-day closed" data-day="19" aria-label="Monday, October 19 &mdash; closed"><span class="num">19</span></li>
-      <li class="cal-day closed" data-day="20" aria-label="Tuesday, October 20 &mdash; closed"><span class="num">20</span></li>
-      <li class="cal-day closed" data-day="21" aria-label="Wednesday, October 21 &mdash; closed"><span class="num">21</span></li>
-      <li class="cal-day open" data-day="22" aria-label="Thursday, October 22 &mdash; open"><span class="num">22</span></li>
-      <li class="cal-day open" data-day="23" aria-label="Friday, October 23 &mdash; open"><span class="num">23</span></li>
-      <li class="cal-day open" data-day="24" aria-label="Saturday, October 24 &mdash; open"><span class="num">24</span></li>
-      <li class="cal-day open" data-day="25" aria-label="Sunday, October 25 &mdash; open"><span class="num">25</span></li>
-      <li class="cal-day closed" data-day="26" aria-label="Monday, October 26 &mdash; closed"><span class="num">26</span></li>
-      <li class="cal-day closed" data-day="27" aria-label="Tuesday, October 27 &mdash; closed"><span class="num">27</span></li>
-      <li class="cal-day closed" data-day="28" aria-label="Wednesday, October 28 &mdash; closed"><span class="num">28</span></li>
-      <li class="cal-day open" data-day="29" aria-label="Thursday, October 29 &mdash; open"><span class="num">29</span></li>
-      <li class="cal-day open" data-day="30" aria-label="Friday, October 30 &mdash; open"><span class="num">30</span></li>
-      <li class="cal-day open" data-day="31" aria-label="Saturday, October 31 &mdash; open"><span class="num">31</span></li>
-    </ol>
-    <ul class="cal-legend">
-      <li><span class="cal-swatch is-open" aria-hidden="true"></span>Open</li>
-      <li><span class="cal-swatch is-closed" aria-hidden="true"></span>Closed</li>
-      <li id="legend-gone" hidden><span class="cal-swatch is-gone" aria-hidden="true"></span>% gone</li>
-    </ul>
-    <p class="cal-note">Tickets go on sale soon. Join the list to hear first.</p>
-  </div>
+  <p class="pull"><em>Real places. Real stories.</em><br>Some things can&rsquo;t be explained.</p>
+
+  <ol class="exhibits">
+    <li><span class="ex-n" aria-hidden="true">01</span><span class="ex-kind">Room</span><h2>The hallway</h2><p>The final light stayed on for 28 years.</p></li>
+    <li><span class="ex-n" aria-hidden="true">02</span><span class="ex-kind">Room</span><h2>The children&rsquo;s room</h2><p>Two beds. Only one name appears in the report.</p></li>
+    <li><span class="ex-n" aria-hidden="true">03</span><span class="ex-kind">Object</span><h2>Recovered drawing</h2><p>Four figures outside. A fifth in the upstairs window.</p></li>
+    <li><span class="ex-n" aria-hidden="true">04</span><span class="ex-kind">Room</span><h2>Second-floor stairs</h2><p>The family never reached the front door.</p></li>
+    <li><span class="ex-n" aria-hidden="true">05</span><span class="ex-kind">Object</span><h2>Bathroom mirror</h2><p>A name was scratched beneath the silver.</p></li>
+    <li><span class="ex-n" aria-hidden="true">06</span><span class="ex-kind">Footage</span><h2>Camera 03</h2><p><time datetime="1998-10-31T23:47">Oct. 31, 1998 &middot; 11:47 PM</time></p></li>
+  </ol>
 
   <div class="closer">
-    <p>Pick your night.<br><em>Then knock.</em></p>
+    <p><em>The truth still lives here.</em></p>
     <a class="cta" href="/#list">Unlock the invitation</a>
     <p class="age"><b>18+</b><span>Must be 18+ to enter</span></p>
   </div>
@@ -348,9 +296,9 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
   <nav class="drawer-nav" aria-label="Pages">
     <a href="/">The door<span>Home</span></a>
     <a href="story.html">The story<span>Case file</span></a>
-    <a href="evidence.html">Evidence<span>Six exhibits</span></a>
+    <a aria-current="page" href="evidence.html">Evidence<span>Six exhibits</span></a>
     <a href="experience.html">The experience<span>One hour inside</span></a>
-    <a href="nights.html" aria-current="page">Nights<span>October</span></a>
+    <a href="nights.html">Nights<span>October</span></a>
     <a href="location.html">Location<span>Bushwick</span></a>
     <a href="faq.html">FAQ<span>Ten answers</span></a>
   </nav>
@@ -386,88 +334,6 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
     x.addEventListener("click", () => close());
     drawer.querySelectorAll("a").forEach(a => a.addEventListener("click", () => close(false)));
     document.addEventListener("keydown", e => { if(e.key === "Escape" && isOpen()) close(); });
-  }
-}
-/* The calendar. Today's date is read in the house's own time zone rather
-   than the visitor's, so a guest in another zone doesn't see the wrong night
-   lit. Nothing is marked outside October 2026.
-
-   The figures. Every open night carries a "% gone" that is a function of the
-   clock alone: the same number for every visitor, ticking up once an hour
-   from the moment the presale opens, fast at first and levelling off as the
-   night approaches. Weekends and the first and last nights run hotter. The
-   owner chose these numbers (2026-09-11). They are not read from the box
-   office, and they stop short of full so no night is ever called sold out. */
-{
-  const grid = document.getElementById("cal-grid");
-  if(grid){
-    const now = new Date();
-    const parts = new Intl.DateTimeFormat("en-US", {
-      timeZone: "America/New_York", year: "numeric", month: "numeric", day: "numeric"
-    }).formatToParts(now);
-    const get = t => Number(parts.find(p => p.type === t).value);
-    const y = get("year"), m = get("month"), d = get("day");
-    if(y === 2026 && m === 10){
-      grid.querySelectorAll(".cal-day").forEach(li => {
-        const day = Number(li.dataset.day);
-        if(day < d) li.classList.add("past");
-        if(day === d){ li.classList.add("today"); li.setAttribute("aria-current", "date"); }
-      });
-    }
-
-    /* One constant to move: the hour the presale opens. */
-    const PRESALE = Date.parse("2026-09-25T10:00:00-04:00");
-    const HOUR = 3600000;
-    const hours = Math.floor((now.getTime() - PRESALE) / HOUR);
-    if(hours >= 0){
-      const DOW = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-      /* [ceiling, curve] per night. The ceiling is where a night ends up; the
-         curve is how hard it runs at the start. */
-      const shape = day => {
-        const dow = (day + 3) % 7;
-        if(day === 1)  return [97, 2.0];
-        if(day === 31) return [97, 1.9];
-        if(day === 30) return [96, 1.8];
-        return dow === 6 ? [95, 1.7] : dow === 5 ? [94, 1.6] : dow === 4 ? [90, 1.4] : [88, 1.3];
-      };
-      const gone = day => {
-        const night = Date.parse("2026-10-" + String(day).padStart(2, "0") + "T20:00:00-04:00");
-        if(night <= now.getTime()) return null;
-        const p = Math.min(1, hours * HOUR / (night - PRESALE));
-        const [cap, k] = shape(day);
-        return Math.min(cap, Math.round(cap * (0.04 + 0.96 * (1 - Math.pow(1 - p, k)))));
-      };
-      let top = null;
-      grid.querySelectorAll(".cal-day.open").forEach(li => {
-        const day = Number(li.dataset.day);
-        const pct = gone(day);
-        if(pct === null) return;
-        const fill = document.createElement("span");
-        fill.className = "gone";
-        fill.setAttribute("aria-hidden", "true");
-        li.prepend(fill);
-        let tag = li.querySelector(".tag");
-        if(!tag){ tag = document.createElement("span"); tag.className = "tag"; li.append(tag); }
-        tag.textContent = pct + "%";
-        li.setAttribute("aria-label", li.getAttribute("aria-label") + ", " + pct + "% gone");
-        if(pct >= 90) li.classList.add("hot");
-        /* Two frames on, so the tint rises from the floor instead of arriving. */
-        requestAnimationFrame(() => requestAnimationFrame(() => li.style.setProperty("--fill", pct + "%")));
-        if(!top || pct > top.pct) top = { day, pct };
-      });
-      const pulse = document.getElementById("pulse");
-      const legend = document.getElementById("legend-gone");
-      if(top && pulse){
-        const name = top.day === 1 ? "Opening night"
-          : top.day === 31 ? "Halloween"
-          : DOW[(top.day + 3) % 7] + ", October " + top.day;
-        const b = document.createElement("b");
-        b.textContent = top.pct + "%";
-        pulse.append(name + " is ", b, " gone.");
-        pulse.hidden = false;
-      }
-      if(top && legend) legend.hidden = false;
-    }
   }
 }
 </script>

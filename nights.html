@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-3AV7bl/048FFgS1Y4ohSjJNevBuWEo7LiKV7LJy2xp4='; font-src 'self'; script-src 'sha256-jdkPWQqRse1EjIxRBeHhpYtMn+F1BEED/UcPFgnhN1E='; connect-src 'none'; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-/GOU8hZBAB8I4aeQVarvM7HK1KyJ8LQpDQ8EJPFkd7E='; font-src 'self'; script-src 'sha256-K4/zezhmBrQyVtQFe0hwG/M3p1IcbuGtFxNiOYJ2kfA='; connect-src 'none'; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Pick your night | Haunted Mansion BK</title>
@@ -226,9 +226,28 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
   margin:20px 0 0;font:700 11px/1.6 "Space Grotesk",sans-serif;
   letter-spacing:.1em;text-transform:uppercase;color:var(--muted)
 }
+/* How far each night has gone. A tint climbs the cell from the floor as the
+   night fills, the figure sits under the date, and a night past nine tenths
+   turns its frame red. The script below writes the figures. */
+.cal-day.open{position:relative;overflow:hidden;isolation:isolate}
+.cal-day .gone{
+  position:absolute;left:1px;right:1px;bottom:1px;z-index:-1;height:var(--fill,0%);
+  background:linear-gradient(to top,rgba(227,48,39,.16),rgba(227,48,39,.4));
+  transition:height .9s var(--ease)
+}
+.cal-day.hot{border-color:rgba(255,89,78,.6)}
+.cal-day.hot .tag{color:var(--bone)}
+.cal-legend li[hidden]{display:none}
+.cal-swatch.is-gone{background:linear-gradient(to top,rgba(227,48,39,.16),rgba(227,48,39,.4));border:1px solid var(--line)}
+.pulse{
+  margin:14px 0 0;font:700 12px/1.6 "Space Grotesk",sans-serif;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--muted)
+}
+.pulse b{color:var(--red-lit);font-weight:700}
 @media(prefers-contrast:more){
   .cal-day.closed,.cal-day.past{opacity:.65}
   .cal-swatch.is-closed{opacity:.65}
+  .cal-day .gone,.cal-swatch.is-gone{background:rgba(227,48,39,.55)}
 }
 </style>
 </head>
@@ -247,6 +266,7 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
     <p class="eyebrow">Bushwick, Brooklyn &middot; October 2026</p>
     <h1>Nights<br>the house<br><em>is open</em></h1>
     <p class="lede">The house opens Thursday, October 1 and runs Thursday through Sunday every week in October. Mondays through Wednesdays the door stays shut.</p>
+    <p class="pulse" id="pulse" hidden></p>
   </div>
 
   <div class="cal">
@@ -298,6 +318,7 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
     <ul class="cal-legend">
       <li><span class="cal-swatch is-open" aria-hidden="true"></span>Open</li>
       <li><span class="cal-swatch is-closed" aria-hidden="true"></span>Closed</li>
+      <li id="legend-gone" hidden><span class="cal-swatch is-gone" aria-hidden="true"></span>% gone</li>
     </ul>
     <p class="cal-note">Tickets go on sale soon. Join the list to hear first.</p>
   </div>
@@ -365,16 +386,23 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
     document.addEventListener("keydown", e => { if(e.key === "Escape" && isOpen()) close(); });
   }
 }
-/* The calendar. Today's date, read in the house's own time zone rather than
-   the visitor's, so a guest in another zone doesn't see the wrong night lit.
-   Nothing here is marked outside October 2026, and nothing is marked today
-   because today isn't in it yet. */
+/* The calendar. Today's date is read in the house's own time zone rather
+   than the visitor's, so a guest in another zone doesn't see the wrong night
+   lit. Nothing is marked outside October 2026.
+
+   The figures. Every open night carries a "% gone" that is a function of the
+   clock alone: the same number for every visitor, ticking up once an hour
+   from the moment the presale opens, fast at first and levelling off as the
+   night approaches. Weekends and the first and last nights run hotter. The
+   owner chose these numbers (2026-09-11). They are not read from the box
+   office, and they stop short of full so no night is ever called sold out. */
 {
   const grid = document.getElementById("cal-grid");
   if(grid){
+    const now = new Date();
     const parts = new Intl.DateTimeFormat("en-US", {
       timeZone: "America/New_York", year: "numeric", month: "numeric", day: "numeric"
-    }).formatToParts(new Date());
+    }).formatToParts(now);
     const get = t => Number(parts.find(p => p.type === t).value);
     const y = get("year"), m = get("month"), d = get("day");
     if(y === 2026 && m === 10){
@@ -383,6 +411,60 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
         if(day < d) li.classList.add("past");
         if(day === d){ li.classList.add("today"); li.setAttribute("aria-current", "date"); }
       });
+    }
+
+    /* One constant to move: the hour the presale opens. */
+    const PRESALE = Date.parse("2026-09-25T10:00:00-04:00");
+    const HOUR = 3600000;
+    const hours = Math.floor((now.getTime() - PRESALE) / HOUR);
+    if(hours >= 0){
+      const DOW = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      /* [ceiling, curve] per night. The ceiling is where a night ends up; the
+         curve is how hard it runs at the start. */
+      const shape = day => {
+        const dow = (day + 3) % 7;
+        if(day === 1)  return [97, 2.0];
+        if(day === 31) return [97, 1.9];
+        if(day === 30) return [96, 1.8];
+        return dow === 6 ? [95, 1.7] : dow === 5 ? [94, 1.6] : dow === 4 ? [90, 1.4] : [88, 1.3];
+      };
+      const gone = day => {
+        const night = Date.parse("2026-10-" + String(day).padStart(2, "0") + "T20:00:00-04:00");
+        if(night <= now.getTime()) return null;
+        const p = Math.min(1, hours * HOUR / (night - PRESALE));
+        const [cap, k] = shape(day);
+        return Math.min(cap, Math.round(cap * (0.04 + 0.96 * (1 - Math.pow(1 - p, k)))));
+      };
+      let top = null;
+      grid.querySelectorAll(".cal-day.open").forEach(li => {
+        const day = Number(li.dataset.day);
+        const pct = gone(day);
+        if(pct === null) return;
+        const fill = document.createElement("span");
+        fill.className = "gone";
+        fill.setAttribute("aria-hidden", "true");
+        li.prepend(fill);
+        let tag = li.querySelector(".tag");
+        if(!tag){ tag = document.createElement("span"); tag.className = "tag"; li.append(tag); }
+        tag.textContent = pct + "%";
+        li.setAttribute("aria-label", li.getAttribute("aria-label") + ", " + pct + "% gone");
+        if(pct >= 90) li.classList.add("hot");
+        /* Two frames on, so the tint rises from the floor instead of arriving. */
+        requestAnimationFrame(() => requestAnimationFrame(() => li.style.setProperty("--fill", pct + "%")));
+        if(!top || pct > top.pct) top = { day, pct };
+      });
+      const pulse = document.getElementById("pulse");
+      const legend = document.getElementById("legend-gone");
+      if(top && pulse){
+        const name = top.day === 1 ? "Opening night"
+          : top.day === 31 ? "Halloween"
+          : DOW[(top.day + 3) % 7] + ", October " + top.day;
+        const b = document.createElement("b");
+        b.textContent = top.pct + "%";
+        pulse.append(name + " is ", b, " gone.");
+        pulse.hidden = false;
+      }
+      if(top && legend) legend.hidden = false;
     }
   }
 }

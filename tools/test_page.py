@@ -156,6 +156,9 @@ def test_static():
     # way they get broken is by someone forgetting them months later.
     # The address and scarcity rules bind every page, not only the door: a
     # street number on the FAQ leaks the venue exactly as well as one here.
+    # Nights carries a synthetic "% gone" per night by the owner's decision
+    # (2026-09-11); the phrases below stay barred there too, and the figures
+    # themselves are pinned by the nights cases in the browser run.
     for page in ROOT_PAGES:
         with open(os.path.join(ROOT, page), encoding="utf-8") as f:
             p = f.read()
@@ -231,6 +234,7 @@ def test_browser():
         with sync_playwright() as p:
             b = p.chromium.launch()
             _browser_cases(b, url)
+            _nights_cases(b, url.replace("index.html", "nights.html"))
             b.close()
     finally:
         srv.shutdown()
@@ -440,6 +444,81 @@ def _browser_cases(b, url):
           and fell["shown"] == "none",
           str(fell))
     fp.close()
+
+
+def _nights_cases(b, url):
+    # --- the figures on Nights ---------------------------------------------
+    # Owner's call (2026-09-11): the "% gone" on each night is synthetic, a
+    # function of the clock alone. These pin what that means in practice:
+    # nothing before the presale opens, one figure per open night after it,
+    # every figure between 1 and 97, never falling as the days pass, gone
+    # once the night has, and no night ever called full or sold out. The
+    # clock is faked, so the checks are the same on every day they run.
+    def read(when):
+        pg = b.new_page(viewport={"width": 430, "height": 932})
+        errs = []
+        pg.on("pageerror", lambda e: errs.append("pageerror: %s" % e))
+        pg.on("console", lambda m: errs.append("console.%s: %s" % (m.type, m.text)) if m.type == "error" else None)
+        pg.clock.set_fixed_time(when)
+        pg.goto(url, wait_until="load")
+        pg.wait_for_timeout(400)
+        got = pg.evaluate("""() => {
+            const pulse = document.getElementById('pulse');
+            return {
+              tags: Object.fromEntries([...document.querySelectorAll('.cal-day .tag')]
+                      .filter(t => /%$/.test(t.textContent))
+                      .map(t => [Number(t.closest('.cal-day').dataset.day), parseInt(t.textContent, 10)])),
+              pulse: pulse.hidden ? null : pulse.textContent,
+              legend: !document.getElementById('legend-gone').hidden,
+              opens: document.querySelector('[data-day="1"] .tag').textContent,
+              labels: [...document.querySelectorAll('.cal-day.open')].map(li => li.getAttribute('aria-label')),
+              text: document.body.innerText,
+            };
+        }""")
+        got["tags"] = {int(k): v for k, v in got["tags"].items()}
+        got["errs"] = errs
+        pg.close()
+        return got
+
+    before = read("2026-09-20T12:00:00-04:00")
+    check("nights: no figures before the presale opens",
+          not before["tags"] and before["pulse"] is None and not before["legend"]
+          and before["opens"] == "Opens",
+          "tags %r pulse %r" % (before["tags"], before["pulse"]))
+
+    day1 = read("2026-09-26T12:00:00-04:00")
+    check("nights: every open night carries a figure the day after presale",
+          sorted(day1["tags"]) == [1, 2, 3, 4, 8, 9, 10, 11, 15, 16, 17, 18, 22, 23, 24, 25, 29, 30, 31],
+          str(sorted(day1["tags"])))
+    check("nights: figures stay between 1 and 97",
+          bool(day1["tags"]) and all(1 <= v <= 97 for v in day1["tags"].values()), str(day1["tags"]))
+    check("nights: opening night runs hottest at first",
+          bool(day1["tags"]) and day1["tags"].get(1) == max(day1["tags"].values()), str(day1["tags"]))
+    check("nights: headline names opening night",
+          bool(re.fullmatch(r"Opening night is \d+% gone\.", day1["pulse"] or "")), repr(day1["pulse"]))
+    check("nights: legend explains the figure once it shows", day1["legend"])
+    check("nights: figures land in the accessible name",
+          bool(day1["labels"]) and all(re.search(r", \d+% gone$", l) for l in day1["labels"]),
+          str(day1["labels"][:2]))
+
+    later = read("2026-10-05T12:00:00-04:00")
+    check("nights: figures never fall as the days pass",
+          bool(later["tags"]) and all(later["tags"][k] >= day1["tags"][k] for k in later["tags"]),
+          "before %r after %r" % (day1["tags"], later["tags"]))
+    check("nights: a night already past carries no figure",
+          bool(later["tags"]) and not any(k <= 4 for k in later["tags"]), str(sorted(later["tags"])))
+
+    eve = read("2026-10-30T12:00:00-04:00")
+    check("nights: Halloween is near full on its eve and leads the headline",
+          eve["tags"].get(31, 0) >= 90 and bool(re.fullmatch(r"Halloween is \d+% gone\.", eve["pulse"] or "")),
+          "31 -> %r pulse %r" % (eve["tags"].get(31), eve["pulse"]))
+
+    for name, r in (("presale+1", day1), ("Oct 5", later), ("Oct 30", eve)):
+        check("nights (%s): never full, never sold out" % name,
+              "100%" not in r["text"] and not re.search(r"sold out", r["text"], re.I)
+              and all(v <= 97 for v in r["tags"].values()))
+    errs = before["errs"] + day1["errs"] + later["errs"] + eve["errs"]
+    check("nights: no script errors under the fake clock", not errs, "; ".join(errs[:3]))
 
 
 def main():

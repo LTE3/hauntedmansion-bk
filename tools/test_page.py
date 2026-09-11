@@ -13,6 +13,7 @@ it those are reported skipped rather than passed, because a suite that
 quietly stops testing the thing it was written for is worse than no suite.
 """
 
+import glob
 import os
 import re
 import subprocess
@@ -20,6 +21,15 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PAGE = os.path.join(ROOT, "index.html")
+# Every page at the root of the site. Found, not listed, for the same reason
+# tools/csp.py finds them: a page missing from a hand-kept list is a page the
+# suite silently stops looking at.
+# top3 and versions are the build-review galleries: they frame the variants
+# under v/ and still pull their fonts from Google. Not pages a visitor is sent
+# to, so not held to the visitor rules.
+REVIEW_PAGES = {"top3.html", "versions.html"}
+ROOT_PAGES = tuple(sorted({os.path.basename(f) for f in glob.glob(os.path.join(ROOT, "*.html"))}
+                          - REVIEW_PAGES))
 OPENS = "2026-10-01"
 
 PASS, FAIL, SKIP = [], [], []
@@ -59,7 +69,7 @@ def test_static():
     check("CSP hashes match inline style/script bodies", r.returncode == 0 and "0 stale" in r.stdout,
           (r.stdout + r.stderr).strip()[-300:])
 
-    # The three live pages carry their own fonts. That is worth a test
+    # Every live page carries its own fonts. That is worth a test
     # rather than a comment: a stylesheet link is the single easiest
     # thing to paste back in, it costs a DNS lookup, a handshake and a
     # round trip before the first font byte is requested, and it puts
@@ -67,7 +77,7 @@ def test_static():
     # publishes a page about what it collects. The CSP is checked too,
     # because a policy that still names a host nothing uses is how the
     # link gets back in without anything appearing to break.
-    for page in ("index.html", "privacy.html", "404.html"):
+    for page in ROOT_PAGES:
         with open(os.path.join(ROOT, page), encoding="utf-8") as f:
             p = f.read()
         csp = re.search(r'Content-Security-Policy" content="([^"]+)"', p)
@@ -81,7 +91,7 @@ def test_static():
     # references a missing woff2 does not fail loudly - it silently falls
     # back to system-ui and nobody notices until the screenshots look off.
     missing = []
-    for page in ("index.html", "privacy.html", "404.html"):
+    for page in ROOT_PAGES:
         with open(os.path.join(ROOT, page), encoding="utf-8") as f:
             for ref in re.findall(r"url\((fonts/[^)]+\.woff2)\)", f.read()):
                 if not os.path.exists(os.path.join(ROOT, ref)):
@@ -144,12 +154,17 @@ def test_static():
 
     # The copy spec, as constraints. These are the owner's rules and the only
     # way they get broken is by someone forgetting them months later.
-    check("no street address on the page",
-          not re.search(r"\b\d{2,4}\s+[A-Z][a-z]+\s+(Ave|Avenue|St|Street|Rd|Road|Blvd|Pl|Place)\b", s))
+    # The address and scarcity rules bind every page, not only the door: a
+    # street number on the FAQ leaks the venue exactly as well as one here.
+    for page in ROOT_PAGES:
+        with open(os.path.join(ROOT, page), encoding="utf-8") as f:
+            p = f.read()
+        check("%s: no street address" % page,
+              not re.search(r"\b\d{2,4}\s+[A-Z][a-z]+\s+(Ave|Avenue|St|Street|Rd|Road|Blvd|Pl|Place)\b", p))
+        check("%s: no fabricated scarcity language" % page,
+              not re.search(r"only \d+ (spots|tickets|left)|\d+ people (are )?(viewing|waiting)|selling fast|almost full",
+                            p, re.I))
     check("the neighbourhood clue is present", "BUSHWICK" in s.upper())
-    check("no fabricated scarcity language",
-          not re.search(r"only \d+ (spots|tickets|left)|\d+ people (are )?(viewing|waiting)|selling fast",
-                        s, re.I))
 
     # Launch-day switches. These must be ON now and OFF on the 25th; the test
     # states which so nobody has to remember both halves.

@@ -35,9 +35,10 @@ FONTS_FILES = "https://fonts.gstatic.com"
 # Every page in the site, found rather than listed. A hand-kept table is one
 # more thing to forget to update, and a page missing from it ships with no
 # policy at all - the failure that looks exactly like success.
-PAGES = ["index.html", "privacy.html", "404.html"] + sorted(
+PAGES = sorted(
     os.path.relpath(f, ROOT).replace(os.sep, "/")
-    for f in glob.glob(os.path.join(ROOT, "v", "*.html")))
+    for pattern in ("*.html", os.path.join("v", "*.html"))
+    for f in glob.glob(os.path.join(ROOT, pattern)))
 
 TAG = re.compile(rb"<(script|style)(?![a-zA-Z-])([^>]*)>(.*?)</\1\s*>", re.S | re.I)
 # The trailing newline is optional on all three: two of the variant pages are
@@ -116,7 +117,9 @@ def policy(html):
         "font-src %s" % (" ".join(fonts) if fonts else "'none'"),
         "script-src %s" % (" ".join(scripts) if scripts else "'none'"),
         "connect-src %s" % (SUPABASE if connect else "'none'"),
-        "frame-src 'none'",
+        # The review galleries (top3, versions) frame the builds under v/;
+        # nothing a visitor sees frames anything.
+        "frame-src %s" % ("'self'" if b"<iframe" in html else "'none'"),
         "object-src 'none'",
     ]
     if media:

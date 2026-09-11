@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-JNRXlkzzIBm2UgG1IkxX0/7eLBYc0Dryz0EoYTZmIuA='; font-src 'self'; script-src 'sha256-9UyM6js6TfygxhitbmM/47ihxZYomkXbZMHdCbptlB0='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-5kxyi61SfFU0w/MQqP5AssGRCK0r04KUQEaAtC9tTdw='; font-src 'self'; script-src 'sha256-WYo44dLoelzQY2NA8PeXEi/AK9GKA6Ve1JQDYTyj4T4=' 'sha256-mPtrMIM+BVbm52EHIXdyXD3+zPyp6A4zFANuLG08TgU='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Every house has a story. | Haunted Mansion BK</title>
@@ -133,7 +133,7 @@ body.sheeting .hero{transform:scale(.945) translateY(-14px)}
    a negative margin, so nothing moves on screen. */
 .sound{
   display:grid;place-items:center;width:26px;height:26px;
-  padding:9px;margin:-15px -15px -15px -9px;box-sizing:content-box;
+  padding:9px;margin:-15px -9px;box-sizing:content-box;
   border:0;background:none;color:#c7b8ae;opacity:.62;cursor:pointer;
   -webkit-tap-highlight-color:transparent
 }
@@ -142,6 +142,76 @@ body.sheeting .hero{transform:scale(.945) translateY(-14px)}
 .sound .off{display:none}
 .sound[aria-pressed="false"] .on{display:none}
 .sound[aria-pressed="false"] .off{display:block}
+
+/* The menu. Same quiet colour and 44px hit area as the sound toggle, and the
+   same trick of padding out and pulling back with a negative margin. Two bars
+   rather than three: there are five pages behind it, not a site map. */
+.menu{
+  display:grid;place-items:center;align-content:center;gap:5px;width:26px;height:26px;
+  padding:9px;margin:-15px -15px -15px -9px;box-sizing:content-box;
+  border:0;background:none;color:#c7b8ae;opacity:.62;cursor:pointer;
+  -webkit-tap-highlight-color:transparent
+}
+.menu:hover,.menu:focus-visible{opacity:1}
+.menu span{
+  display:block;width:18px;height:1.5px;background:currentColor;border-radius:1px;
+  transition:transform .32s var(--ease)
+}
+/* The drawer is the page's own ink, not a panel over it. It sits under the
+   grain and under the curtain so the first two seconds still belong to the
+   arrival, and over everything else. Opacity only; the links carry the motion. */
+.drawer{
+  position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;
+  padding:max(22px,env(safe-area-inset-top)) 18px max(24px,env(safe-area-inset-bottom));
+  background:rgba(3,2,2,.94);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
+  visibility:hidden;opacity:0;
+  transition:opacity .34s var(--ease-in),visibility 0s linear .34s
+}
+.drawer.open{visibility:visible;opacity:1;transition:opacity .38s var(--ease)}
+.drawer-top{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  font:700 12px/1 "Space Grotesk",sans-serif;letter-spacing:.11em;text-transform:uppercase
+}
+.drawer-top .brand{text-decoration:none;color:var(--bone)}
+.drawer-close{
+  display:grid;place-items:center;width:26px;height:26px;
+  padding:9px;margin:-15px -15px -15px -9px;box-sizing:content-box;
+  border:0;background:none;color:#c7b8ae;opacity:.72;cursor:pointer;
+  -webkit-tap-highlight-color:transparent
+}
+.drawer-close:hover,.drawer-close:focus-visible{opacity:1}
+.drawer-close svg{width:18px;height:18px;display:block}
+.drawer-nav{display:flex;flex-direction:column;margin:auto 0;padding:18px 0}
+.drawer-nav a{
+  display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  padding:16px 0;border-top:1px solid var(--line);text-decoration:none;color:var(--bone);
+  font:700 clamp(28px,7.4vw,36px)/1 "Space Grotesk",sans-serif;letter-spacing:-.015em;
+  opacity:0;transform:translate3d(0,14px,0);
+  transition:opacity .5s var(--ease),transform .5s var(--ease)
+}
+.drawer-nav a:last-child{border-bottom:1px solid var(--line)}
+.drawer-nav a:hover{color:#fff}
+.drawer-nav a span{
+  font:700 11px/1 "Space Grotesk",sans-serif;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--muted);flex:none
+}
+.drawer.open .drawer-nav a{opacity:1;transform:none}
+.drawer.open .drawer-nav a:nth-child(1){transition-delay:.06s}
+.drawer.open .drawer-nav a:nth-child(2){transition-delay:.1s}
+.drawer.open .drawer-nav a:nth-child(3){transition-delay:.14s}
+.drawer.open .drawer-nav a:nth-child(4){transition-delay:.18s}
+.drawer.open .drawer-nav a:nth-child(5){transition-delay:.22s}
+.drawer-foot{display:grid;gap:18px}
+.drawer-foot .cta{width:100%;color:var(--bone);cursor:pointer}
+.drawer-foot p{
+  margin:0;text-align:center;font:700 11px/1.6 "Space Grotesk",sans-serif;
+  letter-spacing:.11em;text-transform:uppercase;color:var(--muted)
+}
+.drawer-foot p a{color:#c7b8ae;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(255,89,78,.55)}
+.menu:focus-visible,.drawer-close:focus-visible,.drawer-nav a:focus-visible,.drawer-foot a:focus-visible{outline:2px solid #ff6b5f;outline-offset:2px}
+.menu[aria-expanded="true"] span:first-child{transform:translateY(3.25px) rotate(45deg)}
+.menu[aria-expanded="true"] span:last-child{transform:translateY(-3.25px) rotate(-45deg)}
+@media(min-width:720px){.drawer{padding-left:max(18px,calc(50vw - 300px));padding-right:max(18px,calc(50vw - 300px))}}
 
 /* ================= THE KEYHOLE ======================================== */
 /* Four elements, four clocks, and that separation is the whole reason any of
@@ -992,6 +1062,9 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
           <path d="M16 9.5l5 5M21 9.5l-5 5"/>
         </svg>
       </button>
+      <button class="menu" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Menu">
+        <span></span><span></span>
+      </button>
     </div>
   </div>
 
@@ -1103,6 +1176,28 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
     </div>
   </div>
 </main>
+
+<div class="drawer" id="drawer">
+  <div class="drawer-top">
+    <a class="brand" href="/"><span class="pulse-dot" aria-hidden="true"></span><span>Haunted Mansion BK</span></a>
+    <button class="drawer-close" type="button" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+        <path d="M6 6l12 12M18 6L6 18"/>
+      </svg>
+    </button>
+  </div>
+  <nav class="drawer-nav" aria-label="Pages">
+    <a href="story.html">The story<span>Case file</span></a>
+    <a href="experience.html">The experience<span>One hour inside</span></a>
+    <a href="nights.html">Nights<span>October</span></a>
+    <a href="location.html">Location<span>Bushwick</span></a>
+    <a href="faq.html">FAQ<span>Ten answers</span></a>
+  </nav>
+  <div class="drawer-foot">
+    <button class="cta" type="button" data-open>Unlock the invitation</button>
+    <p>Bushwick, Brooklyn &middot; October 1, 2026<br><a href="privacy.html">What we keep</a></p>
+  </div>
+</div>
 
 
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
@@ -1359,7 +1454,10 @@ function openModal(){
   setTimeout(focusFirst, 80);
 }
 function autoOpenModal(){
-  if(modalTouched || modal.classList.contains("open")) return;
+  /* Not over the menu either: someone reading the drawer is choosing a
+     page, and the sheet would land on top of the thing they are reading. */
+  const drawer = document.getElementById("drawer");
+  if(modalTouched || modal.classList.contains("open") || (drawer && drawer.classList.contains("open"))) return;
   lastFocus = document.activeElement;
   setInert(true);
   showSheet();
@@ -2116,6 +2214,50 @@ form.addEventListener("submit", async e => {
     else if(n === 0) el.textContent = "Tonight";
     if(n >= 0) el.hidden = false;
   }
+}
+</script>
+<script>
+/* The menu. Its own script, after the page's, so a drawer still opens if
+   anything above it throws. The hero goes inert while the drawer is up so a
+   swipe or a tab cannot land on the keyhole underneath. */
+{
+  const btn = document.querySelector(".menu");
+  const drawer = document.getElementById("drawer");
+  const hero = document.querySelector(".hero");
+  if(btn && drawer){
+    const x = drawer.querySelector(".drawer-close");
+    const isOpen = () => drawer.classList.contains("open");
+    const open = () => {
+      drawer.classList.add("open");
+      btn.setAttribute("aria-expanded", "true");
+      hero.inert = true;
+      x.focus();
+    };
+    const close = (refocus = true) => {
+      drawer.classList.remove("open");
+      btn.setAttribute("aria-expanded", "false");
+      hero.inert = false;
+      if(refocus) btn.focus();
+    };
+    btn.addEventListener("click", () => isOpen() ? close() : open());
+    x.addEventListener("click", () => close());
+    drawer.querySelectorAll("a").forEach(a => a.addEventListener("click", () => close(false)));
+    /* The invitation takes over focus itself 80ms later; handing it back to
+       the menu button first would make the sheet open from the wrong place. */
+    drawer.querySelector("[data-open]").addEventListener("click", () => close(false));
+    document.addEventListener("keydown", e => { if(e.key === "Escape" && isOpen()) close(); });
+  }
+}
+/* /#list is how every other page hands someone to the invitation. The hash
+   is cleared straight away so a reload or a share of the address does not
+   open the sheet again on a visitor who did not ask for it. The wait is the
+   curtain: the door is still resolving until about two seconds in. */
+if(location.hash === "#list"){
+  history.replaceState(null, "", location.pathname + location.search);
+  setTimeout(() => {
+    const knock = document.querySelector(".actions .cta[data-open]");
+    if(knock) knock.click();
+  }, 2000);
 }
 </script>
 </body>

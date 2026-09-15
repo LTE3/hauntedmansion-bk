@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-6LTb0To2swYjsUGOEyvXlbnvXkfQz6eJ56VpXDwgJCs='; font-src 'self'; script-src 'sha256-WYo44dLoelzQY2NA8PeXEi/AK9GKA6Ve1JQDYTyj4T4=' 'sha256-mPtrMIM+BVbm52EHIXdyXD3+zPyp6A4zFANuLG08TgU='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-b2jfzEM4JK6NykCFvWS72/vt6XG4UHWEBgO5MdradB4='; font-src 'self'; script-src 'sha256-WYo44dLoelzQY2NA8PeXEi/AK9GKA6Ve1JQDYTyj4T4=' 'sha256-mPtrMIM+BVbm52EHIXdyXD3+zPyp6A4zFANuLG08TgU='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Every house has a story. | Haunted Mansion BK</title>
@@ -92,8 +92,8 @@ a:hover{text-decoration-color:#ff594e}
 }
 .hero:after{
   content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
-  background:linear-gradient(90deg,rgba(3,2,2,.98) 0%,rgba(3,2,2,.76) 38%,rgba(3,2,2,.18) 72%,rgba(3,2,2,.7) 100%),url("v/img-house/house.jpg") center/cover no-repeat;
-  opacity:.34;mix-blend-mode:screen
+  background:linear-gradient(180deg,rgba(3,2,2,.05) 0%,rgba(3,2,2,.16) 40%,rgba(3,2,2,.82) 78%,rgba(3,2,2,.98) 100%),url("v/img-house/house.jpg") center bottom/cover no-repeat;
+  opacity:.82;mix-blend-mode:screen
 }
 body.sheeting .hero{transform:scale(.945) translateY(-14px)}
 .hero:before{
@@ -420,6 +420,28 @@ body.sheeting .hero{transform:scale(.945) translateY(-14px)}
 .rooms-peek{position:absolute;right:6vw;bottom:7vh;z-index:8;width:min(24vw,300px);aspect-ratio:4/3;overflow:hidden;border:1px solid rgba(255,220,197,.28);box-shadow:0 18px 60px #000,0 0 28px rgba(227,48,39,.18);transform:rotate(2deg);opacity:.82;animation:rise .9s var(--ease) 1.8s backwards}
 .rooms-peek img{width:100%;height:100%;display:block;object-fit:cover;filter:brightness(.55) saturate(.72) contrast(1.12)}
 .rooms-peek span{position:absolute;left:12px;bottom:10px;font:700 10px/1 "Space Grotesk",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#f3e8de;text-shadow:0 1px 10px #000}
+/* Reference poster composition, built from the supplied production assets. */
+.hero .key-stage{display:none}
+.hero .rooms-peek{display:block;inset:0 0 auto;width:100%;height:47%;margin:0;right:auto;bottom:auto;border:0;border-radius:0;box-shadow:none;transform:none;opacity:.92;animation:none;background:#080303;z-index:1}
+.hero .rooms-peek img{filter:saturate(.8) contrast(1.08) brightness(.68);object-position:center 38%}
+.hero .rooms-peek:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.16),transparent 54%,rgba(4,1,1,.96))}
+.hero .rooms-peek span{display:none}
+.hero .hero-copy{position:absolute;left:50%;bottom:7%;width:min(92vw,720px);transform:translateX(-50%);display:grid;justify-items:center;gap:10px;text-align:center;z-index:4;padding:0}
+.hero .kicker{color:#f06a60;letter-spacing:.28em;font-size:11px;text-transform:uppercase}
+.hero h1{max-width:12ch;text-transform:uppercase;line-height:.84;text-shadow:0 4px 32px rgba(0,0,0,.85)}
+.hero h1 .l1{display:block;color:#ff514a}
+.hero h1 .glow{display:block;color:#f3e8de}
+.hero h1 small{display:block;font:700 .3em/1 "Space Grotesk",sans-serif;letter-spacing:.42em;color:#ff514a;margin:.35em 0 0 .45em}
+.hero .lead{max-width:34rem;font-family:"Cormorant Garamond",serif;font-size:clamp(18px,2.8vw,26px);line-height:1.12;color:#f3e8de}
+.hero .dayline{display:block!important;min-height:1.1em;margin:2px 0 0;color:#ff5b52;font:700 clamp(30px,7vw,58px)/.9 "Cinzel",serif;letter-spacing:.06em;text-transform:uppercase}
+.hero .actions{width:min(88vw,520px);margin-top:4px}
+.hero .actions .cta{width:100%;border:1px solid #ff4c45;border-radius:12px;background:linear-gradient(90deg,rgba(255,32,29,.3),rgba(78,5,5,.72));box-shadow:0 0 22px rgba(236,31,28,.35),inset 0 0 18px rgba(255,77,67,.12);font:700 15px/1 "Space Grotesk",sans-serif;letter-spacing:.18em;text-transform:uppercase}
+.hero .actions .cta:after{content:"→";margin-left:18px;font-size:22px;line-height:0;vertical-align:-2px}
+.hero .age{display:flex;align-items:center;gap:10px;margin:2px 0 0;font:700 11px/1 "Space Grotesk",sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#d3c3ba}
+.hero .age strong{display:grid;place-items:center;width:32px;height:32px;border:1px solid #ff5b52;border-radius:50%;color:#ff5b52;font-size:12px;letter-spacing:0}
+.hero .tagline{margin:10px 0 0;font:700 10px/1.7 "Space Grotesk",sans-serif;letter-spacing:.28em;text-transform:uppercase;color:#f3e8de}
+.hero .tagline span{color:#ff5b52}
+@media(min-width:720px){.hero .rooms-peek{height:54%}.hero .hero-copy{bottom:7%;gap:14px}.hero .hero-copy h1{font-size:clamp(64px,8vw,112px);max-width:10ch}.hero .hero-copy .lead{max-width:600px}}
 /* Staggered, 90ms apart, and the stagger starts only once the room is lit -
    the push-in is 2.4s and these begin at 1.25, so the words are landing while
    the picture is still settling rather than after it. backwards fill, so the
@@ -1184,15 +1206,17 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
   </div>
 
   <div class="hero-copy">
-    <p class="kicker">You shouldn&rsquo;t be looking.</p>
-    <h1><span class="l1">Some doors were closed</span> <span class="glow">for a reason.</span></h1>
-    <p class="lead">A house in Bushwick, Brooklyn opens October 1. Sixty minutes inside. Multiple rooms. One way out.</p>
+    <p class="kicker">Family &middot; Murder &middot; Mystery &middot; Reality</p>
+    <h1><span class="l1">Haunted</span> <span class="glow">Mansion <small>BK</small></span></h1>
+    <p class="lead">Brooklyn&rsquo;s first full-scale Halloween haunted house experience. One hour inside the home where it all happened.</p>
     <!-- Hidden until the script below has computed it, so no script means
          no line rather than a stale one. -->
     <p class="dayline" data-opens="2026-10-01" hidden></p>
     <div class="actions">
-      <button class="cta" data-open>Unlock the invitation<span class="rap" aria-hidden="true"></span></button>
+      <button class="cta" data-open>Join the waitlist<span class="rap" aria-hidden="true"></span></button>
     </div>
+    <p class="age"><strong>18+</strong> Must be 18+ to enter</p>
+    <p class="tagline">You&rsquo;re not visiting a haunted house.<br><span>You&rsquo;re returning to a crime scene.</span></p>
   </div>
   <figure class="rooms-peek" aria-hidden="true">
     <img src="v/img-house/rooms.jpg" alt="">

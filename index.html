@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-tUCbC5YYjW4f3cQ/FO3+JGqz6BwrZdRI4yMM+H/Z6rU='; font-src 'self'; script-src 'sha256-wTmdxerZwqf75vfBajPvjfxmp7xel1dJK5iyjF94UaQ=' 'sha256-mPtrMIM+BVbm52EHIXdyXD3+zPyp6A4zFANuLG08TgU='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-8nnRiGo07IgqeMI2JWA8d93OZkwYmLB1FcjCdRpdWu8='; font-src 'self'; script-src 'sha256-wTmdxerZwqf75vfBajPvjfxmp7xel1dJK5iyjF94UaQ=' 'sha256-mPtrMIM+BVbm52EHIXdyXD3+zPyp6A4zFANuLG08TgU='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Every house has a story. | Haunted Mansion BK</title>
@@ -30,7 +30,8 @@
 <link rel="manifest" href="site.webmanifest">
 <meta name="theme-color" content="#030202">
 <link rel="preload" as="font" type="font/woff2" href="fonts/dm-sans-500-latin.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="fonts/space-grotesk-700-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/nosifer-400-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/barlowcondensed-700-latin.woff2" crossorigin>
 <style>
 /* The typefaces, served from this origin - the same woff2 files Google was
    handing out, minus the four faces nothing ever selected. font-display:swap
@@ -42,8 +43,12 @@
 @font-face{font-family:"DM Sans";font-style:normal;font-weight:600;font-display:swap;src:url(fonts/dm-sans-600-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
 @font-face{font-family:"DM Sans";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/dm-sans-700-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
 @font-face{font-family:"DM Sans";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/dm-sans-700-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
-@font-face{font-family:"Space Grotesk";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/space-grotesk-700-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
-@font-face{font-family:"Space Grotesk";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/space-grotesk-700-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:"Nosifer";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/nosifer-400-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:"Nosifer";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/nosifer-400-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:"Barlow Condensed";font-style:normal;font-weight:600;font-display:swap;src:url(fonts/barlowcondensed-600-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:"Barlow Condensed";font-style:normal;font-weight:600;font-display:swap;src:url(fonts/barlowcondensed-600-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:"Barlow Condensed";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/barlowcondensed-700-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:"Barlow Condensed";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/barlowcondensed-700-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
 :root{
   color-scheme:dark;
   --ink:#030202;
@@ -92,7 +97,7 @@ a:hover{text-decoration-color:#ff594e}
 }
 .hero:after{
   content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
-  background:linear-gradient(180deg,rgba(3,2,2,.05) 0%,rgba(3,2,2,.16) 40%,rgba(3,2,2,.82) 78%,rgba(3,2,2,.98) 100%),url("v/img-house/reference/house.jpg") center bottom/cover no-repeat;
+  background:linear-gradient(180deg,rgba(3,2,2,.05) 0%,rgba(3,2,2,.16) 40%,rgba(3,2,2,.82) 78%,rgba(3,2,2,.98) 100%),url("v/img-poster/house.jpg") center bottom/cover no-repeat;
   opacity:.82;mix-blend-mode:screen
 }
 body.sheeting .hero{transform:scale(.945) translateY(-14px)}
@@ -121,7 +126,7 @@ body.sheeting .hero{transform:scale(.945) translateY(-14px)}
 
 .topbar{
   position:relative;z-index:8;display:flex;justify-content:space-between;align-items:center;
-  gap:12px;font:700 12px/1 "Space Grotesk",sans-serif;letter-spacing:.11em;text-transform:uppercase;
+  gap:12px;font:700 14px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.11em;text-transform:uppercase;
   animation:rise .9s var(--ease) 1.15s backwards
 }
 .brand{display:flex;align-items:center;gap:9px}
@@ -175,7 +180,7 @@ body.sheeting .hero{transform:scale(.945) translateY(-14px)}
 .drawer.open{visibility:visible;opacity:1;transition:opacity .38s var(--ease)}
 .drawer-top{
   display:flex;justify-content:space-between;align-items:center;gap:12px;
-  font:700 12px/1 "Space Grotesk",sans-serif;letter-spacing:.11em;text-transform:uppercase
+  font:700 14px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.11em;text-transform:uppercase
 }
 .drawer-top .brand{text-decoration:none;color:var(--bone)}
 .drawer-close{
@@ -190,14 +195,14 @@ body.sheeting .hero{transform:scale(.945) translateY(-14px)}
 .drawer-nav a{
   display:flex;justify-content:space-between;align-items:baseline;gap:12px;
   padding:16px 0;border-top:1px solid var(--line);text-decoration:none;color:var(--bone);
-  font:700 clamp(28px,7.4vw,36px)/1 "Space Grotesk",sans-serif;letter-spacing:-.015em;
+  font:400 clamp(18px,4.7vw,26px)/1 "Nosifer",Impact,"Arial Black",sans-serif;letter-spacing:.02em;text-transform:uppercase;
   opacity:0;transform:translate3d(0,14px,0);
   transition:opacity .5s var(--ease),transform .5s var(--ease)
 }
 .drawer-nav a:last-child{border-bottom:1px solid var(--line)}
 .drawer-nav a:hover{color:#fff}
 .drawer-nav a span{
-  font:700 11px/1 "Space Grotesk",sans-serif;letter-spacing:.11em;text-transform:uppercase;
+  font:700 13px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.11em;text-transform:uppercase;
   color:var(--muted);flex:none
 }
 .drawer.open .drawer-nav a{opacity:1;transform:none}
@@ -210,7 +215,7 @@ body.sheeting .hero{transform:scale(.945) translateY(-14px)}
 .drawer-foot{display:grid;gap:18px}
 .drawer-foot .cta{width:100%;color:var(--bone);cursor:pointer}
 .drawer-foot p{
-  margin:0;text-align:center;font:700 11px/1.6 "Space Grotesk",sans-serif;
+  margin:0;text-align:center;font:700 13px/1.6 "Barlow Condensed","Arial Narrow",sans-serif;
   letter-spacing:.11em;text-transform:uppercase;color:var(--muted)
 }
 .drawer-foot p a{color:#c7b8ae;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(255,89,78,.55)}
@@ -419,35 +424,43 @@ body.sheeting .hero{transform:scale(.945) translateY(-14px)}
 .hero-copy{position:relative;z-index:9;padding-top:8px;text-align:left}
 .rooms-peek{position:absolute;right:6vw;bottom:7vh;z-index:8;width:min(24vw,300px);aspect-ratio:4/3;overflow:hidden;border:1px solid rgba(255,220,197,.28);box-shadow:0 18px 60px #000,0 0 28px rgba(227,48,39,.18);transform:rotate(2deg);opacity:.82;animation:rise .9s var(--ease) 1.8s backwards}
 .rooms-peek img{width:100%;height:100%;display:block;object-fit:cover;filter:brightness(.55) saturate(.72) contrast(1.12)}
-.rooms-peek span{position:absolute;left:12px;bottom:10px;font:700 10px/1 "Space Grotesk",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#f3e8de;text-shadow:0 1px 10px #000}
+.rooms-peek span{position:absolute;left:12px;bottom:10px;font:700 12px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#f3e8de;text-shadow:0 1px 10px #000}
 /* Reference poster composition, built from the supplied production assets. */
 .hero .key-stage{display:none}
-.hero .rooms-peek{display:block;inset:0 0 auto;width:100%;height:47%;margin:0;right:auto;bottom:auto;border:0;border-radius:0;box-shadow:none;transform:none;opacity:.92;animation:none;background:#080303;z-index:1}
-.hero .rooms-peek img{filter:saturate(.8) contrast(1.08) brightness(.68);object-position:center 38%}
+/* The figure fades out through a mask rather than ending: at .92 opacity its
+   bottom edge read as a rule drawn across the room, whatever colour the
+   gradient ended on. */
+.hero .rooms-peek{display:block;inset:0 0 auto;width:100%;height:36%;margin:0;right:auto;bottom:auto;border:0;border-radius:0;box-shadow:none;transform:none;opacity:1;animation:none;background:#080303;z-index:1;-webkit-mask-image:linear-gradient(to bottom,#000 48%,rgba(0,0,0,.6) 74%,transparent 100%);mask-image:linear-gradient(to bottom,#000 48%,rgba(0,0,0,.6) 74%,transparent 100%)}
+.hero .rooms-peek img{filter:saturate(.8) contrast(1.08) brightness(.78);object-position:center 30%}
 .hero .rooms-peek:before{content:"";position:absolute;inset:0 0 auto;height:34px;background:#080303;z-index:2}
-.hero .rooms-peek:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.16),transparent 54%,rgba(4,1,1,.96))}
+.hero .rooms-peek:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.22),transparent 40%,rgba(4,1,1,.45) 100%)}
 .hero .rooms-peek span{display:none}
 .hero .hero-copy{position:absolute;left:50%;bottom:7%;width:min(92vw,720px);transform:translateX(-50%);display:grid;justify-items:center;gap:10px;text-align:center;z-index:4;padding:0}
-.hero .kicker{color:#f06a60;letter-spacing:.28em;font-size:11px;text-transform:uppercase}
-.hero h1{max-width:12ch;text-transform:uppercase;line-height:.84;text-shadow:0 4px 32px rgba(0,0,0,.85)}
+.hero .kicker{color:#f06a60;letter-spacing:.28em;font-size:13px;text-transform:uppercase}
+/* The h1 is the poster's own lettering: cut from the flyer with its alpha
+   kept, so the drips fall onto the stage below it. The alt text is the
+   headline for everything that cannot see, and if the picture fails the h1
+   falls back to the display face at the size above. */
+.hero h1{max-width:none;width:min(84vw,380px);margin:0;text-transform:uppercase;line-height:.9;text-shadow:0 4px 32px rgba(0,0,0,.85);animation:rise .85s var(--ease) 1.34s backwards}
+.hero h1 img{display:block;width:100%;height:auto;filter:drop-shadow(0 10px 26px rgba(0,0,0,.75))}
 .hero h1 .l1{display:block;color:#ff514a}
 .hero h1 .glow{display:block;color:#f3e8de}
-.hero h1 small{display:block;font:700 .3em/1 "Space Grotesk",sans-serif;letter-spacing:.42em;color:#ff514a;margin:.35em 0 0 .45em}
-.hero .lead{max-width:34rem;font-family:"Cormorant Garamond",serif;font-size:clamp(18px,2.8vw,26px);line-height:1.12;color:#f3e8de}
-.hero .dayline{display:block!important;min-height:1.1em;margin:2px 0 0;color:#ff5b52;font:700 clamp(30px,7vw,58px)/.9 "Cinzel",serif;letter-spacing:.06em;text-transform:uppercase}
+.hero h1 small{display:block;font:700 .3em/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.42em;color:#ff514a;margin:.35em 0 0 .45em}
+.hero .lead{max-width:34rem;font:600 clamp(17px,4.6vw,22px)/1.25 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#f3e8de}
+.hero .dayline{display:block!important;min-height:1.1em;margin:2px 0 0;color:#ff5b52;font:400 clamp(27px,7.6vw,49px)/.95 "Nosifer",Impact,"Arial Black",sans-serif;letter-spacing:.03em;text-transform:uppercase}
 .hero .poster-countdown{display:grid;grid-template-columns:repeat(3,1fr);width:min(88vw,460px);margin:3px 0 2px;border-top:1px solid rgba(255,91,82,.45);border-bottom:1px solid rgba(255,91,82,.3);padding:8px 0 7px}
 .hero .poster-countdown div{display:grid;gap:2px;justify-items:center;position:relative}
 .hero .poster-countdown div+div:before{content:"";position:absolute;left:0;top:8%;height:84%;border-left:1px solid rgba(255,91,82,.45)}
-.hero .poster-countdown b{color:#ff5b52;font:700 clamp(24px,6vw,42px)/.9 "Cinzel",serif;letter-spacing:.04em}
-.hero .poster-countdown span{color:#f3e8de;font:600 9px/1 "Space Grotesk",sans-serif;letter-spacing:.25em;text-transform:uppercase}
+.hero .poster-countdown b{color:#ff5b52;font:400 clamp(23px,6.5vw,40px)/.9 "Nosifer",Impact,"Arial Black",sans-serif;letter-spacing:.02em}
+.hero .poster-countdown span{color:#f3e8de;font:600 11px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.25em;text-transform:uppercase}
 .hero .actions{width:min(88vw,520px);margin-top:4px}
-.hero .actions .cta{width:100%;border:1px solid #ff4c45;border-radius:12px;background:linear-gradient(90deg,rgba(255,32,29,.3),rgba(78,5,5,.72));box-shadow:0 0 22px rgba(236,31,28,.35),inset 0 0 18px rgba(255,77,67,.12);font:700 15px/1 "Space Grotesk",sans-serif;letter-spacing:.18em;text-transform:uppercase}
+.hero .actions .cta{width:100%;border:1px solid #ff4c45;border-radius:12px;background:linear-gradient(90deg,rgba(255,32,29,.3),rgba(78,5,5,.72));box-shadow:0 0 22px rgba(236,31,28,.35),inset 0 0 18px rgba(255,77,67,.12);font:700 20px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.14em;text-transform:uppercase}
 .hero .actions .cta:after{content:"→";margin-left:18px;font-size:22px;line-height:0;vertical-align:-2px}
-.hero .age{display:flex;align-items:center;gap:10px;margin:2px 0 0;font:700 11px/1 "Space Grotesk",sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#d3c3ba}
+.hero .age{display:flex;align-items:center;gap:10px;margin:2px 0 0;font:700 13px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#d3c3ba}
 .hero .age strong{display:grid;place-items:center;width:32px;height:32px;border:1px solid #ff5b52;border-radius:50%;color:#ff5b52;font-size:12px;letter-spacing:0}
-.hero .tagline{margin:10px 0 0;font:700 10px/1.7 "Space Grotesk",sans-serif;letter-spacing:.28em;text-transform:uppercase;color:#f3e8de}
+.hero .tagline{margin:10px 0 0;font:700 12px/1.7 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#f3e8de}
 .hero .tagline span{color:#ff5b52}
-@media(min-width:720px){.hero .rooms-peek{height:54%}.hero .hero-copy{bottom:7%;gap:14px}.hero .hero-copy h1{font-size:clamp(64px,8vw,112px);max-width:10ch}.hero .hero-copy .lead{max-width:600px}}
+@media(min-width:720px){.hero .rooms-peek{height:46%}.hero .hero-copy{bottom:7%;gap:14px}.hero .hero-copy h1{width:min(56vw,560px)}.hero .hero-copy .lead{max-width:600px}}
 /* Staggered, 90ms apart, and the stagger starts only once the room is lit -
    the push-in is 2.4s and these begin at 1.25, so the words are landing while
    the picture is still settling rather than after it. backwards fill, so the
@@ -455,12 +468,12 @@ body.sheeting .hero{transform:scale(.945) translateY(-14px)}
 @keyframes rise{from{opacity:0;transform:translate3d(0,16px,0)}to{opacity:1;transform:none}}
 .kicker{
   margin:0 0 10px;animation:rise .8s var(--ease) 1.25s backwards;
-  font:700 13px/1.2 "Space Grotesk",sans-serif;
+  font:700 15px/1.2 "Barlow Condensed","Arial Narrow",sans-serif;
   letter-spacing:.13em;text-transform:uppercase;color:#d9cbc0
 }
 h1{
-  margin:0;font:700 clamp(38px,12vw,66px)/.88 "Space Grotesk",sans-serif;
-  letter-spacing:-.055em;max-width:10ch;text-wrap:balance
+  margin:0;font:400 clamp(32px,9.9vw,55px)/.9 "Nosifer",Impact,"Arial Black",sans-serif;
+  letter-spacing:.02em;text-transform:uppercase;max-width:10ch;text-wrap:balance
 }
 h1 span{display:inline-block}
 h1 .l1{animation:rise .85s var(--ease) 1.34s backwards}
@@ -487,7 +500,7 @@ h1 .glow{animation:hearttext 3.8s infinite,rise .85s var(--ease) 1.43s backwards
    .lead and .actions. */
 .dayline{
   margin:-8px 0 18px;
-  font:700 13px/1.2 "Space Grotesk",sans-serif;
+  font:700 15px/1.2 "Barlow Condensed","Arial Narrow",sans-serif;
   letter-spacing:.16em;text-transform:uppercase;color:#ff594e;
   text-shadow:0 0 8px rgba(227,48,39,.6),0 0 26px rgba(227,48,39,.32);
   animation:hearttext 3.8s infinite,rise .85s var(--ease) 1.565s backwards
@@ -500,7 +513,7 @@ h1 .glow{animation:hearttext 3.8s infinite,rise .85s var(--ease) 1.43s backwards
   /* iOS Safari before 18 knows only the prefixed spelling, and iOS is most of
      what a flyer or an Instagram link sends here. */
   -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
-  font:700 15px/1 "Space Grotesk",sans-serif;
+  font:700 18px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.14em;text-transform:uppercase;
   box-shadow:0 0 28px rgba(227,48,39,.08);
   /* transform only. Unqualified, this transitions all properties, which
      includes outline-width - so the keyboard focus ring faded in over 300ms
@@ -574,7 +587,7 @@ h1 .glow{animation:hearttext 3.8s infinite,rise .85s var(--ease) 1.43s backwards
 }
 .sheet.dragging .grab{background:#8a5c52;transform:scaleX(1.12)}
 .sheet-top{display:flex;align-items:center;justify-content:space-between;flex:none}
-.sheet-tag{font:700 13px/1 "Space Grotesk";letter-spacing:.34em;text-transform:uppercase;color:#d7c9be}
+.sheet-tag{font:700 15px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.3em;text-transform:uppercase;color:#d7c9be}
 .close{
   width:46px;height:46px;border-radius:50%;
   /* Was #4a3832: 1.82:1 against the sheet, below the 3:1 floor for a control
@@ -582,13 +595,13 @@ h1 .glow{animation:hearttext 3.8s infinite,rise .85s var(--ease) 1.43s backwards
   border:1px solid #c22119;background:transparent;font-size:32px;color:#f3e8de;
   transition:transform .2s var(--ease-out)
 }
-.sheet h2{margin:48px 0 18px;font:700 clamp(44px,7vw,78px)/.9 Georgia,serif;letter-spacing:.015em;text-transform:uppercase;color:#f3e8de}
+.sheet h2{margin:48px 0 18px;font:400 clamp(36px,6.1vw,65px)/.92 "Nosifer",Impact,"Arial Black",sans-serif;letter-spacing:.02em;text-transform:uppercase;color:#f3e8de}
 .sheet h2 .glow{color:#e33027}
 /* Not .sheet>p: the paragraph sits inside #formbox, so the child combinator
    matched nothing and the line rendered at full body brightness. :not([class])
    rather than a plain descendant, because .err and .fine are paragraphs in
    here too and a descendant selector outranks them. */
-.sheet p:not([class]){margin:0 0 34px;color:#d7c9be;font:700 15px/1.8 "Space Grotesk";letter-spacing:.27em;text-transform:uppercase;max-width:31ch}
+.sheet p:not([class]){margin:0 0 34px;color:#d7c9be;font:700 17px/1.7 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.22em;text-transform:uppercase;max-width:36ch}
 /* The sheet's own contents arrive after it does, 55ms apart, so the panel
    lands and then fills rather than sliding up finished. Keyed off .open, so
    it replays every time the door is knocked on again. */
@@ -643,7 +656,7 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
 .submit{
   position:relative;width:100%;height:68px;border:1px solid #ff5045;border-radius:14px;
   background:linear-gradient(90deg,#9d1712,#df2b21 55%,#a31813);color:#fff;font-weight:800;margin-top:4px;
-  font-family:"Space Grotesk";letter-spacing:.2em;text-transform:uppercase;
+  font:700 20px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.14em;text-transform:uppercase;
   transition:transform .18s var(--ease-out)
 }
 .sound{transition:opacity .3s var(--ease-out),transform .2s var(--ease-out)}
@@ -720,9 +733,9 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
   30%{opacity:1}
   to{opacity:.55;transform:scaleX(1)}
 }
-.success strong{display:block;font:700 44px/.95 "Space Grotesk";letter-spacing:-.055em}
+.success strong{display:block;font:400 38px/.95 "Nosifer",Impact,"Arial Black",sans-serif;letter-spacing:.02em;text-transform:uppercase}
 .success span{display:block;margin-top:12px;color:var(--muted)}
-.success .glow{display:block;margin-top:22px;font:700 19px/1.2 "Space Grotesk"}
+.success .glow{display:block;margin-top:22px;font:600 21px/1.2 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.06em;text-transform:uppercase}
 /* Three lines, one at a time, like an answer through a door. */
 .success strong{animation:rise .7s var(--ease) .28s backwards}
 .success span{animation:rise .7s var(--ease) .52s backwards}
@@ -817,7 +830,7 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
 @media(max-width:899px){.rooms-peek{right:18px;bottom:18px;width:126px;opacity:.62}.rooms-peek span{font-size:8px}}
 @media(max-width:899px){
   .sheet{padding-left:24px;padding-right:24px}
-  .sheet h2{font-size:clamp(40px,12vw,60px)}
+  .sheet h2{font-size:clamp(30px,9vw,46px)}
 }
 /* Sideways, and wide enough to stand them next to each other.
 
@@ -1211,7 +1224,7 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
 
   <div class="hero-copy">
     <p class="kicker">Family &middot; Murder &middot; Mystery &middot; Reality</p>
-    <h1><span class="l1">Haunted</span> <span class="glow">Mansion <small>BK</small></span></h1>
+    <h1><picture><source type="image/webp" srcset="v/img-poster/logo.webp"><img src="v/img-poster/logo.png" width="720" height="300" alt="Haunted Mansion BK" fetchpriority="high"></picture></h1>
     <p class="lead">Brooklyn&rsquo;s first full-scale Halloween haunted house experience. One hour inside the home where it all happened.</p>
     <!-- Hidden until the script below has computed it, so no script means
          no line rather than a stale one. -->
@@ -1228,7 +1241,7 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
     <p class="tagline">You&rsquo;re not visiting a haunted house.<br><span>You&rsquo;re returning to a crime scene.</span></p>
   </div>
   <figure class="rooms-peek" aria-hidden="true">
-    <img src="v/img-house/reference/stage.jpg" alt="">
+    <picture><source type="image/webp" srcset="v/img-poster/stage.webp"><img src="v/img-poster/stage.jpg" width="1145" height="355" alt="" decoding="async"></picture>
     <span>Rooms inside</span>
   </figure>
 </main>

@@ -1,7 +1,7 @@
 # Fonts
 
-These four families used to be loaded from `fonts.googleapis.com`. They are
-served from this origin now, for three reasons:
+Every face is served from this origin. Nothing loads from
+`fonts.googleapis.com`, for three reasons:
 
 1. **Speed.** A remote stylesheet meant a DNS lookup, a TLS handshake and a
    round trip for the CSS had to finish before the browser learned the URL of
@@ -13,29 +13,35 @@ served from this origin now, for three reasons:
    photograph.
 
 The `.woff2` files are Google's own, fetched unmodified from
-`fonts.gstatic.com` — byte for byte what the `<link>` tag used to pull, so
-nothing about the rendering changed.
+`fonts.gstatic.com`.
 
 ## What is here, and what is not
 
-Only the faces something actually selects. The old link requested seven and
-four were ever used: Space Grotesk 500 and 600, and DM Sans 400, were being
-downloaded by nobody.
+Three families, and only the faces something actually selects:
 
-| Family | Weights | Used by |
+| Family | Weights | Role |
 |---|---|---|
-| DM Sans | 500, 600, 700 | index |
-| Space Grotesk | 700 | index |
-| Cinzel | 400 | privacy, 404 |
-| Cormorant Garamond | 300, 400 | privacy (300, 400), 404 (300) |
+| Nosifer | 400 | display: headings, the dayline, the countdown, drawer nav |
+| Barlow Condensed | 500, 600, 700 | labels, kickers, leads, buttons |
+| DM Sans | 500, 600, 700 | body copy |
+
+The homepage h1 is the poster's own lettering (`v/img-poster/logo.png`);
+Nosifer is what it falls back to if the picture fails. Buttons stay in
+Barlow Condensed on purpose: a dripping face at button size costs
+legibility on the one control that matters.
 
 Each comes in `latin` and `latin-ext`. The `unicode-range` on every
 `@font-face` means `latin-ext` is fetched only when a glyph inside it is
 actually rendered — an accented name typed into the form, most often never.
 
+Cinzel, Cormorant Garamond and Space Grotesk were removed with the poster
+retheme (2026-09-15); Butcherman was tried for the display role the same
+day and lost to Nosifer (its A drops its crossbar below ~40px). No page
+references any of them.
+
 ## Licence
 
-All four are under the SIL Open Font License 1.1. The upstream licence text,
+All three are under the SIL Open Font License 1.1. The upstream licence text,
 including each family's copyright line, is in the `OFL-*.txt` files beside the
 fonts; they were taken from `github.com/google/fonts`. The OFL permits
 redistribution and self-hosting like this; it requires that these notices ship
@@ -48,6 +54,6 @@ covers that block — so after any edit, run:
 
     python tools/csp.py
 
-`tools/test_page.py` asserts all three live pages still serve their own fonts,
+`tools/test_page.py` asserts every live page still serves its own fonts,
 that no page has a `fonts.googleapis.com` link, that `font-src` is `'self'`,
 and that every file named in an `@font-face` exists.

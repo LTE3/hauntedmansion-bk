@@ -1,4 +1,5 @@
-Copyright 2020 The Cinzel Project Authors (https://github.com/NDISCOVER/Cinzel)
+Copyright (c) 2011, Typomondo,
+with Reserved Font Name "Nosifer".
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:

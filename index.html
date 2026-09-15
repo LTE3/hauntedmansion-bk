@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-b2jfzEM4JK6NykCFvWS72/vt6XG4UHWEBgO5MdradB4='; font-src 'self'; script-src 'sha256-WYo44dLoelzQY2NA8PeXEi/AK9GKA6Ve1JQDYTyj4T4=' 'sha256-mPtrMIM+BVbm52EHIXdyXD3+zPyp6A4zFANuLG08TgU='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-PEKMIZafj9mmj3kIeZJlVchxpR7W48gWGNQgF+3Y6FY='; font-src 'self'; script-src 'sha256-wTmdxerZwqf75vfBajPvjfxmp7xel1dJK5iyjF94UaQ=' 'sha256-mPtrMIM+BVbm52EHIXdyXD3+zPyp6A4zFANuLG08TgU='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Every house has a story. | Haunted Mansion BK</title>
@@ -434,6 +434,11 @@ body.sheeting .hero{transform:scale(.945) translateY(-14px)}
 .hero h1 small{display:block;font:700 .3em/1 "Space Grotesk",sans-serif;letter-spacing:.42em;color:#ff514a;margin:.35em 0 0 .45em}
 .hero .lead{max-width:34rem;font-family:"Cormorant Garamond",serif;font-size:clamp(18px,2.8vw,26px);line-height:1.12;color:#f3e8de}
 .hero .dayline{display:block!important;min-height:1.1em;margin:2px 0 0;color:#ff5b52;font:700 clamp(30px,7vw,58px)/.9 "Cinzel",serif;letter-spacing:.06em;text-transform:uppercase}
+.hero .poster-countdown{display:grid;grid-template-columns:repeat(3,1fr);width:min(88vw,460px);margin:3px 0 2px;border-top:1px solid rgba(255,91,82,.45);border-bottom:1px solid rgba(255,91,82,.3);padding:8px 0 7px}
+.hero .poster-countdown div{display:grid;gap:2px;justify-items:center;position:relative}
+.hero .poster-countdown div+div:before{content:"";position:absolute;left:0;top:8%;height:84%;border-left:1px solid rgba(255,91,82,.45)}
+.hero .poster-countdown b{color:#ff5b52;font:700 clamp(24px,6vw,42px)/.9 "Cinzel",serif;letter-spacing:.04em}
+.hero .poster-countdown span{color:#f3e8de;font:600 9px/1 "Space Grotesk",sans-serif;letter-spacing:.25em;text-transform:uppercase}
 .hero .actions{width:min(88vw,520px);margin-top:4px}
 .hero .actions .cta{width:100%;border:1px solid #ff4c45;border-radius:12px;background:linear-gradient(90deg,rgba(255,32,29,.3),rgba(78,5,5,.72));box-shadow:0 0 22px rgba(236,31,28,.35),inset 0 0 18px rgba(255,77,67,.12);font:700 15px/1 "Space Grotesk",sans-serif;letter-spacing:.18em;text-transform:uppercase}
 .hero .actions .cta:after{content:"→";margin-left:18px;font-size:22px;line-height:0;vertical-align:-2px}
@@ -1212,6 +1217,11 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
     <!-- Hidden until the script below has computed it, so no script means
          no line rather than a stale one. -->
     <p class="dayline" data-opens="2026-10-01" hidden></p>
+    <div class="poster-countdown" data-countdown hidden aria-label="Countdown to opening">
+      <div><b data-days>--</b><span>Days</span></div>
+      <div><b data-hours>--</b><span>Hours</span></div>
+      <div><b data-minutes>--</b><span>Minutes</span></div>
+    </div>
     <div class="actions">
       <button class="cta" data-open>Join the waitlist<span class="rap" aria-hidden="true"></span></button>
     </div>
@@ -2249,6 +2259,7 @@ form.addEventListener("submit", async e => {
    than "0 days remain"; nothing at all once the date is behind us. */
 {
   const el = document.querySelector(".dayline");
+  const count = document.querySelector("[data-countdown]");
   const opens = el && el.getAttribute("data-opens");
   const m = opens && /^(\d{4})-(\d{2})-(\d{2})$/.exec(opens);
   if(m){
@@ -2261,6 +2272,21 @@ form.addEventListener("submit", async e => {
     else if(n === 1) el.textContent = "One day remains";
     else if(n === 0) el.textContent = "Tonight";
     if(n >= 0) el.hidden = false;
+    if(n >= 0 && count){
+      const target = Date.UTC(+m[1], +m[2] - 1, +m[3]);
+      const tick = () => {
+        const left = Math.max(0, target - Date.now());
+        const mins = Math.floor(left / 60000);
+        const days = Math.floor(mins / 1440);
+        const hours = Math.floor((mins % 1440) / 60);
+        const minutes = mins % 60;
+        count.querySelector("[data-days]").textContent = String(days).padStart(2,"0");
+        count.querySelector("[data-hours]").textContent = String(hours).padStart(2,"0");
+        count.querySelector("[data-minutes]").textContent = String(minutes).padStart(2,"0");
+        count.hidden = false;
+      };
+      tick(); setInterval(tick, 30000);
+    }
   }
 }
 </script>

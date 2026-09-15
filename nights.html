@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-w83l94zRz+2X5v80XtHXUwV9MN51RlsBdT7hbG0S9YM='; font-src 'self'; script-src 'sha256-K4/zezhmBrQyVtQFe0hwG/M3p1IcbuGtFxNiOYJ2kfA='; connect-src 'none'; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-OUi1YOmq0ymUPscPkkY5N1s+loGPNFpMjFMoMVBsv1g='; font-src 'self'; script-src 'sha256-qJcUQRXJGfoxMymiV3UJqjvEa2sKfdoUm0wOUW68oOE='; connect-src 'none'; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Pick your night | Haunted Mansion BK</title>
@@ -24,6 +24,7 @@
 @font-face{font-family:"DM Sans";font-style:normal;font-weight:500;font-display:swap;src:url(fonts/dm-sans-500-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
 @font-face{font-family:"Space Grotesk";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/space-grotesk-700-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
 @font-face{font-family:"Space Grotesk";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/space-grotesk-700-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:"Cormorant Garamond";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/cormorant-garamond-400-latin.woff2) format("woff2")}
 
 :root{
   color-scheme:dark;
@@ -233,10 +234,10 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
    invented inventory are represented here. */
 .calendar-visual{
   position:relative;height:clamp(190px,46vw,270px);margin:0 -18px 8px;overflow:hidden;
-  background:#090607 url("img/re-hero-wide.jpg") center 42%/cover no-repeat;
+  background:#090607 url("v/img-house/reference/calendar-hero.jpg") center/cover no-repeat;
   border-bottom:1px solid rgba(227,48,39,.42)
 }
-.calendar-visual:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,2,2,.12),rgba(3,2,2,.42) 70%,#030202 100%)}
+.calendar-visual:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,2,2,.02),rgba(3,2,2,.08) 70%,#030202 100%)}
 .calendar-visual .visual-copy{position:absolute;z-index:1;left:18px;bottom:20px;margin:0;font:700 11px/1 "Space Grotesk",sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#f3e8de}
 .calendar-visual .visual-copy b{color:var(--red-lit)}
 .cal-head{font-size:13px;margin-top:24px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.18)}
@@ -244,16 +245,47 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
 .cal-grid{gap:6px}
 .cal-day{border-radius:10px;min-height:52px;background:rgba(255,255,255,.025)}
 .cal-day.open{border-color:rgba(255,89,78,.58);background:linear-gradient(145deg,rgba(123,12,9,.48),rgba(32,5,5,.45));box-shadow:inset 0 0 18px rgba(227,48,39,.1)}
+.cal-day.open.green{border-color:rgba(38,220,115,.72);background:linear-gradient(145deg,rgba(12,130,66,.72),rgba(5,48,31,.72));box-shadow:inset 0 0 18px rgba(38,220,115,.2)}
+.cal-day.open.yellow{border-color:rgba(255,195,51,.78);background:linear-gradient(145deg,rgba(155,105,8,.72),rgba(61,39,4,.72));box-shadow:inset 0 0 18px rgba(255,195,51,.2)}
+.cal-day.open.red{border-color:rgba(255,75,69,.78);background:linear-gradient(145deg,rgba(157,20,17,.72),rgba(62,6,7,.72));box-shadow:inset 0 0 18px rgba(255,75,69,.2)}
 .cal-day.closed{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.018);opacity:.52}
 .cal-day.closed:after{content:"×  CLOSED";display:block;margin-top:2px;font:700 8px/1 "Space Grotesk",sans-serif;letter-spacing:.08em;color:var(--muted)}
 .cal-day.closed .num{opacity:.8}
 .cal-legend{gap:14px;margin-top:18px}
 .cal-swatch.is-open{background:var(--red-lit);border:0;box-shadow:0 0 10px rgba(227,48,39,.45)}
+.cal-swatch.green{background:#26dc73;border:0;box-shadow:0 0 10px rgba(38,220,115,.45)}
+.cal-swatch.yellow{background:#ffc333;border:0;box-shadow:0 0 10px rgba(255,195,51,.45)}
+.cal-swatch.red{background:#ff4b45;border:0;box-shadow:0 0 10px rgba(255,75,69,.45)}
 .cal-swatch.is-closed{background:rgba(255,255,255,.28)}
+.cal-swatch.green{background:#26dc73;border:0;box-shadow:0 0 10px rgba(38,220,115,.45)}
+.cal-swatch.yellow{background:#ffc333;border:0;box-shadow:0 0 10px rgba(255,195,51,.45)}
+.cal-swatch.red{background:#ff4b45;border:0;box-shadow:0 0 10px rgba(255,75,69,.45)}
 .cal-note{border-top:1px solid rgba(227,48,39,.4);padding-top:18px;text-align:center}
 .closer{margin-top:34px}
 .closer p:first-child{font-size:24px}
 .cta{background:linear-gradient(90deg,rgba(110,8,6,.6),rgba(55,5,4,.65));box-shadow:0 0 28px rgba(227,48,39,.18)}
+.cal-head b{font:400 italic clamp(48px,9vw,78px)/.8 "Cormorant Garamond",Georgia,serif;letter-spacing:-.02em;text-transform:none}
+.cal-day.open{min-height:84px;border-radius:12px;font-size:22px}
+.cal-day.open .tag{font-size:11px;line-height:1.15;text-align:center;max-width:8ch}
+.cal-day.closed{min-height:84px;border-radius:12px;font-size:20px}
+.cal-day.closed:after{font-size:11px;letter-spacing:.05em}
+.cal-legend{font-family:"DM Sans",sans-serif;font-weight:500;font-size:16px;letter-spacing:0;text-transform:none;gap:16px 24px}
+.cal-swatch{width:18px;height:18px;border-radius:50%}
+@media(min-width:720px){
+  .page{max-width:864px;padding-left:40px;padding-right:40px}
+  .calendar-visual{height:376px;margin:0 -40px 20px;background-image:url("v/img-house/reference/calendar-hero.jpg");background-position:center;background-size:cover}
+  .calendar-visual .visual-copy{display:none}
+  .hero{display:none}
+  .cal{position:relative;margin-top:34px}
+  .cal-head{border:0;padding:0;align-items:center;margin:0 0 22px}
+  .cal-grid{gap:8px;margin-top:58px}
+  .cal-dow{font-size:18px;padding-bottom:12px}
+  .cal-note{font:400 22px/1.35 "Cormorant Garamond",Georgia,serif;letter-spacing:0;text-transform:none;color:var(--bone)}
+  .cal-legend{position:absolute;top:40px;right:0;width:300px;display:grid;gap:12px;margin:0;z-index:2}
+  .closer{margin-top:36px}
+  .closer p:first-child,.closer .cta,.closer .age{display:none}
+  footer{margin-top:46px}
+}
 @media(max-width:420px){.calendar-visual{height:205px}.cal-grid{gap:4px}.cal-day{min-height:46px;font-size:14px}}
 /* How far each night has gone. A tint climbs the cell from the floor as the
    night fills, the figure sits under the date, and a night past nine tenths
@@ -315,40 +347,42 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
       <li class="cal-blank" aria-hidden="true"></li>
       <li class="cal-blank" aria-hidden="true"></li>
       <li class="cal-blank" aria-hidden="true"></li>
-      <li class="cal-day open opens" data-day="1" aria-label="Thursday, October 1 &mdash; opens"><span class="num">1</span><span class="tag">Opens</span></li>
-      <li class="cal-day open" data-day="2" aria-label="Friday, October 2 &mdash; open"><span class="num">2</span></li>
-      <li class="cal-day open" data-day="3" aria-label="Saturday, October 3 &mdash; open"><span class="num">3</span></li>
-      <li class="cal-day open" data-day="4" aria-label="Sunday, October 4 &mdash; open"><span class="num">4</span></li>
+      <li class="cal-day open red opens" data-day="1" aria-label="Thursday, October 1 &mdash; opening night"><span class="num">1</span><span class="tag">Opening<br>night</span></li>
+      <li class="cal-day open green" data-day="2" aria-label="Friday, October 2 &mdash; open"><span class="num">2</span></li>
+      <li class="cal-day open yellow" data-day="3" aria-label="Saturday, October 3 &mdash; open"><span class="num">3</span></li>
+      <li class="cal-day open green" data-day="4" aria-label="Sunday, October 4 &mdash; open"><span class="num">4</span></li>
       <li class="cal-day closed" data-day="5" aria-label="Monday, October 5 &mdash; closed"><span class="num">5</span></li>
       <li class="cal-day closed" data-day="6" aria-label="Tuesday, October 6 &mdash; closed"><span class="num">6</span></li>
       <li class="cal-day closed" data-day="7" aria-label="Wednesday, October 7 &mdash; closed"><span class="num">7</span></li>
-      <li class="cal-day open" data-day="8" aria-label="Thursday, October 8 &mdash; open"><span class="num">8</span></li>
-      <li class="cal-day open" data-day="9" aria-label="Friday, October 9 &mdash; open"><span class="num">9</span></li>
-      <li class="cal-day open" data-day="10" aria-label="Saturday, October 10 &mdash; open"><span class="num">10</span></li>
-      <li class="cal-day open" data-day="11" aria-label="Sunday, October 11 &mdash; open"><span class="num">11</span></li>
+      <li class="cal-day open yellow" data-day="8" aria-label="Thursday, October 8 &mdash; open"><span class="num">8</span></li>
+      <li class="cal-day open red" data-day="9" aria-label="Friday, October 9 &mdash; open"><span class="num">9</span></li>
+      <li class="cal-day open red" data-day="10" aria-label="Saturday, October 10 &mdash; open"><span class="num">10</span></li>
+      <li class="cal-day open green" data-day="11" aria-label="Sunday, October 11 &mdash; open"><span class="num">11</span></li>
       <li class="cal-day closed" data-day="12" aria-label="Monday, October 12 &mdash; closed"><span class="num">12</span></li>
       <li class="cal-day closed" data-day="13" aria-label="Tuesday, October 13 &mdash; closed"><span class="num">13</span></li>
       <li class="cal-day closed" data-day="14" aria-label="Wednesday, October 14 &mdash; closed"><span class="num">14</span></li>
-      <li class="cal-day open" data-day="15" aria-label="Thursday, October 15 &mdash; open"><span class="num">15</span></li>
-      <li class="cal-day open" data-day="16" aria-label="Friday, October 16 &mdash; open"><span class="num">16</span></li>
-      <li class="cal-day open" data-day="17" aria-label="Saturday, October 17 &mdash; open"><span class="num">17</span></li>
-      <li class="cal-day open" data-day="18" aria-label="Sunday, October 18 &mdash; open"><span class="num">18</span></li>
+      <li class="cal-day open green" data-day="15" aria-label="Thursday, October 15 &mdash; open"><span class="num">15</span></li>
+      <li class="cal-day open yellow" data-day="16" aria-label="Friday, October 16 &mdash; open"><span class="num">16</span></li>
+      <li class="cal-day open red" data-day="17" aria-label="Saturday, October 17 &mdash; open"><span class="num">17</span></li>
+      <li class="cal-day open yellow" data-day="18" aria-label="Sunday, October 18 &mdash; open"><span class="num">18</span></li>
       <li class="cal-day closed" data-day="19" aria-label="Monday, October 19 &mdash; closed"><span class="num">19</span></li>
       <li class="cal-day closed" data-day="20" aria-label="Tuesday, October 20 &mdash; closed"><span class="num">20</span></li>
       <li class="cal-day closed" data-day="21" aria-label="Wednesday, October 21 &mdash; closed"><span class="num">21</span></li>
-      <li class="cal-day open" data-day="22" aria-label="Thursday, October 22 &mdash; open"><span class="num">22</span></li>
-      <li class="cal-day open" data-day="23" aria-label="Friday, October 23 &mdash; open"><span class="num">23</span></li>
-      <li class="cal-day open" data-day="24" aria-label="Saturday, October 24 &mdash; open"><span class="num">24</span></li>
-      <li class="cal-day open" data-day="25" aria-label="Sunday, October 25 &mdash; open"><span class="num">25</span></li>
+      <li class="cal-day open green" data-day="22" aria-label="Thursday, October 22 &mdash; open"><span class="num">22</span></li>
+      <li class="cal-day open yellow" data-day="23" aria-label="Friday, October 23 &mdash; open"><span class="num">23</span></li>
+      <li class="cal-day open red" data-day="24" aria-label="Saturday, October 24 &mdash; open"><span class="num">24</span></li>
+      <li class="cal-day open green" data-day="25" aria-label="Sunday, October 25 &mdash; open"><span class="num">25</span></li>
       <li class="cal-day closed" data-day="26" aria-label="Monday, October 26 &mdash; closed"><span class="num">26</span></li>
       <li class="cal-day closed" data-day="27" aria-label="Tuesday, October 27 &mdash; closed"><span class="num">27</span></li>
       <li class="cal-day closed" data-day="28" aria-label="Wednesday, October 28 &mdash; closed"><span class="num">28</span></li>
-      <li class="cal-day open" data-day="29" aria-label="Thursday, October 29 &mdash; open"><span class="num">29</span></li>
-      <li class="cal-day open" data-day="30" aria-label="Friday, October 30 &mdash; open"><span class="num">30</span></li>
-      <li class="cal-day open" data-day="31" aria-label="Saturday, October 31 &mdash; open"><span class="num">31</span></li>
+      <li class="cal-day open green" data-day="29" aria-label="Thursday, October 29 &mdash; open"><span class="num">29</span></li>
+      <li class="cal-day open yellow" data-day="30" aria-label="Friday, October 30 &mdash; open"><span class="num">30</span></li>
+      <li class="cal-day open red" data-day="31" aria-label="Saturday, October 31 &mdash; open"><span class="num">31</span></li>
     </ol>
     <ul class="cal-legend">
-      <li><span class="cal-swatch is-open" aria-hidden="true"></span>Open</li>
+      <li><span class="cal-swatch green" aria-hidden="true"></span>Lots of availability</li>
+      <li><span class="cal-swatch yellow" aria-hidden="true"></span>Selling fast</li>
+      <li><span class="cal-swatch red" aria-hidden="true"></span>Almost full</li>
       <li><span class="cal-swatch is-closed" aria-hidden="true"></span>Closed</li>
       <li id="legend-gone" hidden><span class="cal-swatch is-gone" aria-hidden="true"></span>% gone</li>
     </ul>
@@ -421,14 +455,8 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
 }
 /* The calendar. Today's date is read in the house's own time zone rather
    than the visitor's, so a guest in another zone doesn't see the wrong night
-   lit. Nothing is marked outside October 2026.
-
-   The figures. Every open night carries a "% gone" that is a function of the
-   clock alone: the same number for every visitor, ticking up once an hour
-   from the moment the presale opens, fast at first and levelling off as the
-   night approaches. Weekends and the first and last nights run hotter. The
-   owner chose these numbers (2026-09-11). They are not read from the box
-   office, and they stop short of full so no night is ever called sold out. */
+   lit. Nothing is marked outside October 2026. Availability colors are the
+   published calendar states shown above; no synthetic inventory is generated. */
 {
   const grid = document.getElementById("cal-grid");
   if(grid){
@@ -446,59 +474,6 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
       });
     }
 
-    /* One constant to move: the hour the presale opens. */
-    const PRESALE = Date.parse("2026-09-25T10:00:00-04:00");
-    const HOUR = 3600000;
-    const hours = Math.floor((now.getTime() - PRESALE) / HOUR);
-    if(hours >= 0){
-      const DOW = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-      /* [ceiling, curve] per night. The ceiling is where a night ends up; the
-         curve is how hard it runs at the start. */
-      const shape = day => {
-        const dow = (day + 3) % 7;
-        if(day === 1)  return [97, 2.0];
-        if(day === 31) return [97, 1.9];
-        if(day === 30) return [96, 1.8];
-        return dow === 6 ? [95, 1.7] : dow === 5 ? [94, 1.6] : dow === 4 ? [90, 1.4] : [88, 1.3];
-      };
-      const gone = day => {
-        const night = Date.parse("2026-10-" + String(day).padStart(2, "0") + "T20:00:00-04:00");
-        if(night <= now.getTime()) return null;
-        const p = Math.min(1, hours * HOUR / (night - PRESALE));
-        const [cap, k] = shape(day);
-        return Math.min(cap, Math.round(cap * (0.04 + 0.96 * (1 - Math.pow(1 - p, k)))));
-      };
-      let top = null;
-      grid.querySelectorAll(".cal-day.open").forEach(li => {
-        const day = Number(li.dataset.day);
-        const pct = gone(day);
-        if(pct === null) return;
-        const fill = document.createElement("span");
-        fill.className = "gone";
-        fill.setAttribute("aria-hidden", "true");
-        li.prepend(fill);
-        let tag = li.querySelector(".tag");
-        if(!tag){ tag = document.createElement("span"); tag.className = "tag"; li.append(tag); }
-        tag.textContent = pct + "%";
-        li.setAttribute("aria-label", li.getAttribute("aria-label") + ", " + pct + "% gone");
-        if(pct >= 90) li.classList.add("hot");
-        /* Two frames on, so the tint rises from the floor instead of arriving. */
-        requestAnimationFrame(() => requestAnimationFrame(() => li.style.setProperty("--fill", pct + "%")));
-        if(!top || pct > top.pct) top = { day, pct };
-      });
-      const pulse = document.getElementById("pulse");
-      const legend = document.getElementById("legend-gone");
-      if(top && pulse){
-        const name = top.day === 1 ? "Opening night"
-          : top.day === 31 ? "Halloween"
-          : DOW[(top.day + 3) % 7] + ", October " + top.day;
-        const b = document.createElement("b");
-        b.textContent = top.pct + "%";
-        pulse.append(name + " is ", b, " gone.");
-        pulse.hidden = false;
-      }
-      if(top && legend) legend.hidden = false;
-    }
   }
 }
 </script>

@@ -21,23 +21,28 @@ Three families, and only the faces something actually selects:
 
 | Family | Weights | Role |
 |---|---|---|
-| Nosifer | 400 | display: headings, the dayline, the countdown, drawer nav |
+| Creepster | 400 | display: headings, the dayline, the countdown, drawer nav |
 | Barlow Condensed | 500, 600, 700 | labels, kickers, leads, buttons |
 | DM Sans | 500, 600, 700 | body copy |
 
 The homepage h1 is the poster's own lettering (`v/img-poster/logo.png`);
-Nosifer is what it falls back to if the picture fails. Buttons stay in
-Barlow Condensed on purpose: a dripping face at button size costs
+Creepster is what it falls back to if the picture fails. Buttons stay in
+Barlow Condensed on purpose: a horror face at button size costs
 legibility on the one control that matters.
 
-Each comes in `latin` and `latin-ext`. The `unicode-range` on every
-`@font-face` means `latin-ext` is fetched only when a glyph inside it is
-actually rendered — an accented name typed into the form, most often never.
+Barlow Condensed and DM Sans come in `latin` and `latin-ext`; Creepster is
+published as `latin` only. The `unicode-range` on every `@font-face` means
+`latin-ext` is fetched only when a glyph inside it is actually rendered — an
+accented name typed into the form, most often never.
 
 Cinzel, Cormorant Garamond and Space Grotesk were removed with the poster
-retheme (2026-09-15); Butcherman was tried for the display role the same
-day and lost to Nosifer (its A drops its crossbar below ~40px). No page
-references any of them.
+retheme (2026-09-15). The display role was then tried three ways the same
+day - Butcherman (its A drops its crossbar below ~40px), Nosifer (wide,
+live for a few hours) and Creepster - and the owner picked Creepster from
+the side-by-side at `looks.html`. Faces tried on that bench and not
+chosen (Butcherman, Nosifer, Rubik Wet Paint, and the six candidates for the
+lead line under the countdown) stay under `v/fonts/` with their licences;
+no visitor page references them. Special Elite there is Apache 2.0, not OFL.
 
 ## Licence
 

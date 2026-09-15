@@ -2,17 +2,19 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-NvUZG++q0+d5XyA/hx2lAAuPBEYE5g2Ad7oCnGMT8Fw='; font-src 'self'; script-src 'sha256-WZOiE0DJdYnboPNnCB8KciJxaWJuIVKRYAEbB2gqQCc='; connect-src 'none'; frame-src 'self'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-pzZXOyDHnvcYD9VHk2CjU427vFQBuAfU4mYQ/0sZO8o='; font-src 'self'; script-src 'sha256-asLszYkpFLI7SyFVF54+xJ/nNR2hg7lSaTtBcO1/4m8='; connect-src 'none'; frame-src 'self'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Six looks for the homepage</title>
+<title>Six leads for the homepage</title>
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#050505">
 <style>
 /* A cycler for the live homepage. The real index.html sits in the frame and
    each look is a handful of CSS rules pushed into its stylesheet through the
    CSSOM (insertRule), which the page's hash-only CSP does not police - so the
-   homepage file itself is never edited until a look is chosen. The chrome is
+   homepage file itself is never edited until a look is chosen. Round one
+   picked the display face (Creepster) and the full-screen house; round two,
+   the six here, is the line under the countdown. The chrome is
    deliberately plain: it is the thing being judged that should have the
    atmosphere, not the bench it sits on. */
 @font-face{font-family:"Barlow Condensed";font-weight:700;font-display:swap;src:url(fonts/barlowcondensed-700-latin.woff2) format("woff2")}
@@ -64,45 +66,37 @@ iframe.is-in{opacity:1}
 /* Each look is a list of complete CSS rules. They go in with insertRule at
    the end of the homepage's own stylesheet, so they win on order, and they
    come back out with deleteRule when the next look goes in. Fonts for the
-   candidate faces live under v/fonts; the page's font-src is 'self'. */
-var STACK = function (f) { return '"' + f + '",Impact,"Arial Black",sans-serif'; };
+   candidate faces live under v/fonts; the page's font-src is 'self'.
+
+   Round two (2026-09-15): the owner picked Creepster and the full-screen
+   house, both now live. These six change one thing only - the face on the
+   "Brooklyn's first full-scale..." line under the countdown. */
 var FACES = [
-  '@font-face{font-family:"Butcherman";src:url(v/fonts/butcherman-400-latin.woff2) format("woff2")}',
-  '@font-face{font-family:"Creepster";src:url(v/fonts/creepster-400-latin.woff2) format("woff2")}',
-  '@font-face{font-family:"Rubik Wet Paint";src:url(v/fonts/rubikwetpaint-400-latin.woff2) format("woff2")}'
+  '@font-face{font-family:"Special Elite";src:url(v/fonts/specialelite-400-latin.woff2) format("woff2")}',
+  '@font-face{font-family:"IM Fell English";src:url(v/fonts/imfellenglish-400-latin.woff2) format("woff2")}',
+  '@font-face{font-family:"Metamorphous";src:url(v/fonts/metamorphous-400-latin.woff2) format("woff2")}',
+  '@font-face{font-family:"Anton";src:url(v/fonts/anton-400-latin.woff2) format("woff2")}',
+  '@font-face{font-family:"Rye";src:url(v/fonts/rye-400-latin.woff2) format("woff2")}',
+  '@font-face{font-family:"Grenze Gotisch";font-weight:500;src:url(v/fonts/grenzegotisch-500-latin.woff2) format("woff2")}'
 ];
-function display(fam, day, cnt, drawer, sheet) {
-  var s = STACK(fam);
+/* The live line is Barlow Condensed 600, uppercase, clamp(17px,4.6vw,22px),
+   with a 15px cut on short landscape phones. Each candidate gets its own
+   size, case and tracking; a wide serif needs more room than a condensed
+   sans, and blackletter needs more still. */
+function lead(fam, weight, size, lh, caps, ls, small) {
+  var f = weight + ' ' + size + '/' + lh + ' "' + fam + '",Georgia,serif';
   return [
-    '.hero .dayline{font:400 ' + day + '/.95 ' + s + '}',
-    '.hero .poster-countdown b{font:400 ' + cnt + '/.9 ' + s + '}',
-    '.drawer-nav a{font:400 ' + drawer + '/1 ' + s + '}',
-    '.sheet h2{font:400 ' + sheet + '/.92 ' + s + '}',
-    '@media(max-width:899px){.sheet h2{font-size:' + sheet + '}}'
-  ];
-}
-/* Butcherman and Creepster are condensed, so they run at the pre-Nosifer
-   sizes; Rubik Wet Paint is as wide as Nosifer and keeps the live sizes. */
-var COND = ['clamp(36px,10vw,64px)', 'clamp(30px,8.5vw,52px)', 'clamp(24px,6.2vw,34px)', 'clamp(40px,12vw,60px)'];
-var WIDE = ['clamp(27px,7.6vw,49px)', 'clamp(23px,6.5vw,40px)', 'clamp(18px,4.7vw,26px)', 'clamp(30px,9vw,46px)'];
-function full(bright) {
-  return [
-    '.hero .rooms-peek{height:100%;-webkit-mask-image:linear-gradient(to bottom,#000 22%,rgba(0,0,0,.55) 58%,rgba(0,0,0,.18) 100%);mask-image:linear-gradient(to bottom,#000 22%,rgba(0,0,0,.55) 58%,rgba(0,0,0,.18) 100%)}',
-    '.hero .rooms-peek img{object-fit:cover;object-position:center 40%;filter:saturate(.7) contrast(1.1) brightness(' + bright + ')}',
-    '.hero .rooms-peek:after{background:linear-gradient(180deg,rgba(0,0,0,.3),rgba(4,1,1,.25) 45%,rgba(4,1,1,.7) 100%)}'
+    '.hero .lead{font:' + f + ';letter-spacing:' + ls + ';text-transform:' + (caps ? 'uppercase' : 'none') + ';text-wrap:balance}',
+    '@media(max-height:520px) and (orientation:landscape){.hero-copy .lead{font-size:' + small + '}}'
   ];
 }
 var LOOKS = [
-  { name: 'Now', note: 'Live today. Nosifer, stage strip up top', rules: [] },
-  { name: 'Butcher', note: 'Condensed drip. Closest to the original 16 DAYS REMAIN', rules: display.apply(null, ['Butcherman'].concat(COND)) },
-  { name: 'Creepster', note: 'Classic haunt lettering, cleanest to read', rules: display.apply(null, ['Creepster'].concat(COND)) },
-  { name: 'Wet Paint', note: 'Heaviest drip', rules: display.apply(null, ['Rubik Wet Paint'].concat(WIDE)) },
-  { name: 'Full bleed', note: 'Nosifer, stage behind everything', rules: full('.55') },
-  { name: 'Manny cut', note: 'Butcher + full bleed + bigger logo', rules: display.apply(null, ['Butcherman', 'clamp(44px,12.5vw,80px)'].concat(COND.slice(1))).concat(full('.5'), [
-    '.hero h1{width:min(94vw,420px)}',
-    '.hero .dayline{max-width:7ch;line-height:.88}',
-    '.hero .hero-copy{gap:12px;bottom:5%}'
-  ]) }
+  { name: 'Typewriter', note: 'Special Elite. Case-file typing, the crime scene angle', rules: lead('Special Elite', 400, 'clamp(17px,4.6vw,21px)', 1.28, false, '.01em', '14px') },
+  { name: 'Old book', note: 'IM Fell English. Seventeenth-century ghost story', rules: lead('IM Fell English', 400, 'clamp(19px,5.1vw,24px)', 1.22, false, '0', '16px') },
+  { name: 'Gothic', note: 'Metamorphous. Carved serif, still reads at a glance', rules: lead('Metamorphous', 400, 'clamp(17px,4.6vw,21px)', 1.26, false, '.01em', '14px') },
+  { name: 'Poster', note: 'Anton, all caps. Heavy tagline under the countdown', rules: lead('Anton', 400, 'clamp(17px,4.6vw,22px)', 1.2, true, '.06em', '15px') },
+  { name: 'Carnival', note: 'Rye. Sideshow slab, a little western', rules: lead('Rye', 400, 'clamp(16px,4.3vw,20px)', 1.28, false, '.01em', '14px') },
+  { name: 'Blackletter', note: 'Grenze Gotisch. Gothic script you can still read', rules: lead('Grenze Gotisch', 500, 'clamp(20px,5.4vw,25px)', 1.18, false, '0', '17px') }
 ];
 
 var frame = document.getElementById('frame');
@@ -128,7 +122,7 @@ function show(i, push) {
   noteEl.textContent = LOOKS[cur].note;
   Array.prototype.forEach.call(dots.children, function (d, k) { d.className = k === cur ? 'on' : ''; });
   if (push !== false) history.replaceState(null, '', '#v' + (cur + 1));
-  document.title = 'V' + (cur + 1) + ' ' + LOOKS[cur].name + ' - Six looks for the homepage';
+  document.title = 'V' + (cur + 1) + ' ' + LOOKS[cur].name + ' - Six leads for the homepage';
 }
 frame.addEventListener('load', function () {
   var doc = frame.contentDocument;

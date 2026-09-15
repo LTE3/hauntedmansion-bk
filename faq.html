@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-DFDfXKBLSY/IS3y6vlyf/OtEzkXAAG+o+wt2zNcs2lY='; font-src 'self'; script-src 'sha256-FKAE9qRLxDlVcF+YT0KiS1xdA+XuH8zoy0Arx/ClI5Y='; connect-src 'none'; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-Kxo6sIJBp4kqzcRTuQL1UtiemJaPaafflFeXsaUt3IY='; font-src 'self'; script-src 'sha256-FKAE9qRLxDlVcF+YT0KiS1xdA+XuH8zoy0Arx/ClI5Y='; connect-src 'none'; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Ask before you knock | Haunted Mansion BK</title>
@@ -12,15 +12,14 @@
 <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23050505"/><path d="M6 30V13L16 5l10 8v17z" fill="none" stroke="%233a332c" stroke-width="2"/><rect x="13" y="18" width="6" height="12" fill="%23c2702f"/></svg>'>
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#030202">
-<link rel="preload" as="font" type="font/woff2" href="fonts/nosifer-400-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/creepster-400-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="fonts/dm-sans-500-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="fonts/barlowcondensed-700-latin.woff2" crossorigin>
 <style>
-/* Three faces, one job each: Nosifer carries the questions the way it carries
+/* Three faces, one job each: Creepster carries the questions the way it carries
    the headings in the design, DM Sans answers them, Barlow Condensed labels the
    furniture exactly as it does on the door. All served from this origin. */
-@font-face{font-family:"Nosifer";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/nosifer-400-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
-@font-face{font-family:"Nosifer";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/nosifer-400-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:"Creepster";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/creepster-400-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
 @font-face{font-family:"DM Sans";font-style:normal;font-weight:500;font-display:swap;src:url(fonts/dm-sans-500-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
 @font-face{font-family:"DM Sans";font-style:normal;font-weight:500;font-display:swap;src:url(fonts/dm-sans-500-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
 @font-face{font-family:"Barlow Condensed";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/barlowcondensed-700-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
@@ -91,7 +90,7 @@ a{color:inherit;text-decoration-color:rgba(255,89,78,.5)}
   color:var(--red-lit);white-space:nowrap
 }
 h1{
-  margin:0;font:400 clamp(30px,8.4vw,46px)/1.05 "Nosifer",Impact,"Arial Black",sans-serif;letter-spacing:.02em;
+  margin:0;font:400 clamp(39px,11.1vw,61px)/1.05 "Creepster",Impact,"Arial Narrow Bold",sans-serif;letter-spacing:.02em;
   text-transform:uppercase;text-wrap:balance
 }
 h1 em{font-style:normal;color:var(--red-lit)}
@@ -134,7 +133,7 @@ h1 em{font-style:normal;color:var(--red-lit)}
    the list is one form, in one place, opened by one hash. */
 .closer{margin:44px 0 0;text-align:center}
 .closer p{
-  margin:0;font:400 clamp(21px,5.8vw,26px)/1.1 "Nosifer",Impact,"Arial Black",sans-serif;letter-spacing:.02em;text-transform:uppercase;
+  margin:0;font:400 clamp(28px,7.6vw,34px)/1.1 "Creepster",Impact,"Arial Narrow Bold",sans-serif;letter-spacing:.02em;text-transform:uppercase;
   text-wrap:balance
 }
 .closer p em{font-style:normal;color:var(--red-lit)}
@@ -186,7 +185,7 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
 .drawer-nav a{
   display:flex;justify-content:space-between;align-items:baseline;gap:12px;
   padding:16px 0;border-top:1px solid var(--line);text-decoration:none;color:var(--bone);
-  font:400 clamp(18px,4.7vw,26px)/1 "Nosifer",Impact,"Arial Black",sans-serif;letter-spacing:.02em;text-transform:uppercase;
+  font:400 clamp(24px,6.2vw,34px)/1 "Creepster",Impact,"Arial Narrow Bold",sans-serif;letter-spacing:.02em;text-transform:uppercase;
   opacity:0;transform:translate3d(0,14px,0);
   transition:opacity .5s var(--ease),transform .5s var(--ease)
 }

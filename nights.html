@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-OUi1YOmq0ymUPscPkkY5N1s+loGPNFpMjFMoMVBsv1g='; font-src 'self'; script-src 'sha256-qJcUQRXJGfoxMymiV3UJqjvEa2sKfdoUm0wOUW68oOE='; connect-src 'none'; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-vTk3PWDwGMQo2sZb20AeB1qTN3javCAGGJCU0Iz6ddM='; font-src 'self'; script-src 'sha256-qJcUQRXJGfoxMymiV3UJqjvEa2sKfdoUm0wOUW68oOE='; connect-src 'none'; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Pick your night | Haunted Mansion BK</title>
@@ -257,9 +257,6 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
 .cal-swatch.yellow{background:#ffc333;border:0;box-shadow:0 0 10px rgba(255,195,51,.45)}
 .cal-swatch.red{background:#ff4b45;border:0;box-shadow:0 0 10px rgba(255,75,69,.45)}
 .cal-swatch.is-closed{background:rgba(255,255,255,.28)}
-.cal-swatch.green{background:#26dc73;border:0;box-shadow:0 0 10px rgba(38,220,115,.45)}
-.cal-swatch.yellow{background:#ffc333;border:0;box-shadow:0 0 10px rgba(255,195,51,.45)}
-.cal-swatch.red{background:#ff4b45;border:0;box-shadow:0 0 10px rgba(255,75,69,.45)}
 .cal-note{border-top:1px solid rgba(227,48,39,.4);padding-top:18px;text-align:center}
 .closer{margin-top:34px}
 .closer p:first-child{font-size:24px}
@@ -283,7 +280,6 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
   .cal-note{font:400 22px/1.35 "Cormorant Garamond",Georgia,serif;letter-spacing:0;text-transform:none;color:var(--bone)}
   .cal-legend{position:absolute;top:40px;right:0;width:300px;display:grid;gap:12px;margin:0;z-index:2}
   .closer{margin-top:36px}
-  .closer p:first-child,.closer .cta,.closer .age{display:none}
   footer{margin-top:46px}
 }
 @media(max-width:420px){.calendar-visual{height:205px}.cal-grid{gap:4px}.cal-day{min-height:46px;font-size:14px}}
@@ -380,11 +376,10 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
       <li class="cal-day open red" data-day="31" aria-label="Saturday, October 31 &mdash; open"><span class="num">31</span></li>
     </ol>
     <ul class="cal-legend">
-      <li><span class="cal-swatch green" aria-hidden="true"></span>Lots of availability</li>
-      <li><span class="cal-swatch yellow" aria-hidden="true"></span>Selling fast</li>
-      <li><span class="cal-swatch red" aria-hidden="true"></span>Almost full</li>
+      <li><span class="cal-swatch green" aria-hidden="true"></span>Open · green</li>
+      <li><span class="cal-swatch yellow" aria-hidden="true"></span>Open · yellow</li>
+      <li><span class="cal-swatch red" aria-hidden="true"></span>Open · red</li>
       <li><span class="cal-swatch is-closed" aria-hidden="true"></span>Closed</li>
-      <li id="legend-gone" hidden><span class="cal-swatch is-gone" aria-hidden="true"></span>% gone</li>
     </ul>
     <p class="cal-note">Tickets go on sale soon. Join the list to hear first.</p>
   </div>

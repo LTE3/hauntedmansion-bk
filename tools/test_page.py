@@ -494,7 +494,7 @@ def _nights_cases(b, url):
     before = read("2026-09-20T12:00:00-04:00")
     check("nights: no figures before the presale opens",
           not before["tags"] and before["pulse"] is None and not before["legend"]
-          and before["opens"] == "Opens",
+          and before["opens"] == "Opening night",
           "tags %r pulse %r" % (before["tags"], before["pulse"]))
 
     day1 = read("2026-09-26T12:00:00-04:00")

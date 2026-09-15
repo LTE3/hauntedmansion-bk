@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-AB6ctndulhdzOXYsdPcaoc+9qBLYzMgb4sy3gdPXHoA='; font-src 'self'; script-src 'sha256-qJcUQRXJGfoxMymiV3UJqjvEa2sKfdoUm0wOUW68oOE='; connect-src 'none'; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-AB6ctndulhdzOXYsdPcaoc+9qBLYzMgb4sy3gdPXHoA='; font-src 'self'; script-src 'sha256-2/G5zhyLRZ4+wzkUXuwRtbeP/JyfQxuYxjuG6lXaxmc='; connect-src 'none'; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Pick your night | Haunted Mansion BK</title>
@@ -344,7 +344,7 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
       <li class="cal-blank" aria-hidden="true"></li>
       <li class="cal-blank" aria-hidden="true"></li>
       <li class="cal-blank" aria-hidden="true"></li>
-      <li class="cal-day open red opens" data-day="1" aria-label="Thursday, October 1 &mdash; opening night"><span class="num">1</span><span class="tag">Opening<br>night</span></li>
+      <li class="cal-day open red opens" data-day="1" aria-label="Thursday, October 1 &mdash; opening night"><span class="num">1</span><span class="tag">Opening night</span></li>
       <li class="cal-day open green" data-day="2" aria-label="Friday, October 2 &mdash; open"><span class="num">2</span></li>
       <li class="cal-day open yellow" data-day="3" aria-label="Saturday, October 3 &mdash; open"><span class="num">3</span></li>
       <li class="cal-day open green" data-day="4" aria-label="Sunday, October 4 &mdash; open"><span class="num">4</span></li>
@@ -377,10 +377,11 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
       <li class="cal-day open red" data-day="31" aria-label="Saturday, October 31 &mdash; open"><span class="num">31</span></li>
     </ol>
     <ul class="cal-legend">
-      <li><span class="cal-swatch green" aria-hidden="true"></span>Open · green</li>
-      <li><span class="cal-swatch yellow" aria-hidden="true"></span>Open · yellow</li>
-      <li><span class="cal-swatch red" aria-hidden="true"></span>Open · red</li>
+      <li><span class="cal-swatch green" aria-hidden="true"></span>Under 50% gone</li>
+      <li><span class="cal-swatch yellow" aria-hidden="true"></span>50&ndash;80% gone</li>
+      <li><span class="cal-swatch red" aria-hidden="true"></span>Over 80% gone</li>
       <li><span class="cal-swatch is-closed" aria-hidden="true"></span>Closed</li>
+      <li id="legend-gone" hidden><span class="cal-swatch is-gone" aria-hidden="true"></span>% gone</li>
     </ul>
     <p class="cal-note">Tickets go on sale soon. Join the list to hear first.</p>
   </div>
@@ -451,8 +452,13 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
 }
 /* The calendar. Today's date is read in the house's own time zone rather
    than the visitor's, so a guest in another zone doesn't see the wrong night
-   lit. Nothing is marked outside October 2026. Availability colors are the
-   published calendar states shown above; no synthetic inventory is generated. */
+   lit. Nothing is marked outside October 2026.
+   Once the presale opens, every open night carries a "% gone" figure. Owner's
+   call (2026-09-11, reaffirmed 2026-09-15): the figure is synthetic, a
+   function of the clock alone, and it drives the night's colour. Each night
+   has its own ceiling and curve, so some run hotter than others; nothing ever
+   reaches 100 or reads "sold out". Before the presale the colours are the
+   static states written in the markup. */
 {
   const grid = document.getElementById("cal-grid");
   if(grid){
@@ -469,7 +475,61 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
         if(day === d){ li.classList.add("today"); li.setAttribute("aria-current", "date"); }
       });
     }
-
+    const PRESALE = Date.parse("2026-09-25T10:00:00-04:00");
+    const HOUR = 3600000;
+    const hours = Math.floor((now.getTime() - PRESALE) / HOUR);
+    if(hours >= 0){
+      const DOW = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      /* [ceiling, curve] per night. The ceiling is where a night ends up; the
+         curve is how hard it runs at the start. */
+      const shape = day => {
+        const dow = (day + 3) % 7;
+        if(day === 1)  return [97, 2.0];
+        if(day === 31) return [97, 1.9];
+        if(day === 30) return [96, 1.8];
+        return dow === 6 ? [95, 1.7] : dow === 5 ? [94, 1.6] : dow === 4 ? [90, 1.4] : [88, 1.3];
+      };
+      const gone = day => {
+        const night = Date.parse("2026-10-" + String(day).padStart(2, "0") + "T20:00:00-04:00");
+        if(night <= now.getTime()) return null;
+        const p = Math.min(1, hours * HOUR / (night - PRESALE));
+        const [cap, k] = shape(day);
+        return Math.min(cap, Math.round(cap * (0.04 + 0.96 * (1 - Math.pow(1 - p, k)))));
+      };
+      let top = null;
+      grid.querySelectorAll(".cal-day.open").forEach(li => {
+        const day = Number(li.dataset.day);
+        const pct = gone(day);
+        if(pct === null) return;
+        /* The figure picks the colour: under 50 green, under 80 yellow, then red. */
+        li.classList.remove("green", "yellow", "red");
+        li.classList.add(pct < 50 ? "green" : pct < 80 ? "yellow" : "red");
+        const fill = document.createElement("span");
+        fill.className = "gone";
+        fill.setAttribute("aria-hidden", "true");
+        li.prepend(fill);
+        let tag = li.querySelector(".tag");
+        if(!tag){ tag = document.createElement("span"); tag.className = "tag"; li.append(tag); }
+        tag.textContent = pct + "%";
+        li.setAttribute("aria-label", li.getAttribute("aria-label") + ", " + pct + "% gone");
+        if(pct >= 90) li.classList.add("hot");
+        /* Two frames on, so the tint rises from the floor instead of arriving. */
+        requestAnimationFrame(() => requestAnimationFrame(() => li.style.setProperty("--fill", pct + "%")));
+        if(!top || pct > top.pct) top = { day, pct };
+      });
+      const pulse = document.getElementById("pulse");
+      const legend = document.getElementById("legend-gone");
+      if(top && pulse){
+        const name = top.day === 1 ? "Opening night"
+          : top.day === 31 ? "Halloween"
+          : DOW[(top.day + 3) % 7] + ", October " + top.day;
+        const b = document.createElement("b");
+        b.textContent = top.pct + "%";
+        pulse.append(name + " is ", b, " gone.");
+        pulse.hidden = false;
+      }
+      if(top && legend) legend.hidden = false;
+    }
   }
 }
 </script>

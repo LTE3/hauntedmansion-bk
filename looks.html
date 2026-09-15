@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-pzZXOyDHnvcYD9VHk2CjU427vFQBuAfU4mYQ/0sZO8o='; font-src 'self'; script-src 'sha256-asLszYkpFLI7SyFVF54+xJ/nNR2hg7lSaTtBcO1/4m8='; connect-src 'none'; frame-src 'self'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-P9fu5UadxJje5U3o1mMjUL/xNIFh86W857z0Du/l6vU='; font-src 'self'; script-src 'sha256-148lJYni1ND5uevGJey9bDkp7O5TffxPCMilMsYHtgQ='; connect-src 'none'; frame-src 'self'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Six leads for the homepage</title>
+<title>Eight looks for the homepage</title>
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#050505">
 <style>
@@ -14,7 +14,7 @@
    CSSOM (insertRule), which the page's hash-only CSP does not police - so the
    homepage file itself is never edited until a look is chosen. Round one
    picked the display face (Creepster) and the full-screen house; round two,
-   the six here, is the line under the countdown. The chrome is
+   the eight here, is the line under the countdown. The chrome is
    deliberately plain: it is the thing being judged that should have the
    atmosphere, not the bench it sits on. */
 @font-face{font-family:"Barlow Condensed";font-weight:700;font-display:swap;src:url(fonts/barlowcondensed-700-latin.woff2) format("woff2")}
@@ -69,7 +69,7 @@ iframe.is-in{opacity:1}
    candidate faces live under v/fonts; the page's font-src is 'self'.
 
    Round two (2026-09-15): the owner picked Creepster and the full-screen
-   house, both now live. These six change one thing only - the face on the
+   house, both now live. These eight change one thing only - the face on the
    "Brooklyn's first full-scale..." line under the countdown. */
 var FACES = [
   '@font-face{font-family:"Special Elite";src:url(v/fonts/specialelite-400-latin.woff2) format("woff2")}',
@@ -77,7 +77,9 @@ var FACES = [
   '@font-face{font-family:"Metamorphous";src:url(v/fonts/metamorphous-400-latin.woff2) format("woff2")}',
   '@font-face{font-family:"Anton";src:url(v/fonts/anton-400-latin.woff2) format("woff2")}',
   '@font-face{font-family:"Rye";src:url(v/fonts/rye-400-latin.woff2) format("woff2")}',
-  '@font-face{font-family:"Grenze Gotisch";font-weight:500;src:url(v/fonts/grenzegotisch-500-latin.woff2) format("woff2")}'
+  '@font-face{font-family:"Grenze Gotisch";font-weight:500;src:url(v/fonts/grenzegotisch-500-latin.woff2) format("woff2")}',
+  '@font-face{font-family:"Eater";src:url(v/fonts/eater-400-latin.woff2) format("woff2")}',
+  '@font-face{font-family:"Frijole";src:url(v/fonts/frijole-400-latin.woff2) format("woff2")}'
 ];
 /* The live line is Barlow Condensed 600, uppercase, clamp(17px,4.6vw,22px),
    with a 15px cut on short landscape phones. Each candidate gets its own
@@ -96,7 +98,9 @@ var LOOKS = [
   { name: 'Gothic', note: 'Metamorphous. Carved serif, still reads at a glance', rules: lead('Metamorphous', 400, 'clamp(17px,4.6vw,21px)', 1.26, false, '.01em', '14px') },
   { name: 'Poster', note: 'Anton, all caps. Heavy tagline under the countdown', rules: lead('Anton', 400, 'clamp(17px,4.6vw,22px)', 1.2, true, '.06em', '15px') },
   { name: 'Carnival', note: 'Rye. Sideshow slab, a little western', rules: lead('Rye', 400, 'clamp(16px,4.3vw,20px)', 1.28, false, '.01em', '14px') },
-  { name: 'Blackletter', note: 'Grenze Gotisch. Gothic script you can still read', rules: lead('Grenze Gotisch', 500, 'clamp(20px,5.4vw,25px)', 1.18, false, '0', '17px') }
+  { name: 'Blackletter', note: 'Grenze Gotisch. Gothic script you can still read', rules: lead('Grenze Gotisch', 500, 'clamp(20px,5.4vw,25px)', 1.18, false, '0', '17px') },
+  { name: 'Eater', note: 'Eater. Rotting letters, the roughest read of the eight', rules: lead('Eater', 400, 'clamp(16px,4.3vw,20px)', 1.35, false, '.01em', '14px') },
+  { name: 'Frijole', note: 'Frijole. Chunky carnival horror, sized down to fit', rules: lead('Frijole', 400, 'clamp(14px,3.7vw,17px)', 1.4, false, '.02em', '13px') }
 ];
 
 var frame = document.getElementById('frame');
@@ -122,7 +126,7 @@ function show(i, push) {
   noteEl.textContent = LOOKS[cur].note;
   Array.prototype.forEach.call(dots.children, function (d, k) { d.className = k === cur ? 'on' : ''; });
   if (push !== false) history.replaceState(null, '', '#v' + (cur + 1));
-  document.title = 'V' + (cur + 1) + ' ' + LOOKS[cur].name + ' - Six leads for the homepage';
+  document.title = 'V' + (cur + 1) + ' ' + LOOKS[cur].name + ' - Eight looks for the homepage';
 }
 frame.addEventListener('load', function () {
   var doc = frame.contentDocument;

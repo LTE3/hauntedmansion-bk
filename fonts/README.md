@@ -40,7 +40,7 @@ retheme (2026-09-15). The display role was then tried three ways the same
 day - Butcherman (its A drops its crossbar below ~40px), Nosifer (wide,
 live for a few hours) and Creepster - and the owner picked Creepster from
 the side-by-side at `looks.html`. Faces tried on that bench and not
-chosen (Butcherman, Nosifer, Rubik Wet Paint, and the six candidates for the
+chosen (Butcherman, Nosifer, Rubik Wet Paint, and the eight candidates for the
 lead line under the countdown) stay under `v/fonts/` with their licences;
 no visitor page references them. Special Elite there is Apache 2.0, not OFL.
 

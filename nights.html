@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-kcKEZRysZGEx4EskwTSSEtXPixxjyqh8wb91lTrGa8g='; font-src 'self'; script-src 'sha256-K4/zezhmBrQyVtQFe0hwG/M3p1IcbuGtFxNiOYJ2kfA='; connect-src 'none'; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-w83l94zRz+2X5v80XtHXUwV9MN51RlsBdT7hbG0S9YM='; font-src 'self'; script-src 'sha256-K4/zezhmBrQyVtQFe0hwG/M3p1IcbuGtFxNiOYJ2kfA='; connect-src 'none'; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Pick your night | Haunted Mansion BK</title>
@@ -227,6 +227,34 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
   margin:20px 0 0;font:700 11px/1.6 "Space Grotesk",sans-serif;
   letter-spacing:.1em;text-transform:uppercase;color:var(--muted)
 }
+
+/* Calendar reference treatment: a cinematic header and an editorial month
+   card. Availability remains binary (open/closed); no seat counts or
+   invented inventory are represented here. */
+.calendar-visual{
+  position:relative;height:clamp(190px,46vw,270px);margin:0 -18px 8px;overflow:hidden;
+  background:#090607 url("img/re-hero-wide.jpg") center 42%/cover no-repeat;
+  border-bottom:1px solid rgba(227,48,39,.42)
+}
+.calendar-visual:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,2,2,.12),rgba(3,2,2,.42) 70%,#030202 100%)}
+.calendar-visual .visual-copy{position:absolute;z-index:1;left:18px;bottom:20px;margin:0;font:700 11px/1 "Space Grotesk",sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#f3e8de}
+.calendar-visual .visual-copy b{color:var(--red-lit)}
+.cal-head{font-size:13px;margin-top:24px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.18)}
+.cal-head b{font:700 clamp(32px,9vw,50px)/.9 "Cinzel",Georgia,serif;letter-spacing:.01em;text-transform:none}
+.cal-grid{gap:6px}
+.cal-day{border-radius:10px;min-height:52px;background:rgba(255,255,255,.025)}
+.cal-day.open{border-color:rgba(255,89,78,.58);background:linear-gradient(145deg,rgba(123,12,9,.48),rgba(32,5,5,.45));box-shadow:inset 0 0 18px rgba(227,48,39,.1)}
+.cal-day.closed{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.018);opacity:.52}
+.cal-day.closed:after{content:"×  CLOSED";display:block;margin-top:2px;font:700 8px/1 "Space Grotesk",sans-serif;letter-spacing:.08em;color:var(--muted)}
+.cal-day.closed .num{opacity:.8}
+.cal-legend{gap:14px;margin-top:18px}
+.cal-swatch.is-open{background:var(--red-lit);border:0;box-shadow:0 0 10px rgba(227,48,39,.45)}
+.cal-swatch.is-closed{background:rgba(255,255,255,.28)}
+.cal-note{border-top:1px solid rgba(227,48,39,.4);padding-top:18px;text-align:center}
+.closer{margin-top:34px}
+.closer p:first-child{font-size:24px}
+.cta{background:linear-gradient(90deg,rgba(110,8,6,.6),rgba(55,5,4,.65));box-shadow:0 0 28px rgba(227,48,39,.18)}
+@media(max-width:420px){.calendar-visual{height:205px}.cal-grid{gap:4px}.cal-day{min-height:46px;font-size:14px}}
 /* How far each night has gone. A tint climbs the cell from the floor as the
    night fills, the figure sits under the date, and a night past nine tenths
    turns its frame red. The script below writes the figures. */
@@ -263,6 +291,9 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
 </header>
 
 <main class="page">
+  <div class="calendar-visual" aria-hidden="true">
+    <p class="visual-copy"><b>Haunted Mansion BK</b> &middot; Bushwick, Brooklyn</p>
+  </div>
   <div class="hero">
     <p class="eyebrow">Bushwick, Brooklyn &middot; October 2026</p>
     <h1>Nights<br>the house<br><em>is open</em></h1>

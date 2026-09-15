@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-EPlVE4Q6CMSwyM0WMNeLoE2PYxqPu5bc1EnQsZOjUfg='; font-src 'self'; script-src 'sha256-FKAE9qRLxDlVcF+YT0KiS1xdA+XuH8zoy0Arx/ClI5Y='; connect-src 'none'; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-3oYcgClKmYIDUL3xCm0rXgXT+/sqRtXO+mSxuO01Eho='; font-src 'self'; script-src 'sha256-FKAE9qRLxDlVcF+YT0KiS1xdA+XuH8zoy0Arx/ClI5Y='; connect-src 'none'; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Ask before you knock | Haunted Mansion BK</title>
@@ -97,7 +97,7 @@ h1 em{font-style:normal;color:var(--red-lit)}
 
 /* The questions. One open at a time, and a closed answer is out of the tree
    for the keyboard and the reader, not only out of sight. */
-.faq{list-style:none;margin:8px 0 0;padding:0;border-top:1px solid var(--line)}
+.faq{list-style:none;margin:8px 0 0;padding:0;border:1px solid var(--line);border-radius:2px;background:rgba(255,255,255,.018)}
 .faq li{border-bottom:1px solid var(--line);animation:rise .7s var(--ease) backwards}
 .faq li:nth-child(1){animation-delay:.12s}.faq li:nth-child(2){animation-delay:.16s}
 .faq li:nth-child(3){animation-delay:.2s}.faq li:nth-child(4){animation-delay:.24s}
@@ -110,7 +110,7 @@ h1 em{font-style:normal;color:var(--red-lit)}
 .faq-btn{
   display:flex;justify-content:space-between;align-items:center;gap:16px;width:100%;
   min-height:56px;padding:17px 0;text-align:left;
-  font:700 13.5px/1.35 "Cinzel",Georgia,serif;letter-spacing:.07em;text-transform:uppercase;color:var(--bone)
+  font:700 13.5px/1.35 "Cinzel",Georgia,serif;letter-spacing:.07em;text-transform:uppercase;color:var(--bone);padding-left:14px;padding-right:14px
 }
 .faq-btn:hover{color:#fff}
 .mark{position:relative;flex:none;width:18px;height:18px;color:#c7b8ae}

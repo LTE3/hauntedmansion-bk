@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-TPDltnkdC1u+5VyQopceCci4a8M82JmYUTp50unBO48='; font-src 'self'; script-src 'sha256-WYo44dLoelzQY2NA8PeXEi/AK9GKA6Ve1JQDYTyj4T4=' 'sha256-mPtrMIM+BVbm52EHIXdyXD3+zPyp6A4zFANuLG08TgU='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-6LTb0To2swYjsUGOEyvXlbnvXkfQz6eJ56VpXDwgJCs='; font-src 'self'; script-src 'sha256-WYo44dLoelzQY2NA8PeXEi/AK9GKA6Ve1JQDYTyj4T4=' 'sha256-mPtrMIM+BVbm52EHIXdyXD3+zPyp6A4zFANuLG08TgU='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Every house has a story. | Haunted Mansion BK</title>
@@ -89,6 +89,11 @@ a:hover{text-decoration-color:#ff594e}
      element ever animates. */
   transform-origin:50% 42%;
   transition:transform .58s var(--ease)
+}
+.hero:after{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:linear-gradient(90deg,rgba(3,2,2,.98) 0%,rgba(3,2,2,.76) 38%,rgba(3,2,2,.18) 72%,rgba(3,2,2,.7) 100%),url("v/img-house/house.jpg") center/cover no-repeat;
+  opacity:.34;mix-blend-mode:screen
 }
 body.sheeting .hero{transform:scale(.945) translateY(-14px)}
 .hero:before{
@@ -412,6 +417,9 @@ body.sheeting .hero{transform:scale(.945) translateY(-14px)}
 
 /* ================= THE WORDS ========================================== */
 .hero-copy{position:relative;z-index:9;padding-top:8px;text-align:left}
+.rooms-peek{position:absolute;right:6vw;bottom:7vh;z-index:8;width:min(24vw,300px);aspect-ratio:4/3;overflow:hidden;border:1px solid rgba(255,220,197,.28);box-shadow:0 18px 60px #000,0 0 28px rgba(227,48,39,.18);transform:rotate(2deg);opacity:.82;animation:rise .9s var(--ease) 1.8s backwards}
+.rooms-peek img{width:100%;height:100%;display:block;object-fit:cover;filter:brightness(.55) saturate(.72) contrast(1.12)}
+.rooms-peek span{position:absolute;left:12px;bottom:10px;font:700 10px/1 "Space Grotesk",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#f3e8de;text-shadow:0 1px 10px #000}
 /* Staggered, 90ms apart, and the stagger starts only once the room is lit -
    the push-in is 2.4s and these begin at 1.25, so the words are landing while
    the picture is still settling rather than after it. backwards fill, so the
@@ -520,9 +528,12 @@ h1 .glow{animation:hearttext 3.8s infinite,rise .85s var(--ease) 1.43s backwards
   position:relative;width:100%;max-width:620px;
   max-height:calc(100vh - 20px);max-height:calc(100svh - 20px);
   display:flex;flex-direction:column;overflow:hidden;
-  background:#0b0706;border:1px solid #512822;
+  background:
+    linear-gradient(180deg,rgba(4,2,2,.93),rgba(4,2,2,.97)),
+    url("img/originals/waitlist.jpeg") center/cover;
+  border:1px solid #55403b;
   border-radius:28px 28px 18px 18px;
-  padding:14px 20px max(26px,env(safe-area-inset-bottom));
+  padding:30px 58px max(34px,env(safe-area-inset-bottom));
   box-shadow:0 -30px 120px #000,0 0 80px rgba(135,6,3,.12);
   /* Off the bottom until opened. Up on the expo curve, down on an ease-in and
      faster, because it leaves quicker than it came. */
@@ -532,25 +543,26 @@ h1 .glow{animation:hearttext 3.8s infinite,rise .85s var(--ease) 1.43s backwards
 /* Something to take hold of, and the thing you drag down to send it away. */
 .grab{
   width:44px;height:4px;border-radius:999px;background:#5a3b34;
-  margin:0 auto 10px;flex:none;cursor:grab;
+  margin:0 auto 22px;flex:none;cursor:grab;
   transition:background .2s var(--ease-out),transform .2s var(--ease-out)
 }
 .sheet.dragging .grab{background:#8a5c52;transform:scaleX(1.12)}
 .sheet-top{display:flex;align-items:center;justify-content:space-between;flex:none}
-.sheet-tag{font:700 12px/1 "Space Grotesk";letter-spacing:.14em;text-transform:uppercase;color:#d7c9be}
+.sheet-tag{font:700 13px/1 "Space Grotesk";letter-spacing:.34em;text-transform:uppercase;color:#d7c9be}
 .close{
   width:46px;height:46px;border-radius:50%;
   /* Was #4a3832: 1.82:1 against the sheet, below the 3:1 floor for a control
      boundary, so the button read as a bare glyph. */
-  border:1px solid #6d5850;background:transparent;font-size:25px;
+  border:1px solid #c22119;background:transparent;font-size:32px;color:#f3e8de;
   transition:transform .2s var(--ease-out)
 }
-.sheet h2{margin:24px 0 8px;font:700 42px/.94 "Space Grotesk";letter-spacing:-.055em}
+.sheet h2{margin:48px 0 18px;font:700 clamp(44px,7vw,78px)/.9 Georgia,serif;letter-spacing:.015em;text-transform:uppercase;color:#f3e8de}
+.sheet h2 .glow{color:#e33027}
 /* Not .sheet>p: the paragraph sits inside #formbox, so the child combinator
    matched nothing and the line rendered at full body brightness. :not([class])
    rather than a plain descendant, because .err and .fine are paragraphs in
    here too and a descendant selector outranks them. */
-.sheet p:not([class]){margin:0 0 25px;color:var(--muted);font-size:18px}
+.sheet p:not([class]){margin:0 0 34px;color:#d7c9be;font:700 15px/1.8 "Space Grotesk";letter-spacing:.27em;text-transform:uppercase;max-width:31ch}
 /* The sheet's own contents arrive after it does, 55ms apart, so the panel
    lands and then fills rather than sliding up finished. Keyed off .open, so
    it replays every time the door is knocked on again. */
@@ -563,9 +575,9 @@ h1 .glow{animation:hearttext 3.8s infinite,rise .85s var(--ease) 1.43s backwards
 .modal.open .sheet-foot{animation:rise .5s var(--ease-out) .5s backwards}
 .trap{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .field{display:block;margin:0 0 16px}
-.field span{display:block;margin:0 0 7px;font-size:14px;font-weight:700}
+.field span{display:block;margin:0 0 10px;font-size:14px;font-weight:700;letter-spacing:.26em;text-transform:uppercase}
 .field input{
-  width:100%;height:58px;border:1px solid #6d5850;border-radius:14px;
+  width:100%;height:68px;border:1px solid #6d5850;border-radius:14px;
   background:#070504;color:#fff;padding:0 16px;font-size:18px;outline:0;
   transition:border-color .2s var(--ease-out),box-shadow .2s var(--ease-out)
 }
@@ -603,8 +615,9 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
 .submit:focus-visible{outline:2px solid #ff6b5f;outline-offset:2px}
 .field input:focus{border-color:#bb3730;box-shadow:0 0 0 3px rgba(227,48,39,.22)}
 .submit{
-  position:relative;width:100%;height:60px;border:0;border-radius:14px;
-  background:#c22119;color:#fff;font-weight:800;margin-top:4px;
+  position:relative;width:100%;height:68px;border:1px solid #ff5045;border-radius:14px;
+  background:linear-gradient(90deg,#9d1712,#df2b21 55%,#a31813);color:#fff;font-weight:800;margin-top:4px;
+  font-family:"Space Grotesk";letter-spacing:.2em;text-transform:uppercase;
   transition:transform .18s var(--ease-out)
 }
 .sound{transition:opacity .3s var(--ease-out),transform .2s var(--ease-out)}
@@ -774,6 +787,11 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
 @media (max-height:560px){
   .hero{height:auto;min-height:100vh;min-height:100svh}
   .key-fit{--keyh:min(52svh,340px)}
+}
+@media(max-width:899px){.rooms-peek{right:18px;bottom:18px;width:126px;opacity:.62}.rooms-peek span{font-size:8px}}
+@media(max-width:899px){
+  .sheet{padding-left:24px;padding-right:24px}
+  .sheet h2{font-size:clamp(40px,12vw,60px)}
 }
 /* Sideways, and wide enough to stand them next to each other.
 
@@ -1090,8 +1108,8 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
                 srcset="v/img-cali/keyhole.avif 1x, v/img-cali/keyhole@2x.avif 2x">
         <source type="image/webp"
                 srcset="v/img-cali/keyhole.webp 1x, v/img-cali/keyhole@2x.webp 2x">
-        <img src="v/img-cali/keyhole.jpg"
-             srcset="v/img-cali/keyhole.jpg 1x, v/img-cali/keyhole@2x.jpg 2x"
+        <img src="v/img-house/house.jpg"
+             srcset="v/img-house/house.jpg 1x, v/img-house/house.jpg 2x"
              fetchpriority="high" decoding="async" alt="">
       </picture>
       <div class="passby a"></div>
@@ -1176,6 +1194,10 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
       <button class="cta" data-open>Unlock the invitation<span class="rap" aria-hidden="true"></span></button>
     </div>
   </div>
+  <figure class="rooms-peek" aria-hidden="true">
+    <img src="v/img-house/rooms.jpg" alt="">
+    <span>Rooms inside</span>
+  </figure>
 </main>
 
 <div class="drawer" id="drawer">
@@ -1211,8 +1233,8 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
     </div>
 
     <div id="formbox">
-      <h2 id="modal-title">The door is locked.<br><span class="glow">Leave your name.</span></h2>
-      <p>Be first to know when the house opens.</p>
+      <h2 id="modal-title">Knock on<br><span class="glow">the door.</span></h2>
+      <p>Leave your information.<br>The house will answer<br>when it&rsquo;s ready.</p>
 
       <form id="join" novalidate>
         <div class="sheet-scroll">
@@ -1231,9 +1253,9 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
              caps are deliberately far past any real value - the longest
              registered surname is well under 120, an address cannot exceed 254
              by RFC - so nothing a person can truthfully type is truncated. -->
-        <label class="field"><span>Name</span><input id="name" name="name" autocomplete="name" maxlength="120" required></label>
-        <label class="field"><span>Email</span><input id="email" name="email" type="email" autocomplete="email" maxlength="254" required></label>
-        <label class="field"><span>Phone (optional)</span><input id="phone" name="phone" type="tel" autocomplete="tel" maxlength="40"></label>
+        <label class="field"><span>Your name</span><input id="name" name="name" autocomplete="name" maxlength="120" placeholder="Enter your name" required></label>
+        <label class="field"><span>Your email</span><input id="email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="Enter your email" required></label>
+        <label class="field"><span>Phone (optional)</span><input id="phone" name="phone" type="tel" autocomplete="tel" maxlength="40" placeholder="Enter your phone number"></label>
 
         <!-- Hidden until the phone field has something in it. The disclosure
              has to be at the point of collection, and this is that point;
@@ -1255,7 +1277,7 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
 
         <div class="sheet-foot">
         <p class="err" id="err" role="alert"></p>
-        <button class="submit" id="go" type="submit">Knock on the door</button>
+        <button class="submit" id="go" type="submit">Enter the waitlist&nbsp; →</button>
         <!-- target=_blank on purpose: this sits under a form someone has
              already typed into, and navigating the tab away to read a policy
              throws that away. The consent line lives here rather than on the

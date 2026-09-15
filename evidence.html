@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-fv/tYKcKIuMn0++5NCsspnUbr+gxcKpCM13JrvUu+88='; font-src 'self'; script-src 'sha256-iO0hrrihN84OGabrXYVExCjNB4bElW4EJYg1Ksiruuw='; connect-src 'none'; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-xb+I4BEMqW1y0O99w6GfyEmqCRZJmVS6DCjdcAhtltQ='; font-src 'self'; script-src 'sha256-iO0hrrihN84OGabrXYVExCjNB4bElW4EJYg1Ksiruuw='; connect-src 'none'; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>The evidence | Haunted Mansion BK</title>
@@ -227,10 +227,10 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
    zip's filter buttons did without a script. */
 .pull{margin:30px 0 0;font:700 clamp(19px,5.6vw,24px)/1.32 "Cinzel",Georgia,serif;letter-spacing:.02em;text-transform:uppercase;text-wrap:balance}
 .pull em{font-style:normal;color:var(--red-lit)}
-.exhibits{list-style:none;margin:30px 0 0;padding:0;border-top:1px solid var(--line)}
+.exhibits{list-style:none;margin:30px 0 0;padding:0;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 1fr;gap:8px;border-top:0}
 .exhibits li{
   display:grid;grid-template-columns:52px 1fr;gap:4px 16px;align-items:baseline;
-  padding:22px 0;border-bottom:1px solid var(--line);animation:rise .7s var(--ease) backwards
+  padding:16px 12px;border:1px solid var(--line);background:rgba(255,255,255,.025);animation:rise .7s var(--ease) backwards;min-height:150px
 }
 .exhibits li:nth-child(1){animation-delay:.12s}.exhibits li:nth-child(2){animation-delay:.18s}
 .exhibits li:nth-child(3){animation-delay:.24s}.exhibits li:nth-child(4){animation-delay:.3s}
@@ -241,7 +241,7 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
 }
 .ex-kind{font:700 10.5px/1 "Space Grotesk",sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 .exhibits h2{margin:0;font:700 15px/1.3 "Cinzel",Georgia,serif;letter-spacing:.06em;text-transform:uppercase;color:var(--bone)}
-.exhibits p{grid-column:2;margin:6px 0 0;color:var(--read);max-width:44ch}
+.exhibits p{grid-column:2;margin:6px 0 0;color:var(--read);max-width:44ch;font-size:13px}
 .exhibits time{font:700 13px/1.5 "Space Grotesk",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--read);font-variant-numeric:tabular-nums}
 </style>
 </head>

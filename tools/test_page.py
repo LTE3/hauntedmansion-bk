@@ -27,7 +27,7 @@ PAGE = os.path.join(ROOT, "index.html")
 # top3 and versions are the build-review galleries: they frame the variants
 # under v/ and still pull their fonts from Google. Not pages a visitor is sent
 # to, so not held to the visitor rules.
-REVIEW_PAGES = {"top3.html", "versions.html"}
+REVIEW_PAGES = {"top3.html", "versions.html", "looks.html"}
 ROOT_PAGES = tuple(sorted({os.path.basename(f) for f in glob.glob(os.path.join(ROOT, "*.html"))}
                           - REVIEW_PAGES))
 OPENS = "2026-10-01"

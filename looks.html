@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-NvUZG++q0+d5XyA/hx2lAAuPBEYE5g2Ad7oCnGMT8Fw='; font-src 'self'; script-src 'sha256-WZOiE0DJdYnboPNnCB8KciJxaWJuIVKRYAEbB2gqQCc='; connect-src 'none'; frame-src 'self'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Six looks for the homepage</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#050505">
+<style>
+/* A cycler for the live homepage. The real index.html sits in the frame and
+   each look is a handful of CSS rules pushed into its stylesheet through the
+   CSSOM (insertRule), which the page's hash-only CSP does not police - so the
+   homepage file itself is never edited until a look is chosen. The chrome is
+   deliberately plain: it is the thing being judged that should have the
+   atmosphere, not the bench it sits on. */
+@font-face{font-family:"Barlow Condensed";font-weight:700;font-display:swap;src:url(fonts/barlowcondensed-700-latin.woff2) format("woff2")}
+@font-face{font-family:"Barlow Condensed";font-weight:600;font-display:swap;src:url(fonts/barlowcondensed-600-latin.woff2) format("woff2")}
+:root{color-scheme:dark;--ink:#050505;--shell:#0d0908;--line:#2a1c19;--bone:#e9ddd2;--ash:#9a8a80;--blood:#ff5b52}
+*{box-sizing:border-box}
+html,body{height:100%;height:100svh}
+body{margin:0;background:var(--ink);color:var(--bone);font:600 15px/1.2 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.04em;
+  display:grid;grid-template-rows:1fr auto;overflow:hidden;-webkit-font-smoothing:antialiased}
+.stage{position:relative;background:#000;overflow:hidden}
+iframe{display:block;width:100%;height:100%;border:0;background:#000;opacity:0;transition:opacity .3s ease-out}
+iframe.is-in{opacity:1}
+@media(min-width:720px){.stage{display:grid;place-items:center;background:#070707}
+  iframe{width:390px;height:min(844px,100%);box-shadow:0 0 0 1px #1b1815,0 40px 90px -30px #000}}
+.bar{position:relative;z-index:2;display:grid;grid-template-columns:56px 1fr 56px;align-items:center;gap:6px;
+  padding:10px 10px calc(10px + env(safe-area-inset-bottom));background:var(--shell);border-top:1px solid var(--line);touch-action:pan-y;user-select:none}
+.bar button{appearance:none;width:56px;height:56px;border:1px solid var(--line);border-radius:14px;background:#140c0b;color:var(--blood);
+  font:700 30px/1 "Barlow Condensed","Arial Narrow",sans-serif;cursor:pointer;display:grid;place-items:center}
+.bar button:active{background:#2a1210}
+.bar button:focus-visible{outline:2px solid var(--blood);outline-offset:2px}
+.mid{display:grid;justify-items:center;gap:5px;text-align:center;min-width:0}
+.name{font-size:20px;letter-spacing:.06em;text-transform:uppercase;color:var(--bone)}
+.name b{color:var(--blood);font-weight:700;margin-right:.35em}
+.note{font-weight:600;font-size:13px;letter-spacing:.05em;color:var(--ash);text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.dots{display:flex;gap:7px;margin-top:2px}
+.dots i{width:7px;height:7px;border-radius:50%;background:#3a2a26}
+.dots i.on{background:var(--blood)}
+.hint{position:absolute;left:0;right:0;bottom:100%;margin:0;padding:6px 0;text-align:center;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ash);
+  background:linear-gradient(transparent,rgba(5,5,5,.9));pointer-events:none;transition:opacity .4s}
+.hint.gone{opacity:0}
+@media(prefers-reduced-motion:reduce){iframe,.hint{transition:none}}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <iframe id="frame" title="Homepage preview" src="index.html"></iframe>
+</div>
+<div class="bar" id="bar">
+  <p class="hint" id="hint">Swipe here or tap the arrows</p>
+  <button id="prev" aria-label="Previous look">&#8249;</button>
+  <div class="mid">
+    <div class="name" id="name" aria-live="polite"></div>
+    <div class="note" id="note"></div>
+    <div class="dots" id="dots" aria-hidden="true"></div>
+  </div>
+  <button id="next" aria-label="Next look">&#8250;</button>
+</div>
+<script>
+/* Each look is a list of complete CSS rules. They go in with insertRule at
+   the end of the homepage's own stylesheet, so they win on order, and they
+   come back out with deleteRule when the next look goes in. Fonts for the
+   candidate faces live under v/fonts; the page's font-src is 'self'. */
+var STACK = function (f) { return '"' + f + '",Impact,"Arial Black",sans-serif'; };
+var FACES = [
+  '@font-face{font-family:"Butcherman";src:url(v/fonts/butcherman-400-latin.woff2) format("woff2")}',
+  '@font-face{font-family:"Creepster";src:url(v/fonts/creepster-400-latin.woff2) format("woff2")}',
+  '@font-face{font-family:"Rubik Wet Paint";src:url(v/fonts/rubikwetpaint-400-latin.woff2) format("woff2")}'
+];
+function display(fam, day, cnt, drawer, sheet) {
+  var s = STACK(fam);
+  return [
+    '.hero .dayline{font:400 ' + day + '/.95 ' + s + '}',
+    '.hero .poster-countdown b{font:400 ' + cnt + '/.9 ' + s + '}',
+    '.drawer-nav a{font:400 ' + drawer + '/1 ' + s + '}',
+    '.sheet h2{font:400 ' + sheet + '/.92 ' + s + '}',
+    '@media(max-width:899px){.sheet h2{font-size:' + sheet + '}}'
+  ];
+}
+/* Butcherman and Creepster are condensed, so they run at the pre-Nosifer
+   sizes; Rubik Wet Paint is as wide as Nosifer and keeps the live sizes. */
+var COND = ['clamp(36px,10vw,64px)', 'clamp(30px,8.5vw,52px)', 'clamp(24px,6.2vw,34px)', 'clamp(40px,12vw,60px)'];
+var WIDE = ['clamp(27px,7.6vw,49px)', 'clamp(23px,6.5vw,40px)', 'clamp(18px,4.7vw,26px)', 'clamp(30px,9vw,46px)'];
+function full(bright) {
+  return [
+    '.hero .rooms-peek{height:100%;-webkit-mask-image:linear-gradient(to bottom,#000 22%,rgba(0,0,0,.55) 58%,rgba(0,0,0,.18) 100%);mask-image:linear-gradient(to bottom,#000 22%,rgba(0,0,0,.55) 58%,rgba(0,0,0,.18) 100%)}',
+    '.hero .rooms-peek img{object-fit:cover;object-position:center 40%;filter:saturate(.7) contrast(1.1) brightness(' + bright + ')}',
+    '.hero .rooms-peek:after{background:linear-gradient(180deg,rgba(0,0,0,.3),rgba(4,1,1,.25) 45%,rgba(4,1,1,.7) 100%)}'
+  ];
+}
+var LOOKS = [
+  { name: 'Now', note: 'Live today. Nosifer, stage strip up top', rules: [] },
+  { name: 'Butcher', note: 'Condensed drip. Closest to the original 16 DAYS REMAIN', rules: display.apply(null, ['Butcherman'].concat(COND)) },
+  { name: 'Creepster', note: 'Classic haunt lettering, cleanest to read', rules: display.apply(null, ['Creepster'].concat(COND)) },
+  { name: 'Wet Paint', note: 'Heaviest drip', rules: display.apply(null, ['Rubik Wet Paint'].concat(WIDE)) },
+  { name: 'Full bleed', note: 'Nosifer, stage behind everything', rules: full('.55') },
+  { name: 'Manny cut', note: 'Butcher + full bleed + bigger logo', rules: display.apply(null, ['Butcherman', 'clamp(44px,12.5vw,80px)'].concat(COND.slice(1))).concat(full('.5'), [
+    '.hero h1{width:min(94vw,420px)}',
+    '.hero .dayline{max-width:7ch;line-height:.88}',
+    '.hero .hero-copy{gap:12px;bottom:5%}'
+  ]) }
+];
+
+var frame = document.getElementById('frame');
+var nameEl = document.getElementById('name'), noteEl = document.getElementById('note'), dots = document.getElementById('dots');
+var hint = document.getElementById('hint');
+var sheet = null, mark = 0, cur = -1;
+
+LOOKS.forEach(function () { dots.appendChild(document.createElement('i')); });
+
+function fromHash() {
+  var n = parseInt((location.hash || '').replace('#v', ''), 10);
+  return n >= 1 && n <= LOOKS.length ? n - 1 : 0;
+}
+function apply(i) {
+  if (!sheet) return;
+  while (sheet.cssRules.length > mark) sheet.deleteRule(sheet.cssRules.length - 1);
+  LOOKS[i].rules.forEach(function (r) { sheet.insertRule(r, sheet.cssRules.length); });
+}
+function show(i, push) {
+  cur = (i + LOOKS.length) % LOOKS.length;
+  apply(cur);
+  nameEl.innerHTML = '<b>V' + (cur + 1) + '</b>' + LOOKS[cur].name;
+  noteEl.textContent = LOOKS[cur].note;
+  Array.prototype.forEach.call(dots.children, function (d, k) { d.className = k === cur ? 'on' : ''; });
+  if (push !== false) history.replaceState(null, '', '#v' + (cur + 1));
+  document.title = 'V' + (cur + 1) + ' ' + LOOKS[cur].name + ' - Six looks for the homepage';
+}
+frame.addEventListener('load', function () {
+  var doc = frame.contentDocument;
+  var sheets = doc ? Array.prototype.slice.call(doc.styleSheets) : [];
+  sheet = sheets.filter(function (s) { return s.ownerNode && s.ownerNode.tagName === 'STYLE'; }).pop() || null;
+  if (sheet) {
+    FACES.forEach(function (r) { sheet.insertRule(r, sheet.cssRules.length); });
+    mark = sheet.cssRules.length;
+  }
+  show(fromHash(), false);
+  frame.classList.add('is-in');
+});
+document.getElementById('prev').addEventListener('click', function () { show(cur - 1); });
+document.getElementById('next').addEventListener('click', function () { show(cur + 1); });
+window.addEventListener('keydown', function (e) {
+  if (e.key === 'ArrowLeft') show(cur - 1);
+  if (e.key === 'ArrowRight') show(cur + 1);
+});
+window.addEventListener('hashchange', function () { show(fromHash(), false); });
+
+/* Swipe on the bar, not on the page: the page needs its own touches. */
+var x0 = null;
+var bar = document.getElementById('bar');
+bar.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+bar.addEventListener('touchend', function (e) {
+  if (x0 === null) return;
+  var dx = e.changedTouches[0].clientX - x0; x0 = null;
+  if (Math.abs(dx) > 40) show(dx < 0 ? cur + 1 : cur - 1);
+}, { passive: true });
+setTimeout(function () { hint.classList.add('gone'); }, 4000);
+</script>
+</body>
+</html>

@@ -53,7 +53,7 @@ export function ticketEmail(t: TicketDetails): { subject: string; html: string; 
     "Your code: " + t.ticketCode,
     "Show it at the door, on your phone or printed: " + link,
     "",
-    "Under 18 comes with an adult. All sales are final.",
+    "13 and over. Guests under 18 must be accompanied by an adult. All sales are final.",
     SITE,
   ].join("\n");
 
@@ -73,7 +73,7 @@ export function ticketEmail(t: TicketDetails): { subject: string; html: string; 
     <img src="${esc(t.qrUrl)}" width="220" height="220" alt="${esc(t.ticketCode)}" style="display:block;margin:0 auto;background:#fff;padding:8px;">
     <p style="margin:14px 0 0;font:500 13px/1.5 Arial,Helvetica,sans-serif;color:#cfc2b8;">Show it at the door, on your phone or printed.<br><a href="${esc(link)}" style="color:#ff594e;">Open your ticket</a></p>
   </div>
-  <p style="margin:24px 0 0;font:500 13px/1.6 Arial,Helvetica,sans-serif;color:#b9aaa1;">Under 18 comes with an adult. All sales are final.<br><a href="${SITE}" style="color:#b9aaa1;">hauntedmansionbk.com</a></p>
+  <p style="margin:24px 0 0;font:500 13px/1.6 Arial,Helvetica,sans-serif;color:#b9aaa1;">13 and over. Guests under 18 must be accompanied by an adult. All sales are final.<br><a href="${SITE}" style="color:#b9aaa1;">hauntedmansionbk.com</a></p>
 </div></body></html>`;
 
   return { subject, html, text };

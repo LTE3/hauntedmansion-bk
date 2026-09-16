@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-lCKzolulVXLC7PqzoE6/TUvNAMXzyvbMRXgeDQvZqwI='; font-src 'self'; script-src 'sha256-FKAE9qRLxDlVcF+YT0KiS1xdA+XuH8zoy0Arx/ClI5Y='; connect-src 'none'; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-Tf5BWONQ5LWEk0/i5lubPVnCzfLP8bfQ0MusXHlI1aM='; font-src 'self'; script-src 'sha256-FKAE9qRLxDlVcF+YT0KiS1xdA+XuH8zoy0Arx/ClI5Y='; connect-src 'none'; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Ask before you knock | Haunted Mansion BK</title>
@@ -29,6 +29,7 @@
 <link rel="preload" as="font" type="font/woff2" href="fonts/creepster-400-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="fonts/dm-sans-500-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="fonts/barlowcondensed-700-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/rye-400-latin.woff2" crossorigin>
 <style>
 /* Three faces, one job each: Creepster carries the questions the way it carries
    the headings in the design, DM Sans answers them, Barlow Condensed labels the
@@ -39,6 +40,7 @@
 @font-face{font-family:"Barlow Condensed";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/barlowcondensed-700-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
 @font-face{font-family:"Barlow Condensed";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/barlowcondensed-700-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
 
+@font-face{font-family:"Rye";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/rye-400-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
 :root{
   color-scheme:dark;
   --ink:#030202;
@@ -238,6 +240,8 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
 @media(prefers-contrast:more){
   :root{--bone:#fff;--read:#f0e9e3;--muted:#f0e9e3;--line:#bbb;--red-lit:#ff6b5f}
 }
+
+.hero h1 em{font-family:"Rye",Georgia,serif;font-style:normal}
 </style>
 </head>
 <body>
@@ -267,7 +271,7 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
   <ol class="faq">
     <li>
       <h2><button class="faq-btn" type="button" id="q1" aria-expanded="false" aria-controls="a1">How long is the experience?<span class="mark" aria-hidden="true"></span></button></h2>
-      <div class="faq-a" id="a1" role="region" aria-labelledby="q1"><div><p>Plan for about 45 minutes inside: two 20-minute experiences with a five-minute transition. Entry is timed, so arrive 20 minutes before your slot.</p></div></div>
+      <div class="faq-a" id="a1" role="region" aria-labelledby="q1"><div><p>Plan for about 45 minutes inside: two 20-minute experiences with a five-minute transition. Entry is timed, so arrive 20 minutes before your slot &mdash; about an hour on site all told.</p></div></div>
     </li>
     <li>
       <h2><button class="faq-btn" type="button" id="q2" aria-expanded="false" aria-controls="a2">How old do I have to be?<span class="mark" aria-hidden="true"></span></button></h2>

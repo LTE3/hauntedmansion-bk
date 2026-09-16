@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-P9fu5UadxJje5U3o1mMjUL/xNIFh86W857z0Du/l6vU='; font-src 'self'; script-src 'sha256-MMqVcVr0psXnLytkR1p67BWbnvJfPC2F4KgRMu0He/E='; connect-src 'none'; frame-src 'self'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-cyXUuqNSEBZHKDntGMU3rn9PPP97Ra6btR4rdCvR8JA='; font-src 'self'; script-src 'sha256-9w96VWDTpU0iz/nAu3IEut+zPEx5NvYd0pFmMzXCmZ0='; connect-src 'none'; frame-src 'self'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Eight looks for the homepage</title>
+<title>Eleven looks for the homepage</title>
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#050505">
 <style>
@@ -13,8 +13,9 @@
    each look is a handful of CSS rules pushed into its stylesheet through the
    CSSOM (insertRule), which the page's hash-only CSP does not police - so the
    homepage file itself is never edited until a look is chosen. Round one
-   picked the display face (Creepster) and the full-screen house; round two,
-   the eight here, is the line under the countdown. The chrome is
+   picked the display face (Creepster) and the full-screen house; round two
+   (V1-V8) was the line under the countdown, and Rye won; round three
+   (V9-V11) puts three of those faces on every word of the first screen. The chrome is
    deliberately plain: it is the thing being judged that should have the
    atmosphere, not the bench it sits on. */
 @font-face{font-family:"Barlow Condensed";font-weight:700;font-display:swap;src:url(fonts/barlowcondensed-700-latin.woff2) format("woff2")}
@@ -69,8 +70,12 @@ iframe.is-in{opacity:1}
    candidate faces live under v/fonts; the page's font-src is 'self'.
 
    Round two (2026-09-15): the owner picked Creepster and the full-screen
-   house, both now live. These eight change one thing only - the face on the
-   "Brooklyn's first full-scale..." line under the countdown. */
+   house, both now live. V1-V8 change one thing only - the face on the
+   "Brooklyn's first full-scale..." line under the countdown; Rye (V5) won
+   and is live. V9-V11 are the owner's follow-up: Rye, Grenze Gotisch and
+   Frijole on every word of the first screen - header, kicker, lead,
+   countdown labels, button, age line, tagline. The Creepster dayline and
+   digits stay, that pick is already made. */
 var FACES = [
   '@font-face{font-family:"Special Elite";src:url(v/fonts/specialelite-400-latin.woff2) format("woff2")}',
   '@font-face{font-family:"IM Fell English";src:url(v/fonts/imfellenglish-400-latin.woff2) format("woff2")}',
@@ -93,6 +98,24 @@ function lead(fam, weight, size, lh, caps, ls, small) {
     '@media(max-height:520px) and (orientation:landscape){.hero-copy .lead{font-size:' + small + '}}'
   ];
 }
+/* Every word on the first screen in one face. Blackletter in capitals is
+   unreadable, so Grenze Gotisch keeps the source case; the other two stay
+   in caps like the live page. Sizes and tracking shrink where the face is
+   wide, so nothing has to wrap that does not wrap today. */
+function all(fam, weight, caps, o) {
+  var f = '"' + fam + '",Georgia,serif', tt = caps ? 'uppercase' : 'none';
+  return [
+    '.topbar{font:' + weight + ' ' + o.top + '/1 ' + f + ';letter-spacing:' + o.topLs + ';text-transform:' + tt + '}',
+    '.hero .kicker{font:' + weight + ' ' + o.kicker + '/1.3 ' + f + ';letter-spacing:' + o.kickerLs + ';text-transform:' + tt + '}',
+    '.hero .lead{font:' + weight + ' ' + o.lead + '/' + o.leadLh + ' ' + f + ';letter-spacing:' + o.leadLs + ';text-transform:none;text-wrap:balance}',
+    '.hero .poster-countdown span{font:' + weight + ' ' + o.label + '/1 ' + f + ';letter-spacing:' + o.labelLs + ';text-transform:' + tt + '}',
+    '.hero .actions .cta{font:' + weight + ' ' + o.cta + '/1 ' + f + ';letter-spacing:' + o.ctaLs + ';text-transform:' + tt + '}',
+    '.hero .age{font:' + weight + ' ' + o.age + '/1.35 ' + f + ';letter-spacing:' + o.ageLs + ';text-transform:' + tt + '}',
+    '.hero .age strong{font-size:' + o.seal + ';letter-spacing:.02em;padding:0 ' + (o.sealPad || '5px') + '}',
+    '.hero .tagline{font:' + weight + ' ' + o.tag + '/' + o.tagLh + ' ' + f + ';letter-spacing:' + o.tagLs + ';text-transform:' + tt + '}',
+    '@media(max-height:520px) and (orientation:landscape){.hero-copy .lead{font-size:' + o.small + '}}'
+  ];
+}
 var LOOKS = [
   { name: 'Typewriter', note: 'Special Elite. Case-file typing, the crime scene angle', rules: lead('Special Elite', 400, 'clamp(17px,4.6vw,21px)', 1.28, false, '.01em', '14px') },
   { name: 'Old book', note: 'IM Fell English. Seventeenth-century ghost story', rules: lead('IM Fell English', 400, 'clamp(19px,5.1vw,24px)', 1.22, false, '0', '16px') },
@@ -101,7 +124,16 @@ var LOOKS = [
   { name: 'Carnival', note: 'Rye. Sideshow slab, a little western', rules: lead('Rye', 400, 'clamp(16px,4.3vw,20px)', 1.28, false, '.01em', '14px') },
   { name: 'Blackletter', note: 'Grenze Gotisch. Gothic script you can still read', rules: lead('Grenze Gotisch', 500, 'clamp(20px,5.4vw,25px)', 1.18, false, '0', '17px') },
   { name: 'Eater', note: 'Eater. Rotting letters, the roughest read of the eight', rules: lead('Eater', 400, 'clamp(16px,4.3vw,20px)', 1.35, false, '.01em', '14px') },
-  { name: 'Frijole', note: 'Frijole. Chunky carnival horror, sized down to fit', rules: lead('Frijole', 400, 'clamp(14px,3.7vw,17px)', 1.4, false, '.02em', '13px') }
+  { name: 'Frijole', note: 'Frijole. Chunky carnival horror, sized down to fit', rules: lead('Frijole', 400, 'clamp(14px,3.7vw,17px)', 1.4, false, '.02em', '13px') },
+  { name: 'Carnival, all words', note: 'Rye on the header, kicker, lead, labels, button, age line, tagline',
+    rules: all('Rye', 400, true, { top: '12px', topLs: '.08em', kicker: '11px', kickerLs: '.16em', lead: 'clamp(16px,4.3vw,20px)', leadLh: 1.28, leadLs: '.01em',
+      label: '9.5px', labelLs: '.14em', cta: '17px', ctaLs: '.05em', age: '11px', ageLs: '.06em', seal: '8.5px', tag: '11px', tagLh: 1.7, tagLs: '.1em', small: '14px' }) },
+  { name: 'Blackletter, all words', note: 'Grenze Gotisch on every word, source case so it reads',
+    rules: all('Grenze Gotisch', 500, false, { top: '16px', topLs: '.03em', kicker: '15px', kickerLs: '.05em', lead: 'clamp(20px,5.4vw,25px)', leadLh: 1.18, leadLs: '0',
+      label: '13px', labelLs: '.04em', cta: '23px', ctaLs: '.02em', age: '15px', ageLs: '.01em', seal: '11px', sealPad: '9px', tag: '15px', tagLh: 1.55, tagLs: '.02em', small: '17px' }) },
+  { name: 'Frijole, all words', note: 'Frijole on every word, sized down hard',
+    rules: all('Frijole', 400, true, { top: '11px', topLs: '.04em', kicker: '10px', kickerLs: '.08em', lead: 'clamp(14px,3.7vw,17px)', leadLh: 1.4, leadLs: '.02em',
+      label: '8.5px', labelLs: '.08em', cta: '15px', ctaLs: '.03em', age: '10px', ageLs: '.03em', seal: '7.5px', tag: '10px', tagLh: 1.75, tagLs: '.05em', small: '13px' }) }
 ];
 
 var frame = document.getElementById('frame');
@@ -127,7 +159,7 @@ function show(i, push) {
   noteEl.textContent = LOOKS[cur].note;
   Array.prototype.forEach.call(dots.children, function (d, k) { d.className = k === cur ? 'on' : ''; });
   if (push !== false) history.replaceState(null, '', '#v' + (cur + 1));
-  document.title = 'V' + (cur + 1) + ' ' + LOOKS[cur].name + ' - Eight looks for the homepage';
+  document.title = 'V' + (cur + 1) + ' ' + LOOKS[cur].name + ' - Eleven looks for the homepage';
 }
 frame.addEventListener('load', function () {
   var doc = frame.contentDocument;

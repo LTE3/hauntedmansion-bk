@@ -79,6 +79,47 @@ export function ticketEmail(t: TicketDetails): { subject: string; html: string; 
   return { subject, html, text };
 }
 
+// The waitlist confirmation. Deliberately thin: a list signup is not a
+// purchase, and the only promise made on the form is that we write once when
+// tickets go on sale. Every factual line here is already on the site - the
+// opening line from the home page, the age rule in the frozen wording it has
+// in all eleven other places, and the removal address privacy.html:226
+// already tells people to use. Nothing new is asserted in a guest's inbox.
+export function waitlistWelcomeEmail(name: string | null): { subject: string; html: string; text: string } {
+  const who = (name || "").trim();
+  const greet = who ? esc(who) + ", your name is on the list." : "Your name is on the list.";
+  const subject = BRAND + " — your name is on the list";
+
+  const text = [
+    who ? who + ", your name is on the list." : "Your name is on the list.",
+    "",
+    "A house in Bushwick, Brooklyn opens October 1, 2026.",
+    "",
+    "Names on this list hear first when tickets go on sale. That is the only",
+    "reason we will write to you.",
+    "",
+    "13 and over. Guests under 18 must be accompanied by an adult.",
+    "",
+    "To come off the list, or to be told what we hold about you, write to",
+    "admin@pulsetix.ai.",
+    "",
+    SITE,
+  ].join("\n");
+
+  const html = `<!doctype html><html><body style="margin:0;background:#030202;color:#f3e8de;font-family:Georgia,'Times New Roman',serif;">
+  <div style="max-width:520px;margin:0 auto;padding:40px 24px;">
+    <p style="margin:0 0 28px;font:700 13px/1 Arial,Helvetica,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#c2702f;">${esc(BRAND)}</p>
+    <p style="margin:0 0 24px;font:400 26px/1.25 Georgia,'Times New Roman',serif;color:#f3e8de;">${greet}</p>
+    <p style="margin:0 0 20px;font:400 16px/1.6 Georgia,'Times New Roman',serif;color:#d8c9bd;">A house in Bushwick, Brooklyn opens October 1, 2026.</p>
+    <p style="margin:0 0 20px;font:400 16px/1.6 Georgia,'Times New Roman',serif;color:#d8c9bd;">Names on this list hear first when tickets go on sale. That is the only reason we will write to you.</p>
+    <p style="margin:32px 0 0;padding-top:20px;border-top:1px solid #241d18;font:500 13px/1.6 Arial,Helvetica,sans-serif;color:#b9aaa1;">13 and over. Guests under 18 must be accompanied by an adult.</p>
+    <p style="margin:12px 0 0;font:500 13px/1.6 Arial,Helvetica,sans-serif;color:#b9aaa1;">To come off the list, or to be told what we hold about you, write to <a href="mailto:admin@pulsetix.ai" style="color:#b9aaa1;">admin@pulsetix.ai</a>.<br><a href="${SITE}" style="color:#b9aaa1;">hauntedmansionbk.com</a></p>
+  </div></body></html>`;
+
+  return { subject, html, text };
+}
+
+
 // Gmail SMTP, same pattern already running in production for La Casita (this
 // repo's owner's other business, same Supabase project): GMAIL_USER /
 // GMAIL_APP_PASSWORD secrets, denomailer, from-name swapped for this brand.
@@ -89,9 +130,16 @@ async function sendViaGmail(
   to: string,
   msg: { subject: string; html: string; text: string },
 ): Promise<{ ok: boolean; id?: string; error?: string }> {
-  const user = Deno.env.get("GMAIL_USER") || "";
-  const pass = Deno.env.get("GMAIL_APP_PASSWORD") || "";
-  if (!user || !pass) return { ok: false, error: "GMAIL_USER/GMAIL_APP_PASSWORD not set" };
+  // This Supabase project is shared with the owner's other business, and
+  // GMAIL_USER/GMAIL_APP_PASSWORD are that business's mailbox - its own
+  // functions send "La Casita BK <${GMAIL_USER}>" from them. Borrowing that
+  // mailbox would put a haunted-house ticket in a guest's inbox from a
+  // restaurant's address. HM_GMAIL_* is this brand's own sender
+  // (admin@pulsetix.ai); the shared pair stays only as a fallback so nothing
+  // silently stops sending if HM_GMAIL_* is not set yet.
+  const user = Deno.env.get("HM_GMAIL_USER") || Deno.env.get("GMAIL_USER") || "";
+  const pass = Deno.env.get("HM_GMAIL_APP_PASSWORD") || Deno.env.get("GMAIL_APP_PASSWORD") || "";
+  if (!user || !pass) return { ok: false, error: "HM_GMAIL_USER/HM_GMAIL_APP_PASSWORD not set" };
 
   const { SMTPClient } = await import("https://deno.land/x/denomailer@1.6.0/mod.ts");
   const client = new SMTPClient({

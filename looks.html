@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-cyXUuqNSEBZHKDntGMU3rn9PPP97Ra6btR4rdCvR8JA='; font-src 'self'; script-src 'sha256-9w96VWDTpU0iz/nAu3IEut+zPEx5NvYd0pFmMzXCmZ0='; connect-src 'none'; frame-src 'self'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-cyXUuqNSEBZHKDntGMU3rn9PPP97Ra6btR4rdCvR8JA='; font-src 'self'; script-src 'sha256-waQgqNsqUHdAGgSduRVv2kxI020pU4o+sy8gwElpskg='; connect-src 'none'; frame-src 'self'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Eleven looks for the homepage</title>
@@ -51,7 +51,7 @@ iframe.is-in{opacity:1}
 </head>
 <body>
 <div class="stage" id="stage">
-  <iframe id="frame" title="Homepage preview" src="index.html"></iframe>
+  <iframe id="frame" title="Homepage preview"></iframe>
 </div>
 <div class="bar" id="bar">
   <p class="hint" id="hint">Swipe here or tap the arrows</p>
@@ -137,6 +137,9 @@ var LOOKS = [
 ];
 
 var frame = document.getElementById('frame');
+/* Pages caches for ten minutes. A query on this URL is passed through to the
+   framed homepage so one fresh link fetches both after a deploy. */
+frame.src = 'index.html' + location.search;
 var nameEl = document.getElementById('name'), noteEl = document.getElementById('note'), dots = document.getElementById('dots');
 var hint = document.getElementById('hint');
 var sheet = null, mark = 0, cur = -1;

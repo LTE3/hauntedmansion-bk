@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-jKV1D0qrzqtvMW4emY6+ofdl0TAJn3Sr0li4IMoZ89Q='; font-src 'self'; script-src 'sha256-QoB1DXov1qMzw+uWOWzBWvUeTHjVj0nd0p1SIkszBlU='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-Z7+tDYs9MBTL40psvqOoBgDIau9CmQVfYdQRQiGJvE4='; font-src 'self'; script-src 'sha256-ye1QM+x4bi7woW61uUJqopG8HctuVUK5+Sxh3mUI/9I='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Pick your night | Haunted Mansion BK</title>
@@ -265,6 +265,7 @@ button.cal-day{width:100%;height:100%}
 .cal-swatch.red{background:#ff4b45;border:0;box-shadow:0 0 10px rgba(255,75,69,.45)}
 .cal-swatch.is-closed{background:rgba(255,255,255,.28)}
 .cal-note{border-top:1px solid rgba(227,48,39,.4);padding-top:18px;text-align:center}
+.cal-note[hidden]{display:none}
 .closer{margin-top:34px}
 .closer p:first-child{font-size:28px}
 .cta{background:linear-gradient(90deg,rgba(110,8,6,.6),rgba(55,5,4,.65));box-shadow:0 0 28px rgba(227,48,39,.18)}
@@ -595,11 +596,31 @@ button.cal-day{width:100%;height:100%}
   const tiers = document.getElementById("tiers");
   const cta = document.getElementById("buy-cta");
   const errorEl = document.getElementById("buy-error");
-  if(grid && buy && nightName && tiers && cta && errorEl){
+  if(grid && buy && nightName && tiers && cta && errorEl) (function(){
     const SUPABASE_URL = "https://tqeunmqnaoyrerkbhokk.supabase.co";
     const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxZXVubXFuYW95cmVya2Job2trIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4OTQ1MzQsImV4cCI6MjA4OTQ3MDUzNH0.hkkuc7_YE2yf0w0NQENpahAxqxxqBfjq8n5QhtTIkw8";
     const DOW = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     let picked = null, sending = false;
+
+    /* Same instant as the calendar's PRESALE above; keep the two in step.
+       Before it there is nothing to sell: the note under the calendar says
+       tickets go on sale soon, and a working Get-tickets button sitting
+       underneath that note would be calling the guest a liar. So until the
+       presale opens the nights are not pickable and the panel never opens.
+       After it, the note is the stale one, and it goes instead. */
+    const PRESALE = Date.parse("2026-09-25T10:00:00-04:00");
+    const onSale = new Date().getTime() >= PRESALE;
+    const note = document.querySelector(".cal-note");
+    if(!onSale){
+      grid.querySelectorAll(".cal-day.open").forEach(b => {
+        if(b.tagName === "BUTTON"){
+          b.disabled = true;
+          b.removeAttribute("aria-pressed");
+        }
+      });
+      return;
+    }
+    if(note) note.hidden = true;
 
     const nightDate = day => "2026-10-" + String(day).padStart(2, "0");
     const nightLabel = day => DOW[(day + 3) % 7] + ", October " + day;
@@ -678,7 +699,7 @@ button.cal-day{width:100%;height:100%}
         cta.textContent = "Get tickets";
       }
     });
-  }
+  })();
 }
 </script>
 </body>

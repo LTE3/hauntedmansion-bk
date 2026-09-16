@@ -78,6 +78,12 @@ def policy(html):
 
     # A page reaches the database either directly or through waitlist.js.
     connect = SUPABASE.encode() in html or b"waitlist.js" in html
+    # One page points an <img> at the database's own edge function: the
+    # ticket page draws its QR from hm-ticket?qr=. Derive that the same way
+    # connect-src is derived, or the next run that fixes the hashes quietly
+    # takes the QR host back out of the policy again and the code stops
+    # rendering with nothing on the page to say why.
+    img_remote = connect and b"qr=" in html
     media = bool(re.search(rb"new Audio|<audio|<video", html, re.I))
     manifest = b'rel="manifest"' in html
 
@@ -112,7 +118,9 @@ def policy(html):
         # submission also closes the no-JS fallback path, which would have put
         # the visitor's name and email into a URL query string.
         "form-action 'none'",
-        "img-src 'self' data:",        # data: is the inline SVG favicon
+        # data: is the inline SVG favicon; the Supabase host, when it is
+        # named at all, is the QR image on the ticket page.
+        "img-src 'self' data:" + ((" " + SUPABASE) if img_remote else ""),
         "style-src %s" % " ".join(styles + remote_css),
         "font-src %s" % (" ".join(fonts) if fonts else "'none'"),
         "script-src %s" % (" ".join(scripts) if scripts else "'none'"),

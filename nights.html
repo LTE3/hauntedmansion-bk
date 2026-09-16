@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-Z7+tDYs9MBTL40psvqOoBgDIau9CmQVfYdQRQiGJvE4='; font-src 'self'; script-src 'sha256-ye1QM+x4bi7woW61uUJqopG8HctuVUK5+Sxh3mUI/9I='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-Z7+tDYs9MBTL40psvqOoBgDIau9CmQVfYdQRQiGJvE4='; font-src 'self'; script-src 'sha256-EErwZAD2sICoWF4gYb+IzcFlkonzXlN+oJvSiHBbnMw='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Pick your night | Haunted Mansion BK</title>
@@ -678,6 +678,20 @@ button.cal-day{width:100%;height:100%}
         try{ data = await r.json(); }catch(_){}
         if(r.ok && data && data.url){
           location.href = data.url;
+          return;
+        }
+        /* A night that exists but has not been switched on answers 409
+           not_on_sale. That is not a network failure, so it must not fall
+           through to "could not reach the box office" - the box office was
+           reached, it said no, and telling the guest to try again sends them
+           round a loop that cannot end. Reachable from the presale opening
+           until the owner activates each night. */
+        if(r.status === 409 && data && data.error === "not_on_sale"){
+          errorEl.textContent = "That night is not on sale yet. Join the list and we will tell you the moment it is.";
+          errorEl.hidden = false;
+          sending = false;
+          cta.disabled = false;
+          cta.textContent = "Get tickets";
           return;
         }
         if(r.status === 409 && data && data.error === "sold_out"){

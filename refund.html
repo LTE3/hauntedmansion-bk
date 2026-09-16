@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-c9R1vZ3/7Fzejm5OvUL4GeaPhOIO3RdPKQ9R4r4ngo8='; font-src 'self'; script-src 'none'; connect-src 'none'; frame-src 'none'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Refunds &amp; transfers</title>
+<!-- PREVIEW ONLY: remove this line when the real domain goes live -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Tickets to Haunted Mansion BK are final sale. What happens if we cancel a performance, how transfers work, and what timed entry means for latecomers.">
+<meta name="theme-color" content="#050505">
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23050505"/><path d="M6 30V13L16 5l10 8v17z" fill="none" stroke="%233a332c" stroke-width="2"/><rect x="13" y="18" width="6" height="12" fill="%23c2702f"/></svg>'>
+<link rel="preload" as="font" type="font/woff2" href="fonts/barlowcondensed-500-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/creepster-400-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/rye-400-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/barlowcondensed-700-latin.woff2" crossorigin>
+<style>
+/* The typefaces, served from this origin. Same reasoning as privacy.html:
+   self-hosted so no third party sees a visitor's IP, font-display:swap keeps
+   text readable while they load, and the unicode-range split means the
+   accented file is fetched only if a glyph in it is actually needed. */
+@font-face{font-family:"Creepster";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/creepster-400-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:"Rye";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/rye-400-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:"Barlow Condensed";font-style:normal;font-weight:500;font-display:swap;src:url(fonts/barlowcondensed-500-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:"Barlow Condensed";font-style:normal;font-weight:500;font-display:swap;src:url(fonts/barlowcondensed-500-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:"Barlow Condensed";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/barlowcondensed-700-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:"Barlow Condensed";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/barlowcondensed-700-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+:root{
+  color-scheme:dark;
+  --ink:#050505;
+  --bone:#cfc4b4;
+  --read:#c3b8a8;      /* body copy: lighter than the 404's --ash, which is a
+                          caption colour and does not clear 4.5:1 at this size */
+  --ash:#9b9184;       /* meta lines only, and only at 16px or larger */
+  --blood-lit:#c9342a;
+  --rule:#241f1b;
+  --serif:"Barlow Condensed","Arial Narrow",sans-serif;
+  --display:"Creepster",Impact,"Arial Narrow Bold",sans-serif;
+  --slow:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:radial-gradient(ellipse 90% 45% at 50% 0%,rgba(117,8,5,.22),transparent 70%),var(--ink);color:var(--read);
+  font-family:var(--serif);font-weight:500;
+  -webkit-font-smoothing:antialiased;
+  padding:11vh 7vw 16vh;
+}
+::selection{background:#7d1d14;color:#e8ded0}
+body::before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(60% 45% at 50% 0%,rgba(194,112,47,.09),transparent 70%);
+}
+main{max-width:62ch;margin:0 auto}
+
+.eyebrow{
+  font-family:var(--serif);font-weight:700;font-size:16px;line-height:1.2;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ash);margin:0 0 1.5rem
+}
+h1{
+  font-family:var(--display);font-weight:400;margin:0 0 .5rem;
+  font-size:clamp(29px,5.75vw,48px);line-height:1.05;letter-spacing:.02em;
+  text-transform:uppercase;color:#d8cdbc;text-wrap:balance;
+  text-shadow:0 0 60px rgba(160,26,18,.35)
+}
+.standfirst{
+  font:400 clamp(16px,4.3vw,20px)/1.28 "Rye",Georgia,serif;letter-spacing:.01em;text-wrap:balance;color:var(--bone);
+  margin:0 0 2.2rem
+}
+h2{
+  font-family:var(--serif);font-weight:700;
+  font-size:clamp(21px,3.3vw,24px);line-height:1.2;letter-spacing:.1em;
+  text-transform:uppercase;color:#c8bcab;
+  margin:3.2rem 0 .9rem;padding-top:1.5rem;border-top:1px solid var(--rule)
+}
+p,li{font-size:clamp(19px,3vw,21px);line-height:1.3;margin:0 0 1.05rem}
+ul{margin:0 0 1.05rem;padding-left:1.1rem}
+li{margin-bottom:.55rem}
+li::marker{color:#6b5f52}
+strong{color:#efe4d2;font-weight:500}
+.aside{
+  border-left:2px solid #3a2019;padding:.1rem 0 .1rem 1.1rem;
+  margin:0 0 1.05rem;color:var(--bone)
+}
+a{color:#e0d4c2;text-decoration:underline;text-underline-offset:3px;
+  text-decoration-color:#6a5b4c;transition:text-decoration-color .3s var(--slow)}
+a:hover,a:focus-visible{text-decoration-color:var(--blood-lit)}
+a:focus-visible{outline:2px solid #ff6b5f;outline-offset:3px}
+
+.back{
+  display:inline-block;margin-top:3.4rem;
+  font-family:var(--serif);font-weight:700;font-size:20px;line-height:1;letter-spacing:.14em;
+  text-transform:uppercase;color:#ddd2c1;text-decoration:none;
+  border:1px solid #4a423a;padding:1rem 1.7rem;
+  transition:background-color .3s var(--slow),border-color .3s var(--slow),color .3s var(--slow)
+}
+.back:hover,.back:focus-visible{
+  background:#170907;border-color:var(--blood-lit);color:#f0e5d4;
+  box-shadow:0 0 34px -12px rgba(201,52,42,.75)
+}
+.updated{margin-top:3.4rem;font-size:18px;color:var(--ash)}
+
+@media (prefers-contrast:more){
+  body{color:#ded3c2} .updated,.eyebrow{color:#b8ada0} h1{color:#fff}
+}
+@media (prefers-reduced-motion:reduce){
+  a,.back{transition:none}
+}
+</style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">The House &middot; Bushwick, Brooklyn</p>
+  <h1>Refunds &amp; transfers</h1>
+  <p class="standfirst">Tickets are final sale. If we cancel a performance,
+    ticket holders will be offered a transfer or refund. Tickets may be
+    transferred to another adult before check-in.</p>
+
+  <h2>Entry is timed</h2>
+  <p>Plan for about 45 minutes inside: two 20-minute experiences with a
+    five-minute transition. Entry is timed, so arrive 20 minutes before your
+    slot. Doors open at 5pm on show nights; last entry is 10:15pm on
+    Thursdays and Sundays and 9pm on Fridays and Saturdays.</p>
+
+  <h2>If you&rsquo;re running late</h2>
+  <p>Late entry is not guaranteed, because every group follows a timed
+    route. We will try to place you in the next available slot, subject to
+    capacity.</p>
+
+  <h2>Transfers</h2>
+  <p>A ticket may be transferred to another adult before check-in. Every
+    ticket is sold for one specific night &mdash; see <a href="terms.html">Terms</a>
+    for what a ticket is.</p>
+  <!-- admin@pulsetix.ai is the address privacy.html already publishes as the
+       one Pulse Ticketing reads (owner-confirmed 2026-09-12). A transfer
+       policy with no way to ask for a transfer is a policy that cannot be
+       used, so it points at the same inbox rather than a new one. -->
+  <p>To transfer a ticket, write to
+    <a href="mailto:admin@pulsetix.ai">admin@pulsetix.ai</a> from the email
+    address you bought it with, before the doors open on your night.</p>
+
+  <h2>If we cancel a performance</h2>
+  <p>If we cancel a performance, ticket holders will be offered a transfer
+    or a refund.</p>
+
+  <p class="updated">Last updated 16 September 2026.</p>
+  <a class="back" href="/">Back to the door</a>
+</main>
+</body>
+</html>

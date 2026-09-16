@@ -2,19 +2,20 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-DXsBlOQWigigD5VvJ1vE9J5jwcDpNohsF1CuKLuOeZ4='; font-src 'self'; script-src 'sha256-2/G5zhyLRZ4+wzkUXuwRtbeP/JyfQxuYxjuG6lXaxmc='; connect-src 'none'; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-jKV1D0qrzqtvMW4emY6+ofdl0TAJn3Sr0li4IMoZ89Q='; font-src 'self'; script-src 'sha256-QoB1DXov1qMzw+uWOWzBWvUeTHjVj0nd0p1SIkszBlU='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Pick your night | Haunted Mansion BK</title>
 <!-- PREVIEW ONLY: remove this line when the real domain goes live -->
 <meta name="robots" content="noindex, nofollow">
-<meta name="description" content="October 2026 in Bushwick, Brooklyn. The house opens Thursday, October 1 and runs Thursday through Sunday every week that month. All ages.">
+<meta name="description" content="October 2026 in Bushwick, Brooklyn. The house opens Thursday, October 1 and runs Thursday through Sunday every week that month. 13 and over.">
 <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23050505"/><path d="M6 30V13L16 5l10 8v17z" fill="none" stroke="%233a332c" stroke-width="2"/><rect x="13" y="18" width="6" height="12" fill="%23c2702f"/></svg>'>
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#030202">
 <link rel="preload" as="font" type="font/woff2" href="fonts/creepster-400-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="fonts/dm-sans-500-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="fonts/barlowcondensed-700-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/rye-400-latin.woff2" crossorigin>
 <style>
 /* Three faces, one job each: Creepster carries the questions the way it carries
    the headings in the design, DM Sans answers them, Barlow Condensed labels the
@@ -27,6 +28,7 @@
 @font-face{font-family:"Barlow Condensed";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/barlowcondensed-700-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
 @font-face{font-family:"Barlow Condensed";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/barlowcondensed-700-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
 
+@font-face{font-family:"Rye";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/rye-400-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
 :root{
   color-scheme:dark;
   --ink:#030202;
@@ -184,7 +186,8 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
 
 @keyframes rise{from{opacity:0;transform:translate3d(0,16px,0)}to{opacity:1;transform:none}}
 .menu:focus-visible,.cta:focus-visible,.drawer-close:focus-visible,
-.drawer-nav a:focus-visible,footer a:focus-visible,.drawer-foot a:focus-visible{outline:2px solid #ff6b5f;outline-offset:2px}
+.drawer-nav a:focus-visible,footer a:focus-visible,.drawer-foot a:focus-visible,
+.cal-day:focus-visible,.tiers input:focus-visible{outline:2px solid #ff6b5f;outline-offset:2px}
 @media(prefers-reduced-motion:reduce){
   *,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 }
@@ -195,7 +198,7 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
 /* The calendar. Two states only, read at a glance: a night the house is
    awake for, and a night it isn't. Opening night gets one word, in the
    only red on the grid, because it's the only date that needs remembering. */
-.lede{margin:14px 0 0;max-width:46ch;color:var(--read)}
+.lede{margin:14px 0 0;max-width:46ch;color:var(--read);font:400 clamp(16px,4.3vw,20px)/1.28 "Rye",Georgia,serif;letter-spacing:.01em;text-wrap:balance}
 .cal{margin:36px 0 0;animation:rise .8s var(--ease) .1s backwards}
 .cal-head{
   display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:0 0 12px;
@@ -214,6 +217,8 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
   font:700 17px/1 "Barlow Condensed","Arial Narrow",sans-serif;font-variant-numeric:tabular-nums
 }
 .cal-day.open{color:var(--bone);border:1px solid var(--line)}
+button.cal-day{width:100%;height:100%}
+.cal-day:disabled{cursor:default}
 .cal-day.closed{color:var(--muted);opacity:.5}
 .cal-day .tag{font:700 11px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--red-lit)}
 .cal-day.today{box-shadow:inset 0 0 0 1px var(--red-lit)}
@@ -309,6 +314,26 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
   .cal-swatch.is-closed{opacity:.65}
   .cal-day .gone,.cal-swatch.is-gone{background:rgba(227,48,39,.55)}
 }
+
+/* The buy panel: same tokens, same pill, same rise the calendar itself
+   already uses. Selecting a night reveals it; nothing here invents a
+   colour the door doesn't already have. */
+.cal-day.open.selected{box-shadow:0 0 0 2px var(--ink),0 0 0 4px var(--red-lit),inset 0 0 22px rgba(227,48,39,.45)}
+.buy{margin:28px 0 0;padding-top:22px;border-top:1px solid var(--line);animation:rise .6s var(--ease) backwards}
+.buy-night{margin:0;font:500 17px/1.4 "DM Sans",sans-serif;color:var(--read)}
+.buy-night strong{color:var(--bone);font-weight:700}
+.tiers{border:0;margin:18px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:10px}
+.tier{
+  flex:1 1 200px;display:flex;align-items:center;gap:12px;min-height:44px;padding:14px 16px;
+  border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.03);
+  transition:border-color .18s var(--ease-out),background .18s var(--ease-out)
+}
+.tier:has(input:checked){border-color:rgba(255,89,78,.72);background:rgba(92,8,6,.32)}
+.tiers input{accent-color:var(--red-lit);width:20px;height:20px;flex:none}
+.tier-count{flex:1;font:700 16px/1.2 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--bone)}
+.tier-price{font:700 20px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.02em;color:var(--red-lit)}
+.buy-cta:disabled{opacity:.45;cursor:default}
+.buy-error{margin:14px 0 0;font:700 14px/1.5 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.04em;color:var(--red-lit)}
 </style>
 </head>
 <body>
@@ -346,37 +371,37 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
       <li class="cal-blank" aria-hidden="true"></li>
       <li class="cal-blank" aria-hidden="true"></li>
       <li class="cal-blank" aria-hidden="true"></li>
-      <li class="cal-day open red opens" data-day="1" aria-label="Thursday, October 1 &mdash; opening night"><span class="num">1</span><span class="tag">Opening night</span></li>
-      <li class="cal-day open green" data-day="2" aria-label="Friday, October 2 &mdash; open"><span class="num">2</span></li>
-      <li class="cal-day open yellow" data-day="3" aria-label="Saturday, October 3 &mdash; open"><span class="num">3</span></li>
-      <li class="cal-day open green" data-day="4" aria-label="Sunday, October 4 &mdash; open"><span class="num">4</span></li>
+      <li><button type="button" class="cal-day open red opens" data-day="1" aria-pressed="false" aria-label="Thursday, October 1 &mdash; opening night"><span class="num">1</span><span class="tag">Opening night</span></button></li>
+      <li><button type="button" class="cal-day open green" data-day="2" aria-pressed="false" aria-label="Friday, October 2 &mdash; open"><span class="num">2</span></button></li>
+      <li><button type="button" class="cal-day open yellow" data-day="3" aria-pressed="false" aria-label="Saturday, October 3 &mdash; open"><span class="num">3</span></button></li>
+      <li><button type="button" class="cal-day open green" data-day="4" aria-pressed="false" aria-label="Sunday, October 4 &mdash; open"><span class="num">4</span></button></li>
       <li class="cal-day closed" data-day="5" aria-label="Monday, October 5 &mdash; closed"><span class="num">5</span></li>
       <li class="cal-day closed" data-day="6" aria-label="Tuesday, October 6 &mdash; closed"><span class="num">6</span></li>
       <li class="cal-day closed" data-day="7" aria-label="Wednesday, October 7 &mdash; closed"><span class="num">7</span></li>
-      <li class="cal-day open yellow" data-day="8" aria-label="Thursday, October 8 &mdash; open"><span class="num">8</span></li>
-      <li class="cal-day open red" data-day="9" aria-label="Friday, October 9 &mdash; open"><span class="num">9</span></li>
-      <li class="cal-day open red" data-day="10" aria-label="Saturday, October 10 &mdash; open"><span class="num">10</span></li>
-      <li class="cal-day open green" data-day="11" aria-label="Sunday, October 11 &mdash; open"><span class="num">11</span></li>
+      <li><button type="button" class="cal-day open yellow" data-day="8" aria-pressed="false" aria-label="Thursday, October 8 &mdash; open"><span class="num">8</span></button></li>
+      <li><button type="button" class="cal-day open red" data-day="9" aria-pressed="false" aria-label="Friday, October 9 &mdash; open"><span class="num">9</span></button></li>
+      <li><button type="button" class="cal-day open red" data-day="10" aria-pressed="false" aria-label="Saturday, October 10 &mdash; open"><span class="num">10</span></button></li>
+      <li><button type="button" class="cal-day open green" data-day="11" aria-pressed="false" aria-label="Sunday, October 11 &mdash; open"><span class="num">11</span></button></li>
       <li class="cal-day closed" data-day="12" aria-label="Monday, October 12 &mdash; closed"><span class="num">12</span></li>
       <li class="cal-day closed" data-day="13" aria-label="Tuesday, October 13 &mdash; closed"><span class="num">13</span></li>
       <li class="cal-day closed" data-day="14" aria-label="Wednesday, October 14 &mdash; closed"><span class="num">14</span></li>
-      <li class="cal-day open green" data-day="15" aria-label="Thursday, October 15 &mdash; open"><span class="num">15</span></li>
-      <li class="cal-day open yellow" data-day="16" aria-label="Friday, October 16 &mdash; open"><span class="num">16</span></li>
-      <li class="cal-day open red" data-day="17" aria-label="Saturday, October 17 &mdash; open"><span class="num">17</span></li>
-      <li class="cal-day open yellow" data-day="18" aria-label="Sunday, October 18 &mdash; open"><span class="num">18</span></li>
+      <li><button type="button" class="cal-day open green" data-day="15" aria-pressed="false" aria-label="Thursday, October 15 &mdash; open"><span class="num">15</span></button></li>
+      <li><button type="button" class="cal-day open yellow" data-day="16" aria-pressed="false" aria-label="Friday, October 16 &mdash; open"><span class="num">16</span></button></li>
+      <li><button type="button" class="cal-day open red" data-day="17" aria-pressed="false" aria-label="Saturday, October 17 &mdash; open"><span class="num">17</span></button></li>
+      <li><button type="button" class="cal-day open yellow" data-day="18" aria-pressed="false" aria-label="Sunday, October 18 &mdash; open"><span class="num">18</span></button></li>
       <li class="cal-day closed" data-day="19" aria-label="Monday, October 19 &mdash; closed"><span class="num">19</span></li>
       <li class="cal-day closed" data-day="20" aria-label="Tuesday, October 20 &mdash; closed"><span class="num">20</span></li>
       <li class="cal-day closed" data-day="21" aria-label="Wednesday, October 21 &mdash; closed"><span class="num">21</span></li>
-      <li class="cal-day open green" data-day="22" aria-label="Thursday, October 22 &mdash; open"><span class="num">22</span></li>
-      <li class="cal-day open yellow" data-day="23" aria-label="Friday, October 23 &mdash; open"><span class="num">23</span></li>
-      <li class="cal-day open red" data-day="24" aria-label="Saturday, October 24 &mdash; open"><span class="num">24</span></li>
-      <li class="cal-day open green" data-day="25" aria-label="Sunday, October 25 &mdash; open"><span class="num">25</span></li>
+      <li><button type="button" class="cal-day open green" data-day="22" aria-pressed="false" aria-label="Thursday, October 22 &mdash; open"><span class="num">22</span></button></li>
+      <li><button type="button" class="cal-day open yellow" data-day="23" aria-pressed="false" aria-label="Friday, October 23 &mdash; open"><span class="num">23</span></button></li>
+      <li><button type="button" class="cal-day open red" data-day="24" aria-pressed="false" aria-label="Saturday, October 24 &mdash; open"><span class="num">24</span></button></li>
+      <li><button type="button" class="cal-day open green" data-day="25" aria-pressed="false" aria-label="Sunday, October 25 &mdash; open"><span class="num">25</span></button></li>
       <li class="cal-day closed" data-day="26" aria-label="Monday, October 26 &mdash; closed"><span class="num">26</span></li>
       <li class="cal-day closed" data-day="27" aria-label="Tuesday, October 27 &mdash; closed"><span class="num">27</span></li>
       <li class="cal-day closed" data-day="28" aria-label="Wednesday, October 28 &mdash; closed"><span class="num">28</span></li>
-      <li class="cal-day open green" data-day="29" aria-label="Thursday, October 29 &mdash; open"><span class="num">29</span></li>
-      <li class="cal-day open yellow" data-day="30" aria-label="Friday, October 30 &mdash; open"><span class="num">30</span></li>
-      <li class="cal-day open red" data-day="31" aria-label="Saturday, October 31 &mdash; open"><span class="num">31</span></li>
+      <li><button type="button" class="cal-day open green" data-day="29" aria-pressed="false" aria-label="Thursday, October 29 &mdash; open"><span class="num">29</span></button></li>
+      <li><button type="button" class="cal-day open yellow" data-day="30" aria-pressed="false" aria-label="Friday, October 30 &mdash; open"><span class="num">30</span></button></li>
+      <li><button type="button" class="cal-day open red" data-day="31" aria-pressed="false" aria-label="Saturday, October 31 &mdash; open"><span class="num">31</span></button></li>
     </ol>
     <ul class="cal-legend">
       <li><span class="cal-swatch green" aria-hidden="true"></span>Under 50% gone</li>
@@ -388,10 +413,33 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
     <p class="cal-note">Tickets go on sale soon. Join the list to hear first.</p>
   </div>
 
+  <div class="buy" id="buy" hidden>
+    <p class="buy-night">Your night: <strong id="buy-night-name"></strong></p>
+    <fieldset class="tiers" id="tiers" aria-label="Choose tickets">
+      <label class="tier">
+        <input type="radio" name="tier" value="single">
+        <span class="tier-count">One ticket</span>
+        <span class="tier-price">$20</span>
+      </label>
+      <label class="tier">
+        <input type="radio" name="tier" value="pair">
+        <span class="tier-count">Two tickets</span>
+        <span class="tier-price">$35</span>
+      </label>
+      <label class="tier">
+        <input type="radio" name="tier" value="quad">
+        <span class="tier-count">Four tickets</span>
+        <span class="tier-price">$60</span>
+      </label>
+    </fieldset>
+    <button class="cta buy-cta" id="buy-cta" type="button" disabled>Get tickets</button>
+    <p class="buy-error" id="buy-error" role="alert" hidden></p>
+  </div>
+
   <div class="closer">
     <p>Pick your night.<br><em>Then knock.</em></p>
     <a class="cta" href="/#list">Unlock the invitation</a>
-    <p class="age"><b>All ages</b><span>Guests under 18 must be accompanied by an adult.</span></p>
+    <p class="age"><b>13 and over</b><span>Guests under 18 must be accompanied by an adult.</span></p>
   </div>
 
   <footer>
@@ -473,7 +521,7 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
     if(y === 2026 && m === 10){
       grid.querySelectorAll(".cal-day").forEach(li => {
         const day = Number(li.dataset.day);
-        if(day < d) li.classList.add("past");
+        if(day < d){ li.classList.add("past"); if(li.tagName === "BUTTON") li.disabled = true; }
         if(day === d){ li.classList.add("today"); li.setAttribute("aria-current", "date"); }
       });
     }
@@ -532,6 +580,104 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
       }
       if(top && legend) legend.hidden = false;
     }
+  }
+}
+/* Buying. The calendar already says which nights are open; this makes an
+   open one choosable. Tapping one opens the panel below with the three
+   prices the owner named, unchanged, nowhere else on the page. Pressing
+   the pill asks hm-create-checkout for a Stripe Checkout Session and, on
+   a good answer, leaves for Stripe - nothing here ever claims a purchase
+   went through on its own. */
+{
+  const grid = document.getElementById("cal-grid");
+  const buy = document.getElementById("buy");
+  const nightName = document.getElementById("buy-night-name");
+  const tiers = document.getElementById("tiers");
+  const cta = document.getElementById("buy-cta");
+  const errorEl = document.getElementById("buy-error");
+  if(grid && buy && nightName && tiers && cta && errorEl){
+    const SUPABASE_URL = "https://tqeunmqnaoyrerkbhokk.supabase.co";
+    const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxZXVubXFuYW95cmVya2Job2trIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4OTQ1MzQsImV4cCI6MjA4OTQ3MDUzNH0.hkkuc7_YE2yf0w0NQENpahAxqxxqBfjq8n5QhtTIkw8";
+    const DOW = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    let picked = null, sending = false;
+
+    const nightDate = day => "2026-10-" + String(day).padStart(2, "0");
+    const nightLabel = day => DOW[(day + 3) % 7] + ", October " + day;
+
+    function selectNight(btn, day){
+      grid.querySelectorAll(".cal-day.open.selected").forEach(b => {
+        b.classList.remove("selected");
+        b.setAttribute("aria-pressed", "false");
+      });
+      btn.classList.add("selected");
+      btn.setAttribute("aria-pressed", "true");
+      picked = day;
+      nightName.textContent = nightLabel(day);
+      errorEl.hidden = true;
+      errorEl.textContent = "";
+      tiers.querySelectorAll("input").forEach(i => { i.checked = false; });
+      cta.disabled = true;
+      cta.textContent = "Get tickets";
+      buy.hidden = false;
+    }
+
+    grid.addEventListener("click", e => {
+      if(sending) return;
+      const btn = e.target.closest(".cal-day.open");
+      if(!btn || btn.disabled) return;
+      selectNight(btn, Number(btn.dataset.day));
+    });
+
+    tiers.addEventListener("change", () => {
+      cta.disabled = !tiers.querySelector("input:checked");
+    });
+
+    cta.addEventListener("click", async () => {
+      if(sending || picked === null) return;
+      const tier = tiers.querySelector("input:checked");
+      if(!tier) return;
+      sending = true;
+      cta.disabled = true;
+      cta.textContent = "Reaching the box office…";
+      errorEl.hidden = true;
+      errorEl.textContent = "";
+      const day = picked;
+      try{
+        const r = await fetch(SUPABASE_URL + "/functions/v1/hm-create-checkout", {
+          signal: AbortSignal.timeout(15000),
+          method: "POST",
+          headers: {
+            apikey: SUPABASE_ANON,
+            Authorization: "Bearer " + SUPABASE_ANON,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ event_date: nightDate(day), product: tier.value })
+        });
+        let data = null;
+        try{ data = await r.json(); }catch(_){}
+        if(r.ok && data && data.url){
+          location.href = data.url;
+          return;
+        }
+        if(r.status === 409 && data && data.error === "sold_out"){
+          errorEl.textContent = "That night is gone. Pick another.";
+          errorEl.hidden = false;
+          const stale = grid.querySelector('.cal-day.open[data-day="' + day + '"]');
+          if(stale){ stale.classList.remove("selected"); stale.setAttribute("aria-pressed", "false"); }
+          picked = null;
+          buy.hidden = true;
+          sending = false;
+          return;
+        }
+        throw new Error(String(r.status));
+      }catch(e){
+        errorEl.textContent = "Could not reach the box office. Try again.";
+        errorEl.hidden = false;
+        sending = false;
+        cta.disabled = false;
+        cta.textContent = "Get tickets";
+      }
+    });
   }
 }
 </script>

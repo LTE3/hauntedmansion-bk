@@ -116,10 +116,7 @@ async function email(sessionId: string): Promise<void> {
       venueAddress: Deno.env.get("HM_VENUE_ADDRESS") || "",
       qrUrl: fnBase + "/hm-ticket?qr=" + encodeURIComponent(o.ticket_code),
     });
-    const apiKey = Deno.env.get("RESEND_API_KEY") || "";
-    if (!apiKey) throw new Error("RESEND_API_KEY not set");
-    const from = Deno.env.get("HM_EMAIL_FROM") || "Haunted Mansion BK <onboarding@resend.dev>";
-    const r = await sendEmail(apiKey, from, o.email, msg);
+    const r = await sendEmail(o.email, msg);
     if (r.ok) await note({ email_sent_at: new Date().toISOString(), email_error: null });
     else await note({ email_error: r.error || "send failed" });
   } catch (e) {

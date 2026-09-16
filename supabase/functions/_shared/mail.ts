@@ -3,7 +3,10 @@
 // read by the webhook from a secret, so the repo never holds it and a
 // missing secret produces no email rather than an email with a blank.
 //
-// Composition is pure (tested under Node); sending is one fetch to Resend.
+// Composition is pure (tested under Node); sending is Gmail SMTP via
+// denomailer. The denomailer import is loaded lazily, inside sendEmail,
+// so importing this module for ticketEmail alone - which is all the Node
+// test suite does - never touches a Deno global or a remote import.
 
 import { BRAND, SITE, clock, money, nightLabel } from "./pay.ts";
 
@@ -76,17 +79,58 @@ export function ticketEmail(t: TicketDetails): { subject: string; html: string; 
   return { subject, html, text };
 }
 
-// Resend. The from address must be on a domain verified in the Resend
-// account; until hauntedmansionbk.com is, HM_EMAIL_FROM is unset and mail
-// goes from Resend's onboarding sender, which delivers only to the account's
-// own inbox - right for testing, useless for guests, and the go-live
-// checklist says so.
-export async function sendEmail(
-  apiKey: string,
+// Gmail SMTP, same pattern already running in production for La Casita (this
+// repo's owner's other business, same Supabase project): GMAIL_USER /
+// GMAIL_APP_PASSWORD secrets, denomailer, from-name swapped for this brand.
+// This is the default path - buyers were previously getting nothing, because
+// the old Resend path fell back to Resend's sandbox sender (onboarding@
+// resend.dev), which only ever delivers to the Resend account owner.
+async function sendViaGmail(
+  to: string,
+  msg: { subject: string; html: string; text: string },
+): Promise<{ ok: boolean; id?: string; error?: string }> {
+  const user = Deno.env.get("GMAIL_USER") || "";
+  const pass = Deno.env.get("GMAIL_APP_PASSWORD") || "";
+  if (!user || !pass) return { ok: false, error: "GMAIL_USER/GMAIL_APP_PASSWORD not set" };
+
+  const { SMTPClient } = await import("https://deno.land/x/denomailer@1.6.0/mod.ts");
+  const client = new SMTPClient({
+    connection: {
+      hostname: "smtp.gmail.com",
+      port: 465,
+      tls: true,
+      auth: { username: user, password: pass },
+    },
+  });
+  try {
+    await client.send({
+      from: `${BRAND} <${user}>`,
+      to,
+      subject: msg.subject,
+      html: msg.html,
+      content: msg.text,
+    });
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: "gmail smtp: " + String((e as Error).message).slice(0, 200) };
+  } finally {
+    await client.close().catch(() => {});
+  }
+}
+
+// Resend: kept as an override, not deleted, because it is the only sane way
+// to send from a branded domain (hauntedmansionbk.com) rather than a raw
+// Gmail address - Gmail SMTP can only send as the authenticated Gmail
+// account, it cannot send as an arbitrary verified domain. Set HM_EMAIL_FROM
+// once that domain is verified in Resend and mail switches to it with no
+// other code change; until then it stays off and Gmail SMTP is what ships.
+async function sendViaResend(
   from: string,
   to: string,
   msg: { subject: string; html: string; text: string },
 ): Promise<{ ok: boolean; id?: string; error?: string }> {
+  const apiKey = Deno.env.get("RESEND_API_KEY") || "";
+  if (!apiKey) return { ok: false, error: "RESEND_API_KEY not set" };
   const resp = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { Authorization: "Bearer " + apiKey, "Content-Type": "application/json" },
@@ -96,4 +140,13 @@ export async function sendEmail(
   const body = await resp.json().catch(() => ({}));
   if (!resp.ok) return { ok: false, error: "resend " + resp.status + ": " + String((body as { message?: string }).message || "").slice(0, 200) };
   return { ok: true, id: (body as { id?: string }).id };
+}
+
+export async function sendEmail(
+  to: string,
+  msg: { subject: string; html: string; text: string },
+): Promise<{ ok: boolean; id?: string; error?: string }> {
+  const from = Deno.env.get("HM_EMAIL_FROM") || "";
+  if (from) return sendViaResend(from, to, msg);
+  return sendViaGmail(to, msg);
 }

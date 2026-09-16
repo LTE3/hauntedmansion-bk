@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-0TFFaWsbW6OB18eCaz0A053k6KwNdEyiujAhLsgfDPM='; font-src 'self'; script-src 'sha256-wTmdxerZwqf75vfBajPvjfxmp7xel1dJK5iyjF94UaQ=' 'sha256-mPtrMIM+BVbm52EHIXdyXD3+zPyp6A4zFANuLG08TgU='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-LflHPyIVYZRp3zASh/eYNe3Igimu8cHLlIvumYoq3OI='; font-src 'self'; script-src 'sha256-wTmdxerZwqf75vfBajPvjfxmp7xel1dJK5iyjF94UaQ=' 'sha256-mPtrMIM+BVbm52EHIXdyXD3+zPyp6A4zFANuLG08TgU='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Every house has a story. | Haunted Mansion BK</title>
@@ -32,6 +32,7 @@
 <link rel="preload" as="font" type="font/woff2" href="fonts/dm-sans-500-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="fonts/creepster-400-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="fonts/barlowcondensed-700-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/rye-400-latin.woff2" crossorigin>
 <style>
 /* The typefaces, served from this origin - the same woff2 files Google was
    handing out, minus the four faces nothing ever selected. font-display:swap
@@ -44,6 +45,7 @@
 @font-face{font-family:"DM Sans";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/dm-sans-700-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
 @font-face{font-family:"DM Sans";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/dm-sans-700-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
 @font-face{font-family:"Creepster";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/creepster-400-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:"Rye";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/rye-400-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
 @font-face{font-family:"Barlow Condensed";font-style:normal;font-weight:600;font-display:swap;src:url(fonts/barlowcondensed-600-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
 @font-face{font-family:"Barlow Condensed";font-style:normal;font-weight:600;font-display:swap;src:url(fonts/barlowcondensed-600-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
 @font-face{font-family:"Barlow Condensed";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/barlowcondensed-700-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
@@ -445,7 +447,7 @@ body.sheeting .hero{transform:scale(.945) translateY(-14px)}
 .hero h1 .l1{display:block;color:#ff514a}
 .hero h1 .glow{display:block;color:#f3e8de}
 .hero h1 small{display:block;font:700 .3em/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.42em;color:#ff514a;margin:.35em 0 0 .45em}
-.hero .lead{max-width:34rem;font:600 clamp(17px,4.6vw,22px)/1.25 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#f3e8de}
+.hero .lead{max-width:34rem;font:400 clamp(16px,4.3vw,20px)/1.28 "Rye",Georgia,serif;letter-spacing:.01em;text-wrap:balance;color:#f3e8de}
 .hero .dayline{display:block!important;min-height:1.1em;margin:2px 0 0;color:#ff5b52;font:400 clamp(36px,10.0vw,64px)/.95 "Creepster",Impact,"Arial Narrow Bold",sans-serif;letter-spacing:.03em;text-transform:uppercase}
 .hero .poster-countdown{display:grid;grid-template-columns:repeat(3,1fr);width:min(88vw,460px);margin:3px 0 2px;border-top:1px solid rgba(255,91,82,.45);border-bottom:1px solid rgba(255,91,82,.3);padding:8px 0 7px}
 .hero .poster-countdown div{display:grid;gap:2px;justify-items:center;position:relative}
@@ -853,7 +855,7 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
      and pushes the button off the bottom. */
   .hero-copy h1{font-size:clamp(28px,4vw,38px);max-width:14ch}
   .hero-copy .kicker{margin-bottom:6px;font-size:12px}
-  .hero-copy .lead{margin:10px 0 12px;font-size:15px;max-width:40ch}
+  .hero-copy .lead{margin:10px 0 12px;font-size:14px;max-width:40ch}
 }
 @media (min-width:900px){
   .hero{padding-left:6vw;padding-right:6vw}

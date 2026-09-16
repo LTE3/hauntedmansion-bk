@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-P9fu5UadxJje5U3o1mMjUL/xNIFh86W857z0Du/l6vU='; font-src 'self'; script-src 'sha256-148lJYni1ND5uevGJey9bDkp7O5TffxPCMilMsYHtgQ='; connect-src 'none'; frame-src 'self'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-P9fu5UadxJje5U3o1mMjUL/xNIFh86W857z0Du/l6vU='; font-src 'self'; script-src 'sha256-MMqVcVr0psXnLytkR1p67BWbnvJfPC2F4KgRMu0He/E='; connect-src 'none'; frame-src 'self'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Eight looks for the homepage</title>
@@ -76,13 +76,14 @@ var FACES = [
   '@font-face{font-family:"IM Fell English";src:url(v/fonts/imfellenglish-400-latin.woff2) format("woff2")}',
   '@font-face{font-family:"Metamorphous";src:url(v/fonts/metamorphous-400-latin.woff2) format("woff2")}',
   '@font-face{font-family:"Anton";src:url(v/fonts/anton-400-latin.woff2) format("woff2")}',
-  '@font-face{font-family:"Rye";src:url(v/fonts/rye-400-latin.woff2) format("woff2")}',
+  '@font-face{font-family:"Rye";src:url(fonts/rye-400-latin.woff2) format("woff2")}',
   '@font-face{font-family:"Grenze Gotisch";font-weight:500;src:url(v/fonts/grenzegotisch-500-latin.woff2) format("woff2")}',
   '@font-face{font-family:"Eater";src:url(v/fonts/eater-400-latin.woff2) format("woff2")}',
   '@font-face{font-family:"Frijole";src:url(v/fonts/frijole-400-latin.woff2) format("woff2")}'
 ];
-/* The live line is Barlow Condensed 600, uppercase, clamp(17px,4.6vw,22px),
-   with a 15px cut on short landscape phones. Each candidate gets its own
+/* The line shipped in Barlow Condensed 600, uppercase, clamp(17px,4.6vw,22px),
+   with a 15px cut on short landscape phones; the owner picked V5 (Rye) from
+   this bench on 2026-09-15 and that is what index.html sets now. Each candidate gets its own
    size, case and tracking; a wide serif needs more room than a condensed
    sans, and blackletter needs more still. */
 function lead(fam, weight, size, lh, caps, ls, small) {

@@ -17,11 +17,12 @@ The `.woff2` files are Google's own, fetched unmodified from
 
 ## What is here, and what is not
 
-Three families, and only the faces something actually selects:
+Four families, and only the faces something actually selects:
 
 | Family | Weights | Role |
 |---|---|---|
 | Creepster | 400 | display: headings, the dayline, the countdown, drawer nav |
+| Rye | 400 | the one line under the countdown on the homepage |
 | Barlow Condensed | 500, 600, 700 | labels, kickers, leads, buttons |
 | DM Sans | 500, 600, 700 | body copy |
 
@@ -31,7 +32,8 @@ Barlow Condensed on purpose: a horror face at button size costs
 legibility on the one control that matters.
 
 Barlow Condensed and DM Sans come in `latin` and `latin-ext`; Creepster is
-published as `latin` only. The `unicode-range` on every `@font-face` means
+published as `latin` only. Rye has a `latin-ext` file upstream but the one
+line it sets is fixed ASCII copy, so only `latin` is here. The `unicode-range` on every `@font-face` means
 `latin-ext` is fetched only when a glyph inside it is actually rendered — an
 accented name typed into the form, most often never.
 
@@ -39,14 +41,15 @@ Cinzel, Cormorant Garamond and Space Grotesk were removed with the poster
 retheme (2026-09-15). The display role was then tried three ways the same
 day - Butcherman (its A drops its crossbar below ~40px), Nosifer (wide,
 live for a few hours) and Creepster - and the owner picked Creepster from
-the side-by-side at `looks.html`. Faces tried on that bench and not
+the side-by-side at `looks.html`. Round two on the same bench put eight
+faces on the line under the countdown; the owner picked Rye (V5). Faces tried on that bench and not
 chosen (Butcherman, Nosifer, Rubik Wet Paint, and the eight candidates for the
 lead line under the countdown) stay under `v/fonts/` with their licences;
 no visitor page references them. Special Elite there is Apache 2.0, not OFL.
 
 ## Licence
 
-All three are under the SIL Open Font License 1.1. The upstream licence text,
+All four are under the SIL Open Font License 1.1. The upstream licence text,
 including each family's copyright line, is in the `OFL-*.txt` files beside the
 fonts; they were taken from `github.com/google/fonts`. The OFL permits
 redistribution and self-hosting like this; it requires that these notices ship

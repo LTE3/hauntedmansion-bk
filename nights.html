@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-tVCaNuQmlA1GOji81yWmHMlNUkta5+uADQYUEYu6cjA='; font-src 'self'; script-src 'sha256-EErwZAD2sICoWF4gYb+IzcFlkonzXlN+oJvSiHBbnMw='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-qVZ24WnvxKG26FDQThcNczidGMneXzq0ZElUi4C0M5I='; font-src 'self'; script-src 'sha256-EErwZAD2sICoWF4gYb+IzcFlkonzXlN+oJvSiHBbnMw='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Pick your night | Haunted Mansion BK</title>
@@ -330,11 +330,17 @@ button.cal-day{width:100%;height:100%}
 
 /* The buy panel: same tokens, same pill, same rise the calendar itself
    already uses. Selecting a night reveals it; nothing here invents a
-   colour the door doesn't already have. */
+   colour the door doesn't already have.
+
+   Type: Rye carries the panel - the night, the tiers, the prices and the
+   error - the same face the lede above it already uses, so the drawer
+   reads as part of the page rather than a form bolted onto it. The only
+   Barlow left is the small label over the night and the button itself,
+   which is the site's button voice everywhere. */
 .cal-day.open.selected{box-shadow:0 0 0 2px var(--ink),0 0 0 4px var(--red-lit),inset 0 0 22px rgba(227,48,39,.45)}
 .buy{margin:28px 0 0;padding-top:22px;border-top:1px solid var(--line);animation:rise .6s var(--ease) backwards}
-.buy-night{margin:0;font:500 17px/1.4 "Spectral",Georgia,serif;color:var(--read)}
-.buy-night strong{color:var(--bone);font-weight:700}
+.buy-night{margin:0;font:700 12px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.buy-night strong{display:block;margin-top:8px;font:400 clamp(21px,5.6vw,26px)/1.2 "Rye",Georgia,serif;letter-spacing:.01em;text-transform:none;color:var(--bone)}
 .tiers{border:0;margin:18px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:10px}
 .tier{
   flex:1 1 200px;display:flex;align-items:center;gap:12px;min-height:44px;padding:14px 16px;
@@ -343,10 +349,10 @@ button.cal-day{width:100%;height:100%}
 }
 .tier:has(input:checked){border-color:rgba(255,89,78,.72);background:rgba(92,8,6,.32)}
 .tiers input{accent-color:var(--red-lit);width:20px;height:20px;flex:none}
-.tier-count{flex:1;font:700 16px/1.2 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--bone)}
-.tier-price{font:700 20px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.02em;color:var(--red-lit)}
+.tier-count{flex:1;font:400 15px/1.3 "Rye",Georgia,serif;letter-spacing:.01em;text-transform:none;color:var(--bone)}
+.tier-price{font:400 19px/1.1 "Rye",Georgia,serif;letter-spacing:.01em;font-variant-numeric:tabular-nums;color:var(--red-lit)}
 .buy-cta:disabled{opacity:.45;cursor:default}
-.buy-error{margin:14px 0 0;font:700 14px/1.5 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.04em;color:var(--red-lit)}
+.buy-error{margin:14px 0 0;font:400 15px/1.45 "Rye",Georgia,serif;letter-spacing:.01em;color:var(--red-lit)}
 </style>
 </head>
 <body>
@@ -427,7 +433,7 @@ button.cal-day{width:100%;height:100%}
   </div>
 
   <div class="buy" id="buy" hidden>
-    <p class="buy-night">Your night: <strong id="buy-night-name"></strong></p>
+    <p class="buy-night">Your night <strong id="buy-night-name"></strong></p>
     <fieldset class="tiers" id="tiers" aria-label="Choose tickets">
       <label class="tier">
         <input type="radio" name="tier" value="single">

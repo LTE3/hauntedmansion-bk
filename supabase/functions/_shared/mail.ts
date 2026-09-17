@@ -162,7 +162,16 @@ async function sendViaGmail(
   } catch (e) {
     return { ok: false, error: "gmail smtp: " + String((e as Error).message).slice(0, 200) };
   } finally {
-    await client.close().catch(() => {});
+    // denomailer's close() returns void, not a Promise, so calling .catch() on
+    // it threw a TypeError out of this finally block - which replaced whatever
+    // send() had already returned. Every Gmail send failed with an opaque 500
+    // for that reason alone, including ones where the mail had gone out.
+    // Teardown noise must never decide the result of a send.
+    try {
+      await client.close();
+    } catch {
+      // already closed, or closing threw; the send result above stands.
+    }
   }
 }
 

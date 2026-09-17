@@ -180,14 +180,37 @@ def test_static():
     check("every drawer lists the same pages in the same order", len(navs) >= 7 and len(set(navs.values())) == 1,
           "; ".join("%s: %s" % (k, ",".join(v)) for k, v in navs.items()))
 
-    # Launch-day switches. These must be ON now and OFF on the 25th; the test
-    # states which so nobody has to remember both halves.
+    # Launch-day switches, thrown 2026-09-16 on the owner's word. Until then
+    # this asserted the opposite - blanket Disallow plus noindex everywhere.
+    # It now guards the other direction, because the expensive mistake from
+    # here on is a public page quietly going back to noindex, or a workbench
+    # escaping into the index.
     robots = os.path.join(ROOT, "robots.txt")
-    dis = os.path.exists(robots) and "Disallow: /" in open(robots, encoding="utf-8").read()
-    noindex = bool(re.search(r'<meta[^>]+name=["\']robots["\'][^>]+noindex', s, re.I))
-    check("pre-launch: still hidden from search (delete both on launch day)", dis and noindex,
-          "robots Disallow=%s noindex=%s" % (dis, noindex))
+    rtxt = open(robots, encoding="utf-8").read() if os.path.exists(robots) else ""
+    blanket = any(l.strip() == "Disallow: /" for l in rtxt.splitlines())
+    check("robots.txt lets search engines in", "Allow: /" in rtxt and not blanket,
+          "Allow=%s blanket-Disallow=%s" % ("Allow: /" in rtxt, blanket))
 
+    PRIVATE = ("top3.html", "versions.html", "looks.html", "ticket.html")
+
+    def has_noindex(name):
+        fp = os.path.join(ROOT, name)
+        if not os.path.exists(fp):
+            return None
+        return bool(re.search(r'<meta[^>]+name=["\']robots["\'][^>]+noindex',
+                              open(fp, encoding="utf-8").read(), re.I))
+
+    leaked = [n for n in PRIVATE if has_noindex(n) is False]
+    check("the workbenches stay out of the index", not leaked, "indexable: %s" % (leaked,))
+
+    public = [n for n in sorted(os.listdir(ROOT))
+              if n.endswith(".html") and n not in PRIVATE and has_noindex(n)]
+    check("every public page is indexable", not public, "still noindex: %s" % (public,))
+
+    disallowed = [l.split(":", 1)[1].strip() for l in rtxt.splitlines()
+                  if l.strip().startswith("Disallow:") and l.strip() != "Disallow:"]
+    check("robots.txt disallows exactly the workbenches",
+          sorted(disallowed) == sorted("/" + n for n in PRIVATE), str(disallowed))
     # The day line is the one number on the page and the spec says a number
     # must be real. It is real only if it is computed from this attribute.
     m = re.search(r'class="dayline"[^>]*data-opens="(\d{4}-\d{2}-\d{2})"', s)

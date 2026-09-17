@@ -6,3 +6,5 @@ Disallow: /top3.html
 Disallow: /versions.html
 Disallow: /looks.html
 Disallow: /ticket.html
+
+Sitemap: https://hauntedmansionbk.com/sitemap.xml

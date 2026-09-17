@@ -163,6 +163,20 @@ Deno.serve(async (req) => {
         return ok({ received: true, result: "expired" });
       }
       case "charge.refunded": {
+        // Stripe fires this for a partial refund too, and it fires again on
+        // every subsequent partial against the same charge. Releasing the seat
+        // on any of those would cancel a ticket for someone who is still
+        // coming - hm-ticket only hands back a code while the order is paid -
+        // and hand their seat to the next buyer on a night that may already be
+        // full. Only a refund of the whole charge means the guest is not
+        // coming, so only that one gives the seat back.
+        const fullyRefunded = obj.refunded === true ||
+          (typeof obj.amount_refunded === "number" && typeof obj.amount === "number" &&
+           obj.amount > 0 && obj.amount_refunded >= obj.amount);
+        if (!fullyRefunded) {
+          console.log("partial refund, seat kept", obj.id, obj.amount_refunded, "of", obj.amount);
+          return ok({ received: true, ignored: "partial_refund" });
+        }
         const pi = typeof obj.payment_intent === "string" ? obj.payment_intent : "";
         if (!pi) return ok({ received: true, ignored: "no payment_intent" });
         const [o] = await select<{ stripe_session_id: string }>(

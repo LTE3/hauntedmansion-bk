@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-zRl20FR0i9cYsBLMnHr4rOyG9E8ZkEVP6A65FSJPwmk=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-bhtPi+YobdIJt5QJ4J+0pFICf9aUunadlOhky6IaGNk='; connect-src 'none'; frame-src 'self'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-zRl20FR0i9cYsBLMnHr4rOyG9E8ZkEVP6A65FSJPwmk=' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'sha256-TUoeSBvvS+pj7j5ScFLtDSBzGXwf84bR8iSEzy9lN/g='; connect-src 'none'; frame-src 'self'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The last three</title>
@@ -212,7 +212,7 @@ iframe.is-in{opacity:1}
    down a folder and a preview harness added (see the note at the top of any of
    them). Nothing here is a mockup of a version that never shipped. */
 var BUILDS = [
-  { id:"14-keyhole", tab:"Keyhole", live:true, diff:false, type:true,
+  { id:"14-keyhole", src:"index.html", tab:"Keyhole", live:true, diff:false, type:true,
     what:"<em>You are looking through a keyhole.</em> The first screen is a keyhole cut out of the dark with the house lit behind it. Two buttons, and after five seconds the invitation opens by itself. This is the one that is live now." },
   { id:"15-livingdoor", tab:"Living door", diff:false, type:true,
     what:"<em>One door, breathing.</em> A single door fills the whole screen and slowly swells, like something behind it is asleep. The only thing to press is the knocker." },
@@ -297,14 +297,14 @@ function show(i){
   what.innerHTML = b.what;
   // only where it is true: builds 3, 4 and 5 share a hero, 1 and 2 do not
   nudge.hidden = !(b.diff && spot === 0);
-  open_.href = "v/" + b.id + ".html";
+  open_.href = b.src || ("v/" + b.id + ".html");
   pos.textContent = i + 1;
   prev.disabled = i === 0;
   next.disabled = i === BUILDS.length - 1;
   // Fade out, swap, fade back in on load. A hard cut between two dark pages
   // reads as a flicker, and you cannot tell which one you are looking at.
   frame.classList.remove("is-in");
-  frame.src = "v/" + b.id + ".html";
+  frame.src = b.src || ("v/" + b.id + ".html");
   if(history.replaceState) history.replaceState(null, "", "#" + (i + 1));
 }
 frame.addEventListener("load", function(){

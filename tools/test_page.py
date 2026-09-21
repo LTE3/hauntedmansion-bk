@@ -158,7 +158,7 @@ def test_static():
     # exactly like success - nothing errors, the rich result just never comes.
     # The address assertion is the owner's rule enforced where a generator
     # could reintroduce it without anyone reading the page.
-    for page in ("index.html", "nights.html"):
+    for page in ("index.html", "nights.html", "faq.html"):
         with open(os.path.join(ROOT, page), encoding="utf-8") as f:
             page_src = f.read()
         ld = re.findall(r"<script[^>]*ld\+json[^>]*>(.*?)</script>", page_src, re.S)
@@ -177,6 +177,18 @@ def test_static():
             events = [n for n in graph if n.get("@type") == "Event"]
             check("nights.html: every night is in the schema", len(events) == 19,
                   "found %d" % len(events))
+
+        if page == "faq.html":
+            # The schema is parsed out of the page, so a count mismatch means
+            # the markup moved under the parser and questions vanished from
+            # the rich result without anything erroring.
+            asked = len(re.findall(r'<button class="faq-btn"', page_src))
+            answered = [n for n in graph if n.get("@type") == "FAQPage"]
+            check("faq.html: one FAQPage node", len(answered) == 1)
+            if answered:
+                check("faq.html: every question reached the schema",
+                      len(answered[0]["mainEntity"]) == asked,
+                      "page %d, schema %d" % (asked, len(answered[0]["mainEntity"])))
 
     # The copy spec, as constraints. These are the owner's rules and the only
     # way they get broken is by someone forgetting them months later.

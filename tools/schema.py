@@ -181,6 +181,53 @@ def nights_graph(events, products):
     return {"@context": "https://schema.org", "@graph": graph}
 
 
+def faq_graph(page_src):
+    """FAQPage built by reading faq.html, not by restating it.
+
+    The answers on that page are the owner's copy and are frozen. Retyping
+    them here would create a second copy that drifts the first time one is
+    edited, and Google treats schema that disagrees with the visible page as
+    a reason to drop the rich result entirely. So the questions and answers
+    are parsed out of the rendered markup - if the page says it, the schema
+    says it, and there is no third place to keep in sync.
+    """
+    pairs = re.findall(
+        r'<button class="faq-btn"[^>]*>(.*?)<span class="mark"'
+        r'.*?<div class="faq-a"[^>]*><div>(.*?)</div></div>',
+        page_src, re.S)
+    if not pairs:
+        sys.exit("faq.html: no question/answer pairs matched - markup changed")
+    items = []
+    for q, a in pairs:
+        text = re.sub(r"<[^>]+>", " ", a)
+        text = re.sub(r"\s+", " ", text).strip()
+        question = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", q)).strip()
+        # The address rule, enforced where a copy edit could quietly leak it
+        # into a machine-readable block nobody proofreads.
+        if re.search(r"\d{2,4}\s+[A-Z][a-z]+\s+(Ave|Avenue|St|Street)", text):
+            sys.exit("faq.html: answer contains a street address - refusing")
+        items.append({
+            "@type": "Question",
+            "name": question,
+            "acceptedAnswer": {"@type": "Answer", "text": text},
+        })
+    return {
+        "@context": "https://schema.org",
+        "@graph": [
+            organization(),
+            venue(),
+            {
+                "@type": "FAQPage",
+                "@id": SITE + "/faq.html#faq",
+                "name": "Haunted Mansion BK — questions and answers",
+                "url": SITE + "/faq.html",
+                "about": {"@id": SITE + "/#business"},
+                "mainEntity": items,
+            },
+        ],
+    }
+
+
 def index_graph():
     return {"@context": "https://schema.org", "@graph": [organization(), venue(), business()]}
 
@@ -223,6 +270,8 @@ def main():
     stale = False
     stale |= write("nights.html", block(nights_graph(events, products)), check)
     stale |= write("index.html", block(index_graph()), check)
+    with open(os.path.join(ROOT, "faq.html"), encoding="utf-8") as f:
+        stale |= write("faq.html", block(faq_graph(f.read())), check)
     active = sum(1 for e in events if e["is_active"])
     print("%d night(s) in the graph" % active)
     if check and stale:

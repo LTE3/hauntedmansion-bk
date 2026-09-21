@@ -118,6 +118,7 @@ export function waitlistWelcomeEmail(name: string | null): { subject: string; ht
       <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;max-width:560px;background:#0b0807;border:1px solid #2c1e1a;border-radius:16px;overflow:hidden;">
         <tr><td style="height:5px;background:#e33027;font-size:0;line-height:0;">&nbsp;</td></tr>
         <tr><td style="padding:34px 30px 32px;">
+          <img src="${esc(SITE)}/img/haunted-mansion-logo.webp" width="420" alt="${esc(BRAND)}" style="display:block;width:100%;max-width:420px;height:auto;margin:0 0 20px;">
           <p style="margin:0 0 10px;font:700 12px/1 Arial,Helvetica,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#ff5b52;">${esc(BRAND)}</p>
           <p style="margin:0 0 28px;font:600 12px/1 Arial,Helvetica,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#9d8880;">Private waitlist</p>
           <h1 style="margin:0 0 22px;font:700 38px/1.02 Georgia,'Times New Roman',serif;letter-spacing:.01em;color:#f3e8de;">${esc(greeting)}</h1>

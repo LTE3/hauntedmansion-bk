@@ -1,5 +1,5 @@
-# Tells Bing, Yandex and Seznam that our pages changed, instead of waiting for
-# them to come and look.
+# Tells Bing that our pages changed, instead of waiting for it to come and
+# look.
 #
 # A new domain is not crawled because it is good, it is crawled because
 # something pointed at it. With the opening ten days out, the gap between
@@ -9,9 +9,8 @@
 # Google does not participate - it dropped its own sitemap ping in 2023 and
 # takes submissions only through Search Console, which needs an account and a
 # human. So this is not the Google answer. It is the half of the problem that
-# can be solved without one, and Bing results also feed DuckDuckGo and ChatGPT
-# search, which is not nothing for a business whose customers are searching on
-# their phones.
+# can be solved without one, and Bing feeds DuckDuckGo and ChatGPT search too,
+# which is where a fair number of phones now ask the question.
 #
 #   python tools/indexnow.py           # submit every URL in sitemap.xml
 #   python tools/indexnow.py --dry     # print what would be sent
@@ -30,7 +29,10 @@ import urllib.error
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HOST = "hauntedmansionbk.com"
-ENDPOINT = "https://api.indexnow.org/indexnow"
+# Bing's own endpoint, not the shared api.indexnow.org one. Both speak the
+# same protocol, but the shared endpoint fans every submission out to all
+# participating engines - Yandex, Seznam - and we have no customers there.
+ENDPOINT = "https://www.bing.com/indexnow"
 
 
 def key():

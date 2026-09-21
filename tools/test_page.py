@@ -14,6 +14,7 @@ quietly stops testing the thing it was written for is worse than no suite.
 """
 
 import glob
+import json
 import os
 import re
 import subprocess
@@ -134,7 +135,7 @@ def test_static():
 
     # The inline script is the whole of the page's behaviour and a syntax error
     # in it disables all of it at once.
-    blocks = re.findall(r"<script(?![^>]*\bsrc=)[^>]*>(.*?)</script>", s, re.S)
+    blocks = re.findall(r"<script(?![^>]*\bsrc=)(?![^>]*ld\+json)[^>]*>(.*?)</script>", s, re.S)
     ok = len(blocks) > 0
     for i, b in enumerate(blocks):
         tmp = os.path.join(ROOT, "_t%d.js" % i)
@@ -151,6 +152,31 @@ def test_static():
         skip("inline JS parses", "node not on PATH")
     else:
         check("inline JS parses", ok)
+
+    # The schema block is data, not behaviour, so it gets a data test. Invalid
+    # JSON-LD is ignored silently by every crawler, which from here looks
+    # exactly like success - nothing errors, the rich result just never comes.
+    # The address assertion is the owner's rule enforced where a generator
+    # could reintroduce it without anyone reading the page.
+    for page in ("index.html", "nights.html"):
+        with open(os.path.join(ROOT, page), encoding="utf-8") as f:
+            page_src = f.read()
+        ld = re.findall(r"<script[^>]*ld\+json[^>]*>(.*?)</script>", page_src, re.S)
+        check("%s: one JSON-LD block" % page, len(ld) == 1, "found %d" % len(ld))
+        if len(ld) != 1:
+            continue
+        try:
+            graph = json.loads(ld[0])["@graph"]
+            bad = None
+        except Exception as exc:
+            graph, bad = [], exc
+        check("%s: JSON-LD parses" % page, bad is None, str(bad))
+        check("%s: JSON-LD leaks no street address" % page,
+              not re.search(r"streetAddress|postalCode|\bgeo\b", ld[0]))
+        if page == "nights.html":
+            events = [n for n in graph if n.get("@type") == "Event"]
+            check("nights.html: every night is in the schema", len(events) == 19,
+                  "found %d" % len(events))
 
     # The copy spec, as constraints. These are the owner's rules and the only
     # way they get broken is by someone forgetting them months later.

@@ -29,6 +29,8 @@ PAGE = os.path.join(ROOT, "index.html")
 # under v/ and still pull their fonts from Google. Not pages a visitor is sent
 # to, so not held to the visitor rules.
 REVIEW_PAGES = {"top3.html", "versions.html", "looks.html"}
+STREET = "428 Johnson Avenue"
+
 ROOT_PAGES = tuple(sorted({os.path.basename(f) for f in glob.glob(os.path.join(ROOT, "*.html"))}
                           - REVIEW_PAGES))
 OPENS = "2026-10-01"
@@ -171,8 +173,8 @@ def test_static():
         except Exception as exc:
             graph, bad = [], exc
         check("%s: JSON-LD parses" % page, bad is None, str(bad))
-        check("%s: JSON-LD leaks no street address" % page,
-              not re.search(r"streetAddress|postalCode|\bgeo\b", ld[0]))
+        check("%s: JSON-LD carries the published address" % page,
+              '"streetAddress": "%s"' % STREET in ld[0])
         if page == "nights.html":
             events = [n for n in graph if n.get("@type") == "Event"]
             check("nights.html: every night is in the schema", len(events) == 19,
@@ -200,8 +202,13 @@ def test_static():
     for page in ROOT_PAGES:
         with open(os.path.join(ROOT, page), encoding="utf-8") as f:
             p = f.read()
-        check("%s: no street address" % page,
-              not re.search(r"\b\d{2,4}\s+[A-Z][a-z]+\s+(Ave|Avenue|St|Street|Rd|Road|Blvd|Pl|Place)\b", p))
+        # The address is published (owner decision, 2026-09-21). The risk
+        # flipped from leaking it to printing it wrong: a page and a
+        # directory that disagree both lose local ranking, and nobody
+        # proofreads a footer. So this is an equality check now, not a ban.
+        for hit in re.findall(r"\b\d{2,4}\s+[A-Z][a-z]+\s+(?:Ave|Avenue|St|Street|Rd|Road|Blvd|Pl|Place)\b", p):
+            check("%s: street address is the right one" % page,
+                  hit == STREET, "found %r" % hit)
         check("%s: no fabricated scarcity language" % page,
               not re.search(r"only \d+ (spots|tickets|left)|\d+ people (are )?(viewing|waiting)|selling fast|almost full",
                             p, re.I))

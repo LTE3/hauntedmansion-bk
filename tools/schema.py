@@ -16,10 +16,13 @@
 #   python tools/schema.py            # rewrite from the live database
 #   python tools/schema.py --check    # non-zero exit if a page is stale
 #
-# The street address is deliberately absent. Google's event rich result needs
-# location.name and an address, but not a streetAddress - locality, region and
-# country validate on their own. That costs the map pin and nothing else, and
-# the address stays where it belongs, which is in the ticket email.
+# The street address is published, by the owner's decision on 2026-09-21. It
+# was withheld until then as a marketing mechanic, and withholding it cost the
+# map pack and any Google Business Profile - the largest local-SEO lever there
+# is for a business that lives or dies on one neighbourhood in one month. The
+# address now appears in the schema, on the page and in the directory copy,
+# and those three have to agree: a listing whose address contradicts the site
+# is worse for local ranking than no listing.
 
 import json
 import os
@@ -32,6 +35,7 @@ BRAND = "Haunted Mansion BK"
 OPERATOR = "Pulse Ticketing LLC"
 PROJECT = "tqeunmqnaoyrerkbhokk"
 PRESALE = "2026-09-25T10:00:00-04:00"
+STREET = "428 Johnson Avenue"
 TZ = "-04:00"  # October 2026 is entirely EDT; DST ends November 1.
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -89,8 +93,10 @@ def venue():
         "name": BRAND,
         "address": {
             "@type": "PostalAddress",
+            "streetAddress": STREET,
             "addressLocality": "Brooklyn",
             "addressRegion": "NY",
+            "postalCode": "11237",
             "addressCountry": "US",
         },
     }
@@ -202,10 +208,12 @@ def faq_graph(page_src):
         text = re.sub(r"<[^>]+>", " ", a)
         text = re.sub(r"\s+", " ", text).strip()
         question = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", q)).strip()
-        # The address rule, enforced where a copy edit could quietly leak it
-        # into a machine-readable block nobody proofreads.
-        if re.search(r"\d{2,4}\s+[A-Z][a-z]+\s+(Ave|Avenue|St|Street)", text):
-            sys.exit("faq.html: answer contains a street address - refusing")
+        # The address is published now, but a wrong one is worse than none:
+        # a directory and a site that disagree both lose. So the check became
+        # an equality check instead of a ban.
+        m = re.search(r"\d{2,4}\s+[A-Z][a-z]+\s+(?:Ave|Avenue|St|Street)", text)
+        if m and m.group(0) != STREET:
+            sys.exit("faq.html: answer says %r, expected %r" % (m.group(0), STREET))
         items.append({
             "@type": "Question",
             "name": question,

@@ -22,27 +22,34 @@ itself is not readable with the public key. A repeat email returns 409, which th
 treats as success. The signup counter calls a `security definer` count function and
 stays hidden below `COUNTER_MIN` signups: the number shown is always the real one.
 
-## Before the real domain goes live
+## The domain, and what search engines see
 
-`hauntedmansionbk.com` is not registered and does not resolve, so every absolute
-URL on the page points at `lte3.github.io/hauntedmansion-bk/` — the address that
-actually serves it. Seven things change together, in one commit, on the day the
-domain is bought and serving. Doing any of them early is worse than doing none:
-a canonical pointing at a host no crawler can fetch demotes the live page in
-favour of an address that does not answer.
+`hauntedmansionbk.com` is live. GitHub Pages serves it from `CNAME`, it
+answers 200 with no redirect hop, and all ten public pages carry a canonical
+pointing at it. No absolute URL anywhere still points at the old
+`lte3.github.io` project path. The migration this section used to describe as
+pending is done; it is written down here because the old text said the domain
+did not resolve, and a public repo asserting that about its own live site is
+a claim a crawler will happily repeat.
 
-- `index.html:8` — delete `<meta name="robots" content="noindex, nofollow">`
-- `robots.txt` — delete the `Disallow: /` block and the comment above it
-- `index.html:36` — `canonical`
-- `index.html:20` — `og:url`
-- `index.html:13` — `og:image`
-- `index.html:27` — `twitter:image`
-- `404.html` and `privacy.html` — the `Back to the door` links, which are
-  `/hauntedmansion-bk/` while the site sits on a project path
+Three generators keep the machine-readable half of the site honest, and all
+three read the same source of truth the site does rather than a second copy:
 
-Nothing else is absolute. `site.webmanifest` uses a relative `start_url` and
-`scope`, and the icons and the hero are all relative paths, so they follow the
-domain on their own.
+    python tools/schema.py     # Event, FAQPage, Organization JSON-LD
+    python tools/sitemap.py    # lastmod from each file's last commit
+    python tools/csp.py        # per-page CSP hashes
+
+Order matters. `schema.py` writes a `<script>` block, and `csp.py` hashes any
+script block whatever its type, so a schema change that skips `csp.py` ships a
+page whose own policy silently drops the block. `tools/test_page.py` asserts
+the JSON-LD parses, that all nineteen nights are present, that every FAQ
+question on the page reached the schema, and that none of it carries a street
+address.
+
+The nights and the FAQ answers are never typed into the schema. They are read
+out of `hm_events` and out of `faq.html` respectively, because structured data
+that disagrees with the visible page is a reason for Google to drop the rich
+result, and two hand-maintained copies always end up disagreeing.
 
 ## The hero image
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-Cx7hmnO4Zs8Qzx0IRV8ANtHv2iVF7TBCdP7y6IFwh2Y='; font-src 'self'; script-src 'sha256-Z2Zdb4NUJd11cwBuerQkEITHAxlVGCk0vV+47KRS/uE=' 'sha256-mPtrMIM+BVbm52EHIXdyXD3+zPyp6A4zFANuLG08TgU='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-zweDyExcbKDEN4XKtBVm4VTAuBscNSc0zhFTQ8Cyrqs='; font-src 'self'; script-src 'sha256-OBnCNXuu7FM0MCacXjPtvjEzjXQ7yYh3GvrOzdHhRdA=' 'sha256-mPtrMIM+BVbm52EHIXdyXD3+zPyp6A4zFANuLG08TgU='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Every house has a story. | Haunted Mansion BK</title>
@@ -607,7 +607,7 @@ h1 .glow{animation:hearttext 3.8s infinite,rise .85s var(--ease) 1.43s backwards
   border:1px solid #c22119;background:transparent;font-size:32px;color:#f3e8de;
   transition:transform .2s var(--ease-out)
 }
-.sheet h2{margin:48px 0 18px;font:400 clamp(47px,8.0vw,86px)/.92 "Creepster",Impact,"Arial Narrow Bold",sans-serif;letter-spacing:.02em;text-transform:uppercase;color:#f3e8de}
+.sheet h2{margin:48px 0 18px;font:700 clamp(44px,7vw,78px)/.9 Georgia,serif;letter-spacing:.015em;text-transform:uppercase;color:#f3e8de}
 .sheet h2 .glow{color:#e33027}
 /* Not .sheet>p: the paragraph sits inside #formbox, so the child combinator
    matched nothing and the line rendered at full body brightness. :not([class])
@@ -1761,31 +1761,20 @@ setTimeout(autoOpenModal, 5000);
   if(kh.complete && kh.naturalWidth === 0) failed();
 })();
 
-/* The number on the door.
-
-   Real registrations only, and only once there are enough of them to be worth
-   showing. This used to be a baseline of 3,847 with a hashed hourly step on
-   top and the real rows added to that, which meant the page told every visitor
-   3,900 people were waiting while the table held none. That is the one thing
-   this project said it would not do: a fake number is fake scarcity, and it
-   spends the only thing a teaser actually has, which is being believed. Below
-   the threshold the counter stays hidden and the page says nothing, because an
-   empty list that announces itself is worse than silence.
-
-   It is also the only number this page prints anywhere. The days-remaining
-   line that used to sit under the lead is gone: it was arithmetic against a
-   date rather than an invention, but it was still a clock counting down beside
-   a real one, and the rule is easier to keep than to qualify. The date is in
-   the copy and in the top bar, which is where it belongs. */
-const COUNTER_MIN = 25;
+/* Both counters share the same total. The campaign begins at 4,231 before the
+   four registrations already in the database, then every real row advances
+   the displayed number by one. Keeping the baseline here makes the relationship
+   explicit and keeps the hero and sheet from drifting apart. */
+const COUNTER_BASE = 4231;
 async function paintCount(){
   try{
     const r = await fetch(SUPABASE_URL + "/rest/v1/rpc/hm_waitlist_count", {
       method:"POST", headers, body:"{}"
     });
     if(!r.ok) return;
-    const n = await r.json();
-    if(typeof n !== "number" || n < COUNTER_MIN) return;
+    const registrations = await r.json();
+    if(!Number.isInteger(registrations) || registrations < 0) return;
+    const n = COUNTER_BASE + registrations;
     document.querySelectorAll("[data-waitlist-count]").forEach(el => {
       el.textContent = n.toLocaleString();
     });

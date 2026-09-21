@@ -169,6 +169,13 @@ def test_static():
                             p, re.I))
     check("the neighbourhood clue is present", "BUSHWICK" in s.upper())
 
+    counters = re.findall(r'<strong[^>]*\bdata-waitlist-count\b', s)
+    check("both waitlist totals use the shared live count", len(counters) == 2,
+          "found %d counters" % len(counters))
+    check("waitlist refresh updates every displayed total",
+          'querySelectorAll("[data-waitlist-count]")' in s
+          and "COUNTER_BASE + registrations" in s)
+
     # One drawer, hand-edited on every page. Pin that they agree: every drawer
     # lists the same pages in the same order (the door omits its own link).
     navs = {}

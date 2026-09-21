@@ -85,7 +85,7 @@ export function ticketEmail(t: TicketDetails): { subject: string; html: string; 
 // opening line from the home page, the age rule in the frozen wording it has
 // in all eleven other places, and the removal address privacy.html:226
 // already tells people to use. Nothing new is asserted in a guest's inbox.
-export function waitlistWelcomeEmail(name: string | null): { subject: string; html: string; text: string } {
+export function waitlistWelcomeEmail(name: string | null): { subject: string; html: string; text: string; headers: Record<string, string> } {
   const who = (name || "").trim();
   const greeting = who ? who + ", we heard you." : "We heard you.";
   const subject = BRAND + " — we heard you";
@@ -161,7 +161,8 @@ export function waitlistWelcomeEmail(name: string | null): { subject: string; ht
     </td></tr>
   </table></body></html>`;
 
-  return { subject, html, text };
+  const headers = { "List-Unsubscribe": "<mailto:admin@pulsetix.ai?subject=unsubscribe>" };
+  return { subject, html, text, headers };
 }
 
 
@@ -173,7 +174,7 @@ export function waitlistWelcomeEmail(name: string | null): { subject: string; ht
 // resend.dev), which only ever delivers to the Resend account owner.
 async function sendViaGmail(
   to: string,
-  msg: { subject: string; html: string; text: string },
+  msg: { subject: string; html: string; text: string; headers?: Record<string, string> },
 ): Promise<{ ok: boolean; id?: string; error?: string }> {
   // This Supabase project is shared with the owner's other business, and
   // GMAIL_USER/GMAIL_APP_PASSWORD are that business's mailbox - its own
@@ -202,6 +203,7 @@ async function sendViaGmail(
       subject: msg.subject,
       html: msg.html,
       content: msg.text,
+      headers: msg.headers,
     });
     return { ok: true };
   } catch (e) {
@@ -229,14 +231,14 @@ async function sendViaGmail(
 async function sendViaResend(
   from: string,
   to: string,
-  msg: { subject: string; html: string; text: string },
+  msg: { subject: string; html: string; text: string; headers?: Record<string, string> },
 ): Promise<{ ok: boolean; id?: string; error?: string }> {
   const apiKey = Deno.env.get("RESEND_API_KEY") || "";
   if (!apiKey) return { ok: false, error: "RESEND_API_KEY not set" };
   const resp = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { Authorization: "Bearer " + apiKey, "Content-Type": "application/json" },
-    body: JSON.stringify({ from, to: [to], subject: msg.subject, html: msg.html, text: msg.text }),
+    body: JSON.stringify({ from, to: [to], subject: msg.subject, html: msg.html, text: msg.text, headers: msg.headers }),
     signal: AbortSignal.timeout(15000),
   });
   const body = await resp.json().catch(() => ({}));
@@ -246,7 +248,7 @@ async function sendViaResend(
 
 export async function sendEmail(
   to: string,
-  msg: { subject: string; html: string; text: string },
+  msg: { subject: string; html: string; text: string; headers?: Record<string, string> },
 ): Promise<{ ok: boolean; id?: string; error?: string }> {
   const from = Deno.env.get("HM_EMAIL_FROM") || "";
   if (from) return sendViaResend(from, to, msg);

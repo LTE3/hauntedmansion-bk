@@ -278,6 +278,12 @@ def main():
     stale = False
     stale |= write("nights.html", block(nights_graph(events, products)), check)
     stale |= write("index.html", block(index_graph()), check)
+    # location.html gets the same business graph as the homepage. It is the
+    # page that answers "where is it", which is the query the address was
+    # published to win, and until now it was the only public page carrying no
+    # structured data at all. Repeating the @id nodes across pages is correct:
+    # it is one business described twice, not two businesses.
+    stale |= write("location.html", block(index_graph()), check)
     with open(os.path.join(ROOT, "faq.html"), encoding="utf-8") as f:
         stale |= write("faq.html", block(faq_graph(f.read())), check)
     active = sum(1 for e in events if e["is_active"])

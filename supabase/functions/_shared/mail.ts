@@ -112,25 +112,52 @@ export function waitlistWelcomeEmail(name: string | null): { subject: string; ht
     SITE,
   ].join("\n");
 
-  const html = `<!doctype html><html><body style="margin:0;background:#030202;color:#f3e8de;font-family:Georgia,'Times New Roman',serif;">
-  <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;background:#030202;">
+  const html = `<!doctype html><html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark"><meta name="supported-color-schemes" content="dark">
+  <!--[if mso]><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml><![endif]-->
+  <style>
+    /* Outlook on Windows draws through Word, not a browser. It discards
+       border-radius and max-width and adds its own leading, so the card is
+       handed a fixed 560px table inside an mso conditional and the corners
+       simply come out square there. That is the right trade: the layout still
+       reads, and nothing below depends on the rounding. The button is a table
+       with a bgcolor rather than a padded inline-block, because Word collapses
+       padding on an anchor and the tap target would otherwise vanish. */
+    body,table,td,a{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}
+    table,td{mso-table-lspace:0pt;mso-table-rspace:0pt}
+    img{-ms-interpolation-mode:bicubic;border:0;outline:none;text-decoration:none}
+    @media only screen and (max-width:600px){
+      .card{padding:26px 20px !important}
+      .brandmark{max-width:290px !important}
+      .greet{font-size:30px !important}
+    }
+  </style></head>
+  <body style="margin:0;padding:0;background:#030202;color:#f3e8de;font-family:Georgia,'Times New Roman',serif;">
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all;">Your name is on the list. A house in Bushwick, Brooklyn opens October 1, 2026.</div>
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width:100%;background:#030202;">
     <tr><td align="center" style="padding:28px 14px 42px;">
-      <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;max-width:560px;background:#0b0807;border:1px solid #2c1e1a;border-radius:16px;overflow:hidden;">
-        <tr><td style="height:5px;background:#e33027;font-size:0;line-height:0;">&nbsp;</td></tr>
-        <tr><td style="padding:34px 30px 32px;">
-          <img src="${esc(SITE)}/img/haunted-mansion-logo.webp" width="420" alt="${esc(BRAND)}" style="display:block;width:100%;max-width:420px;height:auto;margin:0 0 20px;">
-          <p style="margin:0 0 10px;font:700 12px/1 Arial,Helvetica,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#ff5b52;">${esc(BRAND)}</p>
-          <p style="margin:0 0 28px;font:600 12px/1 Arial,Helvetica,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#9d8880;">Private waitlist</p>
-          <h1 style="margin:0 0 22px;font:700 38px/1.02 Georgia,'Times New Roman',serif;letter-spacing:.01em;color:#f3e8de;">${esc(greeting)}</h1>
-          <p style="margin:0 0 16px;font:400 18px/1.55 Georgia,'Times New Roman',serif;color:#e0d1c6;">Your name is on the private waitlist for <span style="color:#ff5b52;">Haunted Mansion BK</span>.</p>
-          <p style="margin:0 0 24px;font:400 16px/1.65 Georgia,'Times New Roman',serif;color:#cbbab0;">A house in Bushwick, Brooklyn opens October 1, 2026. Names on this list hear first when tickets go on sale. That is the only reason we will write to you.</p>
-          <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;margin:26px 0 26px;"><tr><td style="border-top:1px solid #39231f;font-size:0;line-height:0;">&nbsp;</td></tr></table>
-          <a href="${esc(SITE)}" style="display:inline-block;padding:14px 20px;border:1px solid #ff4c45;border-radius:8px;background:#54110e;color:#fff1ea;font:700 13px/1 Arial,Helvetica,sans-serif;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;">Return to the door&nbsp; &rarr;</a>
-          <p style="margin:28px 0 0;font:500 13px/1.65 Arial,Helvetica,sans-serif;color:#9d8880;">13 and over. Guests under 18 must be accompanied by an adult.</p>
-          <p style="margin:12px 0 0;font:500 13px/1.65 Arial,Helvetica,sans-serif;color:#9d8880;">To come off the list, or to be told what we hold about you, write to <a href="mailto:admin@pulsetix.ai" style="color:#c7aaa0;">admin@pulsetix.ai</a>.</p>
+      <!--[if mso]><table role="presentation" width="560" cellpadding="0" cellspacing="0" border="0" align="center"><tr><td><![endif]-->
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:560px;background:#0b0807;border:1px solid #2c1e1a;border-radius:16px;overflow:hidden;">
+        <tr><td bgcolor="#e33027" style="height:5px;background:#e33027;font-size:0;line-height:0;mso-line-height-rule:exactly;">&nbsp;</td></tr>
+        <tr><td class="card" style="padding:34px 30px 32px;">
+          <img class="brandmark" src="${esc(SITE)}/v/img-poster/logo.png" width="420" alt="${esc(BRAND)}" style="display:block;width:100%;max-width:420px;height:auto;margin:0 0 20px;color:#f3e8de;font:700 22px/1.2 Georgia,serif;">
+          <p style="margin:0 0 10px;font:700 12px/1 Arial,Helvetica,sans-serif;mso-line-height-rule:exactly;letter-spacing:.24em;text-transform:uppercase;color:#ff5b52;">${esc(BRAND)}</p>
+          <p style="margin:0 0 28px;font:600 12px/1 Arial,Helvetica,sans-serif;mso-line-height-rule:exactly;letter-spacing:.2em;text-transform:uppercase;color:#9d8880;">Private waitlist</p>
+          <h1 class="greet" style="margin:0 0 22px;font:700 38px/1.02 Georgia,'Times New Roman',serif;mso-line-height-rule:exactly;letter-spacing:.01em;color:#f3e8de;">${esc(greeting)}</h1>
+          <p style="margin:0 0 16px;font:400 18px/1.55 Georgia,'Times New Roman',serif;mso-line-height-rule:exactly;color:#e0d1c6;">Your name is on the private waitlist for <span style="color:#ff5b52;">Haunted Mansion BK</span>.</p>
+          <p style="margin:0 0 24px;font:400 16px/1.65 Georgia,'Times New Roman',serif;mso-line-height-rule:exactly;color:#cbbab0;">A house in Bushwick, Brooklyn opens October 1, 2026. Names on this list hear first when tickets go on sale. That is the only reason we will write to you.</p>
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width:100%;margin:26px 0 26px;"><tr><td style="border-top:1px solid #39231f;font-size:0;line-height:0;mso-line-height-rule:exactly;">&nbsp;</td></tr></table>
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:separate;"><tr>
+            <td bgcolor="#54110e" align="center" style="border:1px solid #ff4c45;border-radius:8px;padding:14px 22px;mso-padding-alt:14px 22px;">
+              <a href="${esc(SITE)}" style="display:inline-block;color:#fff1ea;font:700 13px/1 Arial,Helvetica,sans-serif;mso-line-height-rule:exactly;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;">Return to the door&nbsp; &rarr;</a>
+            </td></tr></table>
+          <p style="margin:28px 0 0;font:500 13px/1.65 Arial,Helvetica,sans-serif;mso-line-height-rule:exactly;color:#9d8880;">13 and over. Guests under 18 must be accompanied by an adult.</p>
+          <p style="margin:12px 0 0;font:500 13px/1.65 Arial,Helvetica,sans-serif;mso-line-height-rule:exactly;color:#9d8880;">To come off the list, or to be told what we hold about you, write to <a href="mailto:admin@pulsetix.ai" style="color:#c7aaa0;">admin@pulsetix.ai</a>.</p>
         </td></tr>
       </table>
-      <p style="margin:16px 0 0;font:500 11px/1.5 Arial,Helvetica,sans-serif;letter-spacing:.08em;color:#6f5d57;">HAUNTEDMANSIONBK.COM</p>
+      <!--[if mso]></td></tr></table><![endif]-->
+      <p style="margin:16px 0 0;font:500 11px/1.5 Arial,Helvetica,sans-serif;mso-line-height-rule:exactly;letter-spacing:.08em;color:#6f5d57;">HAUNTEDMANSIONBK.COM</p>
     </td></tr>
   </table></body></html>`;
 

@@ -74,6 +74,8 @@ EVENT_IMAGES = [SITE + "/v/img-cali/card.jpg?v=3", SITE + "/img/icon-512.png"]
 # and until now nothing on the site pointed at the account at all.
 PROFILES = ["https://www.instagram.com/hauntedmansionbk/"]
 
+PHONE = "+1-646-506-7324"
+
 
 def token():
     with open(KEYS, encoding="utf-8", errors="replace") as f:
@@ -200,6 +202,14 @@ def business(events):
         "image": EVENT_IMAGES,
         "description": "A walk-through haunted attraction in Bushwick, Brooklyn. Sixty minutes inside, multiple rooms, live actors. October 2026. Ages 13 and over.",
         "address": venue()["address"],
+        "geo": venue()["geo"],
+        # Both flagged by the Rich Results Test on 2026-09-22 as missing.
+        # The number is the one already published as this business's phone on
+        # the Apple Maps and Bing Places listings, so schema, maps and site
+        # now agree - a local result is assembled from exactly that kind of
+        # agreement. priceRange is per person: $20 alone, $15 each in a four.
+        "telephone": PHONE,
+        "priceRange": "$15-$20",
         "sameAs": PROFILES,
         "parentOrganization": {"@id": SITE + "/#organization"},
         "openingHoursSpecification": hours(events),

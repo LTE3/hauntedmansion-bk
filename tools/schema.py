@@ -211,10 +211,15 @@ def offers(row, products):
     cents = [p["cents"] for p in active]
     if row["sold"] >= row["capacity"]:
         availability = "https://schema.org/SoldOut"
-    else:
+    elif date.today().isoformat() < PRESALE[:10]:
         # Before the presale opens nothing is buyable yet. Saying InStock then
         # is a lie a crawler can check.
         availability = "https://schema.org/PreOrder"
+    else:
+        # And after it opens, PreOrder is the same lie pointing the other way:
+        # it tells a rich result the tickets cannot be bought when they can.
+        # This used to be a date in a to-do list. It is a comparison now.
+        availability = "https://schema.org/InStock"
     # The bundle is for this night and dies with it. A rich result still
     # advertising a $20 ticket to a night that already happened is exactly
     # the stale-availability failure this file exists to prevent.

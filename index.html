@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-HECgTdc5lj0mUUkQo1BpoxQISAbqfqc0FB873Gx9MNw='; font-src 'self'; script-src 'sha256-RcZlb43YeW8248q2taODpXtMvrGjP5YzomeDi7lG6lc=' 'sha256-OBnCNXuu7FM0MCacXjPtvjEzjXQ7yYh3GvrOzdHhRdA=' 'sha256-mPtrMIM+BVbm52EHIXdyXD3+zPyp6A4zFANuLG08TgU='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-+/EffTOUv037aIwudjDR1OHBocvn4XVUemCa2RTjQdA='; font-src 'self'; script-src 'sha256-RcZlb43YeW8248q2taODpXtMvrGjP5YzomeDi7lG6lc=' 'sha256-FkkbN5dZKFeA9sC7ma0FLy2g8ZIqlv+oJipk9xOY8+0=' 'sha256-BXobhg/s64cnmMASY/Qm+I7jc1d/vyTd8Nj0WMldOVE='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Brooklyn Haunted House — Haunted Mansion BK, Bushwick</title>
@@ -1109,6 +1109,14 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
   .submit{background:#a81a13;color:#fff}
   .field input{border-color:#8a736a}
 }
+.skip{position:absolute;left:-9999px;top:0;z-index:200}
+.skip:focus{
+  left:8px;top:8px;padding:11px 14px;border-radius:2px;
+  background:var(--ink);border:1px solid var(--red-lit);color:var(--bone);
+  font:700 13px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.11em;
+  text-transform:uppercase;text-decoration:none;outline:2px solid #ff6b5f;outline-offset:2px
+}
+main:focus{outline:none}
 </style>
 <!-- schema:start -->
 <script type="application/ld+json">
@@ -1199,6 +1207,7 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
 <!-- schema:end -->
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 <noscript>
   <!-- The invitation is a dialog opened by script. With script off the button
        does nothing and the page still looks complete and inviting, which
@@ -1208,7 +1217,7 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
 </noscript>
 <div class="curtain" id="curtain" aria-hidden="true"></div>
 <div class="grain" aria-hidden="true"></div>
-<main class="hero">
+<main class="hero" id="main" tabindex="-1">
   <div class="topbar">
     <div class="brand"><span class="pulse-dot" aria-hidden="true"></span><span>Haunted Mansion BK</span></div>
     <div class="topright">
@@ -1637,6 +1646,7 @@ function autoOpenModal(){
   /* Not over the menu either: someone reading the drawer is choosing a
      page, and the sheet would land on top of the thing they are reading. */
   const drawer = document.getElementById("drawer");
+  const skip = document.querySelector(".skip");
   if(modalTouched || modal.classList.contains("open") || (drawer && drawer.classList.contains("open"))) return;
   lastFocus = document.activeElement;
   setInert(true);
@@ -2416,12 +2426,14 @@ form.addEventListener("submit", async e => {
     const isOpen = () => drawer.classList.contains("open");
     const open = () => {
       drawer.classList.add("open");
+      if(skip) skip.inert = true;
       btn.setAttribute("aria-expanded", "true");
       hero.inert = true;
       x.focus();
     };
     const close = (refocus = true) => {
       drawer.classList.remove("open");
+      if(skip) skip.inert = false;
       btn.setAttribute("aria-expanded", "false");
       hero.inert = false;
       if(refocus) btn.focus();

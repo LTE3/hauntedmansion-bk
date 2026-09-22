@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-RRrhiDnubuRalQ6Sh0fWK6xbB6b0E7suBuDlw3yu5NM='; font-src 'self'; script-src 'sha256-iO0hrrihN84OGabrXYVExCjNB4bElW4EJYg1Ksiruuw='; connect-src 'none'; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-Nr32XX1qtZTRmsikvQ0NqaO6yJLr67tPuSDNov3eTbU='; font-src 'self'; script-src 'sha256-Uzi35QZV774EV+37tQjkJgf0nz4je0C4jlQevBpACCc='; connect-src 'none'; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>The Evidence — Brooklyn Haunted House | Haunted Mansion</title>
@@ -262,9 +262,18 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
 .exhibits h2{margin:0;font:600 21px/1.2 "Grenze Gotisch","Rye",Georgia,serif;letter-spacing:.02em;text-transform:none;color:var(--bone)}
 .exhibits p{grid-column:2;margin:6px 0 0;color:var(--read);max-width:44ch;font-size:13px}
 .exhibits time{font:700 15px/1.5 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--read);font-variant-numeric:tabular-nums}
+.skip{position:absolute;left:-9999px;top:0;z-index:200}
+.skip:focus{
+  left:8px;top:8px;padding:11px 14px;border-radius:2px;
+  background:var(--ink);border:1px solid var(--red-lit);color:var(--bone);
+  font:700 13px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.11em;
+  text-transform:uppercase;text-decoration:none;outline:2px solid #ff6b5f;outline-offset:2px
+}
+main:focus{outline:none}
 </style>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 <div class="grain" aria-hidden="true"></div>
 
 <header class="topbar">
@@ -274,7 +283,7 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
   </button>
 </header>
 
-<main class="page">
+<main class="page" id="main" tabindex="-1">
   <div class="hero">
     <p class="eyebrow">Case archive</p>
     <h1>The<br><em>Evidence</em></h1>
@@ -335,6 +344,7 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
 {
   const btn = document.querySelector(".menu");
   const drawer = document.getElementById("drawer");
+  const skip = document.querySelector(".skip");
   const page = document.querySelector(".page");
   const bar = document.querySelector(".topbar");
   if(btn && drawer){
@@ -342,12 +352,14 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
     const isOpen = () => drawer.classList.contains("open");
     const open = () => {
       drawer.classList.add("open");
+      if(skip) skip.inert = true;
       btn.setAttribute("aria-expanded", "true");
       page.inert = true; bar.inert = true;
       x.focus();
     };
     const close = (refocus = true) => {
       drawer.classList.remove("open");
+      if(skip) skip.inert = false;
       btn.setAttribute("aria-expanded", "false");
       page.inert = false; bar.inert = false;
       if(refocus) btn.focus();

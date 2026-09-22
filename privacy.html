@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-NPEa1MO6NKRX9eqse+QZExF8g6PZ0IQzwbK4417OU+A='; font-src 'self'; script-src 'none'; connect-src 'none'; frame-src 'none'; object-src 'none'"><meta name="referrer" content="no-referrer"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-lKxsvx/awA65CcgtNnqp1qbq1JQUvpYRrdk94suk/jE='; font-src 'self'; script-src 'none'; connect-src 'none'; frame-src 'none'; object-src 'none'"><meta name="referrer" content="no-referrer"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>What we keep</title>
 <meta name="description" content="What the waitlist for the house collects, why, and how to be taken off it.">
 <meta property="og:title" content="What we keep">
@@ -143,10 +143,19 @@ a:focus-visible{outline:2px solid #ff6b5f;outline-offset:3px}
 @media (prefers-contrast:more){
   body{color:#ded3c2} .updated,.eyebrow{color:#b8ada0} h1{color:#fff}
 }
+.skip{position:absolute;left:-9999px;top:0;z-index:200}
+.skip:focus{
+  left:8px;top:8px;padding:11px 14px;border-radius:2px;
+  background:var(--ink);border:1px solid var(--red-lit);color:var(--bone);
+  font:700 13px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.11em;
+  text-transform:uppercase;text-decoration:none;outline:2px solid #ff6b5f;outline-offset:2px
+}
+main:focus{outline:none}
 </style>
 </head>
 <body>
-<main>
+<a class="skip" href="#main">Skip to content</a>
+<main id="main" tabindex="-1">
   <p class="eyebrow">The House &middot; Bushwick, Brooklyn</p>
   <h1>What we keep</h1>
   <p class="standfirst">One form, on the front page, so we can tell you when

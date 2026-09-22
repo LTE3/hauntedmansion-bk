@@ -67,6 +67,13 @@ SERIES_DESCRIPTION = ("A walk-through Halloween haunted attraction in Bushwick, 
 # manifest icon and is square, which card.jpg (1200x630) does not cover.
 EVENT_IMAGES = [SITE + "/v/img-cali/card.jpg?v=3", SITE + "/img/icon-512.png"]
 
+# The attraction's own profile, not the operator's - it goes on the
+# EntertainmentBusiness node, not the Organization. Confirmed live on
+# 2026-09-22: HAUNTED MANSION BROOKLYN, 23K followers. sameAs is the
+# documented way to tell Google that a profile and a site are one entity,
+# and until now nothing on the site pointed at the account at all.
+PROFILES = ["https://www.instagram.com/hauntedmansionbk/"]
+
 
 def token():
     with open(KEYS, encoding="utf-8", errors="replace") as f:
@@ -193,6 +200,7 @@ def business(events):
         "image": EVENT_IMAGES,
         "description": "A walk-through haunted attraction in Bushwick, Brooklyn. Sixty minutes inside, multiple rooms, live actors. October 2026. Ages 13 and over.",
         "address": venue()["address"],
+        "sameAs": PROFILES,
         "parentOrganization": {"@id": SITE + "/#organization"},
         "openingHoursSpecification": hours(events),
     }

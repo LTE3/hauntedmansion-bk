@@ -257,6 +257,25 @@ def offers(row, products):
     }
 
 
+CAST_ID = SITE + "/#cast"
+
+
+def cast():
+    """Who performs. Google reports every Event without one as incomplete.
+
+    Six pages of the site say the rooms are worked by live actors, so the
+    cast is the performer - there is no headliner to name and inventing one
+    would be a lie. One node, referenced by every night, so the nineteen
+    Events describe one company rather than nineteen.
+    """
+    return {
+        "@type": "PerformingGroup",
+        "@id": CAST_ID,
+        "name": BRAND + " Cast",
+        "description": "The live actors who work the rooms at %s." % BRAND,
+    }
+
+
 SERIES_ID = SITE + "/nights.html#series"
 
 
@@ -272,7 +291,7 @@ def series(events):
     than two seasons.
     """
     return {
-        "@type": "EventSeries",
+        "@type": ["Event", "EventSeries"],
         "@id": SERIES_ID,
         "name": BRAND + " \u2014 October 2026",
         "description": SERIES_DESCRIPTION,
@@ -282,6 +301,7 @@ def series(events):
         "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
         "location": {"@id": SITE + "/#venue"},
         "organizer": {"@id": SITE + "/#organization"},
+        "performer": {"@id": CAST_ID},
         "image": EVENT_IMAGES,
         "typicalAgeRange": "13-",
         "isAccessibleForFree": False,
@@ -293,6 +313,7 @@ def nights_graph(events, products):
     graph = [
         organization(),
         venue(),
+        cast(),
         series(events),
         breadcrumbs(("Nights", SITE + "/nights.html")),
     ]
@@ -312,6 +333,7 @@ def nights_graph(events, products):
                 "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
                 "location": {"@id": SITE + "/#venue"},
                 "organizer": {"@id": SITE + "/#organization"},
+                "performer": {"@id": CAST_ID},
                 "url": SITE + "/nights.html",
                 "typicalAgeRange": "13-",
                 "isAccessibleForFree": False,
@@ -376,7 +398,7 @@ def faq_graph(page_src):
 def index_graph(events, breadcrumb=None):
     # The homepage gets no breadcrumb - a trail pointing at itself says
     # nothing. Every other page built from this graph gets its own.
-    graph = [organization(), venue(), business(events), series(events)]
+    graph = [organization(), venue(), business(events), cast(), series(events)]
     if breadcrumb:
         graph.append(breadcrumb)
     return {"@context": "https://schema.org", "@graph": graph}

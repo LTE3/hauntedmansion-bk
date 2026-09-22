@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-/9tbvQjnsgpoo7qM1Z0lpIa0W5AAAHXEHJHrDX4JdLs='; font-src 'self'; script-src 'sha256-t1f9TSgNKi1lHXTynwT04nWHQKRuiKSn7LtKMUTjZPo=' 'sha256-Uzi35QZV774EV+37tQjkJgf0nz4je0C4jlQevBpACCc='; connect-src 'none'; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-/9tbvQjnsgpoo7qM1Z0lpIa0W5AAAHXEHJHrDX4JdLs='; font-src 'self'; script-src 'sha256-hoHKE/KkaE0ynUP5+yKi4sX08ZS8INX+zEdnJiWvkaI=' 'sha256-Uzi35QZV774EV+37tQjkJgf0nz4je0C4jlQevBpACCc='; connect-src 'none'; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Haunted House in Bushwick, Brooklyn — Haunted Mansion BK</title>
@@ -353,7 +353,16 @@ main:focus{outline:none}
       ]
     },
     {
-      "@type": "EventSeries",
+      "@type": "PerformingGroup",
+      "@id": "https://hauntedmansionbk.com/#cast",
+      "name": "Haunted Mansion BK Cast",
+      "description": "The live actors who work the rooms at Haunted Mansion BK."
+    },
+    {
+      "@type": [
+        "Event",
+        "EventSeries"
+      ],
       "@id": "https://hauntedmansionbk.com/nights.html#series",
       "name": "Haunted Mansion BK — October 2026",
       "description": "A walk-through Halloween haunted attraction in Bushwick, Brooklyn. Thursday through Sunday nights, October 2026. Ages 13 and over.",
@@ -366,6 +375,9 @@ main:focus{outline:none}
       },
       "organizer": {
         "@id": "https://hauntedmansionbk.com/#organization"
+      },
+      "performer": {
+        "@id": "https://hauntedmansionbk.com/#cast"
       },
       "image": [
         "https://hauntedmansionbk.com/v/img-cali/card.jpg?v=3",

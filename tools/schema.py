@@ -49,6 +49,18 @@ END = "<!-- schema:end -->"
 # the FAQ; the last group through gets the same hour as the first.
 WALK_MINUTES = 60
 
+WEEKDAYS = ("Monday", "Tuesday", "Wednesday", "Thursday",
+            "Friday", "Saturday", "Sunday")
+MONTHS = ("January", "February", "March", "April", "May", "June", "July",
+          "August", "September", "October", "November", "December")
+
+# One sentence, carried by the series and by every night under it. Google
+# asks for a description on an Event and there was none; this is the
+# wording the series already shipped with, not new copy.
+SERIES_DESCRIPTION = ("A walk-through Halloween haunted attraction in Bushwick, "
+                      "Brooklyn. Thursday through Sunday nights, October 2026. "
+                      "Ages 13 and over.")
+
 # Real, already-public images, not new assets. card.jpg is the same file
 # every page already serves as og:image and twitter:image, so naming it here
 # states nothing the pages do not already broadcast. icon-512.png is the
@@ -72,6 +84,17 @@ def query(sql):
         method="POST",
     )
     return json.load(urllib.request.urlopen(req))
+
+
+def night_name(iso):
+    """"Thursday, October 1" - what a searcher reads, not "2026-10-01".
+
+    Google prints Event.name verbatim in an event rich result, so the ISO
+    date was going in front of people. Same night, named the way someone
+    would say it out loud.
+    """
+    d = date(*[int(x) for x in iso.split("-")])
+    return "%s, %s %d" % (WEEKDAYS[d.weekday()], MONTHS[d.month - 1], d.day)
 
 
 def plus_minutes(hhmmss, minutes):
@@ -230,7 +253,7 @@ def nights_graph(events, products):
             "@type": "EventSeries",
             "@id": series_id,
             "name": BRAND + " \u2014 October 2026",
-            "description": "A walk-through Halloween haunted attraction in Bushwick, Brooklyn. Thursday through Sunday nights, October 2026. Ages 13 and over.",
+            "description": SERIES_DESCRIPTION,
             "startDate": "%sT%s%s" % (events[0]["event_date"], events[0]["doors"][:5] + ":00", TZ),
             "endDate": "%sT%s%s" % (events[-1]["event_date"], plus_minutes(events[-1]["last_entry"], WALK_MINUTES), TZ),
             "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
@@ -247,7 +270,8 @@ def nights_graph(events, products):
         graph.append(
             {
                 "@type": "Event",
-                "name": "%s \u2014 %s" % (BRAND, date),
+                "name": "%s \u2014 %s" % (BRAND, night_name(date)),
+                "description": SERIES_DESCRIPTION,
                 "superEvent": {"@id": series_id},
                 "startDate": "%sT%s%s" % (date, row["doors"], TZ),
                 "endDate": "%sT%s%s" % (date, plus_minutes(row["last_entry"], WALK_MINUTES), TZ),

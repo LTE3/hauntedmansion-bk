@@ -4,65 +4,120 @@
      absent here for the same reason. lastmod is the file's own last commit
      date, not the day the sitemap was generated - a sitemap that claims
      every page changed today teaches a crawler to stop believing it. -->
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://hauntedmansionbk.com/</loc>
-    <lastmod>2026-09-21</lastmod>
+    <lastmod>2026-09-22</lastmod>
+    <image:image>
+      <image:loc>https://hauntedmansionbk.com/v/img-cali/card.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://hauntedmansionbk.com/v/img-house/house.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://hauntedmansionbk.com/v/img-poster/logo.png</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://hauntedmansionbk.com/v/img-poster/house-tall.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://hauntedmansionbk.com/v/img-poster/house.jpg</image:loc>
+    </image:image>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://hauntedmansionbk.com/nights.html</loc>
-    <lastmod>2026-09-21</lastmod>
+    <lastmod>2026-09-22</lastmod>
+    <image:image>
+      <image:loc>https://hauntedmansionbk.com/v/img-cali/card.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://hauntedmansionbk.com/v/img-house/reference/calendar-hero.jpg</image:loc>
+    </image:image>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://hauntedmansionbk.com/experience.html</loc>
-    <lastmod>2026-09-21</lastmod>
+    <lastmod>2026-09-22</lastmod>
+    <image:image>
+      <image:loc>https://hauntedmansionbk.com/v/img-cali/card.jpg</image:loc>
+    </image:image>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://hauntedmansionbk.com/story.html</loc>
-    <lastmod>2026-09-21</lastmod>
+    <lastmod>2026-09-22</lastmod>
+    <image:image>
+      <image:loc>https://hauntedmansionbk.com/v/img-cali/card.jpg</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://hauntedmansionbk.com/v/img-house/rooms.jpg</image:loc>
+    </image:image>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://hauntedmansionbk.com/location.html</loc>
-    <lastmod>2026-09-21</lastmod>
+    <lastmod>2026-09-22</lastmod>
+    <image:image>
+      <image:loc>https://hauntedmansionbk.com/v/img-cali/card.jpg</image:loc>
+    </image:image>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://hauntedmansionbk.com/faq.html</loc>
-    <lastmod>2026-09-21</lastmod>
+    <lastmod>2026-09-22</lastmod>
+    <image:image>
+      <image:loc>https://hauntedmansionbk.com/v/img-cali/card.jpg</image:loc>
+    </image:image>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://hauntedmansionbk.com/evidence.html</loc>
     <lastmod>2026-09-21</lastmod>
+    <image:image>
+      <image:loc>https://hauntedmansionbk.com/v/img-cali/card.jpg</image:loc>
+    </image:image>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://hauntedmansionbk.com/ages.html</loc>
-    <lastmod>2026-09-21</lastmod>
+    <lastmod>2026-09-22</lastmod>
+    <image:image>
+      <image:loc>https://hauntedmansionbk.com/v/img-cali/card.jpg</image:loc>
+    </image:image>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://hauntedmansionbk.com/groups.html</loc>
-    <lastmod>2026-09-21</lastmod>
+    <lastmod>2026-09-22</lastmod>
+    <image:image>
+      <image:loc>https://hauntedmansionbk.com/v/img-cali/card.jpg</image:loc>
+    </image:image>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://hauntedmansionbk.com/refund.html</loc>
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-21</lastmod>
+    <image:image>
+      <image:loc>https://hauntedmansionbk.com/v/img-cali/card.jpg</image:loc>
+    </image:image>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://hauntedmansionbk.com/terms.html</loc>
-    <lastmod>2026-09-21</lastmod>
+    <lastmod>2026-09-22</lastmod>
+    <image:image>
+      <image:loc>https://hauntedmansionbk.com/v/img-cali/card.jpg</image:loc>
+    </image:image>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://hauntedmansionbk.com/privacy.html</loc>
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-22</lastmod>
+    <image:image>
+      <image:loc>https://hauntedmansionbk.com/v/img-cali/card.jpg</image:loc>
+    </image:image>
     <priority>0.3</priority>
   </url>
 </urlset>

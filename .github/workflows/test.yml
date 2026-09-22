@@ -27,6 +27,11 @@ jobs:
       # each SHA is what it pointed at when it was pinned, and is the thing to
       # check against when bumping.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # sitemap.py reads each page's last commit date out of git log.
+          # The default shallow clone has one commit, so every lastmod
+          # would read as today and the check below would pass on a lie.
+          fetch-depth: 0
 
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
@@ -50,6 +55,19 @@ jobs:
 
       - name: Tests
         run: python tools/test_page.py
+
+      # Both of these are generated files, and a generated file that has
+      # drifted from its source fails silently: a stale <lastmod> tells a
+      # crawler not to bother re-fetching, and a stale CSP hash makes the
+      # browser drop the script without a word. Neither shows up in a
+      # page test. schema.py is deliberately NOT here - it reads the live
+      # calendar through a management token that does not exist on a
+      # runner and must not.
+      - name: Sitemap dates current
+        run: python tools/sitemap.py --check
+
+      - name: CSP hashes current
+        run: python tools/csp.py --check
 
       # Scans the whole tree, not just the push, so a credential committed
       # before this workflow existed is still caught.

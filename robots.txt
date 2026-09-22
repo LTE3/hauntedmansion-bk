@@ -7,4 +7,29 @@ Disallow: /versions.html
 Disallow: /looks.html
 Disallow: /ticket.html
 
+# The wildcard above already allows these, so none of this changes what any
+# crawler may fetch. It is written out because the AI assistants are where a
+# growing share of "haunted house in brooklyn" gets answered, several of them
+# read training and search access from separate tokens, and a silent allow is
+# indistinguishable from nobody having thought about it. This is the thought,
+# recorded: we want to be quoted. Tokens taken from each vendor's own docs.
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: CCBot
+User-agent: Bytespider
+User-agent: meta-externalagent
+Allow: /
+Disallow: /top3.html
+Disallow: /versions.html
+Disallow: /looks.html
+Disallow: /ticket.html
+
 Sitemap: https://hauntedmansionbk.com/sitemap.xml

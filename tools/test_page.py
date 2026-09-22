@@ -259,10 +259,35 @@ def test_static():
               if n.endswith(".html") and n not in PRIVATE and has_noindex(n)]
     check("every public page is indexable", not public, "still noindex: %s" % (public,))
 
-    disallowed = [l.split(":", 1)[1].strip() for l in rtxt.splitlines()
-                  if l.strip().startswith("Disallow:") and l.strip() != "Disallow:"]
-    check("robots.txt disallows exactly the workbenches",
-          sorted(disallowed) == sorted("/" + n for n in PRIVATE), str(disallowed))
+    # Per group, not flattened. A crawler that matches a named User-agent
+    # group ignores the wildcard group completely, so every group has to
+    # carry the workbench lines itself - a flat compare would read those
+    # required repeats as a duplicate and fail. Blank lines and comments do
+    # not end a group; a User-agent line that follows a rule line starts one.
+    groups, cur, in_rules = [], None, False
+    for line in rtxt.splitlines():
+        line = line.split("#", 1)[0].strip()
+        if not line:
+            continue
+        key = line.split(":", 1)[0].strip().lower()
+        if key == "user-agent":
+            if cur is None or in_rules:
+                cur, in_rules = [], False
+                groups.append(cur)
+        elif key in ("allow", "disallow"):
+            if cur is None:
+                continue
+            in_rules = True
+            path = line.split(":", 1)[1].strip()
+            if key == "disallow" and path:
+                cur.append(path)
+        else:
+            cur, in_rules = None, False
+    want = sorted("/" + n for n in PRIVATE)
+    bad = [g for g in groups if sorted(g) != want]
+    check("every robots.txt group disallows exactly the workbenches",
+          bool(groups) and not bad,
+          "%d group(s), wrong: %s" % (len(groups), bad))
     # The day line is the one number on the page and the spec says a number
     # must be real. It is real only if it is computed from this attribute.
     m = re.search(r'class="dayline"[^>]*data-opens="(\d{4}-\d{2}-\d{2})"', s)

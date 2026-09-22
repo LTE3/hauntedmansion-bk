@@ -244,23 +244,43 @@ def offers(row, products):
     }
 
 
+SERIES_ID = SITE + "/nights.html#series"
+
+
+def series(events):
+    """The whole season as one Event, so a page can point at it without
+    listing all nineteen nights.
+
+    The homepage is the page most likely to be the one Google ranks for
+    "haunted house brooklyn", and it carried no Event of any kind - every
+    night lived on nights.html. EventSeries is an Event subtype, so naming
+    the season on the homepage makes it eligible for the event rich result
+    too. The shared @id keeps this one season described on two pages rather
+    than two seasons.
+    """
+    return {
+        "@type": "EventSeries",
+        "@id": SERIES_ID,
+        "name": BRAND + " \u2014 October 2026",
+        "description": SERIES_DESCRIPTION,
+        "startDate": "%sT%s%s" % (events[0]["event_date"], events[0]["doors"][:5] + ":00", TZ),
+        "endDate": "%sT%s%s" % (events[-1]["event_date"], plus_minutes(events[-1]["last_entry"], WALK_MINUTES), TZ),
+        "eventStatus": "https://schema.org/EventScheduled",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "location": {"@id": SITE + "/#venue"},
+        "organizer": {"@id": SITE + "/#organization"},
+        "image": EVENT_IMAGES,
+        "typicalAgeRange": "13-",
+        "isAccessibleForFree": False,
+        "url": SITE + "/nights.html",
+    }
+
+
 def nights_graph(events, products):
-    series_id = SITE + "/nights.html#series"
     graph = [
         organization(),
         venue(),
-        {
-            "@type": "EventSeries",
-            "@id": series_id,
-            "name": BRAND + " \u2014 October 2026",
-            "description": SERIES_DESCRIPTION,
-            "startDate": "%sT%s%s" % (events[0]["event_date"], events[0]["doors"][:5] + ":00", TZ),
-            "endDate": "%sT%s%s" % (events[-1]["event_date"], plus_minutes(events[-1]["last_entry"], WALK_MINUTES), TZ),
-            "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-            "location": {"@id": SITE + "/#venue"},
-            "organizer": {"@id": SITE + "/#organization"},
-            "url": SITE + "/nights.html",
-        },
+        series(events),
         breadcrumbs(("Nights", SITE + "/nights.html")),
     ]
     for row in events:
@@ -272,7 +292,7 @@ def nights_graph(events, products):
                 "@type": "Event",
                 "name": "%s \u2014 %s" % (BRAND, night_name(date)),
                 "description": SERIES_DESCRIPTION,
-                "superEvent": {"@id": series_id},
+                "superEvent": {"@id": SERIES_ID},
                 "startDate": "%sT%s%s" % (date, row["doors"], TZ),
                 "endDate": "%sT%s%s" % (date, plus_minutes(row["last_entry"], WALK_MINUTES), TZ),
                 "eventStatus": "https://schema.org/EventScheduled",
@@ -343,7 +363,7 @@ def faq_graph(page_src):
 def index_graph(events, breadcrumb=None):
     # The homepage gets no breadcrumb - a trail pointing at itself says
     # nothing. Every other page built from this graph gets its own.
-    graph = [organization(), venue(), business(events)]
+    graph = [organization(), venue(), business(events), series(events)]
     if breadcrumb:
         graph.append(breadcrumb)
     return {"@context": "https://schema.org", "@graph": graph}

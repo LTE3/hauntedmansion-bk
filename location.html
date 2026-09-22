@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-HpAyvQvkjoloK/QKkXcm4qFzPtJK74grHvQzKaZ7b1U='; font-src 'self'; script-src 'sha256-GfQDVanhCWITbhj4cWM19xq4Jx51SD1WfgwWdhvEs50=' 'sha256-iO0hrrihN84OGabrXYVExCjNB4bElW4EJYg1Ksiruuw='; connect-src 'none'; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-HpAyvQvkjoloK/QKkXcm4qFzPtJK74grHvQzKaZ7b1U='; font-src 'self'; script-src 'sha256-leMg3dKV8l+6ReQk/JW4vOELEJhd6QA/9FaCx41ygrM=' 'sha256-iO0hrrihN84OGabrXYVExCjNB4bElW4EJYg1Ksiruuw='; connect-src 'none'; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Haunted House in Bushwick, Brooklyn — Haunted Mansion BK</title>
@@ -284,14 +284,23 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
         "addressRegion": "NY",
         "postalCode": "11237",
         "addressCountry": "US"
-      }
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 40.7078433,
+        "longitude": -73.9311942
+      },
+      "hasMap": "https://www.google.com/maps/search/?api=1&query=428+Johnson+Avenue%2C+Brooklyn%2C+NY+11237"
     },
     {
       "@type": "EntertainmentBusiness",
       "@id": "https://hauntedmansionbk.com/#business",
       "name": "Haunted Mansion BK",
       "url": "https://hauntedmansionbk.com/",
-      "image": "https://hauntedmansionbk.com/v/img-poster/logo.png",
+      "image": [
+        "https://hauntedmansionbk.com/v/img-cali/card.jpg?v=3",
+        "https://hauntedmansionbk.com/img/icon-512.png"
+      ],
       "description": "A walk-through haunted attraction in Bushwick, Brooklyn. Sixty minutes inside, multiple rooms, live actors. October 2026. Ages 13 and over.",
       "address": {
         "@type": "PostalAddress",
@@ -308,15 +317,41 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
         {
           "@type": "OpeningHoursSpecification",
           "dayOfWeek": [
-            "Thursday",
             "Friday",
-            "Saturday",
+            "Saturday"
+          ],
+          "opens": "17:00",
+          "closes": "22:00",
+          "validFrom": "2026-10-01",
+          "validThrough": "2026-10-31"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Thursday",
             "Sunday"
           ],
           "opens": "17:00",
           "closes": "23:15",
           "validFrom": "2026-10-01",
-          "through": "2026-10-31"
+          "validThrough": "2026-10-31"
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://hauntedmansionbk.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Location",
+          "item": "https://hauntedmansionbk.com/location.html"
         }
       ]
     }

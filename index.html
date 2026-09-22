@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-zweDyExcbKDEN4XKtBVm4VTAuBscNSc0zhFTQ8Cyrqs='; font-src 'self'; script-src 'sha256-GfQDVanhCWITbhj4cWM19xq4Jx51SD1WfgwWdhvEs50=' 'sha256-OBnCNXuu7FM0MCacXjPtvjEzjXQ7yYh3GvrOzdHhRdA=' 'sha256-mPtrMIM+BVbm52EHIXdyXD3+zPyp6A4zFANuLG08TgU='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-zweDyExcbKDEN4XKtBVm4VTAuBscNSc0zhFTQ8Cyrqs='; font-src 'self'; script-src 'sha256-RcZlb43YeW8248q2taODpXtMvrGjP5YzomeDi7lG6lc=' 'sha256-OBnCNXuu7FM0MCacXjPtvjEzjXQ7yYh3GvrOzdHhRdA=' 'sha256-mPtrMIM+BVbm52EHIXdyXD3+zPyp6A4zFANuLG08TgU='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Brooklyn Haunted House — Haunted Mansion BK, Bushwick</title>
@@ -1136,14 +1136,23 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
         "addressRegion": "NY",
         "postalCode": "11237",
         "addressCountry": "US"
-      }
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 40.7078433,
+        "longitude": -73.9311942
+      },
+      "hasMap": "https://www.google.com/maps/search/?api=1&query=428+Johnson+Avenue%2C+Brooklyn%2C+NY+11237"
     },
     {
       "@type": "EntertainmentBusiness",
       "@id": "https://hauntedmansionbk.com/#business",
       "name": "Haunted Mansion BK",
       "url": "https://hauntedmansionbk.com/",
-      "image": "https://hauntedmansionbk.com/v/img-poster/logo.png",
+      "image": [
+        "https://hauntedmansionbk.com/v/img-cali/card.jpg?v=3",
+        "https://hauntedmansionbk.com/img/icon-512.png"
+      ],
       "description": "A walk-through haunted attraction in Bushwick, Brooklyn. Sixty minutes inside, multiple rooms, live actors. October 2026. Ages 13 and over.",
       "address": {
         "@type": "PostalAddress",
@@ -1160,15 +1169,24 @@ a,button,.field,[data-open]{-webkit-tap-highlight-color:transparent}
         {
           "@type": "OpeningHoursSpecification",
           "dayOfWeek": [
-            "Thursday",
             "Friday",
-            "Saturday",
+            "Saturday"
+          ],
+          "opens": "17:00",
+          "closes": "22:00",
+          "validFrom": "2026-10-01",
+          "validThrough": "2026-10-31"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Thursday",
             "Sunday"
           ],
           "opens": "17:00",
           "closes": "23:15",
           "validFrom": "2026-10-01",
-          "through": "2026-10-31"
+          "validThrough": "2026-10-31"
         }
       ]
     }

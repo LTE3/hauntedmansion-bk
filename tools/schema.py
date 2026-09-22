@@ -24,6 +24,7 @@
 # and those three have to agree: a listing whose address contradicts the site
 # is worse for local ranking than no listing.
 
+from datetime import date
 import json
 import os
 import re
@@ -47,6 +48,12 @@ END = "<!-- schema:end -->"
 # How long after last entry the house is empty. The walk is about an hour, per
 # the FAQ; the last group through gets the same hour as the first.
 WALK_MINUTES = 60
+
+# Real, already-public images, not new assets. card.jpg is the same file
+# every page already serves as og:image and twitter:image, so naming it here
+# states nothing the pages do not already broadcast. icon-512.png is the
+# manifest icon and is square, which card.jpg (1200x630) does not cover.
+EVENT_IMAGES = [SITE + "/v/img-cali/card.jpg?v=3", SITE + "/img/icon-512.png"]
 
 
 def token():
@@ -86,7 +93,6 @@ def organization():
 
 
 def venue():
-    # Locality only. See the note at the top of this file.
     return {
         "@type": "Place",
         "@id": SITE + "/#venue",
@@ -99,40 +105,107 @@ def venue():
             "postalCode": "11237",
             "addressCountry": "US",
         },
+        # Geocoded from the address above through OpenStreetMap Nominatim on
+        # 2026-09-21, place_rank 30, which is house-level. Verified twice, by
+        # the agent that proposed it and again before it was committed. It is
+        # still a third-party geocode rather than a number the owner gave, so
+        # check it against the Business Profile pin if one is ever created.
+        "geo": {"@type": "GeoCoordinates", "latitude": 40.7078433, "longitude": -73.9311942},
+        "hasMap": "https://www.google.com/maps/search/?api=1&query=428+Johnson+Avenue%2C+Brooklyn%2C+NY+11237",
     }
 
 
-def business():
+def breadcrumbs(*trail):
+    """trail is (name, url) pairs after Home.
+
+    Built from the drawer nav the pages already carry, not invented. Home
+    to one real section is the site's actual depth: no page here is more
+    than one click from the homepage, so a deeper trail would be a lie.
+    """
+    items = [{"@type": "ListItem", "position": 1, "name": "Home", "item": SITE + "/"}]
+    for i, (name, url) in enumerate(trail, start=2):
+        items.append({"@type": "ListItem", "position": i, "name": name, "item": url})
+    return {"@type": "BreadcrumbList", "itemListElement": items}
+
+
+def hours(events):
+    """One rule per distinct (opens, closes) pair, read off the calendar.
+
+    This used to be a single hand-written rule saying every night runs
+    17:00 to 23:15. Ten of the nineteen close at 22:00, which the Event
+    entries on nights.html and the visible FAQ answer both already said.
+    A crawler that reads two of this site's own sources against a third
+    has no reason to trust any of them, so the rule is derived now and
+    cannot drift from the calendar again.
+    """
+    live = [e for e in events if e["is_active"]]
+    spans = {}
+    for row in live:
+        opens = row["doors"][:5]
+        closes = plus_minutes(row["last_entry"], WALK_MINUTES)[:5]
+        day = date.fromisoformat(row["event_date"]).strftime("%A")
+        spans.setdefault((opens, closes), [])
+        if day not in spans[(opens, closes)]:
+            spans[(opens, closes)].append(day)
+    dates = sorted(row["event_date"] for row in live)
+    return [
+        {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": days,
+            "opens": opens,
+            "closes": closes,
+            "validFrom": dates[0],
+            "validThrough": dates[-1],
+        }
+        for (opens, closes), days in sorted(spans.items())
+    ]
+
+
+def business(events):
     return {
         "@type": "EntertainmentBusiness",
         "@id": SITE + "/#business",
         "name": BRAND,
         "url": SITE + "/",
-        "image": SITE + "/v/img-poster/logo.png",
+        "image": EVENT_IMAGES,
         "description": "A walk-through haunted attraction in Bushwick, Brooklyn. Sixty minutes inside, multiple rooms, live actors. October 2026. Ages 13 and over.",
         "address": venue()["address"],
         "parentOrganization": {"@id": SITE + "/#organization"},
-        "openingHoursSpecification": [
-            {
-                "@type": "OpeningHoursSpecification",
-                "dayOfWeek": ["Thursday", "Friday", "Saturday", "Sunday"],
-                "opens": "17:00",
-                "closes": "23:15",
-                "validFrom": "2026-10-01",
-                "through": "2026-10-31",
-            }
-        ],
+        "openingHoursSpecification": hours(events),
     }
 
 
 def offers(row, products):
-    cents = sorted(p["cents"] for p in products if p["is_active"])
+    active = sorted((p for p in products if p["is_active"]), key=lambda p: p["tickets"])
+    cents = [p["cents"] for p in active]
     if row["sold"] >= row["capacity"]:
         availability = "https://schema.org/SoldOut"
     else:
         # Before the presale opens nothing is buyable yet. Saying InStock then
         # is a lie a crawler can check.
         availability = "https://schema.org/PreOrder"
+    # The bundle is for this night and dies with it. A rich result still
+    # advertising a $20 ticket to a night that already happened is exactly
+    # the stale-availability failure this file exists to prevent.
+    valid_until = row["event_date"]
+    # The aggregate alone says $20 to $60 and leaves a reader to assume $60
+    # buys a better seat. It buys four tickets. Nesting the real bundles is
+    # what makes the quantity legible; unitCode C62 is the UN/CEFACT code
+    # for a plain count.
+    bundles = [
+        {
+            "@type": "Offer",
+            "name": "%d ticket%s" % (p["tickets"], "" if p["tickets"] == 1 else "s"),
+            "priceCurrency": "USD",
+            "price": "%d" % (p["cents"] // 100),
+            "availability": availability,
+            "validFrom": PRESALE,
+            "priceValidUntil": valid_until,
+            "eligibleQuantity": {"@type": "QuantitativeValue", "value": p["tickets"], "unitCode": "C62"},
+            "url": SITE + "/nights.html",
+        }
+        for p in active
+    ]
     return {
         "@type": "AggregateOffer",
         "priceCurrency": "USD",
@@ -141,7 +214,10 @@ def offers(row, products):
         "offerCount": "%d" % len(cents),
         "availability": availability,
         "validFrom": PRESALE,
+        "priceValidUntil": valid_until,
         "url": SITE + "/nights.html",
+        "offers": bundles,
+        "inventoryLevel": {"@type": "QuantitativeValue", "value": max(row["capacity"] - row["sold"], 0)},
     }
 
 
@@ -162,6 +238,7 @@ def nights_graph(events, products):
             "organizer": {"@id": SITE + "/#organization"},
             "url": SITE + "/nights.html",
         },
+        breadcrumbs(("Nights", SITE + "/nights.html")),
     ]
     for row in events:
         if not row["is_active"]:
@@ -180,6 +257,8 @@ def nights_graph(events, products):
                 "organizer": {"@id": SITE + "/#organization"},
                 "url": SITE + "/nights.html",
                 "typicalAgeRange": "13-",
+                "isAccessibleForFree": False,
+                "image": EVENT_IMAGES,
                 "maximumAttendeeCapacity": row["capacity"],
                 "offers": offers(row, products),
             }
@@ -232,12 +311,18 @@ def faq_graph(page_src):
                 "about": {"@id": SITE + "/#business"},
                 "mainEntity": items,
             },
+            breadcrumbs(("FAQ", SITE + "/faq.html")),
         ],
     }
 
 
-def index_graph():
-    return {"@context": "https://schema.org", "@graph": [organization(), venue(), business()]}
+def index_graph(events, breadcrumb=None):
+    # The homepage gets no breadcrumb - a trail pointing at itself says
+    # nothing. Every other page built from this graph gets its own.
+    graph = [organization(), venue(), business(events)]
+    if breadcrumb:
+        graph.append(breadcrumb)
+    return {"@context": "https://schema.org", "@graph": graph}
 
 
 def block(data):
@@ -277,13 +362,13 @@ def main():
         sys.exit("hm_events or hm_products came back empty")
     stale = False
     stale |= write("nights.html", block(nights_graph(events, products)), check)
-    stale |= write("index.html", block(index_graph()), check)
+    stale |= write("index.html", block(index_graph(events)), check)
     # location.html gets the same business graph as the homepage. It is the
     # page that answers "where is it", which is the query the address was
     # published to win, and until now it was the only public page carrying no
     # structured data at all. Repeating the @id nodes across pages is correct:
     # it is one business described twice, not two businesses.
-    stale |= write("location.html", block(index_graph()), check)
+    stale |= write("location.html", block(index_graph(events, breadcrumbs(("Location", SITE + "/location.html")))), check)
     with open(os.path.join(ROOT, "faq.html"), encoding="utf-8") as f:
         stale |= write("faq.html", block(faq_graph(f.read())), check)
     active = sum(1 for e in events if e["is_active"])

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-hFuFA0avg14eVj2zSZwsG6oIIymkX6MZ+02SsXbtVSA='; font-src 'self'; script-src 'sha256-4rl5Pk/lFGpGN03XXNxUR8ELrCtTZGNqYByDN3bLwwE=' 'sha256-FKAE9qRLxDlVcF+YT0KiS1xdA+XuH8zoy0Arx/ClI5Y='; connect-src 'none'; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-hFuFA0avg14eVj2zSZwsG6oIIymkX6MZ+02SsXbtVSA='; font-src 'self'; script-src 'sha256-i8db+pkqX1kCaoiZckP56sng9qwmhG+j5uky/liIIUQ=' 'sha256-FKAE9qRLxDlVcF+YT0KiS1xdA+XuH8zoy0Arx/ClI5Y='; connect-src 'none'; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Haunted House FAQ — Bushwick, Brooklyn | Haunted Mansion</title>
@@ -271,7 +271,13 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
         "addressRegion": "NY",
         "postalCode": "11237",
         "addressCountry": "US"
-      }
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 40.7078433,
+        "longitude": -73.9311942
+      },
+      "hasMap": "https://www.google.com/maps/search/?api=1&query=428+Johnson+Avenue%2C+Brooklyn%2C+NY+11237"
     },
     {
       "@type": "FAQPage",
@@ -385,6 +391,23 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
             "@type": "Answer",
             "text": "Tickets are final sale. If we cancel a performance, ticket holders will be offered a transfer or refund. Tickets may be transferred to another adult before check-in."
           }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://hauntedmansionbk.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "FAQ",
+          "item": "https://hauntedmansionbk.com/faq.html"
         }
       ]
     }

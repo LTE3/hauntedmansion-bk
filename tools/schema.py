@@ -377,6 +377,14 @@ def main():
     # and BreadcrumbList is the one rich result they actually qualify for.
     stale |= write("ages.html", block(breadcrumbs(("Age and intensity", SITE + "/ages.html"))), check)
     stale |= write("groups.html", block(breadcrumbs(("Groups", SITE + "/groups.html"))), check)
+    # experience.html, story.html and evidence.html were the last three
+    # indexable pages carrying no structured data at all. They get the same
+    # treatment as ages and groups: a breadcrumb and nothing else. Each is a
+    # one-click section page, the trail is the drawer nav the pages already
+    # show, and BreadcrumbList is the one rich result they qualify for.
+    stale |= write("experience.html", block(breadcrumbs(("The experience", SITE + "/experience.html"))), check)
+    stale |= write("story.html", block(breadcrumbs(("The story", SITE + "/story.html"))), check)
+    stale |= write("evidence.html", block(breadcrumbs(("Evidence", SITE + "/evidence.html"))), check)
     active = sum(1 for e in events if e["is_active"])
     print("%d night(s) in the graph" % active)
     if check and stale:

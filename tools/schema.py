@@ -285,13 +285,19 @@ def series(events):
 
     The homepage is the page most likely to be the one Google ranks for
     "haunted house brooklyn", and it carried no Event of any kind - every
-    night lived on nights.html. EventSeries is an Event subtype, so naming
-    the season on the homepage makes it eligible for the event rich result
-    too. The shared @id keeps this one season described on two pages rather
-    than two seasons.
+    night lived on nights.html. The shared @id keeps this one season
+    described on two pages rather than two seasons.
+
+    It is a plain Event and not an EventSeries on purpose. The Rich Results
+    Test was run three times on 2026-09-22: as EventSeries the node was not
+    counted as an Event on either page, and as ["Event", "EventSeries"] it
+    still was not - the parser skips anything typed EventSeries at all.
+    Google's own event documentation never mentions the subtype. subEvent
+    and superEvent still say it is a season; the type no longer costs us the
+    rich result to say so.
     """
     return {
-        "@type": ["Event", "EventSeries"],
+        "@type": "Event",
         "@id": SERIES_ID,
         "name": BRAND + " \u2014 October 2026",
         "description": SERIES_DESCRIPTION,

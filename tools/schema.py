@@ -279,7 +279,7 @@ def cast():
 SERIES_ID = SITE + "/nights.html#series"
 
 
-def series(events):
+def series(events, products):
     """The whole season as one Event, so a page can point at it without
     listing all nineteen nights.
 
@@ -312,6 +312,18 @@ def series(events):
         "typicalAgeRange": "13-",
         "isAccessibleForFree": False,
         "url": SITE + "/nights.html",
+        # The season sells the same three bundles every night, so its
+        # offer is the nightly one over a season-shaped row: prices
+        # unchanged, capacity and sales summed, and the last night as the
+        # date the prices stop being true.
+        "offers": offers(
+            {
+                "sold": sum(e["sold"] for e in events),
+                "capacity": sum(e["capacity"] for e in events),
+                "event_date": events[-1]["event_date"],
+            },
+            products,
+        ),
     }
 
 
@@ -320,7 +332,7 @@ def nights_graph(events, products):
         organization(),
         venue(),
         cast(),
-        series(events),
+        series(events, products),
         breadcrumbs(("Nights", SITE + "/nights.html")),
     ]
     for row in events:
@@ -401,10 +413,10 @@ def faq_graph(page_src):
     }
 
 
-def index_graph(events, breadcrumb=None):
+def index_graph(events, products, breadcrumb=None):
     # The homepage gets no breadcrumb - a trail pointing at itself says
     # nothing. Every other page built from this graph gets its own.
-    graph = [organization(), venue(), business(events), cast(), series(events)]
+    graph = [organization(), venue(), business(events), cast(), series(events, products)]
     if breadcrumb:
         graph.append(breadcrumb)
     return {"@context": "https://schema.org", "@graph": graph}
@@ -447,13 +459,13 @@ def main():
         sys.exit("hm_events or hm_products came back empty")
     stale = False
     stale |= write("nights.html", block(nights_graph(events, products)), check)
-    stale |= write("index.html", block(index_graph(events)), check)
+    stale |= write("index.html", block(index_graph(events, products)), check)
     # location.html gets the same business graph as the homepage. It is the
     # page that answers "where is it", which is the query the address was
     # published to win, and until now it was the only public page carrying no
     # structured data at all. Repeating the @id nodes across pages is correct:
     # it is one business described twice, not two businesses.
-    stale |= write("location.html", block(index_graph(events, breadcrumbs(("Location", SITE + "/location.html")))), check)
+    stale |= write("location.html", block(index_graph(events, products, breadcrumbs(("Location", SITE + "/location.html")))), check)
     with open(os.path.join(ROOT, "faq.html"), encoding="utf-8") as f:
         stale |= write("faq.html", block(faq_graph(f.read())), check)
     # ages.html and groups.html carry a breadcrumb and nothing else. They are

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-TUAYsvjrLJWQoF6QFHCu6VqrvNTj3M7hm02lOXtVuXo='; font-src 'self'; script-src 'sha256-wZxlq2g4dBy4NrhZYAYUqp2bQr+NBGTiysxgjR92Kcw=' 'sha256-EErwZAD2sICoWF4gYb+IzcFlkonzXlN+oJvSiHBbnMw='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-LORcn/ZmLc8w9RpWOAmBZPhSUzMrDSiuLxIMhQZpR+A='; font-src 'self'; script-src 'sha256-wZxlq2g4dBy4NrhZYAYUqp2bQr+NBGTiysxgjR92Kcw=' 'sha256-EErwZAD2sICoWF4gYb+IzcFlkonzXlN+oJvSiHBbnMw='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Brooklyn Haunted House Tickets & Dates — October 2026</title>
@@ -256,6 +256,7 @@ button.cal-day{width:100%;height:100%}
 .calendar-visual{
   position:relative;height:clamp(190px,46vw,270px);margin:0 -18px 8px;overflow:hidden;
   background:#090607 url("v/img-house/reference/calendar-hero.jpg") center/cover no-repeat;
+  background-image:image-set(url("v/img-house/reference/calendar-hero.webp") type("image/webp"),url("v/img-house/reference/calendar-hero.jpg") type("image/jpeg"));
   border-bottom:1px solid rgba(227,48,39,.42)
 }
 .calendar-visual:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,2,2,.02),rgba(3,2,2,.08) 70%,#030202 100%)}
@@ -293,6 +294,7 @@ button.cal-day{width:100%;height:100%}
 @media(min-width:720px){
   .page{max-width:864px;padding-left:40px;padding-right:40px}
   .calendar-visual{height:376px;margin:0 -40px 20px;background-image:url("v/img-house/reference/calendar-hero.jpg");background-position:center;background-size:cover}
+  .calendar-visual{background-image:image-set(url("v/img-house/reference/calendar-hero.webp") type("image/webp"),url("v/img-house/reference/calendar-hero.jpg") type("image/jpeg"))}
   .calendar-visual .visual-copy{display:none}
   .hero{display:none}
   .cal{position:relative;margin-top:34px}

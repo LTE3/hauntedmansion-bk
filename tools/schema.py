@@ -371,6 +371,12 @@ def main():
     stale |= write("location.html", block(index_graph(events, breadcrumbs(("Location", SITE + "/location.html")))), check)
     with open(os.path.join(ROOT, "faq.html"), encoding="utf-8") as f:
         stale |= write("faq.html", block(faq_graph(f.read())), check)
+    # ages.html and groups.html carry a breadcrumb and nothing else. They are
+    # leaf pages answering one question each; repeating the business graph on
+    # them would tell Google nothing three other pages have not already said,
+    # and BreadcrumbList is the one rich result they actually qualify for.
+    stale |= write("ages.html", block(breadcrumbs(("Age and intensity", SITE + "/ages.html"))), check)
+    stale |= write("groups.html", block(breadcrumbs(("Groups", SITE + "/groups.html"))), check)
     active = sum(1 for e in events if e["is_active"])
     print("%d night(s) in the graph" % active)
     if check and stale:

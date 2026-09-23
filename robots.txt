@@ -1,11 +1,12 @@
 User-agent: *
 Allow: /
 
-# The workbenches and the ticket page are not for search engines.
-Disallow: /top3.html
-Disallow: /versions.html
-Disallow: /looks.html
-Disallow: /ticket.html
+# The workbenches and the ticket page each carry their own noindex tag in
+# the page itself, and that tag is the only thing that can keep a page out
+# of the index once it exists. Disallowing them here would stop a crawler
+# from ever fetching the page to read that tag, which is what indexes the
+# bare url instead - so this file leaves them crawlable and lets the meta
+# tag do the job.
 
 # The wildcard above already allows these, so none of this changes what any
 # crawler may fetch. It is written out because the AI assistants are where a
@@ -27,9 +28,5 @@ User-agent: CCBot
 User-agent: Bytespider
 User-agent: meta-externalagent
 Allow: /
-Disallow: /top3.html
-Disallow: /versions.html
-Disallow: /looks.html
-Disallow: /ticket.html
 
 Sitemap: https://hauntedmansionbk.com/sitemap.xml

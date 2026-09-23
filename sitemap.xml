@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Every page a search engine is allowed to have, and nothing else: the
-     workbenches and the ticket page are disallowed in robots.txt and are
+     workbenches and the ticket page each carry a noindex tag and are
      absent here for the same reason. lastmod is the file's own last commit
      date, not the day the sitemap was generated - a sitemap that claims
      every page changed today teaches a crawler to stop believing it. -->

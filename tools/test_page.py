@@ -176,9 +176,18 @@ def test_static():
         check("%s: JSON-LD carries the published address" % page,
               '"streetAddress": "%s"' % STREET in ld[0])
         if page == "nights.html":
+            # Twenty Event nodes, not nineteen: the season itself is one of
+            # them. It has to be typed plain Event rather than EventSeries
+            # because Google's parser skips any node whose type names a
+            # series, so the only thing separating the parent from its
+            # nights is that the nights carry superEvent and it does not.
             events = [n for n in graph if n.get("@type") == "Event"]
-            check("nights.html: every night is in the schema", len(events) == 19,
-                  "found %d" % len(events))
+            nights = [n for n in events if "superEvent" in n]
+            series = [n for n in events if "superEvent" not in n]
+            check("nights.html: every night is in the schema", len(nights) == 19,
+                  "found %d" % len(nights))
+            check("nights.html: the season sits above the nights",
+                  len(series) == 1, "found %d parent event(s)" % len(series))
 
         if page == "faq.html":
             # The schema is parsed out of the page, so a count mismatch means
@@ -260,10 +269,10 @@ def test_static():
     check("every public page is indexable", not public, "still noindex: %s" % (public,))
 
     # Per group, not flattened. A crawler that matches a named User-agent
-    # group ignores the wildcard group completely, so every group has to
-    # carry the workbench lines itself - a flat compare would read those
-    # required repeats as a duplicate and fail. Blank lines and comments do
-    # not end a group; a User-agent line that follows a rule line starts one.
+    # group ignores the wildcard group completely, so a rule that is missing
+    # from one group is missing for every crawler that matches it. Blank
+    # lines and comments do not end a group; a User-agent line that follows
+    # a rule line starts one.
     groups, cur, in_rules = [], None, False
     for line in rtxt.splitlines():
         line = line.split("#", 1)[0].strip()
@@ -283,11 +292,17 @@ def test_static():
                 cur.append(path)
         else:
             cur, in_rules = None, False
-    want = sorted("/" + n for n in PRIVATE)
-    bad = [g for g in groups if sorted(g) != want]
-    check("every robots.txt group disallows exactly the workbenches",
+    # The workbenches must NOT be disallowed here. Disallow stops a crawler
+    # fetching the page at all, which means it never reads the noindex tag
+    # the page carries, which is the only thing that can remove a url once
+    # something has linked to it - so a disallowed workbench gets indexed as
+    # a bare url with no snippet. Crawlable plus noindex is what keeps them
+    # out. Google Search Console reported exactly this on 2026-09-23.
+    walled = sorted("/" + n for n in PRIVATE)
+    bad = [g for g in groups if set(g) & set(walled)]
+    check("no robots.txt group disallows the workbenches",
           bool(groups) and not bad,
-          "%d group(s), wrong: %s" % (len(groups), bad))
+          "%d group(s), still disallowing: %s" % (len(groups), bad))
     # The day line is the one number on the page and the spec says a number
     # must be real. It is real only if it is computed from this attribute.
     m = re.search(r'class="dayline"[^>]*data-opens="(\d{4}-\d{2}-\d{2})"', s)

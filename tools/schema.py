@@ -275,8 +275,15 @@ def cast():
 
     Six pages of the site say the rooms are worked by live actors, so the
     cast is the performer - there is no headliner to name and inventing one
-    would be a lie. One node, referenced by every night, so the nineteen
-    Events describe one company rather than nineteen.
+    would be a lie.
+
+    Written out in full at every performer rather than referenced by @id.
+    The @id form is valid JSON-LD and resolves inside the graph, but Search
+    Console reported "Missing field performer" against these pages on
+    2026-09-23 while every Event on disk carried one, and a reference Google
+    declines to follow is the only way both of those are true at once. The
+    shared @id is still on each copy, so this is one company described
+    twenty times, not twenty companies.
     """
     return {
         "@type": "PerformingGroup",
@@ -317,7 +324,7 @@ def series(events, products):
         "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
         "location": {"@id": SITE + "/#venue"},
         "organizer": {"@id": SITE + "/#organization"},
-        "performer": {"@id": CAST_ID},
+        "performer": cast(),
         "image": EVENT_IMAGES,
         "typicalAgeRange": "13-",
         "isAccessibleForFree": False,
@@ -361,7 +368,7 @@ def nights_graph(events, products):
                 "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
                 "location": {"@id": SITE + "/#venue"},
                 "organizer": {"@id": SITE + "/#organization"},
-                "performer": {"@id": CAST_ID},
+                "performer": cast(),
                 "url": SITE + "/nights.html",
                 "typicalAgeRange": "13-",
                 "isAccessibleForFree": False,

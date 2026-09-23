@@ -36,9 +36,22 @@ ENDPOINT = "https://www.bing.com/indexnow"
 
 
 def key():
-    names = [n for n in os.listdir(ROOT) if re.fullmatch(r"[0-9a-f]{32}\.txt", n)]
-    if len(names) != 1:
-        sys.exit("expected exactly one IndexNow key file at the repo root, found %d" % len(names))
+    """Any one valid key at the root will do, so take the first by name.
+
+    This used to refuse to run unless exactly one key file existed, and on
+    2026-09-23 there were two: the protocol lets a site host as many keys as
+    it likes and validates whichever one a submission names, so two is legal
+    and neither is wrong. Refusing to choose meant no submission went out at
+    all, which is the worse failure. The sort keeps the choice stable, so
+    the same key is named every run rather than whichever one the filesystem
+    happened to list first.
+
+    A file whose contents do not match its own name is still fatal - that
+    one is a real error, and submitting it would fail validation at Bing.
+    """
+    names = sorted(n for n in os.listdir(ROOT) if re.fullmatch(r"[0-9a-f]{32}\.txt", n))
+    if not names:
+        sys.exit("no IndexNow key file at the repo root")
     name = names[0]
     with open(os.path.join(ROOT, name), encoding="utf-8") as f:
         body = f.read().strip()

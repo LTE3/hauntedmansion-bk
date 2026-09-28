@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-AZu1D4RDCAITmJVJHY74++3o8aJAAQlDxowhs5WQRdk='; font-src 'self'; script-src 'sha256-3tFLtwpl1YwI6NuHpjoLocMgYy7/gprjyKMwDp194Tg=' 'sha256-FkkbN5dZKFeA9sC7ma0FLy2g8ZIqlv+oJipk9xOY8+0=' 'sha256-BXobhg/s64cnmMASY/Qm+I7jc1d/vyTd8Nj0WMldOVE='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-AZu1D4RDCAITmJVJHY74++3o8aJAAQlDxowhs5WQRdk='; font-src 'self'; script-src 'sha256-Ni80cVRD7srOKTEBzmZEExOiI7HgxgmzGDOIKVdWLJA=' 'sha256-FkkbN5dZKFeA9sC7ma0FLy2g8ZIqlv+oJipk9xOY8+0=' 'sha256-BXobhg/s64cnmMASY/Qm+I7jc1d/vyTd8Nj0WMldOVE='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
 <meta name="referrer" content="no-referrer">
 <meta name="msvalidate.01" content="E0A8862F9C5D059FE99AD1F614F7523D">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -1165,7 +1165,7 @@ main:focus{outline:none}
         "https://hauntedmansionbk.com/v/img-cali/card.jpg?v=3",
         "https://hauntedmansionbk.com/img/icon-512.png"
       ],
-      "description": "A walk-through haunted attraction in Bushwick, Brooklyn. Sixty minutes inside, multiple rooms, live actors. October 2026. Ages 13 and over.",
+      "description": "A walk-through haunted attraction in Bushwick, Brooklyn. Sixty minutes inside, multiple rooms, live actors. October 2026. All ages 4-8 PM, 18+ only 8-11 PM.",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "428 Johnson Avenue",
@@ -1191,11 +1191,23 @@ main:focus{outline:none}
         {
           "@type": "OpeningHoursSpecification",
           "dayOfWeek": [
-            "Friday",
-            "Saturday"
+            "Sunday"
           ],
-          "opens": "17:00",
-          "closes": "22:00",
+          "opens": "12:00",
+          "closes": "20:00",
+          "validFrom": "2026-10-01",
+          "validThrough": "2026-10-31"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Saturday",
+            "Thursday",
+            "Friday",
+            "Sunday"
+          ],
+          "opens": "16:00",
+          "closes": "23:00",
           "validFrom": "2026-10-01",
           "validThrough": "2026-10-31"
         },
@@ -1203,10 +1215,10 @@ main:focus{outline:none}
           "@type": "OpeningHoursSpecification",
           "dayOfWeek": [
             "Thursday",
-            "Sunday"
+            "Friday"
           ],
           "opens": "17:00",
-          "closes": "23:15",
+          "closes": "23:00",
           "validFrom": "2026-10-01",
           "validThrough": "2026-10-31"
         }
@@ -1222,9 +1234,9 @@ main:focus{outline:none}
       "@type": "Event",
       "@id": "https://hauntedmansionbk.com/nights.html#series",
       "name": "Haunted Mansion BK — October 2026",
-      "description": "A walk-through Halloween haunted attraction in Bushwick, Brooklyn. Thursday through Sunday nights, October 2026. Ages 13 and over.",
+      "description": "A walk-through Halloween haunted attraction in Bushwick, Brooklyn. Thursday through Sunday nights, October 2026. All ages 4-8 PM, 18+ only 8-11 PM.",
       "startDate": "2026-10-01T17:00:00-04:00",
-      "endDate": "2026-10-31T22:00:00-04:00",
+      "endDate": "2026-10-31T23:00:00-04:00",
       "eventStatus": "https://schema.org/EventScheduled",
       "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
       "location": {
@@ -1243,7 +1255,6 @@ main:focus{outline:none}
         "https://hauntedmansionbk.com/v/img-cali/card.jpg?v=3",
         "https://hauntedmansionbk.com/img/icon-512.png"
       ],
-      "typicalAgeRange": "13-",
       "isAccessibleForFree": false,
       "url": "https://hauntedmansionbk.com/nights.html",
       "offers": {
@@ -1305,7 +1316,7 @@ main:focus{outline:none}
         ],
         "inventoryLevel": {
           "@type": "QuantitativeValue",
-          "value": 9500
+          "value": 9481
         }
       }
     }
@@ -1462,7 +1473,7 @@ main:focus{outline:none}
       <button class="cta" data-open>Join the waitlist<span class="rap" aria-hidden="true"></span></button>
     </div>
     <p class="signup-count"><strong data-waitlist-count>4,235</strong> people have already joined the waitlist.</p>
-    <p class="age"><strong>13 and over</strong> Guests under 18 must be accompanied by an adult.</p>
+    <p class="age"><strong>All ages until 8 PM</strong> 18+ only from 8 to 11 PM.</p>
     <p class="tagline">You&rsquo;re not visiting a haunted house.<br><span>You&rsquo;re returning to a crime scene.</span></p>
   </div>
   <figure class="rooms-peek" aria-hidden="true">

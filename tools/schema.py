@@ -59,7 +59,7 @@ MONTHS = ("January", "February", "March", "April", "May", "June", "July",
 # wording the series already shipped with, not new copy.
 SERIES_DESCRIPTION = ("A walk-through Halloween haunted attraction in Bushwick, "
                       "Brooklyn. Thursday through Sunday nights, October 2026. "
-                      "Ages 13 and over.")
+                      "All ages 4-8 PM, 18+ only 8-11 PM.")
 
 # Real, already-public images, not new assets. card.jpg is the same file
 # every page already serves as og:image and twitter:image, so naming it here
@@ -170,7 +170,8 @@ def hours(events):
     has no reason to trust any of them, so the rule is derived now and
     cannot drift from the calendar again.
     """
-    live = [e for e in events if e["is_active"]]
+    # Every show night, sold out or not: the house is open on all of them.
+    live = events
     spans = {}
     for row in live:
         opens = row["doors"][:5]
@@ -200,7 +201,7 @@ def business(events):
         "name": BRAND,
         "url": SITE + "/",
         "image": EVENT_IMAGES,
-        "description": "A walk-through haunted attraction in Bushwick, Brooklyn. Sixty minutes inside, multiple rooms, live actors. October 2026. Ages 13 and over.",
+        "description": "A walk-through haunted attraction in Bushwick, Brooklyn. Sixty minutes inside, multiple rooms, live actors. October 2026. All ages 4-8 PM, 18+ only 8-11 PM.",
         "address": venue()["address"],
         "geo": venue()["geo"],
         # Both flagged by the Rich Results Test on 2026-09-22 as missing.
@@ -219,7 +220,9 @@ def business(events):
 def offers(row, products):
     active = sorted((p for p in products if p["is_active"]), key=lambda p: p["tickets"])
     cents = [p["cents"] for p in active]
-    if row["sold"] >= row["capacity"]:
+    # Off online sale is sold out: the owner filled opening weekend
+    # (Oct 1-4) outside the website, 2026-09-28.
+    if row["sold"] >= row["capacity"] or not row.get("is_active", True):
         availability = "https://schema.org/SoldOut"
     elif date.today().isoformat() < PRESALE[:10]:
         # Before the presale opens nothing is buyable yet. Saying InStock then
@@ -326,7 +329,6 @@ def series(events, products):
         "organizer": {"@id": SITE + "/#organization"},
         "performer": cast(),
         "image": EVENT_IMAGES,
-        "typicalAgeRange": "13-",
         "isAccessibleForFree": False,
         "url": SITE + "/nights.html",
         # The season sells the same three bundles every night, so its
@@ -353,8 +355,6 @@ def nights_graph(events, products):
         breadcrumbs(("Nights", SITE + "/nights.html")),
     ]
     for row in events:
-        if not row["is_active"]:
-            continue
         date = row["event_date"]
         graph.append(
             {
@@ -370,7 +370,6 @@ def nights_graph(events, products):
                 "organizer": {"@id": SITE + "/#organization"},
                 "performer": cast(),
                 "url": SITE + "/nights.html",
-                "typicalAgeRange": "13-",
                 "isAccessibleForFree": False,
                 "image": EVENT_IMAGES,
                 "maximumAttendeeCapacity": row["capacity"],
@@ -499,8 +498,7 @@ def main():
     stale |= write("experience.html", block(breadcrumbs(("The experience", SITE + "/experience.html"))), check)
     stale |= write("story.html", block(breadcrumbs(("The story", SITE + "/story.html"))), check)
     stale |= write("evidence.html", block(breadcrumbs(("Evidence", SITE + "/evidence.html"))), check)
-    active = sum(1 for e in events if e["is_active"])
-    print("%d night(s) in the graph" % active)
+    print("%d night(s) in the graph" % len(events))
     if check and stale:
         sys.exit(1)
 

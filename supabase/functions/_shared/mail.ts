@@ -37,12 +37,15 @@ export function ticketEmail(t: TicketDetails): { subject: string; html: string; 
 
   const adults = !!t.slot && Number(t.slot.slice(0, 2)) >= 20;
   const fine = t.slot
-    ? "Arrive 10-15 minutes before your entry time; there is a 15-minute grace period after it. Valid for this date and entry time only. All sales are final."
+    ? (adults
+        ? "18+ only: bring valid photo ID. No ID, no entry, no refund. "
+        : "Guests under 16 must be with an adult (18+) for the full hour. Not recommended under 10. ")
+      + "Arrive 10-15 minutes before your entry time; there is a 15-minute grace period after it. Valid for this date and entry time only. All sales are final."
     : "13 and over. Guests under 18 must be accompanied by an adult. All sales are final.";
   const rows: [string, string][] = [
     ["Night", night],
     ...(t.slot
-      ? [["Entry time", clock(t.slot)], ["Session", adults ? "18+ only" : "All ages"]] as [string, string][]
+      ? [["Entry time", clock(t.slot)], ["Session", adults ? "18+ only, photo ID" : "All ages"]] as [string, string][]
       : [["Doors", clock(t.doors)], ["Last entry", clock(t.lastEntry)]] as [string, string][]),
     ["Admits", people + " (" + t.productLabel.toLowerCase() + ")"],
     ["Paid", money(t.amountCents)],

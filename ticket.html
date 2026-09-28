@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data: https://tqeunmqnaoyrerkbhokk.supabase.co; style-src 'sha256-aR4/irVEWowUu36DghfIexrsi4WPxfrRjhre0qH5pek='; font-src 'self'; script-src 'sha256-cRDUod90gHDsU8Jn+1FMpDWo+8Jshqq7cQHPgt1Ade8='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data: https://tqeunmqnaoyrerkbhokk.supabase.co; style-src 'sha256-aR4/irVEWowUu36DghfIexrsi4WPxfrRjhre0qH5pek='; font-src 'self'; script-src 'sha256-U3tFfFriVOmkGfX6RT9/4a8E5fTcgnT2T3B9SAmYXX8='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Your ticket | Haunted Mansion BK</title>
@@ -406,7 +406,7 @@ main:focus{outline:none}
         setText("l-doors", "Entry time");
         setText("f-doors", clock(data.slot));
         setText("l-last", "Session");
-        setText("f-last", Number(String(data.slot).slice(0, 2)) >= 20 ? "18+ only" : "All ages");
+        setText("f-last", Number(String(data.slot).slice(0, 2)) >= 20 ? "18+ only · photo ID" : "All ages · under 16 with adult");
       }else{
         setText("f-doors", clock(data.doors));
         setText("f-last", clock(data.last_entry));

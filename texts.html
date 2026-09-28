@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-MXWGpAC9DFA2i+tOtvp6/pu8rSmSQNJUxGLYuZAhzw8='; font-src 'self'; script-src 'sha256-vQ96zU2Og50Bd/DMTTbJjfVioROfm6v3CFreqQ4fFik='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Get texts</title>
+<meta name="description" content="Opt in to texts from Haunted Mansion BK and La Casita BK: show nights, events and ticket on-sales. Reply STOP any time.">
+<meta property="og:title" content="Get texts">
+<meta property="og:description" content="Opt in to texts from Haunted Mansion BK and La Casita BK: show nights, events and ticket on-sales. Reply STOP any time.">
+<meta property="og:image" content="https://hauntedmansionbk.com/v/img-cali/card.jpg?v=3">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A keyhole in the dark with an eye looking back through it, beside the words: Some doors were closed for a reason. Bushwick, Brooklyn, October 1, 2026.">
+<meta property="og:url" content="https://hauntedmansionbk.com/texts.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Haunted Mansion BK">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://hauntedmansionbk.com/v/img-cali/card.jpg?v=3">
+<meta name="twitter:image:alt" content="A keyhole in the dark with an eye looking back through it, beside the words: Some doors were closed for a reason. Bushwick, Brooklyn, October 1, 2026.">
+<link rel="canonical" href="https://hauntedmansionbk.com/texts.html">
+<meta name="theme-color" content="#050505">
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23050505"/><path d="M6 30V13L16 5l10 8v17z" fill="none" stroke="%233a332c" stroke-width="2"/><rect x="13" y="18" width="6" height="12" fill="%23c2702f"/></svg>'>
+<link rel="preload" as="font" type="font/woff2" href="fonts/barlowcondensed-500-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/creepster-400-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/rye-400-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/barlowcondensed-700-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/spectral-500-latin.woff2" crossorigin>
+<style>
+/* The typefaces, served from this origin. Same reasoning as privacy.html:
+   self-hosted so no third party sees a visitor's IP, font-display:swap keeps
+   text readable while they load, and the unicode-range split means the
+   accented file is fetched only if a glyph in it is actually needed. */
+@font-face{font-family:"Creepster";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/creepster-400-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:"Rye";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/rye-400-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:"Barlow Condensed";font-style:normal;font-weight:500;font-display:swap;src:url(fonts/barlowcondensed-500-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:"Barlow Condensed";font-style:normal;font-weight:500;font-display:swap;src:url(fonts/barlowcondensed-500-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:"Barlow Condensed";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/barlowcondensed-700-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:"Barlow Condensed";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/barlowcondensed-700-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:"Spectral";font-style:normal;font-weight:500;font-display:swap;src:url(fonts/spectral-500-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:"Spectral";font-style:normal;font-weight:500;font-display:swap;src:url(fonts/spectral-500-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+:root{
+  color-scheme:dark;
+  --ink:#050505;
+  --bone:#cfc4b4;
+  --read:#c3b8a8;      /* body copy: lighter than the 404's --ash, which is a
+                          caption colour and does not clear 4.5:1 at this size */
+  --ash:#9b9184;       /* meta lines only, and only at 16px or larger */
+  --blood-lit:#c9342a;
+  --rule:#241f1b;
+  /* Two faces doing two jobs: --serif labels a section, --body is read.
+     Barlow Condensed is a label face - uppercase, tracked, a few words
+     wide. Setting a page of refund terms in it is how legal copy ends up
+     looking like a form nobody reads. Running text is Spectral here, the
+     same as every other page on the site. */
+  --serif:"Barlow Condensed","Arial Narrow",sans-serif;
+  --body:"Spectral",Georgia,"Times New Roman",serif;
+  --display:"Creepster",Impact,"Arial Narrow Bold",sans-serif;
+  --slow:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:radial-gradient(ellipse 90% 45% at 50% 0%,rgba(117,8,5,.22),transparent 70%),var(--ink);color:var(--read);
+  font-family:var(--body);font-weight:500;
+  -webkit-font-smoothing:antialiased;
+  padding:11vh 7vw 16vh;
+}
+::selection{background:#7d1d14;color:#e8ded0}
+body::before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(60% 45% at 50% 0%,rgba(194,112,47,.09),transparent 70%);
+}
+main{max-width:62ch;margin:0 auto}
+
+.eyebrow{
+  font-family:var(--serif);font-weight:700;font-size:16px;line-height:1.2;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ash);margin:0 0 1.5rem
+}
+h1{
+  font-family:var(--display);font-weight:400;margin:0 0 .5rem;
+  font-size:clamp(29px,5.75vw,48px);line-height:1.05;letter-spacing:.02em;
+  text-transform:uppercase;color:#d8cdbc;text-wrap:balance;
+  text-shadow:0 0 60px rgba(160,26,18,.35)
+}
+.standfirst{
+  font:400 clamp(16px,4.3vw,20px)/1.28 "Rye",Georgia,serif;letter-spacing:.01em;text-wrap:balance;color:var(--bone);
+  margin:0 0 2.2rem
+}
+h2{
+  font-family:var(--serif);font-weight:700;
+  font-size:clamp(21px,3.3vw,24px);line-height:1.2;letter-spacing:.1em;
+  text-transform:uppercase;color:#c8bcab;
+  margin:3.2rem 0 .9rem;padding-top:1.5rem;border-top:1px solid var(--rule)
+}
+p,li{font-family:var(--body);font-size:clamp(17px,2.75vw,19px);line-height:1.58;margin:0 0 1.05rem}
+ul{margin:0 0 1.05rem;padding-left:1.1rem}
+li{margin-bottom:.55rem}
+li::marker{color:#6b5f52}
+strong{color:#efe4d2;font-weight:500}
+.aside{
+  border-left:2px solid #3a2019;padding:.1rem 0 .1rem 1.1rem;
+  margin:0 0 1.05rem;color:var(--bone)
+}
+a{color:#e0d4c2;text-decoration:underline;text-underline-offset:3px;
+  text-decoration-color:#6a5b4c;transition:text-decoration-color .3s var(--slow)}
+a:hover,a:focus-visible{text-decoration-color:var(--blood-lit)}
+a:focus-visible{outline:2px solid #ff6b5f;outline-offset:3px}
+
+.siblings{
+  margin-top:2.6rem;font-size:15px;line-height:1.7;color:#a49889
+}
+.siblings a{color:inherit}
+.back{
+  display:inline-block;margin-top:3.4rem;
+  font-family:var(--serif);font-weight:700;font-size:20px;line-height:1;letter-spacing:.14em;
+  text-transform:uppercase;color:#ddd2c1;text-decoration:none;
+  border:1px solid #4a423a;padding:1rem 1.7rem;
+  transition:background-color .3s var(--slow),border-color .3s var(--slow),color .3s var(--slow)
+}
+.back:hover,.back:focus-visible{
+  background:#170907;border-color:var(--blood-lit);color:#f0e5d4;
+  box-shadow:0 0 34px -12px rgba(201,52,42,.75)
+}
+.updated{margin-top:3.4rem;font-size:18px;color:var(--ash)}
+
+@media (prefers-contrast:more){
+  body{color:#ded3c2} .updated,.eyebrow{color:#b8ada0} h1{color:#fff}
+}
+@media (prefers-reduced-motion:reduce){
+  a,.back{transition:none}
+}
+.skip{position:absolute;left:-9999px;top:0;z-index:200}
+.skip:focus{
+  left:8px;top:8px;padding:11px 14px;border-radius:2px;
+  background:var(--ink);border:1px solid var(--red-lit);color:var(--bone);
+  font:700 13px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.11em;
+  text-transform:uppercase;text-decoration:none;outline:2px solid #ff6b5f;outline-offset:2px
+}
+main:focus{outline:none}
+
+/* Opt-in form (owner, 2026-09-28). The agreement sits above the button, is
+   read before the tap, and the box starts unticked: a pre-ticked box is not
+   consent. */
+form{margin:0 0 1.05rem}
+.field{display:block;margin:0 0 14px}
+.field span{display:block;margin:0 0 6px;font:700 14px/1 var(--serif);letter-spacing:.12em;text-transform:uppercase;color:var(--ash)}
+.field input{width:100%;min-height:52px;padding:0 14px;border:1px solid #3a322b;border-radius:12px;background:rgba(255,255,255,.03);
+  color:#efe4d2;font:500 18px/1 var(--body);transition:border-color .18s var(--slow)}
+.field input:focus{outline:none;border-color:var(--blood-lit);box-shadow:0 0 0 3px rgba(201,52,42,.22)}
+.tick{display:flex;gap:12px;align-items:flex-start;margin:6px 0 10px;cursor:pointer;color:#efe4d2;font:400 18px/1.35 "Rye",Georgia,serif}
+.tick input{flex:none;width:24px;height:24px;margin:2px 0 0;accent-color:#c9342a}
+.fine{font-size:15px;line-height:1.5;color:var(--ash);margin:0 0 18px}
+.go{display:block;width:100%;min-height:56px;border:1px solid #ff6a60;border-radius:999px;background:linear-gradient(90deg,#e8433a,#8e0f0b);
+  color:#fff7f2;font:700 20px/1 var(--serif);letter-spacing:.14em;text-transform:uppercase;cursor:pointer;
+  box-shadow:0 0 30px rgba(236,31,28,.45);transition:transform .16s var(--slow),opacity .2s}
+.go:active{transform:scale(.98)}
+.go:disabled{opacity:.45;cursor:default;transform:none}
+.err{min-height:1.4em;margin:10px 0 0;color:#ff8a80;font-size:16px}
+.done{border:1px solid #3a2019;border-radius:14px;padding:18px;color:var(--bone)}
+.trap{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<main id="main" tabindex="-1">
+  <p class="eyebrow">Haunted Mansion BK &middot; La Casita BK</p>
+  <h1>Get texts</h1>
+  <p class="standfirst">Show nights, events and ticket drops, straight to your phone.</p>
+
+  <form id="optin" novalidate>
+    <div class="trap" aria-hidden="true"><label for="hm_ref">Referral code</label><input id="hm_ref" type="text" tabindex="-1" autocomplete="off"></div>
+    <label class="field"><span>Name</span><input id="name" autocomplete="name" maxlength="120"></label>
+    <label class="field"><span>Phone</span><input id="phone" type="tel" autocomplete="tel" maxlength="40" required></label>
+    <label class="field"><span>Email</span><input id="email" type="email" autocomplete="email" maxlength="254" required></label>
+    <label class="tick"><input type="checkbox" id="sms"><span>Text me about Haunted Mansion BK and La Casita BK.</span></label>
+    <p class="fine">Recurring automated marketing texts from Pulse Ticketing LLC at the
+      number above: show nights, events and ticket on-sales. Frequency varies.
+      Message and data rates may apply. Not a condition of entry or of any
+      purchase. Reply STOP to stop, HELP for help.
+      <a href="privacy.html">What we keep</a> &middot; <a href="terms.html">Terms</a></p>
+    <button class="go" id="go" type="submit" disabled>Sign me up</button>
+    <p class="err" id="err" role="alert"></p>
+  </form>
+  <div class="done" id="done" hidden tabindex="-1">
+    <p><strong>You&rsquo;re in.</strong> Texts come from Pulse Ticketing LLC. Reply STOP any time to stop.</p>
+  </div>
+
+  <a class="back" href="nights.html">See the nights</a>
+</main>
+<script>
+{
+  const form = document.getElementById("optin"), go = document.getElementById("go"),
+        sms = document.getElementById("sms"), err = document.getElementById("err");
+  sms.addEventListener("change", () => { go.disabled = !sms.checked; });
+  let sending = false;
+  form.addEventListener("submit", async e => {
+    e.preventDefault();
+    if(sending || !sms.checked) return;
+    err.textContent = "";
+    if(document.getElementById("hm_ref").value){ form.hidden = true; document.getElementById("done").hidden = false; return; }
+    const phone = document.getElementById("phone").value.trim();
+    const email = document.getElementById("email").value.trim().toLowerCase();
+    if(phone.replace(/\D/g, "").length < 10){ err.textContent = "Enter a 10-digit phone number."; return; }
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){ err.textContent = "Check the email address."; return; }
+    sending = true; go.disabled = true; go.textContent = "Sending";
+    try{
+      const r = await fetch("https://tqeunmqnaoyrerkbhokk.supabase.co/rest/v1/rpc/hm_sms_optin", {
+        signal: AbortSignal.timeout(10000), method: "POST",
+        headers: { apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxZXVubXFuYW95cmVya2Job2trIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4OTQ1MzQsImV4cCI6MjA4OTQ3MDUzNH0.hkkuc7_YE2yf0w0NQENpahAxqxxqBfjq8n5QhtTIkw8", Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxZXVubXFuYW95cmVya2Job2trIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4OTQ1MzQsImV4cCI6MjA4OTQ3MDUzNH0.hkkuc7_YE2yf0w0NQENpahAxqxxqBfjq8n5QhtTIkw8", "Content-Type": "application/json" },
+        body: JSON.stringify({ p_name: document.getElementById("name").value.trim(), p_email: email, p_phone: phone })
+      });
+      const res = r.ok ? await r.json() : "error";
+      if(res === "ok"){ form.hidden = true; const d = document.getElementById("done"); d.hidden = false; d.focus(); return; }
+      err.textContent = res === "bad_phone" ? "That number can't take texts. Check it." : res === "bad_email" ? "Check the email address." : "Something stuck. Try again.";
+    }catch(_){ err.textContent = "Something stuck. Try again."; }
+    sending = false; go.disabled = !sms.checked; go.textContent = "Sign me up";
+  });
+}
+</script>
+</body>
+</html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data: https://tqeunmqnaoyrerkbhokk.supabase.co; style-src 'sha256-aR4/irVEWowUu36DghfIexrsi4WPxfrRjhre0qH5pek='; font-src 'self'; script-src 'sha256-p4QOjb8d+HCMAnhNPdaL+J/rtWp088v8z7LkoSlOumI='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data: https://tqeunmqnaoyrerkbhokk.supabase.co; style-src 'sha256-aR4/irVEWowUu36DghfIexrsi4WPxfrRjhre0qH5pek='; font-src 'self'; script-src 'sha256-cRDUod90gHDsU8Jn+1FMpDWo+8Jshqq7cQHPgt1Ade8='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Your ticket | Haunted Mansion BK</title>
@@ -275,8 +275,8 @@ main:focus{outline:none}
         <div class="ticket-tear" aria-hidden="true"></div>
         <dl class="ticket-details">
           <div><dt>Night</dt><dd id="f-night"></dd></div>
-          <div><dt>Doors</dt><dd id="f-doors"></dd></div>
-          <div><dt>Last entry</dt><dd id="f-last"></dd></div>
+          <div><dt id="l-doors">Doors</dt><dd id="f-doors"></dd></div>
+          <div><dt id="l-last">Last entry</dt><dd id="f-last"></dd></div>
           <div><dt>Guests</dt><dd id="f-tickets"></dd></div>
           <div><dt>Ticket</dt><dd id="f-product"></dd></div>
         </dl>
@@ -400,8 +400,17 @@ main:focus{outline:none}
       const qr = document.getElementById("f-qr");
       if(qr) qr.src = ENDPOINT + "?qr=" + encodeURIComponent(data.ticket_code);
       setText("f-night", data.night);
-      setText("f-doors", clock(data.doors));
-      setText("f-last", clock(data.last_entry));
+      /* A timed-entry ticket names its hour and its session instead of the
+         night's doors; older tickets are good for the whole night. */
+      if(data.slot){
+        setText("l-doors", "Entry time");
+        setText("f-doors", clock(data.slot));
+        setText("l-last", "Session");
+        setText("f-last", Number(String(data.slot).slice(0, 2)) >= 20 ? "18+ only" : "All ages");
+      }else{
+        setText("f-doors", clock(data.doors));
+        setText("f-last", clock(data.last_entry));
+      }
       setText("f-tickets", guests(data.tickets));
       setText("f-product", data.product);
       setText("f-email", data.email);

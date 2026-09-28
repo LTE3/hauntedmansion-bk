@@ -15,6 +15,7 @@ export interface TicketDetails {
   eventDate: string;     // YYYY-MM-DD
   doors: string;         // Postgres time
   lastEntry: string;
+  slot?: string | null;  // Postgres time; set on timed-entry nights
   tickets: number;
   productLabel: string;
   amountCents: number;
@@ -34,10 +35,15 @@ export function ticketEmail(t: TicketDetails): { subject: string; html: string; 
   const link = SITE + "/ticket.html?t=" + encodeURIComponent(t.ticketCode);
   const subject = BRAND + " — " + night;
 
+  const adults = !!t.slot && Number(t.slot.slice(0, 2)) >= 20;
+  const fine = t.slot
+    ? "Arrive 10-15 minutes before your entry time; there is a 15-minute grace period after it. Valid for this date and entry time only. All sales are final."
+    : "13 and over. Guests under 18 must be accompanied by an adult. All sales are final.";
   const rows: [string, string][] = [
     ["Night", night],
-    ["Doors", clock(t.doors)],
-    ["Last entry", clock(t.lastEntry)],
+    ...(t.slot
+      ? [["Entry time", clock(t.slot)], ["Session", adults ? "18+ only" : "All ages"]] as [string, string][]
+      : [["Doors", clock(t.doors)], ["Last entry", clock(t.lastEntry)]] as [string, string][]),
     ["Admits", people + " (" + t.productLabel.toLowerCase() + ")"],
     ["Paid", money(t.amountCents)],
     ["Where", t.venueAddress],
@@ -53,7 +59,7 @@ export function ticketEmail(t: TicketDetails): { subject: string; html: string; 
     "Your code: " + t.ticketCode,
     "Show it at the door, on your phone or printed: " + link,
     "",
-    "13 and over. Guests under 18 must be accompanied by an adult. All sales are final.",
+    fine,
     SITE,
   ].join("\n");
 
@@ -73,7 +79,7 @@ export function ticketEmail(t: TicketDetails): { subject: string; html: string; 
     <img src="${esc(t.qrUrl)}" width="220" height="220" alt="${esc(t.ticketCode)}" style="display:block;margin:0 auto;background:#fff;padding:8px;">
     <p style="margin:14px 0 0;font:500 13px/1.5 Arial,Helvetica,sans-serif;color:#cfc2b8;">Show it at the door, on your phone or printed.<br><a href="${esc(link)}" style="color:#ff594e;">Open your ticket</a></p>
   </div>
-  <p style="margin:24px 0 0;font:500 13px/1.6 Arial,Helvetica,sans-serif;color:#b9aaa1;">13 and over. Guests under 18 must be accompanied by an adult. All sales are final.<br><a href="${SITE}" style="color:#b9aaa1;">hauntedmansionbk.com</a></p>
+  <p style="margin:24px 0 0;font:500 13px/1.6 Arial,Helvetica,sans-serif;color:#b9aaa1;">${esc(fine)}<br><a href="${SITE}" style="color:#b9aaa1;">hauntedmansionbk.com</a></p>
 </div></body></html>`;
 
   return { subject, html, text };

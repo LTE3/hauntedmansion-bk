@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-Qns/K9ROn4Kun+mfaveZRI/YtWDQGpdp3mY/6LqJcBA='; font-src 'self'; script-src 'sha256-R2WK1zjXnJt0TdLcIPntAMLGttNTS4WEw7xpbHylrUU=' 'sha256-4EyeVYGAClEvgl+1YwlVwdUdIR20NCIO8w4EmfRoudY='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-cNnbyf5MikA2li9hYAwkPm9MD+gy9frzVK5r4CxMkvY='; font-src 'self'; script-src 'sha256-R2WK1zjXnJt0TdLcIPntAMLGttNTS4WEw7xpbHylrUU=' 'sha256-6ThYEpqObA5ZBzeYLBe8MQ2dOY7FqPJuODezJ25jb5A='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Brooklyn Haunted House Tickets & Dates — October 2026</title>
@@ -367,6 +367,56 @@ button.cal-day{width:100%;height:100%}
   text-transform:uppercase;text-decoration:none;outline:2px solid #ff6b5f;outline-offset:2px
 }
 main:focus{outline:none}
+/* Opening weekend is off online sale (owner, 2026-09-28). Same card as a
+   closed night so the grid stays one family; only the word differs. */
+.cal-day.held{min-height:84px;border-radius:12px;font-size:22px;border:1px solid rgba(255,89,78,.28);background:rgba(92,8,6,.14);color:var(--muted);opacity:.7}
+.cal-day.held:after{content:"Sales closed";display:block;margin-top:2px;font:700 12px/1.1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.05em;text-transform:uppercase;text-align:center;color:var(--red-lit)}
+.cal-swatch.is-held{background:rgba(92,8,6,.6);border:1px solid rgba(255,89,78,.5)}
+@media(max-width:560px){.cal-day.held{min-height:0;aspect-ratio:1;border-radius:8px;font-size:16px}.cal-day.held:after{font-size:9px;letter-spacing:.02em}}
+
+/* Entry time. The hours sit in two rows by session, the way the owner
+   wrote them, in the tier card's voice so the panel reads as one form:
+   Barlow names the step, Rye carries the choice. */
+.buy-step{display:block;margin:22px 0 0;padding:0;font:700 12px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.slots{border:0;margin:0;padding:0;min-width:0}
+.slot-group{margin-top:12px}
+.slot-head{display:flex;justify-content:space-between;align-items:center;margin:0 0 8px;font:700 13px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--read)}
+.slot-head b{display:inline-grid;place-items:center;margin-right:6px;padding:3px 6px 2px;border-radius:5px;background:#e8433a;color:#1c0605;font-weight:700;letter-spacing:.04em}
+.slot-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.slot{
+  position:relative;display:grid;place-items:center;min-height:50px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.03);
+  font:400 17px/1 "Rye",Georgia,serif;font-variant-numeric:tabular-nums;color:var(--bone);cursor:pointer;
+  transition:border-color .18s var(--ease-out),background .18s var(--ease-out),transform .16s var(--ease-out)
+}
+.slot input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.slot:active{transform:scale(.97)}
+.slot:has(input:checked){border-color:rgba(255,89,78,.72);background:rgba(92,8,6,.32);box-shadow:inset 0 0 18px rgba(227,48,39,.28)}
+.slot:has(input:focus-visible){outline:2px solid var(--red-lit);outline-offset:2px}
+.slot:has(input:disabled){opacity:.32;cursor:default;transform:none;text-decoration:line-through;text-decoration-color:var(--red-lit)}
+.buy-step + .tiers{margin-top:12px}
+
+/* Before you book: the owner's blocks, as cards in the buy panel's
+   materials - hairline, soft red wash, Barlow label over Rye. */
+.info{display:grid;gap:12px;margin:44px 0 0}
+.info-card{padding:18px 18px 20px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,rgba(92,8,6,.2),rgba(255,255,255,.02) 70%)}
+.info-card h2{margin:0 0 12px;font:700 13px/1.1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--red-lit)}
+.info-card p{margin:0;font:400 16px/1.42 "Rye",Georgia,serif;letter-spacing:.01em;color:var(--read);text-wrap:pretty}
+.info-card p + p{margin-top:10px}
+.sessions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.session .span{font:400 clamp(30px,8.4vw,40px)/1 "Creepster",Impact,"Arial Narrow Bold",sans-serif;letter-spacing:.02em;color:var(--bone)}
+.session .span small{font-size:.5em;color:var(--muted)}
+.session.adult{border-color:rgba(255,89,78,.34)}
+.session.adult .span{color:var(--red-lit)}
+.info-card .entries{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.entries span{padding:6px 8px 5px;border:1px solid var(--line);border-radius:8px;font:400 13px/1 "Rye",Georgia,serif;font-variant-numeric:tabular-nums;color:var(--bone)}
+.marks{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.marks li{position:relative;padding-left:22px;font:400 16px/1.38 "Rye",Georgia,serif;letter-spacing:.01em;color:var(--bone)}
+.marks li:before{content:"";position:absolute;left:2px;top:.5em;width:8px;height:8px;border-radius:2px;background:var(--red-lit);transform:rotate(45deg);box-shadow:0 0 10px rgba(255,89,78,.55)}
+.info-card .ages{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.ages span{display:grid;gap:6px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font:700 13px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.ages b{font:400 19px/1 "Rye",Georgia,serif;letter-spacing:.01em;text-transform:none;color:var(--bone)}
+.ages span + span b{color:var(--red-lit)}
+@media(max-width:380px){.sessions{grid-template-columns:1fr}}
 </style>
 <!-- schema:start -->
 <script type="application/ld+json">
@@ -2327,8 +2377,8 @@ main:focus{outline:none}
   </div>
   <div class="hero">
     <p class="eyebrow">Bushwick, Brooklyn &middot; October 2026</p>
-    <h1>Nights<br>the house<br><em>is open</em></h1>
-    <p class="lede">The house opens Thursday, October 1 and runs Thursday through Sunday every week in October. Mondays through Wednesdays the door stays shut. More than four of you? <a href="groups.html">How the bundles stack</a>.</p>
+    <h1>Enter the<br>haunted<br><em>mansion</em></h1>
+    <p class="lede">A 1-hour immersive haunted experience in Brooklyn. Choose your date and entry time below. More than four of you? <a href="groups.html">How the bundles stack</a>.</p>
     <p class="pulse" id="pulse" hidden></p>
   </div>
 
@@ -2346,10 +2396,10 @@ main:focus{outline:none}
       <li class="cal-blank" aria-hidden="true"></li>
       <li class="cal-blank" aria-hidden="true"></li>
       <li class="cal-blank" aria-hidden="true"></li>
-      <li><button type="button" class="cal-day open red opens" data-day="1" aria-pressed="false" aria-label="Thursday, October 1 &mdash; opening night"><span class="num">1</span><span class="tag">Opening night</span></button></li>
-      <li><button type="button" class="cal-day open green" data-day="2" aria-pressed="false" aria-label="Friday, October 2 &mdash; open"><span class="num">2</span></button></li>
-      <li><button type="button" class="cal-day open yellow" data-day="3" aria-pressed="false" aria-label="Saturday, October 3 &mdash; open"><span class="num">3</span></button></li>
-      <li><button type="button" class="cal-day open green" data-day="4" aria-pressed="false" aria-label="Sunday, October 4 &mdash; open"><span class="num">4</span></button></li>
+      <li class="cal-day held" data-day="1" aria-label="Thursday, October 1 &mdash; online sales closed"><span class="num">1</span></li>
+      <li class="cal-day held" data-day="2" aria-label="Friday, October 2 &mdash; online sales closed"><span class="num">2</span></li>
+      <li class="cal-day held" data-day="3" aria-label="Saturday, October 3 &mdash; online sales closed"><span class="num">3</span></li>
+      <li class="cal-day held" data-day="4" aria-label="Sunday, October 4 &mdash; online sales closed"><span class="num">4</span></li>
       <li class="cal-day closed" data-day="5" aria-label="Monday, October 5 &mdash; closed"><span class="num">5</span></li>
       <li class="cal-day closed" data-day="6" aria-label="Tuesday, October 6 &mdash; closed"><span class="num">6</span></li>
       <li class="cal-day closed" data-day="7" aria-label="Wednesday, October 7 &mdash; closed"><span class="num">7</span></li>
@@ -2383,6 +2433,7 @@ main:focus{outline:none}
       <li><span class="cal-swatch yellow" aria-hidden="true"></span>50&ndash;80% gone</li>
       <li><span class="cal-swatch red" aria-hidden="true"></span>Over 80% gone</li>
       <li><span class="cal-swatch is-closed" aria-hidden="true"></span>Closed</li>
+      <li><span class="cal-swatch is-held" aria-hidden="true"></span>Online sales closed</li>
       <li id="legend-gone" hidden><span class="cal-swatch is-gone" aria-hidden="true"></span>% gone</li>
     </ul>
     <p class="cal-note">Tickets go on sale soon. <a href="/#list">Join the list</a> to hear first.</p>
@@ -2390,6 +2441,27 @@ main:focus{outline:none}
 
   <div class="buy" id="buy" hidden>
     <p class="buy-night">Your night <strong id="buy-night-name"></strong></p>
+    <fieldset class="slots" id="slots">
+      <legend class="buy-step">Entry time</legend>
+      <div class="slot-group">
+        <p class="slot-head"><span>All ages</span><span>4&ndash;8 PM</span></p>
+        <div class="slot-row">
+          <label class="slot"><input type="radio" name="slot" value="16:00">4:00</label>
+          <label class="slot"><input type="radio" name="slot" value="17:00">5:00</label>
+          <label class="slot"><input type="radio" name="slot" value="18:00">6:00</label>
+          <label class="slot"><input type="radio" name="slot" value="19:00">7:00</label>
+        </div>
+      </div>
+      <div class="slot-group">
+        <p class="slot-head"><span><b>18+</b> Adult</span><span>8&ndash;11 PM</span></p>
+        <div class="slot-row">
+          <label class="slot"><input type="radio" name="slot" value="20:00">8:00</label>
+          <label class="slot"><input type="radio" name="slot" value="21:00">9:00</label>
+          <label class="slot"><input type="radio" name="slot" value="22:00">10:00</label>
+        </div>
+      </div>
+    </fieldset>
+    <p class="buy-step">Tickets</p>
     <fieldset class="tiers" id="tiers" aria-label="Choose tickets">
       <label class="tier">
         <input type="radio" name="tier" value="single">
@@ -2411,10 +2483,43 @@ main:focus{outline:none}
     <p class="buy-error" id="buy-error" role="alert" hidden></p>
   </div>
 
+  <section class="info" aria-label="Before you book">
+    <div class="sessions">
+      <div class="info-card session">
+        <h2>All-ages sessions</h2>
+        <p class="span">4&ndash;8 <small>PM</small></p>
+        <p class="entries"><span>4:00</span><span>5:00</span><span>6:00</span><span>7:00</span></p>
+      </div>
+      <div class="info-card session adult">
+        <h2>Adult sessions &middot; 18+</h2>
+        <p class="span">8&ndash;11 <small>PM</small></p>
+        <p class="entries"><span>8:00</span><span>9:00</span><span>10:00</span></p>
+      </div>
+    </div>
+    <div class="info-card">
+      <h2>Your ticket includes</h2>
+      <ul class="marks">
+        <li>Admission to The Haunted Mansion Experience</li>
+        <li>Access to the Escape Room Experience</li>
+        <li>Approximately 1 hour of immersive entertainment</li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <h2>Arrival policy</h2>
+      <p>Please arrive 10&ndash;15 minutes before your scheduled entry time.</p>
+      <p>A 15-minute grace period is provided after your scheduled start time. Late entry is subject to availability.</p>
+    </div>
+    <div class="info-card">
+      <h2>Age policy</h2>
+      <p class="ages"><span><b>4&ndash;8 PM</b>All ages</span><span><b>8&ndash;11 PM</b>18+ only</span></p>
+      <p>The experience may include darkness, loud sounds, flashing effects, live actors, and frightening scenes.</p>
+      <p>Your ticket is valid for the selected date and entry time only.</p>
+    </div>
+  </section>
+
   <div class="closer">
-    <p>Pick your night.<br><em>Then knock.</em></p>
+    <p>Can you<br><em>keep a secret?</em></p>
     <a class="cta" href="/#list">Unlock the invitation</a>
-    <p class="age"><b>13 and over</b><span>Guests under 18 must be accompanied by an adult.</span></p>
   </div>
 
 </main>
@@ -2574,9 +2679,10 @@ main:focus{outline:none}
   const buy = document.getElementById("buy");
   const nightName = document.getElementById("buy-night-name");
   const tiers = document.getElementById("tiers");
+  const slotsEl = document.getElementById("slots");
   const cta = document.getElementById("buy-cta");
   const errorEl = document.getElementById("buy-error");
-  if(grid && buy && nightName && tiers && cta && errorEl) (function(){
+  if(grid && buy && nightName && tiers && slotsEl && cta && errorEl) (function(){
     const SUPABASE_URL = "https://tqeunmqnaoyrerkbhokk.supabase.co";
     const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxZXVubXFuYW95cmVya2Job2trIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4OTQ1MzQsImV4cCI6MjA4OTQ3MDUzNH0.hkkuc7_YE2yf0w0NQENpahAxqxxqBfjq8n5QhtTIkw8";
     const DOW = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -2603,6 +2709,28 @@ main:focus{outline:none}
     if(note) note.hidden = true;
 
     const nightDate = day => "2026-10-" + String(day).padStart(2, "0");
+
+    /* Which hours still have room: a yes or no per hour from hm_open_slots,
+       fetched once. If it cannot be read every hour stays pickable - the
+       checkout checks again and says no if it has to. */
+    let openSlots = null;
+    const slotsReady = fetch(SUPABASE_URL + "/rest/v1/rpc/hm_open_slots", {
+      method: "POST",
+      headers: { apikey: SUPABASE_ANON, Authorization: "Bearer " + SUPABASE_ANON, "Content-Type": "application/json" },
+      body: "{}"
+    }).then(r => r.ok ? r.json() : null).then(rows => {
+      if(!Array.isArray(rows)) return;
+      openSlots = {};
+      rows.forEach(r => { openSlots[r.event_date + " " + String(r.slot).slice(0, 5)] = !!r.open; });
+    }).catch(() => {});
+    const paintSlots = day => {
+      slotsEl.querySelectorAll("input").forEach(i => {
+        const known = openSlots && (nightDate(day) + " " + i.value) in openSlots;
+        i.disabled = known ? !openSlots[nightDate(day) + " " + i.value] : false;
+        if(i.disabled) i.checked = false;
+      });
+    };
+    const ready = () => !!(tiers.querySelector("input:checked") && slotsEl.querySelector("input:checked"));
     const nightLabel = day => DOW[(day + 3) % 7] + ", October " + day;
 
     function selectNight(btn, day){
@@ -2617,6 +2745,9 @@ main:focus{outline:none}
       errorEl.hidden = true;
       errorEl.textContent = "";
       tiers.querySelectorAll("input").forEach(i => { i.checked = false; });
+      slotsEl.querySelectorAll("input").forEach(i => { i.checked = false; });
+      paintSlots(day);
+      slotsReady.then(() => { if(picked === day) paintSlots(day); });
       cta.disabled = true;
       cta.textContent = "Get tickets";
       buy.hidden = false;
@@ -2629,14 +2760,15 @@ main:focus{outline:none}
       selectNight(btn, Number(btn.dataset.day));
     });
 
-    tiers.addEventListener("change", () => {
-      cta.disabled = !tiers.querySelector("input:checked");
-    });
+    const sync = () => { cta.disabled = sending || !ready(); };
+    tiers.addEventListener("change", sync);
+    slotsEl.addEventListener("change", sync);
 
     cta.addEventListener("click", async () => {
       if(sending || picked === null) return;
       const tier = tiers.querySelector("input:checked");
-      if(!tier) return;
+      const slot = slotsEl.querySelector("input:checked");
+      if(!tier || !slot) return;
       sending = true;
       cta.disabled = true;
       cta.textContent = "Reaching the box office…";
@@ -2652,7 +2784,7 @@ main:focus{outline:none}
             Authorization: "Bearer " + SUPABASE_ANON,
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({ event_date: nightDate(day), product: tier.value })
+          body: JSON.stringify({ event_date: nightDate(day), slot: slot.value, product: tier.value })
         });
         let data = null;
         try{ data = await r.json(); }catch(_){}
@@ -2675,13 +2807,21 @@ main:focus{outline:none}
           return;
         }
         if(r.status === 409 && data && data.error === "sold_out"){
-          errorEl.textContent = "That night is gone. Pick another.";
+          slot.checked = false;
+          slot.disabled = true;
+          errorEl.textContent = "That entry time is full. Pick another hour or another night.";
           errorEl.hidden = false;
-          const stale = grid.querySelector('.cal-day.open[data-day="' + day + '"]');
-          if(stale){ stale.classList.remove("selected"); stale.setAttribute("aria-pressed", "false"); }
-          picked = null;
-          buy.hidden = true;
           sending = false;
+          cta.disabled = true;
+          cta.textContent = "Get tickets";
+          return;
+        }
+        if(r.status === 404 && data && data.error === "unknown_slot"){
+          errorEl.textContent = "That night does not sell by entry time. Pick another night.";
+          errorEl.hidden = false;
+          sending = false;
+          cta.disabled = false;
+          cta.textContent = "Get tickets";
           return;
         }
         throw new Error(String(r.status));

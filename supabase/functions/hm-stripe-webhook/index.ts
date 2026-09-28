@@ -46,7 +46,7 @@ interface Session {
   metadata?: Record<string, string> | null;
 }
 interface Order {
-  stripe_session_id: string; event_date: string; product: string; tickets: number;
+  stripe_session_id: string; event_date: string; slot: string | null; product: string; tickets: number;
   amount_cents: number; email: string | null; name: string | null; ticket_code: string | null; status: string;
 }
 interface Night { doors: string; last_entry: string }
@@ -76,6 +76,7 @@ async function confirm(s: Session, eventId: string): Promise<string> {
       stripe_session_id: s.id,
       livemode: s.livemode ?? null,
       event_date: m.event_date,
+      slot: /^\d{2}:00$/.test(m.slot || "") ? m.slot : null,
       product: m.product,
       tickets,
       amount_cents: s.amount_total ?? 0,
@@ -91,7 +92,7 @@ async function confirm(s: Session, eventId: string): Promise<string> {
 
 async function email(sessionId: string): Promise<void> {
   const [o] = await select<Order>("hm_orders?stripe_session_id=eq." + encodeURIComponent(sessionId) +
-    "&select=stripe_session_id,event_date,product,tickets,amount_cents,email,name,ticket_code,status");
+    "&select=stripe_session_id,event_date,slot,product,tickets,amount_cents,email,name,ticket_code,status");
   if (!o || o.status !== "paid" || !o.ticket_code) return;
   const note = async (patch: Record<string, unknown>) => {
     await rest("hm_orders?stripe_session_id=eq." + encodeURIComponent(sessionId), {
@@ -109,6 +110,7 @@ async function email(sessionId: string): Promise<void> {
       eventDate: o.event_date,
       doors: night?.doors || "17:00",
       lastEntry: night?.last_entry || "22:15",
+      slot: o.slot,
       tickets: o.tickets,
       productLabel: product?.label || (o.tickets === 1 ? "One ticket" : o.tickets + " tickets"),
       amountCents: o.amount_cents,

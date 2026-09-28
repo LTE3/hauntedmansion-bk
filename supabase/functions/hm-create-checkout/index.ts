@@ -2,11 +2,13 @@
 //
 //   POST /functions/v1/hm-create-checkout
 //   headers: the usual apikey/Authorization the gateway wants (anon is fine)
-//   body:    { "event_date": "2026-10-01", "product": "pair",
+//   body:    { "event_date": "2026-10-08", "slot": "18:00", "product": "pair",
 //              "email": "optional@example.com", "tag": "optional-channel-tag" }
+//            slot is required on a night that sells by the hour (010_slots.sql)
+//            and refused on one that does not.
 //   200:     { "url": "https://checkout.stripe.com/...", "id": "cs_..." }
 //   400/404/409: { "error": "bad_request" | "unknown_night" | "unknown_product"
-//                           | "not_on_sale" | "sold_out" }
+//                           | "not_on_sale" | "sold_out" | "unknown_slot" }
 //
 // What it refuses to do:
 //   * sell a night that is not one of the nineteen, or is not switched on;
@@ -22,7 +24,7 @@
 //      SUPABASE_SERVICE_ROLE_KEY (platform).
 
 import { insert, select } from "../_shared/db.ts";
-import { BRAND, SITE, formEncode, isNight, nightLabel, validEmail } from "../_shared/pay.ts";
+import { BRAND, SITE, clock, formEncode, isNight, nightLabel, validEmail } from "../_shared/pay.ts";
 
 const ORIGINS = new Set([SITE, "http://127.0.0.1:8000", "http://localhost:8000"]);
 
@@ -42,12 +44,13 @@ function reply(req: Request, status: number, body: unknown): Response {
 
 interface Product { code: string; label: string; tickets: number; cents: number; is_active: boolean }
 interface Night { event_date: string; capacity: number; sold: number; is_active: boolean }
+interface Slot { slot: string; adults_only: boolean; capacity: number; sold: number }
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors(req) });
   if (req.method !== "POST") return reply(req, 405, { error: "method" });
 
-  let body: { event_date?: unknown; product?: unknown; email?: unknown; tag?: unknown };
+  let body: { event_date?: unknown; slot?: unknown; product?: unknown; email?: unknown; tag?: unknown };
   try {
     body = await req.json();
   } catch {
@@ -56,6 +59,7 @@ Deno.serve(async (req) => {
 
   const date = typeof body.event_date === "string" ? body.event_date : "";
   const code = typeof body.product === "string" ? body.product : "";
+  const slotIn = typeof body.slot === "string" && /^([01]\d|2[0-3]):00$/.test(body.slot) ? body.slot : null;
   const email = validEmail(body.email) ? body.email : null;
   const tag = typeof body.tag === "string" ? body.tag.replace(/[^\w.-]/g, "").slice(0, 40) : null;
 
@@ -74,7 +78,18 @@ Deno.serve(async (req) => {
     if (!night.is_active) return reply(req, 409, { error: "not_on_sale" });
     if (night.sold + product.tickets > night.capacity) return reply(req, 409, { error: "sold_out" });
 
-    const label = nightLabel(date);
+    const slots = await select<Slot>("hm_slots?event_date=eq." + date + "&select=slot,adults_only,capacity,sold");
+    let slot: Slot | null = null;
+    if (slots.length) {
+      slot = slots.find((x) => x.slot.slice(0, 5) === slotIn) || null;
+      if (!slot) return reply(req, 404, { error: "unknown_slot" });
+      if (slot.sold + product.tickets > slot.capacity) return reply(req, 409, { error: "sold_out" });
+    } else if (slotIn) {
+      return reply(req, 404, { error: "unknown_slot" });
+    }
+    const slotTime = slot ? slot.slot.slice(0, 5) : null;
+
+    const label = nightLabel(date) + (slotTime ? " · " + clock(slotTime) + " entry" : "");
     const params = {
       mode: "payment",
       line_items: [{
@@ -84,14 +99,15 @@ Deno.serve(async (req) => {
           unit_amount: product.cents,
           product_data: {
             name: BRAND + " — " + label,
-            description: product.label + (product.tickets === 1 ? " · admits one" : " · admits " + product.tickets),
+            description: product.label + (product.tickets === 1 ? " · admits one" : " · admits " + product.tickets) +
+              (slot ? (slot.adults_only ? " · 18+ only" : " · all ages") : ""),
           },
         },
       }],
-      metadata: { brand: "hm", event_date: date, product: product.code, tickets: product.tickets, tag },
+      metadata: { brand: "hm", event_date: date, slot: slotTime, product: product.code, tickets: product.tickets, tag },
       payment_intent_data: {
         description: BRAND + " · " + label + " · " + product.label,
-        metadata: { brand: "hm", event_date: date, product: product.code, tickets: product.tickets },
+        metadata: { brand: "hm", event_date: date, slot: slotTime, product: product.code, tickets: product.tickets },
       },
       customer_email: email,
       allow_promotion_codes: true,
@@ -121,6 +137,7 @@ Deno.serve(async (req) => {
         stripe_session_id: session.id,
         livemode: session.livemode ?? null,
         event_date: date,
+        slot: slotTime,
         product: product.code,
         tickets: product.tickets,
         amount_cents: session.amount_total ?? product.cents,

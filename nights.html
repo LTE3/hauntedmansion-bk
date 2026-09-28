@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-/cB9WxGLkb3/09WAQFekOy8FA99Sqi46hVYO7/RfK8Y='; font-src 'self'; script-src 'sha256-jG1hzBvak57L2ZFSmTbMr8u5asqwssemdbJNOe9wTaM=' 'sha256-6ThYEpqObA5ZBzeYLBe8MQ2dOY7FqPJuODezJ25jb5A='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-/cB9WxGLkb3/09WAQFekOy8FA99Sqi46hVYO7/RfK8Y='; font-src 'self'; script-src 'sha256-jG1hzBvak57L2ZFSmTbMr8u5asqwssemdbJNOe9wTaM=' 'sha256-Y94+UC01gDYQRq9MwGMWte+W9QS6j82CLyrxxdyHvco='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Brooklyn Haunted House Tickets & Dates — October 2026</title>
@@ -2575,7 +2575,8 @@ main:focus{outline:none}
    Once the presale opens, every open night carries a "% gone" figure. Owner's
    call (2026-09-11, reaffirmed 2026-09-15): the figure is synthetic, a
    function of the clock alone, and it drives the night's colour. Each night
-   has its own ceiling and curve, so some run hotter than others; nothing ever
+   has its own ceiling and curve, so some run hotter than others; the floor
+   is 70% of the ceiling (owner, 2026-09-28: "higher percentages"); nothing ever
    reaches 100 or reads "sold out". Before the presale the colours are the
    static states written in the markup. */
 {
@@ -2613,7 +2614,7 @@ main:focus{outline:none}
         if(night <= now.getTime()) return null;
         const p = Math.min(1, hours * HOUR / (night - PRESALE));
         const [cap, k] = shape(day);
-        return Math.min(cap, Math.round(cap * (0.04 + 0.96 * (1 - Math.pow(1 - p, k)))));
+        return Math.min(cap, Math.round(cap * (0.70 + 0.30 * (1 - Math.pow(1 - p, k)))));
       };
       let top = null;
       grid.querySelectorAll(".cal-day.open").forEach(li => {

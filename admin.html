@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-l1ReLzw2NaoDLrMJvwqRUwj8e4BeviPSC57wGMVHZYU='; font-src 'self'; script-src 'sha256-Vm2F1sXBkc2epYRgtLx5xEqkhEJY+Ta3/U2v/42w4yA='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The books | Haunted Mansion BK</title>
+<!-- The owner's desk. Not for search, not in the sitemap, not linked from
+     anywhere a guest can reach. The password is checked by hm-admin on the
+     server; this page holds nothing until it answers. -->
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23050505"/><path d="M6 30V13L16 5l10 8v17z" fill="none" stroke="%233a332c" stroke-width="2"/><rect x="13" y="18" width="6" height="12" fill="%23c2702f"/></svg>'>
+<meta name="theme-color" content="#030202">
+<link rel="preload" as="font" type="font/woff2" href="fonts/creepster-400-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/spectral-500-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/barlowcondensed-700-latin.woff2" crossorigin>
+<style>
+@font-face{font-family:"Creepster";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/creepster-400-latin.woff2) format("woff2")}
+@font-face{font-family:"Spectral";font-style:normal;font-weight:500;font-display:swap;src:url(fonts/spectral-500-latin.woff2) format("woff2")}
+@font-face{font-family:"Barlow Condensed";font-style:normal;font-weight:500;font-display:swap;src:url(fonts/barlowcondensed-500-latin.woff2) format("woff2")}
+@font-face{font-family:"Barlow Condensed";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/barlowcondensed-700-latin.woff2) format("woff2")}
+@font-face{font-family:"Grenze Gotisch";font-style:normal;font-weight:600;font-display:swap;src:url(fonts/grenzegotisch-600-latin.woff2) format("woff2")}
+
+:root{
+  color-scheme:dark;
+  --ink:#030202;--bone:#f3e8de;--read:#cfc2b8;--muted:#b9aaa1;
+  --red:#e33027;--red-lit:#ff594e;--green:#3ddc84;--amber:#f5b93a;
+  --line:rgba(255,255,255,.14);
+  --ease:cubic-bezier(.16,1,.3,1);--ease-out:cubic-bezier(.22,.9,.24,1)
+}
+*{box-sizing:border-box}
+html{background:#000;-webkit-text-size-adjust:100%}
+body{
+  margin:0;min-height:100svh;background:var(--ink);color:var(--bone);
+  font:500 16px/1.5 "Spectral",Georgia,serif;-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(ellipse 90% 42% at 50% 0%,rgba(117,8,5,.22),transparent 70%)
+}
+button,input{font:inherit;color:inherit}
+button{border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.label{font:700 12px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+
+.topbar{
+  position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:12px;
+  padding:max(20px,env(safe-area-inset-top)) 18px 14px;
+  font:700 14px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.11em;text-transform:uppercase;
+  background:linear-gradient(rgba(3,2,2,.94),rgba(3,2,2,.76));-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)
+}
+.brand{display:flex;align-items:center;gap:9px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 14px var(--red)}
+.bar-actions{display:flex;gap:16px}
+.bar-actions button{font:inherit;letter-spacing:inherit;color:var(--muted);transition:color .18s var(--ease-out)}
+.bar-actions button:hover{color:var(--bone)}
+
+.page{max-width:720px;margin:0 auto;padding:0 18px max(40px,env(safe-area-inset-bottom))}
+.hero{padding:26px 0 20px}
+.eyebrow{margin:0 0 12px;font:700 13px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--red-lit)}
+h1{margin:0;font:400 clamp(42px,12vw,64px)/1 "Creepster",Impact,sans-serif;letter-spacing:.02em;text-transform:uppercase}
+h1 em{font-style:normal;color:var(--red-lit)}
+.stamp{margin:12px 0 0}
+
+/* Sign in */
+.gate{max-width:420px;margin:12vh auto 0;padding:0 18px;animation:rise .6s var(--ease) backwards}
+.gate h1{font-size:clamp(46px,14vw,64px)}
+.gate form{margin-top:26px;display:grid;gap:12px}
+.field{
+  width:100%;min-height:56px;padding:0 18px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.03);
+  font:500 18px/1 "Spectral",Georgia,serif;outline:none;transition:border-color .18s var(--ease-out)
+}
+.field:focus{border-color:rgba(255,89,78,.72)}
+.cta{
+  display:flex;justify-content:center;align-items:center;width:100%;min-height:56px;border-radius:999px;
+  border:1px solid rgba(255,89,78,.72);background:rgba(92,8,6,.38);
+  font:600 24px/1 "Grenze Gotisch",Georgia,serif;letter-spacing:.07em;text-transform:uppercase;
+  transition:transform .16s var(--ease-out),opacity .18s
+}
+.cta:active{transform:scale(.97)}
+.cta:disabled{opacity:.5;cursor:default}
+.err{margin:0;min-height:1.5em;color:var(--red-lit)}
+
+/* Headline numbers */
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.stat{padding:16px 16px 18px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,rgba(92,8,6,.2),rgba(255,255,255,.02) 70%)}
+.stat b{display:block;margin-top:10px;font:400 clamp(30px,9vw,42px)/1 "Creepster",Impact,sans-serif;letter-spacing:.03em}
+.stat.hot b{color:var(--red-lit)}
+.stat small{display:block;margin-top:6px;color:var(--muted);font-size:14px}
+@media(min-width:640px){.stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+/* Tabs */
+.tabs{position:sticky;top:58px;z-index:10;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin:26px 0 16px;padding:4px;border:1px solid var(--line);border-radius:999px;background:rgba(3,2,2,.9);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.tabs button{min-height:42px;border-radius:999px;font:700 14px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);transition:background .2s var(--ease-out),color .2s}
+.tabs button[aria-selected="true"]{background:rgba(92,8,6,.6);color:var(--bone);box-shadow:inset 0 0 0 1px rgba(255,89,78,.5)}
+.panel[hidden]{display:none}
+
+/* Nights */
+.nights{display:grid;gap:8px}
+.night{border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.02);overflow:hidden}
+.night > button{display:grid;grid-template-columns:1fr auto;gap:8px 12px;width:100%;padding:14px 16px;text-align:left}
+.night-name{font:400 18px/1.2 "Spectral",Georgia,serif}
+.night-count{font:700 17px/1.2 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.04em;text-align:right}
+.night-count span{color:var(--muted)}
+.meter{grid-column:1/-1;height:6px;border-radius:3px;background:rgba(255,255,255,.07);overflow:hidden}
+.meter i{display:block;height:100%;border-radius:3px;background:var(--green);transform-origin:left;animation:grow .7s var(--ease) backwards}
+.meter i.mid{background:var(--amber)}
+.meter i.high{background:var(--red-lit)}
+.tag{grid-column:1/-1;display:flex;gap:10px;flex-wrap:wrap}
+.tag span{font:700 11px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.tag .off{color:var(--red-lit)}
+.slots{display:none;padding:0 16px 16px;gap:8px}
+.night.open .slots{display:grid}
+.slot{display:grid;grid-template-columns:64px 1fr 64px;align-items:center;gap:10px;font:700 14px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.06em}
+.slot .meter{grid-column:auto;height:5px}
+.slot em{font-style:normal;color:var(--red-lit)}
+.slot .n{text-align:right;color:var(--read)}
+
+/* Lists */
+.tools{display:flex;gap:8px;margin-bottom:12px}
+.tools .field{min-height:48px;font-size:16px}
+.ghost{flex:none;min-height:48px;padding:0 16px;border:1px solid var(--line);border-radius:12px;font:700 13px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--read)}
+.ghost:hover{border-color:rgba(255,89,78,.6);color:var(--bone)}
+.rows{display:grid;gap:8px}
+.row{padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.02)}
+.row-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.row-top b{font-weight:500;font-size:17px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row-top .amt{flex:none;font:400 20px/1 "Creepster",Impact,sans-serif;letter-spacing:.03em;color:var(--red-lit)}
+.row p{margin:4px 0 0;color:var(--read);font-size:15px;overflow-wrap:anywhere}
+.row .meta{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:10px}
+.pill{padding:4px 8px 3px;border:1px solid var(--line);border-radius:6px;font:700 11px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.pill.paid{border-color:rgba(61,220,132,.45);color:var(--green)}
+.pill.warn{border-color:rgba(255,89,78,.5);color:var(--red-lit)}
+.pill.adult{background:#e8433a;border-color:#e8433a;color:#1c0605}
+.more{margin-top:12px;width:100%}
+.empty{padding:24px 0;text-align:center;color:var(--muted)}
+
+@keyframes rise{from{opacity:0;transform:translate3d(0,14px,0)}to{opacity:1;transform:none}}
+@keyframes grow{from{transform:scaleX(0)}}
+button:focus-visible,.field:focus-visible{outline:2px solid #ff6b5f;outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<section class="gate" id="gate">
+  <p class="eyebrow">Haunted Mansion BK &middot; Owner</p>
+  <h1>The <em>books</em></h1>
+  <form id="gate-form" autocomplete="on">
+    <input class="field" id="pw" type="password" name="password" autocomplete="current-password" placeholder="Password" aria-label="Password" required>
+    <button class="cta" id="gate-go" type="submit">Open</button>
+    <p class="err" id="gate-err" role="alert"></p>
+  </form>
+</section>
+
+<div id="desk" hidden>
+  <header class="topbar">
+    <span class="brand"><span class="dot" aria-hidden="true"></span>The books</span>
+    <span class="bar-actions"><button type="button" id="refresh">Refresh</button><button type="button" id="signout">Sign out</button></span>
+  </header>
+  <main class="page">
+    <div class="hero">
+      <p class="eyebrow">Haunted Mansion BK &middot; October 2026</p>
+      <h1>The <em>books</em></h1>
+      <p class="stamp label" id="stamp"></p>
+    </div>
+
+    <div class="stats">
+      <div class="stat hot"><span class="label">Tickets sold</span><b class="num" id="s-tix">0</b><small id="s-tix-sub"></small></div>
+      <div class="stat"><span class="label">Revenue</span><b class="num" id="s-rev">$0</b><small id="s-rev-sub"></small></div>
+      <div class="stat"><span class="label">Orders</span><b class="num" id="s-ord">0</b><small id="s-ord-sub"></small></div>
+      <div class="stat"><span class="label">Waitlist</span><b class="num" id="s-wait">0</b><small id="s-wait-sub"></small></div>
+    </div>
+
+    <div class="tabs" role="tablist">
+      <button type="button" role="tab" aria-selected="true" data-tab="nights">Nights</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="orders">Orders</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="waitlist">Waitlist</button>
+    </div>
+
+    <section class="panel" id="p-nights"><div class="nights" id="nights"></div></section>
+
+    <section class="panel" id="p-orders" hidden>
+      <div class="tools"><input class="field" id="q-orders" type="search" placeholder="Name, email, code, night" aria-label="Search orders"><button class="ghost" type="button" id="csv-orders">CSV</button></div>
+      <div class="rows" id="orders"></div>
+      <button class="ghost more" type="button" id="more-orders" hidden>Show more</button>
+    </section>
+
+    <section class="panel" id="p-waitlist" hidden>
+      <div class="tools"><input class="field" id="q-wait" type="search" placeholder="Name, email, phone" aria-label="Search waitlist"><button class="ghost" type="button" id="csv-wait">CSV</button></div>
+      <div class="rows" id="waitlist"></div>
+      <button class="ghost more" type="button" id="more-wait" hidden>Show more</button>
+    </section>
+  </main>
+</div>
+
+<script>
+(function(){
+  const API = "https://tqeunmqnaoyrerkbhokk.supabase.co/functions/v1/hm-admin";
+  const KEY = "hm-admin";
+  const $ = id => document.getElementById(id);
+  const store = {
+    get(){ try { return localStorage.getItem(KEY) || ""; } catch(e){ return ""; } },
+    set(v){ try { localStorage.setItem(KEY, v); } catch(e){} },
+    drop(){ try { localStorage.removeItem(KEY); } catch(e){} }
+  };
+  let data = null, pw = store.get();
+
+  const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
+  const money = c => "$" + (c / 100).toLocaleString("en-US", { minimumFractionDigits: c % 100 ? 2 : 0, maximumFractionDigits: 2 });
+  const day = d => new Date(d + "T12:00:00").toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+  const clock = t => { if(!t) return ""; const h = +t.slice(0, 2), m = t.slice(3, 5); return (h % 12 || 12) + (m === "00" ? "" : ":" + m) + (h < 12 ? " am" : " pm"); };
+  const when = ts => ts ? new Date(ts).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }) : "";
+  const level = p => p >= .8 ? "high" : p >= .5 ? "mid" : "";
+
+  async function load(){
+    const r = await fetch(API, { method: "POST", headers: { "x-hm-admin": pw } });
+    if(r.status === 401) throw new Error("auth");
+    if(!r.ok) throw new Error("http " + r.status);
+    return r.json();
+  }
+
+  function show(desk){
+    $("gate").hidden = desk;
+    $("desk").hidden = !desk;
+  }
+
+  async function open(){
+    try {
+      data = await load();
+      store.set(pw);
+      show(true);
+      render();
+    } catch(e){
+      if(e.message === "auth"){ store.drop(); pw = ""; show(false); $("gate-err").textContent = "Wrong password."; }
+      else { show(false); $("gate-err").textContent = "Could not reach the books. Try again."; }
+    }
+  }
+
+  $("gate-form").addEventListener("submit", async ev => {
+    ev.preventDefault();
+    pw = $("pw").value;
+    $("gate-err").textContent = "";
+    $("gate-go").disabled = true;
+    $("gate-go").textContent = "Opening…";
+    await open();
+    $("gate-go").disabled = false;
+    $("gate-go").textContent = "Open";
+  });
+  $("signout").addEventListener("click", () => { store.drop(); pw = ""; data = null; $("pw").value = ""; show(false); });
+  $("refresh").addEventListener("click", async () => { $("refresh").textContent = "Loading…"; await open(); $("refresh").textContent = "Refresh"; });
+
+  document.querySelectorAll(".tabs button").forEach(b => b.addEventListener("click", () => {
+    document.querySelectorAll(".tabs button").forEach(x => x.setAttribute("aria-selected", x === b ? "true" : "false"));
+    ["nights", "orders", "waitlist"].forEach(t => { $("p-" + t).hidden = t !== b.dataset.tab; });
+  }));
+
+  /* Real money only in the headline: test-mode orders are listed, not counted. */
+  const live = o => o.livemode !== false;
+
+  function render(){
+    const paid = data.orders.filter(o => o.status === "paid" && live(o));
+    const tix = paid.reduce((a, o) => a + o.tickets, 0);
+    const rev = paid.reduce((a, o) => a + (o.amount_cents || 0), 0);
+    const cap = data.nights.reduce((a, n) => a + n.capacity, 0);
+    const refunded = data.orders.filter(o => o.status === "refunded").length;
+    const weekAgo = Date.now() - 7 * 864e5;
+    $("s-tix").textContent = tix.toLocaleString();
+    $("s-tix-sub").textContent = "of " + cap.toLocaleString() + " across " + data.nights.length + " nights";
+    $("s-rev").textContent = money(rev);
+    $("s-rev-sub").textContent = paid.length ? "avg " + money(Math.round(rev / paid.length)) + " an order" : "no orders yet";
+    $("s-ord").textContent = paid.length.toLocaleString();
+    $("s-ord-sub").textContent = refunded ? refunded + " refunded" : "none refunded";
+    $("s-wait").textContent = data.waitlist.length.toLocaleString();
+    $("s-wait-sub").textContent = "+" + data.waitlist.filter(w => Date.parse(w.created_at) > weekAgo).length + " this week";
+    $("stamp").textContent = "Updated " + when(data.generated_at);
+    renderNights();
+    renderOrders();
+    renderWait();
+  }
+
+  function renderNights(){
+    const bySlot = {};
+    data.slots.forEach(s => { (bySlot[s.event_date] = bySlot[s.event_date] || []).push(s); });
+    $("nights").innerHTML = data.nights.map(n => {
+      const p = n.capacity ? n.sold / n.capacity : 0;
+      const slots = bySlot[n.event_date] || [];
+      const status = !n.is_active ? '<span class="off">Online sales closed</span>' : n.sold >= n.capacity ? '<span class="off">Full</span>' : "<span>On sale</span>";
+      const hours = slots.length ? "<span>By entry time &middot; tap</span>" : "<span>" + esc(clock(n.doors)) + "&ndash;" + esc(clock(n.last_entry)) + " entry</span>";
+      return '<div class="night"><button type="button"' + (slots.length ? "" : " disabled") + '>' +
+        '<span class="night-name">' + esc(day(n.event_date)) + '</span>' +
+        '<span class="night-count num">' + n.sold + ' <span>/ ' + n.capacity + '</span></span>' +
+        '<span class="meter"><i class="' + level(p) + '" data-w="' + Math.max(p * 100, n.sold ? 1.5 : 0).toFixed(1) + '"></i></span>' +
+        '<span class="tag">' + status + hours + '</span></button>' +
+        (slots.length ? '<div class="slots">' + slots.map(s => {
+          const q = s.capacity ? s.sold / s.capacity : 0;
+          return '<div class="slot"><span>' + esc(clock(s.slot)) + (s.adults_only ? " <em>18+</em>" : "") + '</span>' +
+            '<span class="meter"><i class="' + level(q) + '" data-w="' + (q * 100).toFixed(1) + '"></i></span>' +
+            '<span class="n num">' + s.sold + ' / ' + s.capacity + '</span></div>';
+        }).join("") + '</div>' : "") + '</div>';
+    }).join("");
+    // Widths through the CSSOM: the page's policy refuses style attributes.
+    $("nights").querySelectorAll("i[data-w]").forEach(i => { i.style.width = i.dataset.w + "%"; });
+  }
+  $("nights").addEventListener("click", ev => {
+    const b = ev.target.closest(".night > button");
+    if(b && !b.disabled) b.parentNode.classList.toggle("open");
+  });
+
+  /* A search box and a page of fifty, for both lists. */
+  function list(opts){
+    let shown = 50;
+    const draw = () => {
+      const q = $(opts.q).value.trim().toLowerCase();
+      const rows = opts.rows().filter(r => !q || opts.text(r).toLowerCase().includes(q));
+      $(opts.out).innerHTML = rows.length ? rows.slice(0, shown).map(opts.card).join("") : '<p class="empty">Nothing here yet.</p>';
+      $(opts.more).hidden = rows.length <= shown;
+    };
+    $(opts.q).addEventListener("input", () => { shown = 50; draw(); });
+    $(opts.more).addEventListener("click", () => { shown += 50; draw(); });
+    return draw;
+  }
+
+  const orderText = o => [o.name, o.email, o.ticket_code, o.event_date, day(o.event_date), o.status].join(" ");
+  const renderOrders = list({
+    q: "q-orders", out: "orders", more: "more-orders",
+    rows: () => data.orders, text: orderText,
+    card: o => {
+      const adult = o.slot && +o.slot.slice(0, 2) >= 20;
+      return '<div class="row"><div class="row-top"><b>' + esc(o.name || o.email || "No name") + '</b><span class="amt num">' + money(o.amount_cents || 0) + '</span></div>' +
+        '<p>' + esc(day(o.event_date)) + (o.slot ? " &middot; " + esc(clock(o.slot)) + " entry" : "") + " &middot; " + o.tickets + (o.tickets === 1 ? " ticket" : " tickets") + '</p>' +
+        (o.email && o.name ? '<p>' + esc(o.email) + '</p>' : "") +
+        '<div class="meta"><span class="pill ' + (o.status === "paid" ? "paid" : "warn") + '">' + esc(o.status) + '</span>' +
+        (o.ticket_code ? '<span class="pill num">' + esc(o.ticket_code) + '</span>' : "") +
+        (adult ? '<span class="pill adult">18+</span>' : "") +
+        (o.scanned_at ? '<span class="pill paid">In ' + esc(when(o.scanned_at)) + '</span>' : "") +
+        (live(o) ? "" : '<span class="pill warn">Test</span>') +
+        '<span class="pill">' + esc(when(o.paid_at || o.created_at)) + '</span></div></div>';
+    }
+  });
+
+  const renderWait = list({
+    q: "q-wait", out: "waitlist", more: "more-wait",
+    rows: () => data.waitlist, text: w => [w.name, w.email, w.phone, w.source].join(" "),
+    card: w => '<div class="row"><div class="row-top"><b>' + esc(w.name || w.email || w.phone || "No name") + '</b></div>' +
+      (w.email ? '<p>' + esc(w.email) + '</p>' : "") + (w.phone ? '<p class="num">' + esc(w.phone) + '</p>' : "") +
+      '<div class="meta">' + (w.source ? '<span class="pill">' + esc(w.source) + '</span>' : "") + '<span class="pill">' + esc(when(w.created_at)) + '</span></div></div>'
+  });
+
+  function csv(name, cols, rows){
+    const cell = v => { const s = String(v == null ? "" : v); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+    const body = [cols.join(",")].concat(rows.map(r => cols.map(c => cell(r[c])).join(","))).join("\n");
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([body], { type: "text/csv" }));
+    a.download = name + "-" + new Date().toISOString().slice(0, 10) + ".csv";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  }
+  $("csv-orders").addEventListener("click", () => csv("hm-orders", ["event_date", "slot", "name", "email", "tickets", "amount_cents", "status", "ticket_code", "livemode", "paid_at", "scanned_at"], data.orders));
+  $("csv-wait").addEventListener("click", () => csv("hm-waitlist", ["name", "email", "phone", "source", "created_at"], data.waitlist));
+
+  if(pw) open(); else show(false);
+})();
+</script>
+</body>
+</html>

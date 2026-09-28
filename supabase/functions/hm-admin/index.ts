@@ -4,7 +4,7 @@
 //
 //   POST /functions/v1/hm-admin
 //   headers: x-hm-admin: <HM_ADMIN_TOKEN>
-//   200: { nights, orders, waitlist, generated_at }
+//   200: { nights, slots, orders, waitlist, generated_at }
 //
 // Deployed with --no-verify-jwt: the token is the gate, and the page never
 // holds the anon key. Nothing here writes - refunds and scans happen
@@ -46,15 +46,16 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const [nights, orders, waitlist] = await Promise.all([
+    const [nights, slots, orders, waitlist] = await Promise.all([
       select("hm_events?select=event_date,doors,last_entry,capacity,sold,is_active&order=event_date"),
+      select("hm_slots?select=event_date,slot,adults_only,capacity,sold&order=event_date,slot"),
       select(
         "hm_orders?select=event_date,slot,product,tickets,amount_cents,email,name,status,ticket_code,livemode,created_at,paid_at,scanned_at" +
           "&status=in.(paid,oversold,refunded)&order=paid_at.desc.nullslast&limit=5000",
       ),
       select("hm_waitlist?select=name,email,phone,source,created_at&order=created_at.desc&limit=10000"),
     ]);
-    return reply(req, 200, { nights, orders, waitlist, generated_at: new Date().toISOString() });
+    return reply(req, 200, { nights, slots, orders, waitlist, generated_at: new Date().toISOString() });
   } catch (e) {
     console.error("hm-admin", e);
     return reply(req, 500, { error: "db" });

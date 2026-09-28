@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-3rHsiNeVTDwbERl3BpVsUtfq3Cr4hSNYIK7SRSjJrZ4='; font-src 'self'; script-src 'sha256-Ni80cVRD7srOKTEBzmZEExOiI7HgxgmzGDOIKVdWLJA=' 'sha256-FkkbN5dZKFeA9sC7ma0FLy2g8ZIqlv+oJipk9xOY8+0=' 'sha256-BXobhg/s64cnmMASY/Qm+I7jc1d/vyTd8Nj0WMldOVE='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-3rHsiNeVTDwbERl3BpVsUtfq3Cr4hSNYIK7SRSjJrZ4='; font-src 'self'; script-src 'sha256-Ni80cVRD7srOKTEBzmZEExOiI7HgxgmzGDOIKVdWLJA=' 'sha256-8YHJkiHngrk8s2r2g2p/AYfxE3DO186DyFt/JDoigPA=' 'sha256-KWTT2XO3qUsw3C5xAevKoJrRLw/5Lt3dyPMsgzBzNqA='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'; media-src 'self'; manifest-src 'self'">
 <meta name="referrer" content="no-referrer">
 <meta name="msvalidate.01" content="E0A8862F9C5D059FE99AD1F614F7523D">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -1473,9 +1473,7 @@ main:focus{outline:none}
     </div>
     <div class="actions">
       <a class="cta buy" href="nights.html">Buy now</a>
-      <button class="cta" data-open>Join the waitlist<span class="rap" aria-hidden="true"></span></button>
     </div>
-    <p class="signup-count"><strong data-waitlist-count>4,235</strong> people have already joined the waitlist.</p>
     <p class="age"><strong>All ages until 8 PM</strong> Under 16 with an adult. 18+ with photo ID from 8 PM.</p>
     <p class="tagline">You&rsquo;re not visiting a haunted house.<br><span>You&rsquo;re returning to a crime scene.</span></p>
   </div>
@@ -1505,7 +1503,7 @@ main:focus{outline:none}
     <a href="ages.html">Is it too much?<span>Age &amp; intensity</span></a>
   </nav>
   <div class="drawer-foot">
-    <button class="cta" type="button" data-open>Unlock the invitation</button>
+    <a class="cta" href="nights.html">Buy tickets</a>
     <p>Bushwick, Brooklyn &middot; <time datetime="2026-10-01">October 1, 2026</time><br><a href="privacy.html">What we keep</a> &middot; <a href="terms.html">Terms</a> &middot; <a href="refund.html">Refunds</a></p>
   </div>
 </div>
@@ -1955,7 +1953,8 @@ addEventListener("keydown", e => { if(e.key === "Escape") closeModal(); });
    believe about a landing page and the wrong thing to decide about somebody
    else's haunted house: the whole point of the place is being startled by
    something you did not ask for. */
-setTimeout(autoOpenModal, 5000);
+/* Owner, 2026-09-28: tickets are on sale, the waitlist is retired. The
+   sheet no longer opens itself. */
 
 /* The sheet goes cold when the form hands over.
 
@@ -2565,7 +2564,6 @@ form.addEventListener("submit", async e => {
     drawer.querySelectorAll("a").forEach(a => a.addEventListener("click", () => close(false)));
     /* The invitation takes over focus itself 80ms later; handing it back to
        the menu button first would make the sheet open from the wrong place. */
-    drawer.querySelector("[data-open]").addEventListener("click", () => close(false));
     document.addEventListener("keydown", e => { if(e.key === "Escape" && isOpen()) close(); });
   }
 }
@@ -2573,13 +2571,7 @@ form.addEventListener("submit", async e => {
    is cleared straight away so a reload or a share of the address does not
    open the sheet again on a visitor who did not ask for it. The wait is the
    curtain: the door is still resolving until about two seconds in. */
-if(location.hash === "#list"){
-  history.replaceState(null, "", location.pathname + location.search);
-  setTimeout(() => {
-    const knock = document.querySelector(".actions .cta[data-open]");
-    if(knock) knock.click();
-  }, 2000);
-}
+if(location.hash === "#list") location.replace("nights.html");
 </script>
 </body>
 </html>

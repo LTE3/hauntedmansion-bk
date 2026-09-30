@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-/cB9WxGLkb3/09WAQFekOy8FA99Sqi46hVYO7/RfK8Y='; font-src 'self'; script-src 'sha256-jG1hzBvak57L2ZFSmTbMr8u5asqwssemdbJNOe9wTaM=' 'sha256-BjAGuEIMJYJ7UpqE1cn15hnL2RVjXEwNorvYG3ZkE8A='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-K5fzkABg2tHLXGGxOlyx+68wplS1U72C9VB0zO3szwY='; font-src 'self'; script-src 'sha256-jG1hzBvak57L2ZFSmTbMr8u5asqwssemdbJNOe9wTaM=' 'sha256-BjAGuEIMJYJ7UpqE1cn15hnL2RVjXEwNorvYG3ZkE8A='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Brooklyn Haunted House Tickets & Dates — October 2026</title>
@@ -418,6 +418,11 @@ main:focus{outline:none}
 .ages b{font:400 19px/1 "Rye",Georgia,serif;letter-spacing:.01em;text-transform:none;color:var(--bone)}
 .ages span + span b{color:var(--red-lit)}
 @media(max-width:380px){.sessions{grid-template-columns:1fr}}
+/* The email blast links to /nights#cal-grid. Without this the 52px sticky topbar covers
+   the first rows; 165px also leaves the "October 2026" heading visible above the grid. */
+#cal-grid{scroll-margin-top:165px}
+/* From 720px the weekday row and the heading sit above the grid, so it needs more room. */
+@media(min-width:720px){#cal-grid{scroll-margin-top:215px}}
 </style>
 <!-- schema:start -->
 <script type="application/ld+json">

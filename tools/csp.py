@@ -129,7 +129,7 @@ def policy(html):
         "form-action %s" % (META_TR if pixel else "'none'"),
         # data: is the inline SVG favicon; the Supabase host, when it is
         # named at all, is the QR image on the ticket page.
-        "img-src 'self' data:" + ((" " + SUPABASE) if img_remote else "") + ((" " + META_TR) if pixel else ""),
+        "img-src 'self' data:" + ((" " + SUPABASE) if img_remote else "") + ((" " + META_TR + " " + META_JS) if pixel else ""),
         "style-src %s" % " ".join(styles + remote_css),
         "font-src %s" % (" ".join(fonts) if fonts else "'none'"),
         "script-src %s" % (" ".join(scripts) if scripts else "'none'"),

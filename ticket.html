@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action https://www.facebook.com; img-src 'self' data: https://tqeunmqnaoyrerkbhokk.supabase.co https://www.facebook.com; style-src 'sha256-aR4/irVEWowUu36DghfIexrsi4WPxfrRjhre0qH5pek='; font-src 'self'; script-src 'sha256-H1FzQPb1Hp+15ssky6cLo+aaMV5GcCKUvkUX+lTTWgQ=' 'self' https://connect.facebook.net; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co https://www.facebook.com https://connect.facebook.net; frame-src https://www.facebook.com; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action https://www.facebook.com; img-src 'self' data: https://tqeunmqnaoyrerkbhokk.supabase.co https://www.facebook.com https://connect.facebook.net; style-src 'sha256-aR4/irVEWowUu36DghfIexrsi4WPxfrRjhre0qH5pek='; font-src 'self'; script-src 'sha256-46HEMs+ZFAEmxPe6YcxITIKpnAny4bCl/7joGxoX8gI=' 'self' https://connect.facebook.net; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co https://www.facebook.com https://connect.facebook.net; frame-src https://www.facebook.com; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Your ticket | Haunted Mansion BK</title>
@@ -393,6 +393,7 @@ main:focus{outline:none}
     const h12 = h % 12 === 0 ? 12 : h % 12;
     return h12 + (m[2] === "00" ? "" : ":" + m[2]) + (h < 12 ? " am" : " pm");
   };
+  let firedPurchase = false, pendingChecks = 0;
   const guests = n => { const v = Number(n) || 0; return v + (v === 1 ? " guest" : " guests"); };
 
   const render = data => {
@@ -418,25 +419,37 @@ main:focus{outline:none}
       const nameLine = document.getElementById("name-line");
       if(data.name && nameLine){ setText("f-name", data.name); nameLine.hidden = false; }
       show("paid");
-      /* Meta Purchase, once per live checkout: only the Stripe return (?s=cs_live_),
-         never a reopened ticket link (?t=) or a test-mode session. The session id
-         doubles as Meta's eventID so a reload is not counted twice. */
-      if(window.fbq && s && s.indexOf("cs_live_") === 0){
+      /* Meta Purchase, once per live checkout. Stripe only sends a buyer to
+         ?s=<session> after payment succeeds, and this branch only runs once the
+         webhook has marked the order paid (ticket_code is null until then), so a
+         click, an open checkout, a failed or abandoned payment never get here.
+         Not on a reopened ticket link (?t=) or a test-mode session. value is
+         what Stripe charged (amount_cents from hm-ticket). The session id is
+         Meta's eventID, and the in-page flag plus localStorage stop a rerender
+         or reload from counting it twice. */
+      if(!firedPurchase && window.fbq && s && s.indexOf("cs_live_") === 0){
+        firedPurchase = true;
         let seen = false;
         try{ seen = localStorage.getItem("hm-px-" + s) === "1"; }catch(e){}
         if(!seen){
-          fbq("track", "Purchase", {currency: "USD", num_items: Number(data.tickets) || 1}, {eventID: s});
+          const params = {currency: "USD", num_items: Number(data.tickets) || 1};
+          if(typeof data.amount_cents === "number") params.value = data.amount_cents / 100;
+          fbq("track", "Purchase", params, {eventID: s});
           try{ localStorage.setItem("hm-px-" + s, "1"); }catch(e){}
         }
       }
     } else {
       show("pending");
+      /* Stripe can redirect a beat before its webhook marks the order paid.
+         Check again quietly for about a minute instead of leaving the buyer
+         on "Refresh in a minute" (and the sale untracked). */
+      if(s && pendingChecks < 20){ pendingChecks++; setTimeout(load, 3000); }
     }
   };
 
   const load = async () => {
     if(!query){ show("notfound"); return; }
-    show("loading");
+    if(!pendingChecks) show("loading");
     try{
       const res = await fetch(ENDPOINT + "?" + query);
       if(res.status === 404 || res.status === 400){ show("notfound"); return; }

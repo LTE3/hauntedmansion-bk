@@ -4,7 +4,7 @@
 //   GET /functions/v1/hm-ticket?s=<checkout session id>   (the success page)
 //   GET /functions/v1/hm-ticket?t=<ticket code>            (the link in the email)
 //   200: { status, event_date, night, doors, last_entry, slot, tickets, product,
-//          ticket_code (paid only), name, email (masked) }
+//          ticket_code + amount_cents (paid only), name, email (masked) }
 //   GET /functions/v1/hm-ticket?qr=<ticket code>           image/gif of the code
 //
 // Deployed with --no-verify-jwt so an <img> in an email can fetch the QR.
@@ -36,12 +36,13 @@ function reply(req: Request, status: number, body: unknown): Response {
 
 interface Row {
   status: string; event_date: string; slot: string | null; tickets: number; product: string; ticket_code: string | null;
+  amount_cents: number;
   name: string | null; email: string | null;
   hm_events: { doors: string; last_entry: string } | null;
   hm_products: { label: string } | null;
 }
 
-const FIELDS = "status,event_date,slot,tickets,product,ticket_code,name,email,hm_events(doors,last_entry),hm_products(label)";
+const FIELDS = "status,event_date,slot,tickets,product,ticket_code,amount_cents,name,email,hm_events(doors,last_entry),hm_products(label)";
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors(req) });
@@ -86,6 +87,9 @@ Deno.serve(async (req) => {
       tickets: o.tickets,
       product: o.hm_products?.label || o.product,
       ticket_code: o.status === "paid" ? o.ticket_code : null,
+      // What Stripe actually charged (amount_total, written by the webhook).
+      // ticket.html sends it to Meta as the Purchase value.
+      amount_cents: o.status === "paid" ? o.amount_cents : null,
       name: o.name,
       email: maskEmail(o.email),
     });

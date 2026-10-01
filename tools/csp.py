@@ -31,6 +31,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SUPABASE = "https://tqeunmqnaoyrerkbhokk.supabase.co"
 FONTS_CSS = "https://fonts.googleapis.com"
 FONTS_FILES = "https://fonts.gstatic.com"
+META_JS = "https://connect.facebook.net"
+META_TR = "https://www.facebook.com"
 
 # Every page in the site, found rather than listed. A hand-kept table is one
 # more thing to forget to update, and a page missing from it ships with no
@@ -78,6 +80,11 @@ def policy(html):
 
     # A page reaches the database either directly or through waitlist.js.
     connect = SUPABASE.encode() in html or b"waitlist.js" in html
+    # pixel.js loads Meta's fbevents.js, which reports back to facebook.com
+    # by image and by fetch/beacon. Only the pages that carry it get these.
+    pixel = b'src="pixel.js"' in html
+    if pixel:
+        scripts.append(META_JS)
     # One page points an <img> at the database's own edge function: the
     # ticket page draws its QR from hm-ticket?qr=. Derive that the same way
     # connect-src is derived, or the next run that fixes the hashes quietly
@@ -117,17 +124,19 @@ def policy(html):
         # The form is submitted by fetch, never natively. Blocking native
         # submission also closes the no-JS fallback path, which would have put
         # the visitor's name and email into a URL query string.
-        "form-action 'none'",
+        # fbevents.js falls back to a form POST into a hidden facebook.com
+        # iframe when an event is too big for an image request.
+        "form-action %s" % (META_TR if pixel else "'none'"),
         # data: is the inline SVG favicon; the Supabase host, when it is
         # named at all, is the QR image on the ticket page.
-        "img-src 'self' data:" + ((" " + SUPABASE) if img_remote else ""),
+        "img-src 'self' data:" + ((" " + SUPABASE) if img_remote else "") + ((" " + META_TR) if pixel else ""),
         "style-src %s" % " ".join(styles + remote_css),
         "font-src %s" % (" ".join(fonts) if fonts else "'none'"),
         "script-src %s" % (" ".join(scripts) if scripts else "'none'"),
-        "connect-src %s" % (SUPABASE if connect else "'none'"),
+        "connect-src %s" % (" ".join(([SUPABASE] if connect else []) + ([META_TR, META_JS] if pixel else [])) or "'none'"),
         # The review galleries (top3, versions) frame the builds under v/;
         # nothing a visitor sees frames anything.
-        "frame-src %s" % ("'self'" if b"<iframe" in html else "'none'"),
+        "frame-src %s" % (" ".join((["'self'"] if b"<iframe" in html else []) + ([META_TR] if pixel else [])) or "'none'"),
         "object-src 'none'",
     ]
     if media:

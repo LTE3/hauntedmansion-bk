@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-lKxsvx/awA65CcgtNnqp1qbq1JQUvpYRrdk94suk/jE='; font-src 'self'; script-src 'none'; connect-src 'none'; frame-src 'none'; object-src 'none'"><meta name="referrer" content="no-referrer"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action https://www.facebook.com; img-src 'self' data: https://www.facebook.com; style-src 'sha256-lKxsvx/awA65CcgtNnqp1qbq1JQUvpYRrdk94suk/jE='; font-src 'self'; script-src 'self' https://connect.facebook.net; connect-src https://www.facebook.com https://connect.facebook.net; frame-src https://www.facebook.com; object-src 'none'"><meta name="referrer" content="no-referrer"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>What we keep</title>
 <meta name="description" content="What the waitlist for the house collects, why, and how to be taken off it.">
 <meta property="og:title" content="What we keep">
@@ -152,6 +152,7 @@ a:focus-visible{outline:2px solid #ff6b5f;outline-offset:3px}
 }
 main:focus{outline:none}
 </style>
+<script src="pixel.js"></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -179,8 +180,9 @@ main:focus{outline:none}
       signup from a script. It is not a name, an address or a location.</li>
     <li><strong>The time you signed up.</strong></li>
   </ul>
-  <p>That is the whole list. There is no tracking pixel on this site, no
-    analytics, no advertising tag and no cookie. Two things are kept in your
+  <p>That is the whole list of what you hand us. Separately, this site runs
+    the <strong>Meta Pixel</strong> (Facebook and Instagram&rsquo;s ad tag),
+    described under &ldquo;Who else touches it&rdquo; below. Two things are kept in your
     own browser and sent nowhere: whether you turned the sound off, so the page
     can remember, and &mdash; on the preview pages only &mdash; a note that the
     opening animation already played, so it does not play twice in one visit.
@@ -215,10 +217,19 @@ main:focus{outline:none}
       exactly two things: add a row to the list, and ask how many rows there
       are. It cannot read the list, change it, or delete any part of it, and
       the database refuses those before it is asked who is asking.</li>
+    <li><strong>Meta Platforms</strong> (Facebook and Instagram). Our ads
+      run on Meta, and the Meta Pixel on these pages tells Meta which page
+      you viewed and, after checkout, that a ticket was bought. Meta receives
+      your IP address and browser details, may set its own cookies, and uses
+      this to measure and target ads under
+      <a href="https://www.facebook.com/privacy/policy/">its own privacy policy</a>.
+      We do not send Meta your name, email or phone number. You can turn off
+      ad personalisation in your Facebook or Instagram ad settings, or block
+      the tag with any content blocker; the site works the same either way.</li>
     <li><strong>GitHub Pages</strong> serves this site and, like every web
       server, sees the IP address of anyone who loads it.</li>
   </ul>
-  <p>Nobody else. No data broker, no ad network, no third party we have not
+  <p>Nobody else. No data broker, no other ad network, no third party we have not
     named here.</p>
 
   <h2>How long we keep it</h2>
@@ -256,7 +267,7 @@ main:focus{outline:none}
     start collecting something not on the list above &mdash; we will say so in
     an email before it happens, not after.</p>
 
-  <p class="updated">Last updated <time datetime="2026-09-04">4 September 2026</time>.</p>
+  <p class="updated">Last updated <time datetime="2026-10-01">1 October 2026</time>.</p>
   <!-- The three legal pages are linked from every footer and drawer
        on the site, but not from each other, so a reader who landed on
        one could only leave by going home. Navigation only - no wording

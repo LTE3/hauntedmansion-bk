@@ -41,7 +41,7 @@ interface Session {
   payment_status?: string;
   payment_intent?: string | null;
   amount_total?: number | null;
-  customer_details?: { email?: string | null; name?: string | null } | null;
+  customer_details?: { email?: string | null; name?: string | null; phone?: string | null } | null;
   customer_email?: string | null;
   metadata?: Record<string, string> | null;
 }
@@ -86,6 +86,18 @@ async function confirm(s: Session, eventId: string): Promise<string> {
       status: "pending",
     });
     result = await rpc<string>("hm_confirm_order", args);
+  }
+  // Buyer phone from Checkout's phone_number_collection. Best effort: a failed
+  // write never fails the order.
+  const phone = s.customer_details?.phone || null;
+  if (phone) {
+    try {
+      await rest("hm_orders?stripe_session_id=eq." + encodeURIComponent(s.id), {
+        method: "PATCH", body: JSON.stringify({ phone }), prefer: "return=minimal",
+      });
+    } catch (e) {
+      console.error("phone save failed", s.id, (e as Error).message);
+    }
   }
   return result;
 }

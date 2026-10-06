@@ -110,6 +110,7 @@ Deno.serve(async (req) => {
         metadata: { brand: "hm", event_date: date, slot: slotTime, product: product.code, tickets: product.tickets },
       },
       customer_email: email,
+      phone_number_collection: { enabled: true },
       allow_promotion_codes: true,
       success_url: SITE + "/ticket.html?s={CHECKOUT_SESSION_ID}",
       cancel_url: SITE + "/nights.html",

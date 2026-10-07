@@ -43,7 +43,7 @@ function reply(req: Request, status: number, body: unknown): Response {
 }
 
 interface Product { code: string; label: string; tickets: number; cents: number; is_active: boolean }
-interface Night { event_date: string; capacity: number; sold: number; is_active: boolean }
+interface Night { event_date: string; capacity: number; sold: number; is_active: boolean; price_cents: Record<string, number> | null }
 interface Slot { slot: string; adults_only: boolean; capacity: number; sold: number }
 
 Deno.serve(async (req) => {
@@ -73,7 +73,7 @@ Deno.serve(async (req) => {
     const [product] = await select<Product>("hm_products?code=eq." + code + "&is_active=is.true&select=code,label,tickets,cents,is_active");
     if (!product) return reply(req, 404, { error: "unknown_product" });
 
-    const [night] = await select<Night>("hm_events?event_date=eq." + date + "&select=event_date,capacity,sold,is_active");
+    const [night] = await select<Night>("hm_events?event_date=eq." + date + "&select=event_date,capacity,sold,is_active,price_cents");
     if (!night) return reply(req, 404, { error: "unknown_night" });
     if (!night.is_active) return reply(req, 409, { error: "not_on_sale" });
     if (night.sold + product.tickets > night.capacity) return reply(req, 409, { error: "sold_out" });
@@ -88,6 +88,9 @@ Deno.serve(async (req) => {
       return reply(req, 404, { error: "unknown_slot" });
     }
     const slotTime = slot ? slot.slot.slice(0, 5) : null;
+    // A night may carry its own prices (Wednesdays); otherwise the product's.
+    const override = Number(night.price_cents?.[product.code]);
+    const cents = Number.isInteger(override) && override > 0 ? override : product.cents;
 
     const label = nightLabel(date) + (slotTime ? " · " + clock(slotTime) + " entry" : "");
     const params = {
@@ -96,7 +99,7 @@ Deno.serve(async (req) => {
         quantity: 1,
         price_data: {
           currency: "usd",
-          unit_amount: product.cents,
+          unit_amount: cents,
           product_data: {
             name: BRAND + " — " + label,
             description: product.label + (product.tickets === 1 ? " · admits one" : " · admits " + product.tickets) +
@@ -141,7 +144,7 @@ Deno.serve(async (req) => {
         slot: slotTime,
         product: product.code,
         tickets: product.tickets,
-        amount_cents: session.amount_total ?? product.cents,
+        amount_cents: session.amount_total ?? cents,
         email,
         tag,
         status: "pending",

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-l1ReLzw2NaoDLrMJvwqRUwj8e4BeviPSC57wGMVHZYU='; font-src 'self'; script-src 'sha256-/cafSvUmRnouYxXnxP6jNU6Oy/Bphb+fd4NSuU+pthk='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-GFmNLr10/whafT9YVwpIgq6c4K7FyikM1CIdUEMnxcY='; font-src 'self'; script-src 'sha256-kBdqqAhORffYSKK47Hg5TACOKnFVZfQVV7AmEyhNCjY='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>The books | Haunted Mansion BK</title>
@@ -88,7 +88,7 @@ h1 em{font-style:normal;color:var(--red-lit)}
 @media(min-width:640px){.stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
 
 /* Tabs */
-.tabs{position:sticky;top:58px;z-index:10;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin:26px 0 16px;padding:4px;border:1px solid var(--line);border-radius:999px;background:rgba(3,2,2,.9);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.tabs{position:sticky;top:58px;z-index:10;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:26px 0 16px;padding:4px;border:1px solid var(--line);border-radius:999px;background:rgba(3,2,2,.9);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 .tabs button{min-height:42px;border-radius:999px;font:700 14px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);transition:background .2s var(--ease-out),color .2s}
 .tabs button[aria-selected="true"]{background:rgba(92,8,6,.6);color:var(--bone);box-shadow:inset 0 0 0 1px rgba(255,89,78,.5)}
 .panel[hidden]{display:none}
@@ -132,6 +132,7 @@ h1 em{font-style:normal;color:var(--red-lit)}
 .pill.adult{background:#e8433a;border-color:#e8433a;color:#1c0605}
 .more{margin-top:12px;width:100%}
 .empty{padding:24px 0;text-align:center;color:var(--muted)}
+.sum{margin:0 0 12px}
 
 @keyframes rise{from{opacity:0;transform:translate3d(0,14px,0)}to{opacity:1;transform:none}}
 @keyframes grow{from{transform:scaleX(0)}}
@@ -174,6 +175,7 @@ button:focus-visible,.field:focus-visible{outline:2px solid #ff6b5f;outline-offs
       <button type="button" role="tab" aria-selected="true" data-tab="nights">Nights</button>
       <button type="button" role="tab" aria-selected="false" data-tab="orders">Orders</button>
       <button type="button" role="tab" aria-selected="false" data-tab="waitlist">Waitlist</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="rooftop">Rooftop</button>
     </div>
 
     <section class="panel" id="p-nights"><div class="nights" id="nights"></div></section>
@@ -188,6 +190,13 @@ button:focus-visible,.field:focus-visible{outline:2px solid #ff6b5f;outline-offs
       <div class="tools"><input class="field" id="q-wait" type="search" placeholder="Name, email, phone" aria-label="Search waitlist"><button class="ghost" type="button" id="csv-wait">CSV</button></div>
       <div class="rows" id="waitlist"></div>
       <button class="ghost more" type="button" id="more-wait" hidden>Show more</button>
+    </section>
+
+    <section class="panel" id="p-rooftop" hidden>
+      <p class="sum label" id="roof-sum"></p>
+      <div class="tools"><input class="field" id="q-roof" type="search" placeholder="Name, email, code, night" aria-label="Search rooftop tables"><button class="ghost" type="button" id="csv-roof">CSV</button></div>
+      <div class="rows" id="rooftop"></div>
+      <button class="ghost more" type="button" id="more-roof" hidden>Show more</button>
     </section>
   </main>
 </div>
@@ -250,7 +259,7 @@ button:focus-visible,.field:focus-visible{outline:2px solid #ff6b5f;outline-offs
 
   document.querySelectorAll(".tabs button").forEach(b => b.addEventListener("click", () => {
     document.querySelectorAll(".tabs button").forEach(x => x.setAttribute("aria-selected", x === b ? "true" : "false"));
-    ["nights", "orders", "waitlist"].forEach(t => { $("p-" + t).hidden = t !== b.dataset.tab; });
+    ["nights", "orders", "waitlist", "rooftop"].forEach(t => { $("p-" + t).hidden = t !== b.dataset.tab; });
   }));
 
   /* Real money only in the headline: test-mode orders are listed, not counted. */
@@ -275,6 +284,7 @@ button:focus-visible,.field:focus-visible{outline:2px solid #ff6b5f;outline-offs
     renderNights();
     renderOrders();
     renderWait();
+    renderRoof();
   }
 
   function renderNights(){
@@ -345,6 +355,33 @@ button:focus-visible,.field:focus-visible{outline:2px solid #ff6b5f;outline-offs
       '<div class="meta">' + (w.source ? '<span class="pill">' + esc(w.source) + '</span>' : "") + '<span class="pill">' + esc(when(w.created_at)) + '</span></div></div>'
   });
 
+  /* The Graveyard: free tables, so no money here. Tonight and later first,
+     in night and time order; past nights and cancellations sink below. */
+  const today = () => new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" });
+  const ahead = r => r.status === "booked" && r.event_date >= today();
+  const roofRows = () => {
+    const all = data.rooftop || [];
+    return all.filter(ahead).concat(all.filter(r => !ahead(r)).reverse());
+  };
+  const renderRoofList = list({
+    q: "q-roof", out: "rooftop", more: "more-roof",
+    rows: roofRows, text: r => [r.name, r.email, r.phone, r.code, r.ticket_code, r.event_date, day(r.event_date), r.status].join(" "),
+    card: r => '<div class="row"><div class="row-top"><b>' + esc(r.name) + '</b><span class="amt num">' + r.party + (r.party === 1 ? " guest" : " guests") + '</span></div>' +
+      '<p>' + esc(day(r.event_date)) + " &middot; " + esc(clock(r.slot)) + '</p>' +
+      '<p>' + esc(r.email) + (r.phone ? " &middot; " + esc(r.phone) : "") + '</p>' +
+      '<div class="meta"><span class="pill ' + (r.status === "booked" ? (ahead(r) ? "paid" : "") : "warn") + '">' + esc(ahead(r) || r.status !== "booked" ? r.status : "past") + '</span>' +
+      '<span class="pill num">' + esc(r.code) + '</span>' +
+      (r.ticket_code ? '<span class="pill num">Ticket ' + esc(r.ticket_code) + '</span>' : "") +
+      (r.email_error ? '<span class="pill warn">Email failed</span>' : "") +
+      '<span class="pill">Booked ' + esc(when(r.created_at)) + '</span></div></div>'
+  });
+  function renderRoof(){
+    const up = (data.rooftop || []).filter(ahead);
+    const guests = up.reduce((a, r) => a + r.party, 0);
+    $("roof-sum").textContent = up.length + (up.length === 1 ? " table, " : " tables, ") + guests + (guests === 1 ? " guest" : " guests") + " booked from tonight on";
+    renderRoofList();
+  }
+
   function csv(name, cols, rows){
     const cell = v => { const s = String(v == null ? "" : v); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
     const body = [cols.join(",")].concat(rows.map(r => cols.map(c => cell(r[c])).join(","))).join("\n");
@@ -355,6 +392,7 @@ button:focus-visible,.field:focus-visible{outline:2px solid #ff6b5f;outline-offs
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   }
   $("csv-orders").addEventListener("click", () => csv("hm-orders", ["event_date", "slot", "name", "email", "tickets", "amount_cents", "status", "ticket_code", "livemode", "paid_at", "scanned_at"], data.orders));
+  $("csv-roof").addEventListener("click", () => csv("hm-rooftop", ["event_date", "slot", "party", "name", "email", "phone", "code", "ticket_code", "status", "created_at"], data.rooftop || []));
   $("csv-wait").addEventListener("click", () => csv("hm-waitlist", ["name", "email", "phone", "source", "created_at"], data.waitlist));
 
   if(pw) open(); else show(false);

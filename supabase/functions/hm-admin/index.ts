@@ -1,10 +1,10 @@
 // The owner's dashboard, read-only. One call returns everything admin.html
 // draws: every night's capacity and sales, every order that got past
-// checkout, and the waitlist.
+// checkout, the waitlist, and the rooftop table reservations.
 //
 //   POST /functions/v1/hm-admin
 //   headers: x-hm-admin: <HM_ADMIN_TOKEN>
-//   200: { nights, slots, orders, waitlist, generated_at }
+//   200: { nights, slots, orders, waitlist, rooftop, generated_at }
 //
 // Deployed with --no-verify-jwt: the token is the gate, and the page never
 // holds the anon key. Nothing here writes - refunds and scans happen
@@ -46,7 +46,7 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const [nights, slots, orders, waitlist] = await Promise.all([
+    const [nights, slots, orders, waitlist, rooftop] = await Promise.all([
       select("hm_events?select=event_date,doors,last_entry,capacity,sold,is_active&order=event_date"),
       select("hm_slots?select=event_date,slot,adults_only,capacity,sold&order=event_date,slot"),
       select(
@@ -54,8 +54,12 @@ Deno.serve(async (req) => {
           "&status=in.(paid,oversold,refunded)&order=paid_at.desc.nullslast&limit=5000",
       ),
       select("hm_waitlist?select=name,email,phone,source,created_at&order=created_at.desc&limit=10000"),
+      select(
+        "hm_rooftop_reservations?select=code,event_date,slot,party,name,email,phone,ticket_code,status,email_sent_at,email_error,created_at" +
+          "&order=event_date,slot,created_at&limit=5000",
+      ),
     ]);
-    return reply(req, 200, { nights, slots, orders, waitlist, generated_at: new Date().toISOString() });
+    return reply(req, 200, { nights, slots, orders, waitlist, rooftop, generated_at: new Date().toISOString() });
   } catch (e) {
     console.error("hm-admin", e);
     return reply(req, 500, { error: "db" });

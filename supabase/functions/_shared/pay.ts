@@ -43,6 +43,7 @@ export function clock(t: string): string {
   const m = /^(\d{1,2}):(\d{2})/.exec(t);
   if (!m) return t;
   const h = Number(m[1]);
+  if (h === 0 && m[2] === "00") return "midnight";
   const h12 = h % 12 === 0 ? 12 : h % 12;
   return h12 + (m[2] === "00" ? "" : ":" + m[2]) + (h < 12 ? " am" : " pm");
 }

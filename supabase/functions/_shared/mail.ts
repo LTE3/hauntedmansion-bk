@@ -35,7 +35,8 @@ export function ticketEmail(t: TicketDetails): { subject: string; html: string; 
   const link = SITE + "/ticket.html?t=" + encodeURIComponent(t.ticketCode);
   const subject = BRAND + " — " + night;
 
-  const adults = !!t.slot && Number(t.slot.slice(0, 2)) >= 20;
+  const hour = t.slot ? Number(t.slot.slice(0, 2)) : -1;
+  const adults = hour >= 20 || (hour >= 0 && hour < 4);
   const fine = t.slot
     ? (adults
         ? "18+ only: bring valid photo ID. No ID, no entry, no refund. "

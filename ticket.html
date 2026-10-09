@@ -390,6 +390,7 @@ main:focus{outline:none}
     const m = /^(\d{1,2}):(\d{2})/.exec(t || "");
     if(!m) return t || "";
     const h = Number(m[1]);
+    if(h === 0 && m[2] === "00") return "midnight";
     const h12 = h % 12 === 0 ? 12 : h % 12;
     return h12 + (m[2] === "00" ? "" : ":" + m[2]) + (h < 12 ? " am" : " pm");
   };
@@ -408,7 +409,8 @@ main:focus{outline:none}
         setText("l-doors", "Entry time");
         setText("f-doors", clock(data.slot));
         setText("l-last", "Session");
-        setText("f-last", Number(String(data.slot).slice(0, 2)) >= 20 ? "18+ only · photo ID" : "All ages · under 16 with adult");
+        const hr = Number(String(data.slot).slice(0, 2));
+        setText("f-last", hr >= 20 || hr < 4 ? "18+ only · photo ID" : "All ages · under 16 with adult");
       }else{
         setText("f-doors", clock(data.doors));
         setText("f-last", clock(data.last_entry));

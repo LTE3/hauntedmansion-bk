@@ -207,7 +207,7 @@ button:focus-visible,.field:focus-visible{outline:2px solid #ff6b5f;outline-offs
   const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
   const money = c => "$" + (c / 100).toLocaleString("en-US", { minimumFractionDigits: c % 100 ? 2 : 0, maximumFractionDigits: 2 });
   const day = d => new Date(d + "T12:00:00").toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
-  const clock = t => { if(!t) return ""; const h = +t.slice(0, 2), m = t.slice(3, 5); return (h % 12 || 12) + (m === "00" ? "" : ":" + m) + (h < 12 ? " am" : " pm"); };
+  const clock = t => { if(!t) return ""; const h = +t.slice(0, 2), m = t.slice(3, 5); if(h === 0 && m === "00") return "midnight"; return (h % 12 || 12) + (m === "00" ? "" : ":" + m) + (h < 12 ? " am" : " pm"); };
   const when = ts => ts ? new Date(ts).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }) : "";
   const level = p => p >= .8 ? "high" : p >= .5 ? "mid" : "";
 
@@ -324,7 +324,7 @@ button:focus-visible,.field:focus-visible{outline:2px solid #ff6b5f;outline-offs
     q: "q-orders", out: "orders", more: "more-orders",
     rows: () => data.orders, text: orderText,
     card: o => {
-      const adult = o.slot && +o.slot.slice(0, 2) >= 20;
+      const adult = o.slot && (+o.slot.slice(0, 2) >= 20 || +o.slot.slice(0, 2) < 4);
       return '<div class="row"><div class="row-top"><b>' + esc(o.name || o.email || "No name") + '</b><span class="amt num">' + money(o.amount_cents || 0) + '</span></div>' +
         '<p>' + esc(day(o.event_date)) + (o.slot ? " &middot; " + esc(clock(o.slot)) + " entry" : "") + " &middot; " + o.tickets + (o.tickets === 1 ? " ticket" : " tickets") + '</p>' +
         (o.email && o.name ? '<p>' + esc(o.email) + '</p>' : "") +

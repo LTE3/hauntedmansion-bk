@@ -79,8 +79,8 @@ export function rooftopPromoEmail(o: { eventDate: string; ticketCode: string; na
   const subject = "The Graveyard — the hidden rooftop above the house";
   const paras = [
     "Some secrets are better left buried. This one is worth discovering.",
-    "Hidden above The Haunted Mansion lies The Graveyard, a mysterious open-air rooftop cocktail lounge where the night doesn’t end when the haunting does.",
-    "Step into a world of eerie ambiance, hauntingly crafted cocktails, delicious bites, and music beneath the night sky. Whether you’re looking to calm your nerves after surviving the mansion or start your evening with a few drinks, The Graveyard is your perfect escape.",
+    "Hidden above The Haunted Mansion lies The Graveyard, a mysterious open-air rooftop lounge where the night doesn’t end when the haunting does.",
+    "Step into a world of eerie ambiance, hauntingly crafted drinks, delicious bites, and music beneath the night sky. Whether you’re looking to calm your nerves after surviving the mansion or start your evening with a few drinks, The Graveyard is your perfect escape.",
     "Enjoy intimate rooftop vibes during the week and a livelier atmosphere as the weekend takes over.",
     "Your experience doesn’t have to end at the exit.",
     "Reserve a table before or after your Haunted Mansion experience and discover what’s waiting above.",
@@ -89,17 +89,17 @@ export function rooftopPromoEmail(o: { eventDate: string; ticketCode: string; na
     ROOFTOP.toUpperCase(), "",
     ...paras.flatMap((p) => [p, ""]),
     "The house is haunted. The rooftop is alive.", "",
-    "Reserve a free table for " + nightLabel(o.eventDate) + " (up to 6 guests, pay at the bar): " + link,
+    "Reserve a free table for " + nightLabel(o.eventDate) + " (up to 6 guests, pay as you order): " + link,
     "", SITE,
   ].join("\n");
   const html = shell("Reserve a free table at The Graveyard, the hidden rooftop above the house.", `
     <p style="${KICK}">Hidden rooftop · ${esc(BRAND)}</p>
     <h1 class="h1" style="margin:0 0 20px;font:700 32px/1.1 Georgia,'Times New Roman',serif;color:#f3e8de;">Some secrets are better left buried.</h1>
-    <img src="${SITE}/img/rooftop/rooftop.jpg" width="500" alt="The Graveyard rooftop bar at night" style="display:block;width:100%;max-width:500px;height:auto;margin:0 0 22px;border-radius:10px;">
+    <img src="${SITE}/img/rooftop/rooftop.jpg" width="500" alt="The Graveyard rooftop lounge at night" style="display:block;width:100%;max-width:500px;height:auto;margin:0 0 22px;border-radius:10px;">
     ${paras.slice(1).map((p) => `<p style="${P}">${esc(p)}</p>`).join("")}
     <p style="margin:6px 0 0;font:italic 700 19px/1.4 Georgia,'Times New Roman',serif;color:#ff5b52;">The house is haunted. The rooftop is alive.</p>
     ${button(link, "Book a table&nbsp; &rarr;")}
-    <p style="margin:18px 0 0;font:500 13px/1.65 Arial,Helvetica,sans-serif;color:#9d8880;">Free reservation for ${esc(nightLabel(o.eventDate))}, from 6 PM. Up to 6 guests per table; you pay at the bar. <a href="${SITE}/rooftop.html#menu" style="color:#c7aaa0;">See the menu</a>.</p>`);
+    <p style="margin:18px 0 0;font:500 13px/1.65 Arial,Helvetica,sans-serif;color:#9d8880;">Free reservation for ${esc(nightLabel(o.eventDate))}, from 6 PM. Up to 6 guests per table; you pay as you order. <a href="${SITE}/rooftop.html#menu" style="color:#c7aaa0;">See the menu</a>.</p>`);
   return { subject, html, text };
 }
 
@@ -120,7 +120,7 @@ export function rooftopConfirmEmail(r: {
   const text = [
     ROOFTOP, "", r.name + ", your table is reserved.", "",
     ...rows.map(([k, v]) => k + ": " + v), "",
-    "Reservations are free. Pay for what you order at the bar. 21+ to drink, ID at the bar.",
+    "Reservations are free. Pay for what you order on the rooftop.",
     "Menu: " + SITE + "/rooftop.html#menu", "", SITE,
   ].join("\n");
   const html = shell("Your table at The Graveyard is reserved: " + night + ", " + when + ".", `
@@ -129,8 +129,8 @@ export function rooftopConfirmEmail(r: {
     <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-top:1px solid #39231f;">
       ${rows.map(([k, v]) => `<tr><td style="padding:12px 0;border-bottom:1px solid #39231f;font:600 12px/1.3 Arial,Helvetica,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#9d8880;width:38%;">${esc(k)}</td><td style="padding:12px 0;border-bottom:1px solid #39231f;font:400 17px/1.4 Georgia,serif;color:#f3e8de;">${esc(v)}</td></tr>`).join("")}
     </table>
-    <p style="margin:22px 0 0;${P.replace("margin:0 0 16px;", "")}">The reservation is free. Pay for what you order at the bar.</p>
+    <p style="margin:22px 0 0;${P.replace("margin:0 0 16px;", "")}">The reservation is free. Pay for what you order on the rooftop.</p>
     ${button(SITE + "/rooftop.html#menu", "See the menu&nbsp; &rarr;")}
-    <p style="margin:18px 0 0;font:500 13px/1.65 Arial,Helvetica,sans-serif;color:#9d8880;">21+ to drink, with ID at the bar. Need to change or cancel? Reply to this email with your reservation code.</p>`);
+    <p style="margin:18px 0 0;font:500 13px/1.65 Arial,Helvetica,sans-serif;color:#9d8880;">Need to change or cancel? Reply to this email with your reservation code.</p>`);
   return { subject, html, text };
 }

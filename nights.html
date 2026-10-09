@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action https://www.facebook.com; img-src 'self' data: https://www.facebook.com https://connect.facebook.net; style-src 'sha256-Pw6uh7HQX6VF2Ctv6LhMOO7IvISxbGc/tSg/k3I9448='; font-src 'self'; script-src 'sha256-nJgJj8ynHTtFKEmYXXb0H0BrgoNBXiQ2zrPG/GcG2J0=' 'sha256-OnSsb/9pHiTrl05+ZMkTmJOL0RnDpjqjbwi+zBrYxmk=' 'self' https://connect.facebook.net; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co https://www.facebook.com https://connect.facebook.net; frame-src https://www.facebook.com; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action https://www.facebook.com; img-src 'self' data: https://www.facebook.com https://connect.facebook.net; style-src 'sha256-9Ia87q4NZBva0QPcgZ436ryv7vHLdT75TO9WkaBwpFM='; font-src 'self'; script-src 'sha256-nJgJj8ynHTtFKEmYXXb0H0BrgoNBXiQ2zrPG/GcG2J0=' 'sha256-OnSsb/9pHiTrl05+ZMkTmJOL0RnDpjqjbwi+zBrYxmk=' 'self' https://connect.facebook.net; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co https://www.facebook.com https://connect.facebook.net; frame-src https://www.facebook.com; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Brooklyn Haunted House Tickets & Dates — October 2026</title>
@@ -252,18 +252,9 @@ button.cal-day{width:100%;height:100%}
   letter-spacing:.1em;text-transform:uppercase;color:var(--muted)
 }
 
-/* Calendar reference treatment: a cinematic header and an editorial month
-   card. Availability remains binary (open/closed); no seat counts or
-   invented inventory are represented here. */
-.calendar-visual{
-  position:relative;height:clamp(190px,46vw,270px);margin:0 -18px 8px;overflow:hidden;
-  background:#090607 url("v/img-house/reference/calendar-hero.jpg") center/cover no-repeat;
-  background-image:image-set(url("v/img-house/reference/calendar-hero.webp") type("image/webp"),url("v/img-house/reference/calendar-hero.jpg") type("image/jpeg"));
-  border-bottom:1px solid rgba(227,48,39,.42)
-}
-.calendar-visual:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,2,2,.02),rgba(3,2,2,.08) 70%,#030202 100%)}
-.calendar-visual .visual-copy{position:absolute;z-index:1;left:18px;bottom:20px;margin:0;font:700 13px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#f3e8de}
-.calendar-visual .visual-copy b{color:var(--red-lit)}
+/* Calendar reference treatment: an editorial month card. Availability
+   remains binary (open/closed); no seat counts or invented inventory are
+   represented here. */
 .cal-head{font-size:15px;margin-top:24px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.18)}
 .cal-head b{font:400 clamp(37px,10.4vw,58px)/1 "Creepster",Impact,"Arial Narrow Bold",sans-serif;letter-spacing:.02em;text-transform:uppercase}
 .cal-grid{gap:6px}
@@ -296,9 +287,6 @@ button.cal-day{width:100%;height:100%}
 .cal-swatch{width:18px;height:18px;border-radius:50%}
 @media(min-width:720px){
   .page{max-width:864px;padding-left:40px;padding-right:40px}
-  .calendar-visual{height:376px;margin:0 -40px 20px;background-image:url("v/img-house/reference/calendar-hero.jpg");background-position:center;background-size:cover}
-  .calendar-visual{background-image:image-set(url("v/img-house/reference/calendar-hero.webp") type("image/webp"),url("v/img-house/reference/calendar-hero.jpg") type("image/jpeg"))}
-  .calendar-visual .visual-copy{display:none}
   .hero{display:none}
   .cal{position:relative;margin-top:34px}
   .cal-head{border:0;padding:0;align-items:center;margin:0 0 22px}
@@ -309,7 +297,7 @@ button.cal-day{width:100%;height:100%}
   .closer{margin-top:36px}
   footer{margin-top:46px}
 }
-@media(max-width:560px){.calendar-visual{height:205px}.cal-grid{gap:4px}.cal-day{min-height:46px;font-size:16px}}
+@media(max-width:560px){.cal-grid{gap:4px}.cal-day{min-height:46px;font-size:16px}}
 @media(max-width:560px){.cal-day.open,.cal-day.closed{min-height:0;width:auto;aspect-ratio:1;border-radius:8px;font-size:16px}.cal-day.open .tag{font-size:11px}.cal-day.closed:after{font-size:11px}}
 /* How far each night has gone. A tint climbs the cell from the floor as the
    night fills, the figure sits under the date, and a night past nine tenths
@@ -2656,9 +2644,6 @@ main:focus{outline:none}
 </header>
 
 <main class="page" id="main" tabindex="-1">
-  <div class="calendar-visual" aria-hidden="true">
-    <p class="visual-copy"><b>Haunted Mansion BK</b> &middot; Bushwick, Brooklyn</p>
-  </div>
   <div class="hero">
     <p class="eyebrow">Bushwick, Brooklyn &middot; October 2026</p>
     <h1>Enter the<br>haunted<br><em>mansion</em></h1>

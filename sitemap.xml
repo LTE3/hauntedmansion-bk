@@ -32,9 +32,6 @@
     <image:image>
       <image:loc>https://hauntedmansionbk.com/v/img-cali/card.jpg</image:loc>
     </image:image>
-    <image:image>
-      <image:loc>https://hauntedmansionbk.com/v/img-house/reference/calendar-hero.jpg</image:loc>
-    </image:image>
     <priority>0.9</priority>
   </url>
   <url>

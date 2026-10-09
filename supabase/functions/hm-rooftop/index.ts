@@ -4,10 +4,10 @@
 //   200: { nights: [{ date, label, times: ["18:00", ...] }] }
 //
 //   POST /functions/v1/hm-rooftop   { "event_date": "2026-10-16", "slot": "21:00", "party": 4,
-//                                     "name": "...", "email": "...", "phone": "optional",
+//                                     "name": "...", "email": "...", "phone": "required",
 //                                     "ticket": "optional HM- code", "website": "" }
 //   200: { code, night, time, party }
-//   400/404/409/429: { error: "bad_request" | "bad_email" | "unknown_night" | "unknown_time" | "too_many" }
+//   400/404/409/429: { error: "bad_request" | "bad_email" | "bad_phone" | "unknown_night" | "unknown_time" | "too_many" }
 //
 // Free: no Stripe, pay at the bar. Open the nights the house is open, on the
 // hour from 6 PM to the house's last entry. Unlimited tables for now, so the
@@ -91,6 +91,7 @@ Deno.serve(async (req) => {
       return reply(req, 400, { error: "bad_request" });
     }
     if (!validEmail(email)) return reply(req, 400, { error: "bad_email" });
+    if (phone.replace(/\D/g, "").length < 10) return reply(req, 400, { error: "bad_phone" });
 
     const night = (await openNights()).find((n) => n.date === date);
     if (!night) return reply(req, 404, { error: "unknown_night" });
@@ -102,7 +103,7 @@ Deno.serve(async (req) => {
 
     const c = code();
     await insert("hm_rooftop_reservations", {
-      code: c, event_date: date, slot, party, name, email, phone: phone || null, ticket_code: ticket,
+      code: c, event_date: date, slot, party, name, email, phone, ticket_code: ticket,
     });
 
     const msg = rooftopConfirmEmail({

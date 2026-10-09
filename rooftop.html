@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action https://www.facebook.com; img-src 'self' data: https://www.facebook.com https://connect.facebook.net; style-src 'sha256-FP5NtOIsso400XaT6CuHVl1U9ZBO2OB3nU/M/4jCakk='; font-src 'self'; script-src 'sha256-7eUPWVJz8Q7UILuAhaFGAe0fF0nZhfrAY4Q/gsIC+30=' 'sha256-Uzi35QZV774EV+37tQjkJgf0nz4je0C4jlQevBpACCc=' 'self' https://connect.facebook.net; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co https://www.facebook.com https://connect.facebook.net; frame-src https://www.facebook.com; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action https://www.facebook.com; img-src 'self' data: https://www.facebook.com https://connect.facebook.net; style-src 'sha256-FP5NtOIsso400XaT6CuHVl1U9ZBO2OB3nU/M/4jCakk='; font-src 'self'; script-src 'sha256-tM40IE9jDGdbKPXwr2XXJWBuJJ0DPxABnnZ4Ltdfb7U=' 'sha256-Uzi35QZV774EV+37tQjkJgf0nz4je0C4jlQevBpACCc=' 'self' https://connect.facebook.net; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co https://www.facebook.com https://connect.facebook.net; frame-src https://www.facebook.com; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>The Graveyard — Hidden Rooftop Bar, Haunted Mansion BK</title>
@@ -400,7 +400,7 @@ select.in{-webkit-appearance:none;appearance:none;padding-right:40px;
         </div>
       </fieldset>
       <div class="f">
-        <label class="lbl" for="name">Name on the table</label>
+        <label class="lbl" for="name">Name</label>
         <input class="in" id="name" name="name" autocomplete="name" maxlength="80" required>
       </div>
       <div class="f">
@@ -408,8 +408,8 @@ select.in{-webkit-appearance:none;appearance:none;padding-right:40px;
         <input class="in" id="email" name="email" type="email" autocomplete="email" inputmode="email" required>
       </div>
       <div class="f">
-        <label class="lbl" for="phone">Phone <i>&middot; optional</i></label>
-        <input class="in" id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="20">
+        <label class="lbl" for="phone">Phone</label>
+        <input class="in" id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="20" required>
       </div>
       <div class="hp" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
       <button class="submit" id="book-go" type="submit" disabled>Reserve my table <span aria-hidden="true">&rarr;</span></button>
@@ -594,6 +594,7 @@ select.in{-webkit-appearance:none;appearance:none;padding-right:40px;
 
   const ERR = {
     bad_email: "That email doesn't look right. Check it and try again.",
+    bad_phone: "Add a phone number we can reach you on.",
     unknown_night: "That night just closed. Pick another one.",
     unknown_time: "That time just closed. Pick another one.",
     too_many: "This email already has 3 tables that night. Reply to a confirmation email to change one.",
@@ -604,8 +605,9 @@ select.in{-webkit-appearance:none;appearance:none;padding-right:40px;
     const fd = new FormData(form);
     const slot = fd.get("slot"), name = (fd.get("name") || "").trim(), email = (fd.get("email") || "").trim();
     if (!slot) { say("Pick a time."); times.querySelector("input")?.focus(); return; }
-    if (!name) { say("Add the name for the table."); $("name").focus(); return; }
+    if (!name) { say("Add your name."); $("name").focus(); return; }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { say(ERR.bad_email); $("email").focus(); return; }
+    if ((fd.get("phone") || "").replace(/\D/g, "").length < 10) { say(ERR.bad_phone); $("phone").focus(); return; }
     say("");
     go.disabled = true;
     go.firstChild.textContent = "Reserving… ";

@@ -16,6 +16,9 @@
 //     again at payment, because two people can pass this at once);
 //   * trust a price from the browser: the product row is the price.
 //
+// Every session carries a second line, a processing fee of FEE_CENTS per
+// ticket (owner, 2026-10-08), so $25 single = $27 at checkout.
+//
 // The pending order row is written after Stripe accepts the session, so the
 // webhook has something to confirm; if that write fails the webhook inserts
 // the row itself from the session's metadata.
@@ -27,6 +30,7 @@ import { insert, select } from "../_shared/db.ts";
 import { BRAND, SITE, clock, formEncode, isNight, nightLabel, validEmail } from "../_shared/pay.ts";
 
 const ORIGINS = new Set([SITE, "http://127.0.0.1:8000", "http://localhost:8000"]);
+const FEE_CENTS = 200;
 
 function cors(req: Request): Record<string, string> {
   const o = req.headers.get("origin") || "";
@@ -106,6 +110,13 @@ Deno.serve(async (req) => {
               (slot ? (slot.adults_only ? " · 18+ only" : " · all ages") : ""),
           },
         },
+      }, {
+        quantity: product.tickets,
+        price_data: {
+          currency: "usd",
+          unit_amount: FEE_CENTS,
+          product_data: { name: "Processing fee" },
+        },
       }],
       metadata: { brand: "hm", event_date: date, slot: slotTime, product: product.code, tickets: product.tickets, tag },
       payment_intent_data: {
@@ -144,7 +155,7 @@ Deno.serve(async (req) => {
         slot: slotTime,
         product: product.code,
         tickets: product.tickets,
-        amount_cents: session.amount_total ?? cents,
+        amount_cents: session.amount_total ?? cents + FEE_CENTS * product.tickets,
         email,
         tag,
         status: "pending",

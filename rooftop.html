@@ -2,17 +2,17 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action https://www.facebook.com; img-src 'self' data: https://www.facebook.com https://connect.facebook.net; style-src 'sha256-h/fjL6FN0eme9MAE5RYvVAFapRZmK2eNgA2a17QnnNE='; font-src 'self'; script-src 'sha256-tM40IE9jDGdbKPXwr2XXJWBuJJ0DPxABnnZ4Ltdfb7U=' 'sha256-Uzi35QZV774EV+37tQjkJgf0nz4je0C4jlQevBpACCc=' 'self' https://connect.facebook.net; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co https://www.facebook.com https://connect.facebook.net; frame-src https://www.facebook.com; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action https://www.facebook.com; img-src 'self' data: https://www.facebook.com https://connect.facebook.net; style-src 'sha256-h/fjL6FN0eme9MAE5RYvVAFapRZmK2eNgA2a17QnnNE='; font-src 'self'; script-src 'sha256-B+RmR7aPCEfmgLxCnyuiTA9xzNij2JlzNxmSedVOFbU=' 'sha256-Uzi35QZV774EV+37tQjkJgf0nz4je0C4jlQevBpACCc=' 'self' https://connect.facebook.net; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co https://www.facebook.com https://connect.facebook.net; frame-src https://www.facebook.com; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>The Graveyard — Hidden Rooftop Bar, Haunted Mansion BK</title>
-<meta name="description" content="A secret open-air rooftop lounge above Haunted Mansion BK in Bushwick. Reserve a free table for up to 6, before or after your entry. Pay at the bar.">
+<title>The Graveyard — Hidden Rooftop Lounge, Haunted Mansion BK</title>
+<meta name="description" content="A secret open-air rooftop lounge above Haunted Mansion BK in Bushwick. Reserve a free table for up to 6, before or after your entry. Pay as you order.">
 <meta property="og:title" content="The Graveyard — Hidden Rooftop">
 <meta property="og:description" content="Hidden above The Haunted Mansion. Reserve a free table before or after your experience.">
 <meta property="og:image" content="https://hauntedmansionbk.com/img/rooftop/rooftop.jpg">
 <meta property="og:image:width" content="958">
 <meta property="og:image:height" content="388">
-<meta property="og:image:alt" content="A candlelit rooftop bar at night with red neon, skulls on the tables and the city skyline behind.">
+<meta property="og:image:alt" content="A candlelit rooftop lounge at night with red neon, skulls on the tables and the city skyline behind.">
 <meta property="og:url" content="https://hauntedmansionbk.com/rooftop.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Haunted Mansion BK">
@@ -396,7 +396,7 @@ select.in{-webkit-appearance:none;appearance:none;padding-right:40px;
       <button class="submit" id="book-go" type="submit" disabled>Reserve my table <span aria-hidden="true">&rarr;</span></button>
       <a class="to-menu" href="#menu">View menu</a>
       <p class="err" id="book-err" role="alert" hidden></p>
-      <p class="fine">Free to reserve &middot; up to 6 guests &middot; pay at the bar</p>
+      <p class="fine">Free to reserve &middot; up to 6 guests &middot; pay as you order</p>
     </form>
 
     <div class="done" id="book-done" tabindex="-1" hidden>
@@ -434,16 +434,8 @@ select.in{-webkit-appearance:none;appearance:none;padding-right:40px;
   <section class="sec" id="menu" aria-labelledby="menu-h">
     <h2 id="menu-h">The menu</h2>
     <p class="sub caps">Served beneath the night sky</p>
-    <p class="hh">Wednesday &amp; Thursday happy hour &middot; <b>$12</b> all signature drinks &middot; <b>$8</b> shots</p>
 
-    <div class="tabs" role="tablist" aria-label="Menu">
-      <button class="tab" type="button" role="tab" id="t-bites" aria-controls="p-bites" aria-selected="true">Rooftop bites</button>
-      <button class="tab" type="button" role="tab" id="t-drinks" aria-controls="p-drinks" aria-selected="false" tabindex="-1">Drinks</button>
-      <button class="tab" type="button" role="tab" id="t-shots" aria-controls="p-shots" aria-selected="false" tabindex="-1">Shots</button>
-      <button class="tab" type="button" role="tab" id="t-hh" aria-controls="p-hh" aria-selected="false" tabindex="-1">Happy hour</button>
-    </div>
-
-    <div class="panel" id="p-bites" role="tabpanel" aria-labelledby="t-bites" tabindex="0">
+    <div class="panel" id="p-bites">
       <h3>Rooftop bites</h3>
       <ul class="items">
         <li><b>Charred Chicken Skewers</b><span class="p">$15</span><small>Three per order.</small></li>
@@ -453,49 +445,11 @@ select.in{-webkit-appearance:none;appearance:none;padding-right:40px;
       </ul>
     </div>
 
-    <div class="panel" id="p-drinks" role="tabpanel" aria-labelledby="t-drinks" tabindex="0" hidden>
-      <h3>Signature drinks</h3>
-      <p class="note">$15 each &middot; $12 on Wednesday &amp; Thursday happy hour.</p>
-      <ul class="items">
-        <li><b>Ghostbuster Martini<span class="tag">TABLESIDE</span></b><span class="p">$15</span><small>Gin, melon liqueur, peach liqueur, fresh lime, splash of Irish cream</small></li>
-        <li><b>Dragon&rsquo;s Blood<span class="tag">TABLESIDE</span></b><span class="p">$15</span><small>White rum, dark rum, raspberry-thyme syrup, lemon</small></li>
-        <li><b>Wicked Web Martini<span class="tag">TABLESIDE</span></b><span class="p">$15</span><small>Vodka, apple, lemon, grenadine, purple shimmer</small></li>
-        <li><b>Vampire Kiss<span class="tag">TABLESIDE</span></b><span class="p">$15</span><small>Vodka, dragon fruit, cranberry, strawberry, lime, pink shimmer</small></li>
-        <li><b>Black Lemon Drop Martini</b><span class="p">$15</span><small>Citron vodka, lemon, simple syrup, black shimmer, dried lemon</small></li>
-        <li><b>Zombie Pi&ntilde;a Colada</b><span class="p">$15</span><small>Coconut rum, pineapple, lime, cream of coconut, blue cura&ccedil;ao</small></li>
-        <li><b>Zombie Margarita</b><span class="p">$15</span><small>Tequila, orange liqueur, lime, pineapple, blue cura&ccedil;ao, cherry ice</small></li>
-        <li><b>Bloody Shirley Spritz</b><span class="p">$15</span><small>Vodka, prosecco, lemon-lime soda, grenadine</small></li>
-      </ul>
-    </div>
-
-    <div class="panel" id="p-shots" role="tabpanel" aria-labelledby="t-shots" tabindex="0" hidden>
-      <h3>Shots</h3>
-      <p class="note">$8 each.</p>
-      <ul class="items">
-        <li><b>Zombie Brain Shot</b><span class="p">$8</span><small>Peach schnapps, melon liqueur, Irish cream, grenadine</small></li>
-        <li><b>Green Ghost</b><span class="p">$8</span><small>Vodka, melon liqueur, pineapple</small></li>
-        <li><b>Red Rum</b><span class="p">$8</span><small>White rum, raspberry-thyme syrup, lime</small></li>
-        <li><b>Pennywise Bite Drops</b><span class="p">$8</span><small>Pineapple rum, lime, coconut cream, grenadine</small></li>
-        <li><b>Hexed Apple</b><span class="p">$8</span><small>Vodka, apple, lemon, grenadine swirl</small></li>
-      </ul>
-    </div>
-
-    <div class="panel" id="p-hh" role="tabpanel" aria-labelledby="t-hh" tabindex="0" hidden>
-      <h3>Happy hour</h3>
-      <p class="note">Every Wednesday &amp; Thursday.</p>
-      <ul class="items">
-        <li><b>All signature drinks</b><span class="p"><s>$15</s>$12</span><small>Ghostbuster Martini, Dragon&rsquo;s Blood, Wicked Web Martini, Vampire Kiss, Black Lemon Drop Martini, Zombie Pi&ntilde;a Colada, Zombie Margarita, Bloody Shirley Spritz</small></li>
-        <li><b>Shots</b><span class="p">$8</span><small>Zombie Brain Shot, Green Ghost, Red Rum, Pennywise Bite Drops, Hexed Apple</small></li>
-      </ul>
-    </div>
-
     <div class="menu-foot">
       <p>Full menu from Don Rique available at arrival, or see it at <a href="https://donrique.com" rel="noopener" target="_blank">donrique.com</a></p>
       <p class="tagline">Where the house ends, the rooftop awakens.</p>
     </div>
   </section>
-
-  <p class="age21">21+ to drink &middot; ID at the bar</p>
 </main>
 
 <footer>
@@ -625,7 +579,7 @@ select.in{-webkit-appearance:none;appearance:none;padding-right:40px;
       $("done-h").textContent = name + ", your table is waiting above the house.";
       $("d-mail").textContent = j.emailed === false
         ? "Your table is booked. The confirmation email didn't go through, so screenshot this."
-        : "Confirmation sent to " + email + ". Free to reserve; pay for what you order at the bar.";
+        : "Confirmation sent to " + email + ". Free to reserve; pay for what you order on the rooftop.";
       form.hidden = true;
       const done = $("book-done");
       done.hidden = false;

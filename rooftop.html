@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action https://www.facebook.com; img-src 'self' data: https://www.facebook.com https://connect.facebook.net; style-src 'sha256-zLX0h7gNs3wkR5FqhcqL3yG82h0eSl4UxDvdH5Q1O0A='; font-src 'self'; script-src 'sha256-tM40IE9jDGdbKPXwr2XXJWBuJJ0DPxABnnZ4Ltdfb7U=' 'sha256-Uzi35QZV774EV+37tQjkJgf0nz4je0C4jlQevBpACCc=' 'self' https://connect.facebook.net; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co https://www.facebook.com https://connect.facebook.net; frame-src https://www.facebook.com; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action https://www.facebook.com; img-src 'self' data: https://www.facebook.com https://connect.facebook.net; style-src 'sha256-jKD+wQSqJoaGbkwPEL0zk9Byr7FW4XPQXTj+sxCBYGc='; font-src 'self'; script-src 'sha256-tM40IE9jDGdbKPXwr2XXJWBuJJ0DPxABnnZ4Ltdfb7U=' 'sha256-Uzi35QZV774EV+37tQjkJgf0nz4je0C4jlQevBpACCc=' 'self' https://connect.facebook.net; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co https://www.facebook.com https://connect.facebook.net; frame-src https://www.facebook.com; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>The Graveyard — Hidden Rooftop Bar, Haunted Mansion BK</title>
@@ -54,7 +54,7 @@
   --ease-in:cubic-bezier(.55,.06,.68,.19)
 }
 *{box-sizing:border-box}
-html{background:#000;-webkit-text-size-adjust:100%}
+html{background:#000;-webkit-text-size-adjust:100%;scroll-behavior:smooth}
 body{
   margin:0;min-height:100svh;background:var(--ink);color:var(--bone);
   font:500 16px/1.55 "Spectral",Georgia,"Times New Roman",serif;-webkit-font-smoothing:antialiased;
@@ -282,6 +282,11 @@ select.in{-webkit-appearance:none;appearance:none;padding-right:40px;
   font:500 17px/1 "Spectral",Georgia,serif;letter-spacing:.24em;text-transform:uppercase;transition:transform .16s var(--ease-out),opacity .2s}
 .submit:active{transform:scale(.97)}
 .submit[disabled]{opacity:.55;cursor:wait}
+.to-menu{display:flex;justify-content:center;align-items:center;min-height:52px;margin:10px 0 0;border-radius:8px;border:1px solid var(--line);
+  background:rgba(255,255,255,.03);color:var(--bone);text-decoration:none;font:500 15px/1 "Spectral",Georgia,serif;letter-spacing:.24em;text-transform:uppercase;
+  transition:transform .16s var(--ease-out)}
+.to-menu:active{transform:scale(.97)}
+.to-menu:focus-visible{outline:2px solid #ff6b5f;outline-offset:2px}
 .fine{margin:14px 0 0;text-align:center;font:700 12.5px/1.6 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
 .err{margin:14px 0 0;padding:11px 13px;border-left:2px solid var(--red-lit);background:rgba(227,48,39,.1);color:var(--bone);font-size:15px}
 .done{margin:24px 0 0;padding:26px 18px;border:1px solid rgba(255,89,78,.5);border-radius:10px;text-align:center;
@@ -390,6 +395,7 @@ select.in{-webkit-appearance:none;appearance:none;padding-right:40px;
       </div>
       <div class="hp" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
       <button class="submit" id="book-go" type="submit" disabled>Reserve my table <span aria-hidden="true">&rarr;</span></button>
+      <a class="to-menu" href="#menu">View menu</a>
       <p class="err" id="book-err" role="alert" hidden></p>
       <p class="fine">Free to reserve &middot; up to 6 guests &middot; pay at the bar</p>
     </form>

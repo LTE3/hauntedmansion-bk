@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action https://www.facebook.com; img-src 'self' data: https://tqeunmqnaoyrerkbhokk.supabase.co https://www.facebook.com https://connect.facebook.net; style-src 'sha256-FDW1/++fQPAohizOlbQWzP+q0FXP6LQGIIiawHfp2Oc='; font-src 'self'; script-src 'sha256-bkNMbYxZBhLT5DNNOXhExuVg2VcESzyYvMyvKMyhj0I=' 'sha256-OcImrG/DyckyV1scoT+me6zo3APeFodfYK9u5CMW9x8=' 'self' https://connect.facebook.net; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co https://www.facebook.com https://connect.facebook.net; frame-src https://www.facebook.com; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action https://www.facebook.com; img-src 'self' data: https://tqeunmqnaoyrerkbhokk.supabase.co https://www.facebook.com https://connect.facebook.net; style-src 'sha256-wtCdBayVV0D0XhgVLqidkHr0bc49oDBU5Zw0yuSVQHo='; font-src 'self'; script-src 'sha256-bkNMbYxZBhLT5DNNOXhExuVg2VcESzyYvMyvKMyhj0I=' 'sha256-OcImrG/DyckyV1scoT+me6zo3APeFodfYK9u5CMW9x8=' 'self' https://connect.facebook.net; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co https://www.facebook.com https://connect.facebook.net; frame-src https://www.facebook.com; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Your ticket | Haunted Mansion BK</title>
@@ -275,8 +275,9 @@ main:focus{outline:none}
 .gy-go{position:relative;display:grid;margin:20px 0 0;border:1px solid #ff5b52;border-radius:6px;overflow:hidden;
   background:linear-gradient(#df342a,#951409);box-shadow:0 0 28px rgba(227,48,39,.35),inset 0 1px 0 rgba(255,255,255,.18)}
 .gy-go a{text-decoration:none;color:#fff3ec}
-.gy-go .main{display:flex;justify-content:center;align-items:center;gap:14px;padding:16px 12px 6px;font:500 clamp(20px,5.8vw,24px)/1 "Spectral",Georgia,serif;letter-spacing:.2em;text-transform:uppercase}
-.gy-go .menu-link{padding:4px 12px 14px;font:500 12.5px/1 "Spectral",Georgia,serif;letter-spacing:.26em;text-transform:uppercase;opacity:.92}
+.gy-go .main{display:flex;justify-content:center;align-items:center;gap:14px;min-height:64px;padding:12px;font:500 clamp(20px,5.8vw,24px)/1 "Spectral",Georgia,serif;letter-spacing:.2em;text-transform:uppercase}
+.menu-link{display:flex;justify-content:center;align-items:center;gap:10px;min-height:48px;margin:8px 0 0;font:500 12.5px/1 "Spectral",Georgia,serif;letter-spacing:.26em;text-transform:uppercase;color:#ff8a80;text-decoration:none}
+.menu-link:focus-visible{outline:2px solid #ff6b5f;outline-offset:2px}
 .gy-go a:focus-visible{outline:2px solid #fff;outline-offset:-4px}
 .gy-later{display:block;width:100%;min-height:52px;margin:10px 0 0;border:1px solid var(--line);border-radius:6px;background:rgba(255,255,255,.03);
   font:500 14px/1 "Spectral",Georgia,serif;letter-spacing:.3em;text-transform:uppercase;color:var(--bone);transition:transform .16s var(--ease-out,ease-out)}
@@ -365,8 +366,8 @@ main:focus{outline:none}
     </ul>
     <div class="gy-go">
       <a class="main" id="gy-book" href="rooftop.html#book">Book a table <span aria-hidden="true">&rarr;</span></a>
-      <a class="menu-link" href="rooftop.html#menu">See menu <span aria-hidden="true">&rarr;</span></a>
     </div>
+    <a class="menu-link" href="rooftop.html#menu">See menu <span aria-hidden="true">&rarr;</span></a>
     <button class="gy-later" type="button" data-gy-close>Maybe later</button>
   </div>
 </dialog>

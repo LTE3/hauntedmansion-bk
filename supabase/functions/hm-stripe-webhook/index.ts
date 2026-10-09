@@ -31,6 +31,7 @@
 import { insert, rest, rpc, select } from "../_shared/db.ts";
 import { sendEmail, ticketEmail } from "../_shared/mail.ts";
 import { isNight, verifyStripeSignature } from "../_shared/pay.ts";
+import { rooftopPromoEmail } from "../_shared/rooftop.ts";
 
 const JSONH = { "Content-Type": "application/json" };
 const ok = (body: unknown) => new Response(JSON.stringify(body), { status: 200, headers: JSONH });
@@ -135,6 +136,19 @@ async function email(sessionId: string): Promise<void> {
     else await note({ email_error: r.error || "send failed" });
   } catch (e) {
     await note({ email_error: String((e as Error).message).slice(0, 300) });
+  }
+
+  // The Graveyard rooftop (owner, 2026-10-08): a second, separate email
+  // after the ticket, once per order. Its failure never touches the ticket.
+  try {
+    const [again] = await select<{ rooftop_email_sent_at: string | null }>("hm_orders?stripe_session_id=eq." +
+      encodeURIComponent(sessionId) + "&select=rooftop_email_sent_at");
+    if (again && !again.rooftop_email_sent_at) {
+      const r = await sendEmail(o.email as string, rooftopPromoEmail({ eventDate: o.event_date, ticketCode: o.ticket_code as string, name: o.name }));
+      if (r.ok) await note({ rooftop_email_sent_at: new Date().toISOString() });
+    }
+  } catch (_) {
+    // a missed promo is not worth a webhook retry
   }
 }
 

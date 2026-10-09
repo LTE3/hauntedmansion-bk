@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action https://www.facebook.com; img-src 'self' data: https://tqeunmqnaoyrerkbhokk.supabase.co https://www.facebook.com https://connect.facebook.net; style-src 'sha256-aR4/irVEWowUu36DghfIexrsi4WPxfrRjhre0qH5pek='; font-src 'self'; script-src 'sha256-jvnMjYqPJkWV56dloZKMnvOwvO107bLOS5HQ7ef5t8I=' 'self' https://connect.facebook.net; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co https://www.facebook.com https://connect.facebook.net; frame-src https://www.facebook.com; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action https://www.facebook.com; img-src 'self' data: https://tqeunmqnaoyrerkbhokk.supabase.co https://www.facebook.com https://connect.facebook.net; style-src 'sha256-FDW1/++fQPAohizOlbQWzP+q0FXP6LQGIIiawHfp2Oc='; font-src 'self'; script-src 'sha256-bkNMbYxZBhLT5DNNOXhExuVg2VcESzyYvMyvKMyhj0I=' 'sha256-OcImrG/DyckyV1scoT+me6zo3APeFodfYK9u5CMW9x8=' 'self' https://connect.facebook.net; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co https://www.facebook.com https://connect.facebook.net; frame-src https://www.facebook.com; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Your ticket | Haunted Mansion BK</title>
@@ -241,6 +241,47 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
   text-transform:uppercase;text-decoration:none;outline:2px solid #ff6b5f;outline-offset:2px
 }
 main:focus{outline:none}
+/* The Graveyard, right after the ticket (owner mock-up, 2026-10-08). Once per
+   checkout, only on the ?s= arrival from Stripe, never on a reopened ticket
+   link. A <dialog>: Esc, focus and the inert page come with the element. */
+.gy{width:min(94vw,440px);max-height:min(94svh,900px);margin:auto;padding:0;border:0;background:transparent;color:var(--bone);overflow:visible}
+.gy::backdrop{background:rgba(0,0,0,.78);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.gy[open]{animation:gy-in .42s var(--ease) both}
+.gy[open]::backdrop{animation:gy-fade .3s ease-out both}
+@keyframes gy-in{from{opacity:0;transform:translate3d(0,18px,0) scale(.97)}to{opacity:1;transform:none}}
+@keyframes gy-fade{from{opacity:0}to{opacity:1}}
+.gy-card{position:relative;max-height:min(94svh,900px);overflow-y:auto;padding:22px 16px 18px;text-align:center;border:1px solid rgba(255,89,78,.55);border-radius:4px;
+  background:radial-gradient(ellipse 90% 40% at 50% 0%,rgba(130,10,6,.35),transparent 70%),#070403;
+  box-shadow:0 0 0 5px #070403,0 0 0 6px rgba(255,89,78,.3),0 0 60px rgba(227,48,39,.25)}
+.gy-card:focus{outline:none}
+.gy-x{position:absolute;top:8px;right:8px;z-index:3;display:grid;place-items:center;width:40px;height:40px;color:var(--bone);opacity:.8}
+.gy-x:hover,.gy-x:focus-visible{opacity:1}
+.gy-x svg{width:20px;height:20px}
+.gy-caps{margin:0;font:500 13px/1.3 "Spectral",Georgia,serif;letter-spacing:.3em;text-transform:uppercase}
+.gy-in{font-size:clamp(17px,4.8vw,20px);letter-spacing:.34em}
+.gy-red{color:#ff594e}
+.gy-unlock{margin-top:6px;font-size:11.5px}
+.gy-logo{display:block;width:88%;height:auto;margin:10px auto 0;position:relative;z-index:2;filter:drop-shadow(0 8px 20px rgba(0,0,0,.8))}
+.gy-photo{display:block;width:calc(100% + 32px);height:auto;margin:-34px -16px 0;aspect-ratio:958/388;object-fit:cover;
+  -webkit-mask-image:linear-gradient(transparent,#000 25%,#000 70%,transparent);mask-image:linear-gradient(transparent,#000 25%,#000 70%,transparent)}
+.gy-book{margin:4px 0 0;font:500 clamp(25px,7.4vw,32px)/1.1 "Spectral",Georgia,serif;letter-spacing:.14em;text-transform:uppercase}
+.gy-when{margin-top:6px;font-size:11.5px;letter-spacing:.2em}
+.gy-when b{font-weight:500;color:var(--bone)}
+.gy-perks{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,1fr)}
+.gy-perks li{display:grid;justify-items:center;gap:8px;padding:0 3px;border-left:1px solid var(--line);
+  font:700 10.5px/1.25 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.13em;text-transform:uppercase}
+.gy-perks li:first-child{border-left:0}
+.gy-perks svg{width:30px;height:30px;color:#ff594e;filter:drop-shadow(0 0 7px rgba(227,48,39,.5))}
+.gy-go{position:relative;display:grid;margin:20px 0 0;border:1px solid #ff5b52;border-radius:6px;overflow:hidden;
+  background:linear-gradient(#df342a,#951409);box-shadow:0 0 28px rgba(227,48,39,.35),inset 0 1px 0 rgba(255,255,255,.18)}
+.gy-go a{text-decoration:none;color:#fff3ec}
+.gy-go .main{display:flex;justify-content:center;align-items:center;gap:14px;padding:16px 12px 6px;font:500 clamp(20px,5.8vw,24px)/1 "Spectral",Georgia,serif;letter-spacing:.2em;text-transform:uppercase}
+.gy-go .menu-link{padding:4px 12px 14px;font:500 12.5px/1 "Spectral",Georgia,serif;letter-spacing:.26em;text-transform:uppercase;opacity:.92}
+.gy-go a:focus-visible{outline:2px solid #fff;outline-offset:-4px}
+.gy-later{display:block;width:100%;min-height:52px;margin:10px 0 0;border:1px solid var(--line);border-radius:6px;background:rgba(255,255,255,.03);
+  font:500 14px/1 "Spectral",Georgia,serif;letter-spacing:.3em;text-transform:uppercase;color:var(--bone);transition:transform .16s var(--ease-out,ease-out)}
+.gy-later:active,.gy-go:active{transform:scale(.98)}
+.gy-later:focus-visible,.gy-x:focus-visible{outline:2px solid #ff6b5f;outline-offset:2px}
 </style>
 <script src="pixel.js"></script>
 </head>
@@ -304,6 +345,31 @@ main:focus{outline:none}
     <p><a href="/">The door</a> &middot; <a href="privacy.html">What we keep</a> &middot; <a href="terms.html">Terms</a> &middot; <a href="refund.html">Refunds</a></p>
   </footer>
 </main>
+
+<dialog class="gy" id="gy" aria-labelledby="gy-h">
+  <div class="gy-card" tabindex="-1">
+    <button class="gy-x" type="button" aria-label="Close" data-gy-close>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <p class="gy-caps gy-in" id="gy-h">You&rsquo;re in.</p>
+    <p class="gy-caps gy-red gy-unlock">Now unlock the rooftop.</p>
+    <img class="gy-logo" src="img/rooftop/graveyard-logo.webp" width="760" height="435" alt="The Graveyard &mdash; Hidden Rooftop at Haunted Mansion BK">
+    <img class="gy-photo" src="img/rooftop/rooftop.webp" width="958" height="388" alt="" loading="lazy">
+    <p class="gy-book">Book a table</p>
+    <p class="gy-caps gy-red gy-when">Before <b>or</b> after <b>your</b> experience</p>
+      <ul class="gy-perks">
+      <li><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5h22L16 17z"/><path d="M16 17v10M10 27h12M21 2l-4 6"/><circle cx="22.5" cy="8.5" r="1.6"/></svg>Signature cocktails</li>
+      <li><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3v9a3 3 0 0 0 3 3v14M6 3v8M12 3v8M12 15a3 3 0 0 0 3-3V3"/><path d="M23 29V3c-3 2-4.5 7-4.5 11 0 2 1 3 4.5 3"/></svg>Food bites</li>
+      <li><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 24V7l14-3v17"/><path d="M12 11l14-3"/><ellipse cx="8.5" cy="24.5" rx="3.5" ry="2.8"/><ellipse cx="22.5" cy="21.5" rx="3.5" ry="2.8"/></svg>Music &amp; vibes</li>
+      <li><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 29V13a9 9 0 0 1 18 0v16z"/><path d="M4 29h24M16 9v11M12 13h8"/></svg>Rooftop views</li>
+    </ul>
+    <div class="gy-go">
+      <a class="main" id="gy-book" href="rooftop.html#book">Book a table <span aria-hidden="true">&rarr;</span></a>
+      <a class="menu-link" href="rooftop.html#menu">See menu <span aria-hidden="true">&rarr;</span></a>
+    </div>
+    <button class="gy-later" type="button" data-gy-close>Maybe later</button>
+  </div>
+</dialog>
 
 <div class="drawer" id="drawer">
   <div class="drawer-top">
@@ -421,6 +487,7 @@ main:focus{outline:none}
       const nameLine = document.getElementById("name-line");
       if(data.name && nameLine){ setText("f-name", data.name); nameLine.hidden = false; }
       show("paid");
+      if(s) document.dispatchEvent(new CustomEvent("hm:paid", {detail: data}));
       /* Meta Purchase, once per live checkout. Stripe only sends a buyer to
          ?s=<session> after payment succeeds, and this branch only runs once the
          webhook has marked the order paid (ticket_code is null until then), so a
@@ -464,6 +531,29 @@ main:focus{outline:none}
 
   document.getElementById("retry")?.addEventListener("click", load);
   load();
+}
+</script>
+<script>
+/* The rooftop invitation: opened by the ticket script once a paid ?s= ticket
+   has rendered. Free tables, so it only ever points at the booking page with
+   the night and the ticket code already filled in. */
+{
+  const dlg = document.getElementById("gy");
+  document.addEventListener("hm:paid", e => {
+    const d = e.detail || {};
+    if(!dlg || typeof dlg.showModal !== "function" || dlg.open) return;
+    const key = "hm-gy-" + (d.ticket_code || "");
+    try{ if(localStorage.getItem(key) === "1") return; localStorage.setItem(key, "1"); }catch(x){}
+    const q = new URLSearchParams();
+    if(/^\d{4}-\d{2}-\d{2}$/.test(d.event_date || "")) q.set("d", d.event_date);
+    if(/^HM-[0-9A-F]{8}$/.test(d.ticket_code || "")) q.set("t", d.ticket_code);
+    const qs = q.toString() ? "?" + q : "";
+    document.getElementById("gy-book").href = "rooftop.html" + qs + "#book";
+    dlg.querySelector(".menu-link").href = "rooftop.html" + qs + "#menu";
+    setTimeout(() => { dlg.showModal(); dlg.querySelector(".gy-card").focus(); }, 900);
+  });
+  dlg?.querySelectorAll("[data-gy-close]").forEach(b => b.addEventListener("click", () => dlg.close()));
+  dlg?.addEventListener("click", e => { if(e.target === dlg) dlg.close(); });
 }
 </script>
 </body>

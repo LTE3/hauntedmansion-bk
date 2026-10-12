@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action https://www.facebook.com; img-src 'self' data: https://tqeunmqnaoyrerkbhokk.supabase.co https://www.facebook.com https://connect.facebook.net; style-src 'sha256-CL82tYMpTNnafxp88YdZK+KTT8zix4m6uHU8D6e9ehw='; font-src 'self'; script-src 'sha256-bkNMbYxZBhLT5DNNOXhExuVg2VcESzyYvMyvKMyhj0I=' 'sha256-OcImrG/DyckyV1scoT+me6zo3APeFodfYK9u5CMW9x8=' 'self' https://connect.facebook.net; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co https://www.facebook.com https://connect.facebook.net; frame-src https://www.facebook.com; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action https://www.facebook.com; img-src 'self' data: https://tqeunmqnaoyrerkbhokk.supabase.co https://www.facebook.com https://connect.facebook.net; style-src 'sha256-CL82tYMpTNnafxp88YdZK+KTT8zix4m6uHU8D6e9ehw='; font-src 'self'; script-src 'sha256-uBBg4RsjINxTShpTf8Zyk+zif1N1JoEeP5b5RKrx29s=' 'sha256-OcImrG/DyckyV1scoT+me6zo3APeFodfYK9u5CMW9x8=' 'self' https://connect.facebook.net; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co https://www.facebook.com https://connect.facebook.net; frame-src https://www.facebook.com; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Your ticket | Haunted Mansion BK</title>
@@ -331,6 +331,10 @@ main:focus{outline:none}
       <p class="state-copy">Payment has not landed yet. Refresh in a minute.</p>
     </div>
 
+    <div class="state" id="state-refunded" hidden>
+      <p class="state-copy">This ticket was refunded and is no longer valid. Pick another night on <a href="nights.html">Nights</a>.</p>
+    </div>
+
     <div class="state" id="state-notfound" hidden>
       <p class="state-copy">This link is not a ticket. Pick a night on <a href="nights.html">Nights</a>.</p>
     </div>
@@ -501,6 +505,8 @@ main:focus{outline:none}
           try{ localStorage.setItem("hm-px-" + s, "1"); }catch(e){}
         }
       }
+    } else if(data && data.status === "refunded"){
+      show("refunded");
     } else {
       show("pending");
       /* Stripe can redirect a beat before its webhook marks the order paid.

@@ -63,7 +63,7 @@ Deno.serve(async (req) => {
 
   const date = typeof body.event_date === "string" ? body.event_date : "";
   const code = typeof body.product === "string" ? body.product : "";
-  const slotIn = typeof body.slot === "string" && /^([01]\d|2[0-3]):00$/.test(body.slot) ? body.slot : null;
+  const slotIn = typeof body.slot === "string" && /^([01]\d|2[0-3]):[03]0$/.test(body.slot) ? body.slot : null;
   const email = validEmail(body.email) ? body.email : null;
   const tag = typeof body.tag === "string" ? body.tag.replace(/[^\w.-]/g, "").slice(0, 40) : null;
 

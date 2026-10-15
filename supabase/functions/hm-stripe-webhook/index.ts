@@ -77,7 +77,7 @@ async function confirm(s: Session, eventId: string): Promise<string> {
       stripe_session_id: s.id,
       livemode: s.livemode ?? null,
       event_date: m.event_date,
-      slot: /^\d{2}:00$/.test(m.slot || "") ? m.slot : null,
+      slot: /^\d{2}:[03]0$/.test(m.slot || "") ? m.slot : null,
       product: m.product,
       tickets,
       amount_cents: s.amount_total ?? 0,

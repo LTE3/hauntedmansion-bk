@@ -2722,20 +2722,30 @@ main:focus{outline:none}
         <p class="slot-head"><span>All ages</span><span id="slot-allages-span">4&ndash;8 PM</span></p>
         <div class="slot-row">
           <label class="slot"><input type="radio" name="slot" value="14:00">2:00</label>
+          <label class="slot"><input type="radio" name="slot" value="14:30">2:30</label>
           <label class="slot"><input type="radio" name="slot" value="15:00">3:00</label>
+          <label class="slot"><input type="radio" name="slot" value="15:30">3:30</label>
           <label class="slot"><input type="radio" name="slot" value="16:00">4:00</label>
+          <label class="slot"><input type="radio" name="slot" value="16:30">4:30</label>
           <label class="slot"><input type="radio" name="slot" value="17:00">5:00</label>
+          <label class="slot"><input type="radio" name="slot" value="17:30">5:30</label>
           <label class="slot"><input type="radio" name="slot" value="18:00">6:00</label>
+          <label class="slot"><input type="radio" name="slot" value="18:30">6:30</label>
           <label class="slot"><input type="radio" name="slot" value="19:00">7:00</label>
+          <label class="slot"><input type="radio" name="slot" value="19:30">7:30</label>
         </div>
       </div>
       <div class="slot-group">
         <p class="slot-head"><span><b>18+</b> Adult</span><span id="slot-adult-span">8&ndash;11 PM</span></p>
         <div class="slot-row">
           <label class="slot"><input type="radio" name="slot" value="20:00">8:00</label>
+          <label class="slot"><input type="radio" name="slot" value="20:30">8:30</label>
           <label class="slot"><input type="radio" name="slot" value="21:00">9:00</label>
+          <label class="slot"><input type="radio" name="slot" value="21:30">9:30</label>
           <label class="slot"><input type="radio" name="slot" value="22:00">10:00</label>
+          <label class="slot"><input type="radio" name="slot" value="22:30">10:30</label>
           <label class="slot"><input type="radio" name="slot" value="23:00">11:00</label>
+          <label class="slot"><input type="radio" name="slot" value="23:30">11:30</label>
           <label class="slot"><input type="radio" name="slot" value="00:00">12:00</label>
         </div>
       </div>
@@ -3018,12 +3028,14 @@ main:focus{outline:none}
       if(openSlots && Object.keys(openSlots).some(k => k.startsWith(key)))
         return Object.keys(openSlots).filter(k => k.startsWith(key)).map(k => k.slice(-5));
       const dow = (day + 3) % 7, late = day >= 15;
-      if(dow === 3) return ["19:00", "20:00", "21:00", "22:00"];
+      if(dow === 3) return ["19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00"];
       const h = ["16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00"];
       if(late && (dow === 6 || dow === 0)) h.unshift("14:00", "15:00");
       if(late && dow >= 4) h.push("23:00");
       if(late && (dow === 5 || dow === 6)) h.push("00:00");
-      return h;
+      // Owner 2026-10-15: entry every 30 minutes, 25 a slot. The last hour
+      // of the night gets no half past - the night ends where it did.
+      return h.flatMap((v, i) => i < h.length - 1 ? [v, v.slice(0, 2) + ":30"] : [v]);
     };
     const adultSpan = document.getElementById("slot-adult-span");
     const ampm = h => (h % 12 || 12) + (h % 24 < 12 ? " AM" : " PM");
@@ -3158,7 +3170,7 @@ main:focus{outline:none}
         if(r.status === 409 && data && data.error === "sold_out"){
           slot.checked = false;
           slot.disabled = true;
-          errorEl.textContent = "That entry time is full. Pick another hour or another night.";
+          errorEl.textContent = "That entry time is full. Pick another time or another night.";
           errorEl.hidden = false;
           sending = false;
           cta.disabled = true;

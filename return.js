@@ -5,6 +5,7 @@
   const SUPABASE_URL = "https://tqeunmqnaoyrerkbhokk.supabase.co";
   const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxZXVubXFuYW95cmVya2Job2trIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4OTQ1MzQsImV4cCI6MjA4OTQ3MDUzNH0.hkkuc7_YE2yf0w0NQENpahAxqxxqBfjq8n5QhtTIkw8";
   const HEADERS = { apikey: SUPABASE_ANON, Authorization: "Bearer " + SUPABASE_ANON, "Content-Type": "application/json" };
+  const BLOCKED = ["2026-10-31"]; // Halloween is full price only (owner, 2026-10-21)
   const PRODUCTS = ["ret_one", "ret_two", "ret_three", "ret_four", "ret_five", "ret_six"];
   const DOW = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -99,7 +100,7 @@
     if(left < 1){ say("Your returning-guest tickets have all been booked. See you there!"); return; }
     const now = nyParts();
     (Array.isArray(rows) ? rows : []).forEach(r => {
-      if(r.event_date < now.date) return;
+      if(r.event_date < now.date || BLOCKED.includes(r.event_date)) return;
       const slot = String(r.slot).slice(0, 5);
       const past = r.event_date === now.date && slotMins(slot) <= now.mins + 15;
       if(past) return;

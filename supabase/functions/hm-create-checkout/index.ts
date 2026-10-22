@@ -31,6 +31,7 @@ import { BRAND, SITE, clock, formEncode, isNight, nightLabel, validEmail } from 
 
 const ORIGINS = new Set([SITE, "http://127.0.0.1:8000", "http://localhost:8000"]);
 const FEE_CENTS = 200;
+const RET_BLOCKED = new Set(["2026-10-31"]);
 
 function cors(req: Request): Record<string, string> {
   const o = req.headers.get("origin") || "";
@@ -101,6 +102,8 @@ Deno.serve(async (req) => {
     const [product] = await select<Product>("hm_products?code=eq." + code + "&is_active=is.true&select=code,label,tickets,cents,is_active");
     if (!product) return reply(req, 404, { error: "unknown_product" });
     const returning = product.code.startsWith("ret_");
+    // Halloween sells at full price (owner, 2026-10-21): no returning-guest tickets.
+    if (returning && RET_BLOCKED.has(date)) return reply(req, 409, { error: "not_on_sale" });
     if (returning) {
       const found = token ? await inviteLeft(token) : null;
       if (!found) return reply(req, 403, { error: "invite" });

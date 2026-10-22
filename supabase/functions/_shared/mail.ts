@@ -51,8 +51,8 @@ export function ticketEmail(t: TicketDetails): { subject: string; html: string; 
     ["Admits", people + " (" + t.productLabel.toLowerCase() + ")"],
     ["Paid", money(t.amountCents)],
     ["Where", t.venueAddress],
-    // Don Rique's (owner, 2026-10-22): every admission gets one cocktail or 1 signature appetizer.
-    ["Includes", "1 signature cocktail (21+, photo ID) or 1 signature appetizer per guest at The Graveyard, Don Rique’s, 2 Knickerbocker Ave, across the street. Show this ticket there."],
+    // Don Rique's (owner, 2026-10-22): every admission gets one cocktail or 1 signature mocktail.
+    ["Includes", "1 signature cocktail (21+, photo ID) or 1 signature mocktail per guest at The Graveyard, Don Rique’s, 2 Knickerbocker Ave, across the street. Show this ticket there."],
   ];
 
   const text = [

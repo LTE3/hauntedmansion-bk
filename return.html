@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; img-src 'self' data:; style-src 'self'; font-src 'self'; script-src 'self'; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; object-src 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Come back | Haunted Mansion BK</title>
+<!-- Returning guests (owner, 2026-10-21). Reached only from a personal link in
+     the opening-weekend apology email; the invite token is in the query string,
+     so this page stays out of every index. -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#030202">
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23050505"/><path d="M6 30V13L16 5l10 8v17z" fill="none" stroke="%233a332c" stroke-width="2"/><rect x="13" y="18" width="6" height="12" fill="%23c2702f"/></svg>'>
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" as="font" type="font/woff2" href="fonts/creepster-400-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/spectral-500-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/barlowcondensed-700-latin.woff2" crossorigin>
+<link rel="stylesheet" href="return.css">
+</head>
+<body>
+<header class="topbar"><a class="brand" href="/"><span class="pulse-dot" aria-hidden="true"></span>Haunted Mansion BK</a></header>
+<main class="page">
+  <section class="hero">
+    <p class="eyebrow">Returning guest</p>
+    <h1>Let&rsquo;s make <em>this right</em></h1>
+    <p class="lede" id="hello">Thank you for giving us another chance.</p>
+    <ul class="facts">
+      <li><strong>$20 a ticket</strong>, all in. No other fees.</li>
+      <li>One signature cocktail at The Graveyard (21+ with ID), mocktails for all ages.</li>
+      <li>The Graveyard is at Don Rique&rsquo;s, 2 Knickerbocker Ave, across the street.</li>
+    </ul>
+  </section>
+
+  <p class="status" id="status" role="status">Checking your link&hellip;</p>
+
+  <form class="buy" id="buy" hidden>
+    <fieldset>
+      <legend>1. Pick a night</legend>
+      <div class="chips" id="nights"></div>
+    </fieldset>
+    <fieldset id="times-set" hidden>
+      <legend>2. Pick an entry time</legend>
+      <p class="hint">All ages until 8 PM, 18+ after.</p>
+      <div class="chips" id="times"></div>
+    </fieldset>
+    <fieldset id="qty-set" hidden>
+      <legend>3. How many tickets</legend>
+      <div class="stepper">
+        <button type="button" id="minus" aria-label="One fewer ticket">&minus;</button>
+        <output id="qty" aria-live="polite">1</output>
+        <button type="button" id="plus" aria-label="One more ticket">+</button>
+      </div>
+      <p class="hint" id="left"></p>
+    </fieldset>
+    <button class="cta" type="submit" id="cta" disabled>Continue to payment</button>
+    <p class="error" id="error" role="alert" hidden></p>
+  </form>
+
+  <p class="fine">No pressure, and no deadline beyond the season. If you&rsquo;d rather not come back, you don&rsquo;t need to do anything. Questions? Reply to the email this link came in.</p>
+</main>
+<script src="return.js"></script>
+</body>
+</html>

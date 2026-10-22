@@ -49,23 +49,47 @@ function reply(req: Request, status: number, body: unknown): Response {
 interface Product { code: string; label: string; tickets: number; cents: number; is_active: boolean }
 interface Night { event_date: string; capacity: number; sold: number; is_active: boolean; price_cents: Record<string, number> | null }
 interface Slot { slot: string; adults_only: boolean; capacity: number; sold: number }
+interface Invite { token: string; email: string; name: string | null; max_tickets: number }
+
+// Returning guests (013_returning.sql): the ret_* products sell only against an
+// invite token, and only as many tickets as the token has left.
+async function inviteLeft(token: string): Promise<{ invite: Invite; left: number } | null> {
+  const [invite] = await select<Invite>("hm_return_invites?token=eq." + token + "&select=token,email,name,max_tickets");
+  if (!invite) return null;
+  const paid = await select<{ tickets: number }>("hm_orders?tag=eq.ret-" + token + "&status=eq.paid&select=tickets");
+  return { invite, left: invite.max_tickets - paid.reduce((n, o) => n + o.tickets, 0) };
+}
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors(req) });
   if (req.method !== "POST") return reply(req, 405, { error: "method" });
 
-  let body: { event_date?: unknown; slot?: unknown; product?: unknown; email?: unknown; tag?: unknown };
+  let body: { event_date?: unknown; slot?: unknown; product?: unknown; email?: unknown; tag?: unknown; invite?: unknown; check?: unknown };
   try {
     body = await req.json();
   } catch {
     return reply(req, 400, { error: "bad_request" });
   }
 
+  const token = typeof body.invite === "string" && /^[a-f0-9]{16}$/.test(body.invite) ? body.invite : null;
+  // The returning-guest page asks first how many tickets its link has left.
+  if (body.check === true) {
+    if (!token) return reply(req, 403, { error: "invite" });
+    try {
+      const found = await inviteLeft(token);
+      if (!found) return reply(req, 403, { error: "invite" });
+      return reply(req, 200, { left: Math.max(0, found.left), name: (found.invite.name || "").split(" ")[0] });
+    } catch (e) {
+      console.error((e as Error).message);
+      return reply(req, 500, { error: "server" });
+    }
+  }
+
   const date = typeof body.event_date === "string" ? body.event_date : "";
   const code = typeof body.product === "string" ? body.product : "";
   const slotIn = typeof body.slot === "string" && /^([01]\d|2[0-3]):[03]0$/.test(body.slot) ? body.slot : null;
-  const email = validEmail(body.email) ? body.email : null;
-  const tag = typeof body.tag === "string" ? body.tag.replace(/[^\w.-]/g, "").slice(0, 40) : null;
+  let email = validEmail(body.email) ? body.email : null;
+  let tag = typeof body.tag === "string" ? body.tag.replace(/[^\w.-]/g, "").slice(0, 40) : null;
 
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !isNight(date)) return reply(req, 404, { error: "unknown_night" });
   if (!/^[a-z_]{1,20}$/.test(code)) return reply(req, 400, { error: "bad_request" });
@@ -76,6 +100,14 @@ Deno.serve(async (req) => {
   try {
     const [product] = await select<Product>("hm_products?code=eq." + code + "&is_active=is.true&select=code,label,tickets,cents,is_active");
     if (!product) return reply(req, 404, { error: "unknown_product" });
+    const returning = product.code.startsWith("ret_");
+    if (returning) {
+      const found = token ? await inviteLeft(token) : null;
+      if (!found) return reply(req, 403, { error: "invite" });
+      if (product.tickets > found.left) return reply(req, 409, { error: "invite_used", left: Math.max(0, found.left) });
+      email = email || found.invite.email;
+      tag = "ret-" + token;
+    }
 
     const [night] = await select<Night>("hm_events?event_date=eq." + date + "&select=event_date,capacity,sold,is_active,price_cents");
     if (!night) return reply(req, 404, { error: "unknown_night" });
@@ -94,7 +126,7 @@ Deno.serve(async (req) => {
     const slotTime = slot ? slot.slot.slice(0, 5) : null;
     // A night may carry its own prices (Wednesdays); otherwise the product's.
     const override = Number(night.price_cents?.[product.code]);
-    const cents = Number.isInteger(override) && override > 0 ? override : product.cents;
+    const cents = !returning && Number.isInteger(override) && override > 0 ? override : product.cents;
 
     const label = nightLabel(date) + (slotTime ? " · " + clock(slotTime) + " entry" : "");
     const params = {
@@ -125,9 +157,9 @@ Deno.serve(async (req) => {
       },
       customer_email: email,
       phone_number_collection: { enabled: true },
-      allow_promotion_codes: true,
+      allow_promotion_codes: !returning,
       success_url: SITE + "/ticket.html?s={CHECKOUT_SESSION_ID}",
-      cancel_url: SITE + "/nights.html",
+      cancel_url: SITE + (returning ? "/return.html?i=" + token : "/nights.html"),
       expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
     };
 

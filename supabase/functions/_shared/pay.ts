@@ -9,7 +9,8 @@ export const TZ = "America/New_York";
 
 // The nights, as nights.html has them: October 1 opens, then Thursday to
 // Sunday every week of October 2026, plus Wednesdays from October 14
-// (owner, 2026-10-06: 7-10 PM, $20/$35/$60). Derived, not typed, so the
+// (owner, 2026-10-06: 7-10 PM, $20/$35/$60), plus Tuesday October 27 on the
+// same terms (owner, 2026-10-22). Derived, not typed, so the
 // list here and the calendar on the page cannot drift apart by a typo.
 export const NIGHTS: string[] = (() => {
   const out: string[] = [];
@@ -17,7 +18,7 @@ export const NIGHTS: string[] = (() => {
     // October 1, 2026 is a Thursday; Date.UTC keeps the arithmetic off the
     // machine's own zone.
     const dow = new Date(Date.UTC(2026, 9, d)).getUTCDay(); // 0 Sun .. 6 Sat
-    if (dow === 0 || dow >= 4 || (dow === 3 && d >= 14)) out.push("2026-10-" + String(d).padStart(2, "0"));
+    if (dow === 0 || dow >= 4 || (dow === 3 && d >= 14) || d === 27) out.push("2026-10-" + String(d).padStart(2, "0"));
   }
   return out;
 })();

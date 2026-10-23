@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action https://www.facebook.com; img-src 'self' data: https://www.facebook.com https://connect.facebook.net; style-src 'sha256-51/tPfin8HwxOwysJiiiunzFaFl+4WmnIlICgI2MvH4='; font-src 'self'; script-src 'sha256-37X3bu80WgZ6QzLCZII/fkHtN6wmH7i2igl1PSX90Hg=' 'sha256-opPbfK4Jpj8JhOj0Ea15b7GpRnr/sFiKJkUpIlRVFm0=' 'self' https://connect.facebook.net; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co https://www.facebook.com https://connect.facebook.net; frame-src https://www.facebook.com; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action https://www.facebook.com; img-src 'self' data: https://www.facebook.com https://connect.facebook.net; style-src 'sha256-51/tPfin8HwxOwysJiiiunzFaFl+4WmnIlICgI2MvH4='; font-src 'self'; script-src 'sha256-37X3bu80WgZ6QzLCZII/fkHtN6wmH7i2igl1PSX90Hg=' 'sha256-Pj7mDqwiNooA74FcbmQ7ZvbPf3slcI75pqxSjvFWnjs=' 'self' https://connect.facebook.net; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co https://www.facebook.com https://connect.facebook.net; frame-src https://www.facebook.com; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Brooklyn Haunted House Tickets & Dates — October 2026</title>
@@ -2700,7 +2700,7 @@ main:focus{outline:none}
       <li><button type="button" class="cal-day open red" data-day="24" aria-pressed="false" aria-label="Saturday, October 24 &mdash; open"><span class="num">24</span></button></li>
       <li><button type="button" class="cal-day open green" data-day="25" aria-pressed="false" aria-label="Sunday, October 25 &mdash; open"><span class="num">25</span></button></li>
       <li class="cal-day closed" data-day="26" aria-label="Monday, October 26 &mdash; closed"><span class="num">26</span></li>
-      <li class="cal-day closed" data-day="27" aria-label="Tuesday, October 27 &mdash; closed"><span class="num">27</span></li>
+      <li><button type="button" class="cal-day open green" data-day="27" aria-pressed="false" aria-label="Tuesday, October 27 &mdash; open"><span class="num">27</span></button></li>
       <li><button type="button" class="cal-day open green" data-day="28" aria-pressed="false" aria-label="Wednesday, October 28 &mdash; open"><span class="num">28</span></button></li>
       <li><button type="button" class="cal-day open green" data-day="29" aria-pressed="false" aria-label="Thursday, October 29 &mdash; open"><span class="num">29</span></button></li>
       <li><button type="button" class="cal-day open yellow" data-day="30" aria-pressed="false" aria-label="Friday, October 30 &mdash; open"><span class="num">30</span></button></li>
@@ -3032,7 +3032,7 @@ main:focus{outline:none}
       if(openSlots && Object.keys(openSlots).some(k => k.startsWith(key)))
         return Object.keys(openSlots).filter(k => k.startsWith(key)).map(k => k.slice(-5));
       const dow = (day + 3) % 7, late = day >= 15;
-      if(dow === 3) return ["19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00"];
+      if(dow === 3 || day === 27) return ["19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00"];
       const h = ["16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00"];
       if(late && (dow === 6 || dow === 0)) h.unshift("14:00", "15:00");
       if(late && dow >= 4) h.push("23:00");
@@ -3070,10 +3070,11 @@ main:focus{outline:none}
        [single, pair, quad]. Must match hm_events.price_cents, which is what
        the checkout charges; nights not listed use hm_products (40/70/130).
        Owner, 2026-10-22: Thu 10/22 + Sun 10/25 $25, Fri/Sat 10/23-24 $30,
-       Thu 10/29 $30, Fri/Sat 10/30-31 $40. Wednesdays 7-10 PM, $20/$35/$60. */
+       Thu 10/29 $30, Fri/Sat 10/30-31 $40. Wednesdays 7-10 PM, $20/$35/$60;
+       Tuesday 10/27 the same (owner, 2026-10-22). */
     const NIGHT_PRICES = {
       22: [25, 50, 100], 23: [30, 60, 120], 24: [30, 60, 120], 25: [25, 50, 100],
-      28: [20, 35, 60], 29: [30, 60, 120]
+      27: [20, 35, 60], 28: [20, 35, 60], 29: [30, 60, 120]
     };
     const DEFAULT_PRICES = [40, 70, 130];
     const WED_PRICES = [20, 35, 60];

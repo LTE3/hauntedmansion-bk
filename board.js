@@ -20,7 +20,7 @@
   }
 
   const noKey = () => {
-    $("pass-msg").textContent = key ? "Wrong passcode. Try again." : "";
+    $("pass-msg").textContent = key ? "Wrong PIN. Try again." : "";
     key = "";
     $("board").hidden = true; $("nokey").hidden = false;
   };

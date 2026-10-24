@@ -39,7 +39,7 @@
     els.sync.textContent = "Not signed in";
     els.sync.className = "sync bad";
     const msg = $("pass-msg");
-    msg.textContent = wrong ? "Wrong passcode. Try again." : "Ask the manager for tonight's passcode.";
+    msg.textContent = wrong ? "Wrong PIN. Try again." : "Ask the manager for the staff PIN.";
     msg.className = wrong ? "bad" : "";
     $("pass").value = "";
   }

@@ -31,13 +31,30 @@
   }
 
   function showNoKey() {
+    const wrong = !!key;
     key = "";
     try { localStorage.removeItem(KEY_NAME); } catch (e) {}
     els.app.hidden = true;
     els.nokey.hidden = false;
     els.sync.textContent = "Not signed in";
     els.sync.className = "sync bad";
+    const msg = $("pass-msg");
+    msg.textContent = wrong ? "Wrong passcode. Try again." : "Ask the manager for tonight's passcode.";
+    msg.className = wrong ? "bad" : "";
+    $("pass").value = "";
   }
+
+  let started = false;
+  $("pass-form").addEventListener("submit", e => {
+    e.preventDefault();
+    const v = $("pass").value.trim();
+    if (!v) return;
+    key = v;
+    try { localStorage.setItem(KEY_NAME, key); } catch (e) {}
+    $("pass").blur();
+    $("pass-msg").textContent = "Checking…"; $("pass-msg").className = "";
+    start();
+  });
 
   /* ---------- api ---------- */
   class AuthError extends Error {}
@@ -392,17 +409,19 @@
       fails++;
       els.sync.textContent = list ? "Offline - showing old list" : "Can't reach server";
       els.sync.className = "sync bad";
+      if (!els.nokey.hidden) { $("pass-msg").textContent = "Can't reach the server. Check the signal and tap Open again."; $("pass-msg").className = "bad"; }
     }
     inflight = false;
   }
 
   /* ---------- go ---------- */
-  if (!key) {
-    showNoKey();
-  } else {
+  function start() {
     refresh();
+    if (started) return;
+    started = true;
     setInterval(() => { if (!document.hidden) refresh(); }, REFRESH_MS);
     setInterval(tick, 1000);
     document.addEventListener("visibilitychange", () => { if (!document.hidden) refresh(); });
   }
+  if (!key) showNoKey(); else start();
 })();

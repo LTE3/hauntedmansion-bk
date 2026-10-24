@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Now calling | The Graveyard</title>
 <!-- The screen at The Graveyard: which group is called, and who is up next.
-     Runs on a TV or tablet signed in with the staff key (board.html#k=..., or
+     Runs on a TV or tablet signed in with the staff passcode (typed here, or
      already saved by queue.html on the same device). Names are shown as first
      name and last initial only. Reads hm-queue at
      https://tqeunmqnaoyrerkbhokk.supabase.co (connect-src). -->
@@ -20,8 +20,12 @@
 </head>
 <body>
 <section class="nokey" id="nokey" hidden>
-  <h1>Open the staff link on this screen first</h1>
-  <p>Then come back to this page.</p>
+  <h1>Staff passcode</h1>
+  <form class="pass" id="pass-form" autocomplete="off">
+    <input id="pass" type="password" placeholder="Passcode" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="80" aria-label="Staff passcode">
+    <button type="submit">Open</button>
+  </form>
+  <p id="pass-msg" role="status"></p>
 </section>
 <main class="board" id="board" hidden>
   <header class="top">

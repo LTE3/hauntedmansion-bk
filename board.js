@@ -19,7 +19,21 @@
     try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
   }
 
-  const noKey = () => { $("board").hidden = true; $("nokey").hidden = false; };
+  const noKey = () => {
+    $("pass-msg").textContent = key ? "Wrong passcode. Try again." : "";
+    key = "";
+    $("board").hidden = true; $("nokey").hidden = false;
+  };
+
+  let started = false;
+  $("pass-form").addEventListener("submit", e => {
+    e.preventDefault();
+    const v = $("pass").value.trim();
+    if (!v) return;
+    key = v; $("pass").value = "";
+    try { localStorage.setItem(KEY_NAME, key); } catch (e) {}
+    start();
+  });
 
   // "Jordan Lee" -> "Jordan L.": enough to spot yourself, not a full name on a wall.
   const short = n => {
@@ -83,8 +97,13 @@
     } catch (e) { /* keep what is on screen; the next tick retries */ }
   }
 
-  if (!key) { noKey(); return; }
-  $("board").hidden = false;
-  clock(); setInterval(clock, 15000);
-  refresh(); setInterval(refresh, REFRESH_MS);
+  function start() {
+    $("nokey").hidden = true; $("board").hidden = false;
+    refresh();
+    if (started) return;
+    started = true;
+    clock(); setInterval(clock, 15000);
+    setInterval(() => { if (key) refresh(); }, REFRESH_MS);
+  }
+  if (!key) noKey(); else start();
 })();

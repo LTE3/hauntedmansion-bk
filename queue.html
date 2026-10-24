@@ -6,9 +6,9 @@
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Graveyard line | Staff</title>
-<!-- Staff phone page for the Graveyard line. The staff token arrives in the URL
-     hash (#k=...), moves to localStorage and is stripped from the address bar.
-     It is only ever sent in the x-hm-queue header. -->
+<!-- Staff phone page for the Graveyard line. Staff type the passcode once; it is
+     kept in localStorage and only ever sent in the x-hm-queue header. An old
+     #k=... link still works and is stripped from the address bar. -->
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#030202">
 <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23050505"/><path d="M6 30V13L16 5l10 8v17z" fill="none" stroke="%233a332c" stroke-width="2"/><rect x="13" y="18" width="6" height="12" fill="%23c2702f"/></svg>'>
@@ -24,8 +24,12 @@
 
 <main class="page">
   <section class="nokey" id="nokey" hidden>
-    <h1>Open the staff link you were sent</h1>
-    <p>This page only works from the private staff link. Find the message with it and tap it again.</p>
+    <h1>Staff passcode</h1>
+    <form class="search" id="pass-form" autocomplete="off">
+      <input id="pass" type="password" enterkeyhint="go" placeholder="Passcode" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="80" aria-label="Staff passcode">
+      <button class="btn primary pass-go" type="submit">Open</button>
+    </form>
+    <p id="pass-msg" role="status">Ask the manager for tonight's passcode.</p>
   </section>
 
   <div id="app" hidden>

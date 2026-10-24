@@ -24,6 +24,11 @@ p,ul{margin:0;padding:0;list-style:none}
 .nokey{padding:10vh 6vw;text-align:center}
 .nokey h1{font-size:5vw;margin:0 0 2vh}
 .nokey p{font-size:3vw;color:var(--muted)}
+.pass{display:flex;gap:2vw;justify-content:center;margin:0 auto 2vh;max-width:900px}
+.pass input,.pass button{font:inherit;font-size:clamp(22px,3vw,44px);border-radius:12px;padding:1.4vh 2vw}
+.pass input{flex:1;min-width:0;background:#000;color:var(--bone);border:1px solid rgba(255,255,255,.3);text-transform:none}
+.pass input:focus{outline:2px solid var(--ember);outline-offset:2px}
+.pass button{border:0;background:var(--ember);color:#120a04;cursor:pointer;text-transform:uppercase}
 
 .board{
   display:grid;min-height:100svh;padding:3vh 4vw;gap:2vh 4vw;

@@ -46,6 +46,9 @@ button{border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-c
 .nokey{padding:40px 0}
 .nokey h1{margin:0 0 14px;font:700 clamp(32px,10vw,44px)/1.05 "Barlow Condensed","Arial Narrow",sans-serif;text-transform:uppercase;letter-spacing:.02em}
 .nokey p{margin:0;color:var(--read);font-size:18px}
+.nokey .search{display:grid;gap:10px}
+.nokey .pass-go{width:100%}
+.nokey p.bad{color:var(--red-lit)}
 
 .totals{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .stat{padding:12px 4px 10px;border:1px solid var(--line);border-radius:12px;background:var(--card);text-align:center;min-width:0}

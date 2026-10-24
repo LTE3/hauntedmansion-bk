@@ -103,12 +103,10 @@ async function guest(req: Request, code: string): Promise<Response> {
 interface Order { ticket_code: string; name: string | null; event_date: string; slot: string | null; tickets: number; status: string; phone: string | null }
 
 async function staffList(night: string) {
-  const all = await line(night);
-  const codes = all.map((q) => q.ticket_code);
-  const orders = codes.length
-    ? await select<Order>("hm_orders?ticket_code=in.(" + codes.join(",") + ")&select=ticket_code,name,slot,tickets")
-    : [];
-  const name = new Map(orders.map((o) => [o.ticket_code, o.name || ""]));
+  // Names come in through the foreign key, so a long night never builds a long URL.
+  const all = await select<Q & { hm_orders: { name: string | null } | null }>(
+    "hm_queue?event_date=eq." + night + "&select=*,hm_orders(name)");
+  const name = new Map(all.map((q) => [q.ticket_code, q.hm_orders?.name || ""]));
   const now = Date.now();
   const row = (q: Q) => ({
     code: q.ticket_code, name: name.get(q.ticket_code) || "", party: q.party,
@@ -140,7 +138,7 @@ async function find(night: string, raw: string) {
   const s = raw.trim();
   const up = s.toUpperCase().replace(/\s/g, "");
   const code = TICKET_CODE.test(up) ? up : /^[0-9A-F]{8}$/.test(up) ? "HM-" + up : null;
-  const fields = "&select=ticket_code,name,event_date,slot,tickets,status,phone&status=eq.paid&limit=15";
+  const fields = "&select=ticket_code,name,event_date,slot,tickets,status,phone&status=eq.paid&order=name.asc,ticket_code.asc&limit=15";
   let rows: Order[] = [];
   if (code) rows = await select<Order>("hm_orders?ticket_code=eq." + code + fields);
   if (!rows.length) {
@@ -164,8 +162,10 @@ async function find(night: string, raw: string) {
   }));
 }
 
-async function patch(code: string, body: Record<string, unknown>) {
-  await rest("hm_queue?ticket_code=eq." + code, { method: "PATCH", body: JSON.stringify(body), prefer: "return=minimal" });
+// False when no row matched, so staff are told the party is not in the line.
+async function patch(filter: string, body: Record<string, unknown>): Promise<boolean> {
+  const resp = await rest("hm_queue?" + filter, { method: "PATCH", body: JSON.stringify(body), prefer: "return=representation" });
+  return ((await resp.json()) as unknown[]).length > 0;
 }
 
 Deno.serve(async (req) => {
@@ -191,6 +191,7 @@ Deno.serve(async (req) => {
     } catch {
       return reply(req, 400, { error: "bad_request" });
     }
+    if (!b || typeof b !== "object") return reply(req, 400, { error: "bad_request" });
     const night = await tonight();
     const code = typeof b.code === "string" && TICKET_CODE.test(b.code) ? b.code : null;
 
@@ -209,18 +210,25 @@ Deno.serve(async (req) => {
         const g = await rpc<number | null>("hm_queue_call", { p_date: night, p_size: GROUP });
         return reply(req, 200, { group_no: g });
       }
-      case "arrived":
+      case "arrived": {
         if (!code) return reply(req, 400, { error: "bad_code" });
-        await patch(code, { arrived_at: b.undo === true ? null : new Date().toISOString() });
-        return reply(req, 200, { ok: true });
-      case "back":
+        // Only a called party can be at the door; a second tap keeps the first time.
+        const ok = b.undo === true
+          ? await patch("ticket_code=eq." + code, { arrived_at: null })
+          : await patch("ticket_code=eq." + code + "&group_no=not.is.null&arrived_at=is.null", { arrived_at: new Date().toISOString() });
+        return ok ? reply(req, 200, { ok: true }) : reply(req, 409, { error: "not_called" });
+      }
+      case "back": {
         if (!code) return reply(req, 400, { error: "bad_code" });
-        await patch(code, { group_no: null, called_at: null, arrived_at: null, checked_in_at: new Date().toISOString() });
-        return reply(req, 200, { ok: true });
-      case "remove":
+        const ok = await patch("ticket_code=eq." + code,
+          { group_no: null, called_at: null, arrived_at: null, checked_in_at: new Date().toISOString() });
+        return ok ? reply(req, 200, { ok: true }) : reply(req, 404, { error: "not_in_line" });
+      }
+      case "remove": {
         if (!code) return reply(req, 400, { error: "bad_code" });
-        await rest("hm_queue?ticket_code=eq." + code, { method: "DELETE", prefer: "return=minimal" });
-        return reply(req, 200, { ok: true });
+        const resp = await rest("hm_queue?ticket_code=eq." + code, { method: "DELETE", prefer: "return=representation" });
+        return ((await resp.json()) as unknown[]).length ? reply(req, 200, { ok: true }) : reply(req, 404, { error: "not_in_line" });
+      }
       default:
         return reply(req, 400, { error: "bad_op" });
     }

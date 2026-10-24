@@ -44,7 +44,7 @@ returns timestamptz language sql immutable as $$
 $$;
 
 create or replace function public.hm_queue_call(p_date date, p_size int default 15)
-returns int language plpgsql security definer set search_path = public as $$
+returns int language plpgsql security definer set search_path = public, pg_temp as $$
 declare
   g int;
   total int := 0;
@@ -53,10 +53,13 @@ begin
   -- Two staff phones pressing at once must not make two groups of the same people.
   perform pg_advisory_xact_lock(hashtext('hm_queue_call'));
   select coalesce(max(group_no), 0) + 1 into g from hm_queue where event_date = p_date;
+  -- Locked rows, so a party removed or put back mid-call is not counted;
+  -- a ticket refunded after check-in is never called.
   for r in
-    select ticket_code, party from hm_queue
-     where event_date = p_date and group_no is null
-     order by hm_queue_eff(slot_ts, checked_in_at), checked_in_at, ticket_code
+    select q.ticket_code, q.party from hm_queue q join hm_orders o using (ticket_code)
+     where q.event_date = p_date and q.group_no is null and o.status = 'paid'
+     order by hm_queue_eff(q.slot_ts, q.checked_in_at), q.checked_in_at, q.ticket_code
+     for update of q
   loop
     if total = 0 or total + r.party <= p_size then
       update hm_queue set group_no = g, called_at = now() where ticket_code = r.ticket_code;
@@ -85,7 +88,7 @@ $$;
 -- unless staff say to let it in anyway (p_force); then it joins tonight's
 -- line at its own entry time.
 create or replace function public.hm_queue_checkin(p_code text, p_force boolean default false)
-returns jsonb language plpgsql security definer set search_path = public as $$
+returns jsonb language plpgsql security definer set search_path = public, pg_temp as $$
 declare
   o record;
   night date := hm_tonight();
@@ -96,17 +99,18 @@ begin
   if o.event_date <> night and not p_force then
     return jsonb_build_object('error', 'wrong_night', 'night', o.event_date);
   end if;
-  if exists (select 1 from hm_queue where ticket_code = p_code) then
-    return jsonb_build_object('ok', true, 'already', true);
-  end if;
+  -- Two phones scanning the same ticket at once: the second is "already".
   insert into hm_queue (ticket_code, event_date, party, slot_ts)
   values (o.ticket_code, night, o.tickets,
           case when o.slot is null then null
                else ((night + o.slot + case when o.slot < time '04:00' then interval '1 day' else interval '0' end)
-                     at time zone 'America/New_York') end);
-  return jsonb_build_object('ok', true, 'already', false);
+                     at time zone 'America/New_York') end)
+  on conflict (ticket_code) do nothing;
+  return jsonb_build_object('ok', true, 'already', not found);
 end
 $$;
 
 revoke all on function public.hm_queue_checkin(text, boolean) from public, anon, authenticated;
+revoke all on function public.hm_tonight() from public, anon, authenticated;
+grant execute on function public.hm_tonight() to service_role;
 grant execute on function public.hm_queue_checkin(text, boolean) to service_role;

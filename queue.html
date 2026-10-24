@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'self'; font-src 'self' https://fonts.gstatic.com; script-src 'self'; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Graveyard line | Staff</title>
+<!-- Staff phone page for the Graveyard line. The staff token arrives in the URL
+     hash (#k=...), moves to localStorage and is stripped from the address bar.
+     It is only ever sent in the x-hm-queue header. -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#030202">
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23050505"/><path d="M6 30V13L16 5l10 8v17z" fill="none" stroke="%233a332c" stroke-width="2"/><rect x="13" y="18" width="6" height="12" fill="%23c2702f"/></svg>'>
+<link rel="preload" as="font" type="font/woff2" href="fonts/spectral-500-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/barlowcondensed-700-latin.woff2" crossorigin>
+<link rel="stylesheet" href="queue.css">
+</head>
+<body>
+<header class="topbar">
+  <span class="brand"><span class="pulse-dot" aria-hidden="true"></span>Graveyard line</span>
+  <span class="sync" id="sync" role="status">Loading</span>
+</header>
+
+<main class="page">
+  <section class="nokey" id="nokey" hidden>
+    <h1>Open the staff link you were sent</h1>
+    <p>This page only works from the private staff link. Find the message with it and tap it again.</p>
+  </section>
+
+  <div id="app" hidden>
+    <section class="totals" aria-label="Tonight">
+      <div class="stat"><output id="t-in">0</output><span>Checked in</span></div>
+      <div class="stat"><output id="t-wait">0</output><span>Waiting</span></div>
+      <div class="stat"><output id="t-house">0</output><span>At the house</span></div>
+      <div class="stat"><output id="t-sold">0</output><span>Sold tonight</span></div>
+    </section>
+
+    <button class="call" type="button" id="call">Call next group (15)</button>
+    <p class="called-msg" id="called-msg" role="status" hidden></p>
+
+    <section class="block">
+      <h2>Check in</h2>
+      <form class="search" id="search" role="search" autocomplete="off">
+        <label class="sr" for="q">Ticket code, name, or phone last 4</label>
+        <input id="q" type="search" inputmode="search" enterkeyhint="search" placeholder="Code, name, or phone last 4" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="80">
+      </form>
+      <p class="note" id="find-note" role="status" hidden></p>
+      <ul class="rows" id="results"></ul>
+    </section>
+
+    <section class="block">
+      <h2>Waiting <span class="count" id="waiting-count"></span></h2>
+      <p class="note" id="waiting-empty" hidden>Nobody waiting.</p>
+      <ul class="rows" id="waiting"></ul>
+    </section>
+
+    <section class="block">
+      <h2>Called groups</h2>
+      <p class="note" id="called-empty" hidden>No groups called yet.</p>
+      <div id="called"></div>
+    </section>
+  </div>
+</main>
+
+<p class="toast" id="toast" role="alert" hidden></p>
+<script src="queue.js"></script>
+</body>
+</html>

@@ -107,6 +107,10 @@ def policy(html):
     # Google back in the policy of the page that had just left.
     linked = b'href="' + FONTS_CSS.encode() in html
     remote_css = [FONTS_CSS] if linked else []
+    # A page's own stylesheet (return.css, queue.css) needs 'self'; without it
+    # the policy came out as a bare "style-src" and the page rendered unstyled.
+    if re.search(rb'<link[^>]*rel="stylesheet"[^>]*href="(?!https?:)', html):
+        remote_css.insert(0, "'self'")
     fonts = []
     if b".woff2" in html:
         fonts.append("'self'")
@@ -130,7 +134,7 @@ def policy(html):
         # data: is the inline SVG favicon; the Supabase host, when it is
         # named at all, is the QR image on the ticket page.
         "img-src 'self' data:" + ((" " + SUPABASE) if img_remote else "") + ((" " + META_TR + " " + META_JS) if pixel else ""),
-        "style-src %s" % " ".join(styles + remote_css),
+        "style-src %s" % (" ".join(styles + remote_css) or "'none'"),
         "font-src %s" % (" ".join(fonts) if fonts else "'none'"),
         "script-src %s" % (" ".join(scripts) if scripts else "'none'"),
         "connect-src %s" % (" ".join(([SUPABASE] if connect else []) + ([META_TR, META_JS] if pixel else [])) or "'none'"),

@@ -55,7 +55,7 @@
     try{ if(navigator.vibrate) navigator.vibrate(60); }catch(e){}
     holdAwake();
     beep();
-    if(btn){ btn.dataset.on = ""; btn.textContent = "Alerts on. Keep this page open"; }
+    if(btn){ btn.dataset.on = ""; btn.textContent = "Beep on while this page is open"; }
   };
 
   const showGuest = d => {
@@ -80,8 +80,8 @@
       set("hmq-sub", n === 0 ? "You’re in the next group or two" : "About " + groups(n) + " ahead of you");
       set("hmq-sub2", calling);
       set("hmq-note", d.pushed
-        ? "You checked in after your entry time, so you’re now in the " + d.eff_slot + " session. Keep this page open."
-        : "Keep this page open.");
+        ? "You checked in after your entry time, so you’re now in the " + d.eff_slot + " session. Go enjoy The Graveyard and check back here anytime. It updates the second you open it."
+        : "Go enjoy The Graveyard. Check back here anytime. It updates the second you open it.");
     }else if(s === "called"){
       set("hmq-kick", "The Graveyard line");
       set("hmq-head", "Your group is up");

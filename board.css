@@ -1,0 +1,54 @@
+/* The Graveyard screen. Read from across a bar: huge numbers, two colours,
+   nothing that moves except a new group arriving. */
+@font-face{font-family:"Creepster";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/creepster-400-latin.woff2) format("woff2")}
+@font-face{font-family:"Barlow Condensed";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/barlowcondensed-700-latin.woff2) format("woff2")}
+
+:root{
+  color-scheme:dark;
+  --ink:#030202;
+  --bone:#f6ede4;
+  --muted:#b9aaa1;
+  --ember:#e8913f;
+  --red:#e33027;
+  --line:rgba(255,255,255,.16)
+}
+*{box-sizing:border-box}
+html{background:#000}
+body{
+  margin:0;min-height:100svh;background:var(--ink);color:var(--bone);overflow:hidden;
+  font:700 16px/1.1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.02em;text-transform:uppercase
+}
+[hidden]{display:none!important}
+p,ul{margin:0;padding:0;list-style:none}
+
+.nokey{padding:10vh 6vw;text-align:center}
+.nokey h1{font-size:5vw;margin:0 0 2vh}
+.nokey p{font-size:3vw;color:var(--muted)}
+
+.board{
+  display:grid;min-height:100svh;padding:3vh 4vw;gap:2vh 4vw;
+  grid-template:"top top" auto "now next" 1fr "foot foot" auto / 3fr 2fr
+}
+.top{grid-area:top;display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:1.5vh}
+.title{font:400 clamp(28px,4.4vw,72px)/1 "Creepster",Impact,sans-serif;color:var(--red);letter-spacing:.03em}
+.clock{font-size:clamp(24px,3.4vw,56px);color:var(--muted);font-variant-numeric:tabular-nums}
+
+.label{font-size:clamp(18px,2.2vw,36px);letter-spacing:.16em;color:var(--ember);margin-bottom:1vh}
+.now{grid-area:now;align-self:start}
+.group{font-size:clamp(90px,17vw,300px);line-height:.9;font-variant-numeric:tabular-nums}
+.now.fresh .group{animation:arrive .7s cubic-bezier(.23,1,.32,1)}
+@keyframes arrive{from{opacity:0;transform:translateY(.15em) scale(.96)}to{opacity:1;transform:none}}
+.names{display:flex;flex-wrap:wrap;gap:.6vh 2.4vw;margin-top:2vh;font-size:clamp(26px,3.4vw,58px)}
+.names li span{color:var(--muted);font-size:.7em;margin-left:.25em}
+.go{margin-top:3vh;font-size:clamp(22px,2.6vw,44px);color:var(--red)}
+
+.next{grid-area:next;border-left:1px solid var(--line);padding-left:4vw;align-self:stretch}
+.names.small{flex-direction:column;flex-wrap:nowrap;gap:1vh;margin-top:1vh;font-size:clamp(22px,2.7vw,46px)}
+.empty{font-size:clamp(22px,2.7vw,46px);color:var(--muted)}
+.foot{grid-area:foot;border-top:1px solid var(--line);padding-top:1.5vh;font-size:clamp(16px,1.9vw,32px);color:var(--muted);letter-spacing:.08em}
+
+@media (max-aspect-ratio:1/1){
+  .board{grid-template:"top" auto "now" auto "next" 1fr "foot" auto / 1fr}
+  .next{border-left:0;padding-left:0;border-top:1px solid var(--line);padding-top:2vh}
+}
+@media (prefers-reduced-motion:reduce){.now.fresh .group{animation:none}}

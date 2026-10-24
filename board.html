@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'self'; font-src 'self' https://fonts.gstatic.com; script-src 'self'; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Now calling | The Graveyard</title>
+<!-- The screen at The Graveyard: which group is called, and who is up next.
+     Runs on a TV or tablet signed in with the staff key (board.html#k=..., or
+     already saved by queue.html on the same device). Names are shown as first
+     name and last initial only. Reads hm-queue at
+     https://tqeunmqnaoyrerkbhokk.supabase.co (connect-src). -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#030202">
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23050505"/><path d="M6 30V13L16 5l10 8v17z" fill="none" stroke="%233a332c" stroke-width="2"/><rect x="13" y="18" width="6" height="12" fill="%23c2702f"/></svg>'>
+<link rel="preload" as="font" type="font/woff2" href="fonts/creepster-400-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/barlowcondensed-700-latin.woff2" crossorigin>
+<link rel="stylesheet" href="board.css">
+</head>
+<body>
+<section class="nokey" id="nokey" hidden>
+  <h1>Open the staff link on this screen first</h1>
+  <p>Then come back to this page.</p>
+</section>
+<main class="board" id="board" hidden>
+  <header class="top">
+    <p class="title">The Graveyard line</p>
+    <p class="clock" id="clock"></p>
+  </header>
+  <section class="now" id="now" aria-live="polite">
+    <p class="label">Now calling</p>
+    <p class="group" id="group">&mdash;</p>
+    <ul class="names" id="names"></ul>
+    <p class="go" id="go" hidden>Head to the house now &middot; you have 10 minutes</p>
+  </section>
+  <section class="next">
+    <p class="label">Up next</p>
+    <ul class="names small" id="next"></ul>
+    <p class="empty" id="next-empty" hidden>No one waiting</p>
+  </section>
+  <footer class="foot">Your ticket page shows your place in line. Check it anytime. It updates the moment you open it.</footer>
+</main>
+<script src="board.js"></script>
+</body>
+</html>

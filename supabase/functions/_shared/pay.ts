@@ -20,6 +20,9 @@ export const NIGHTS: string[] = (() => {
     const dow = new Date(Date.UTC(2026, 9, d)).getUTCDay(); // 0 Sun .. 6 Sat
     if (dow === 0 || dow >= 4 || (dow === 3 && d >= 14) || d === 27) out.push("2026-10-" + String(d).padStart(2, "0"));
   }
+  // November (owner, 2026-10-27: "Open November"): the first week, same
+  // Wednesday-to-Sunday shape - Sun 1, Wed 4, Thu 5, Fri 6, Sat 7.
+  for (const d of [1, 4, 5, 6, 7]) out.push("2026-11-0" + d);
   return out;
 })();
 

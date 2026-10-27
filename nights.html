@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action https://www.facebook.com; img-src 'self' data: https://www.facebook.com https://connect.facebook.net; style-src 'sha256-51/tPfin8HwxOwysJiiiunzFaFl+4WmnIlICgI2MvH4='; font-src 'self'; script-src 'sha256-37X3bu80WgZ6QzLCZII/fkHtN6wmH7i2igl1PSX90Hg=' 'sha256-Pj7mDqwiNooA74FcbmQ7ZvbPf3slcI75pqxSjvFWnjs=' 'self' https://connect.facebook.net; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co https://www.facebook.com https://connect.facebook.net; frame-src https://www.facebook.com; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action https://www.facebook.com; img-src 'self' data: https://www.facebook.com https://connect.facebook.net; style-src 'sha256-GOa7hDQibqRoSW5ls6oYnsRgnhQJE3mm126Z2pjiKi8='; font-src 'self'; script-src 'sha256-37X3bu80WgZ6QzLCZII/fkHtN6wmH7i2igl1PSX90Hg=' 'sha256-ScU90srE4Ha71Jz5h9+0C6MRrypXqjXaAFfN1r2ESDw=' 'self' https://connect.facebook.net; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co https://www.facebook.com https://connect.facebook.net; frame-src https://www.facebook.com; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Brooklyn Haunted House Tickets & Dates — October 2026</title>
@@ -221,6 +221,7 @@ footer a{color:#c7b8ae;text-underline-offset:3px}
   font:700 14px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)
 }
 .cal-head b{color:var(--bone);font-weight:400;letter-spacing:.02em}
+.cal-head.cal-head-next{margin-top:40px}
 .cal-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
 .cal-grid li{aspect-ratio:1}
 .cal-dow{
@@ -291,6 +292,8 @@ button.cal-day{width:100%;height:100%}
   .cal{position:relative;margin-top:34px}
   .cal-head{border:0;padding:0;align-items:center;margin:0 0 22px}
   .cal-grid{gap:8px;margin-top:58px}
+  .cal-head.cal-head-next{margin-top:56px}
+  .cal-head-next + .cal-grid{margin-top:0}
   .cal-dow{font-size:20px;padding-bottom:12px}
   .cal-note{font:500 25px/1.3 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:0;text-transform:none;color:var(--bone)}
   .cal-legend{position:absolute;top:40px;right:0;width:300px;display:grid;gap:12px;margin:0;z-index:2}
@@ -2706,6 +2709,23 @@ main:focus{outline:none}
       <li><button type="button" class="cal-day open yellow" data-day="30" aria-pressed="false" aria-label="Friday, October 30 &mdash; open"><span class="num">30</span></button></li>
       <li><button type="button" class="cal-day open red" data-day="31" aria-pressed="false" aria-label="Saturday, October 31 &mdash; open"><span class="num">31</span></button></li>
     </ol>
+    <p class="cal-head cal-head-next"><b>November</b><span>2026</span></p>
+    <ol class="cal-grid" id="cal-grid-nov" aria-label="November 2026">
+      <li class="cal-dow" aria-hidden="true">S</li>
+      <li class="cal-dow" aria-hidden="true">M</li>
+      <li class="cal-dow" aria-hidden="true">T</li>
+      <li class="cal-dow" aria-hidden="true">W</li>
+      <li class="cal-dow" aria-hidden="true">T</li>
+      <li class="cal-dow" aria-hidden="true">F</li>
+      <li class="cal-dow" aria-hidden="true">S</li>
+      <li><button type="button" class="cal-day open green" data-day="1" data-date="2026-11-01" aria-pressed="false" aria-label="Sunday, November 1 &mdash; open"><span class="num">1</span></button></li>
+      <li class="cal-day closed" data-day="2" data-date="2026-11-02" aria-label="Monday, November 2 &mdash; closed"><span class="num">2</span></li>
+      <li class="cal-day closed" data-day="3" data-date="2026-11-03" aria-label="Tuesday, November 3 &mdash; closed"><span class="num">3</span></li>
+      <li><button type="button" class="cal-day open green" data-day="4" data-date="2026-11-04" aria-pressed="false" aria-label="Wednesday, November 4 &mdash; open"><span class="num">4</span></button></li>
+      <li><button type="button" class="cal-day open green" data-day="5" data-date="2026-11-05" aria-pressed="false" aria-label="Thursday, November 5 &mdash; open"><span class="num">5</span></button></li>
+      <li><button type="button" class="cal-day open green" data-day="6" data-date="2026-11-06" aria-pressed="false" aria-label="Friday, November 6 &mdash; open"><span class="num">6</span></button></li>
+      <li><button type="button" class="cal-day open green" data-day="7" data-date="2026-11-07" aria-pressed="false" aria-label="Saturday, November 7 &mdash; open"><span class="num">7</span></button></li>
+    </ol>
     <ul class="cal-legend">
       <li><span class="cal-swatch green" aria-hidden="true"></span>Under 50% gone</li>
       <li><span class="cal-swatch yellow" aria-hidden="true"></span>50&ndash;80% gone</li>
@@ -2883,7 +2903,7 @@ main:focus{outline:none}
 }
 /* The calendar. Today's date is read in the house's own time zone rather
    than the visitor's, so a guest in another zone doesn't see the wrong night
-   lit. Nothing is marked outside October 2026.
+   lit. The "% gone" figure stays on October's nights only.
    Once the presale opens, every open night carries a "% gone" figure. Owner's
    call (2026-09-11, reaffirmed 2026-09-15): the figure is synthetic, a
    function of the clock alone, and it drives the night's colour. Each night
@@ -2899,14 +2919,14 @@ main:focus{outline:none}
       timeZone: "America/New_York", year: "numeric", month: "numeric", day: "numeric"
     }).formatToParts(now);
     const get = t => Number(parts.find(p => p.type === t).value);
-    const y = get("year"), m = get("month"), d = get("day");
-    if(y === 2026 && m === 10){
-      grid.querySelectorAll(".cal-day").forEach(li => {
-        const day = Number(li.dataset.day);
-        if(day < d){ li.classList.add("past"); if(li.tagName === "BUTTON") li.disabled = true; }
-        if(day === d){ li.classList.add("today"); li.setAttribute("aria-current", "date"); }
-      });
-    }
+    const today = get("year") + "-" + String(get("month")).padStart(2, "0") + "-" + String(get("day")).padStart(2, "0");
+    /* November's days carry their full date; October's only the day. */
+    const dateOf = li => li.dataset.date || "2026-10-" + String(li.dataset.day).padStart(2, "0");
+    document.querySelectorAll(".cal-grid .cal-day").forEach(li => {
+      const iso = dateOf(li);
+      if(iso < today){ li.classList.add("past"); if(li.tagName === "BUTTON") li.disabled = true; }
+      if(iso === today){ li.classList.add("today"); li.setAttribute("aria-current", "date"); }
+    });
     const PRESALE = Date.parse("2026-09-25T10:00:00-04:00");
     const HOUR = 3600000;
     const hours = Math.floor((now.getTime() - PRESALE) / HOUR);
@@ -2977,13 +2997,14 @@ main:focus{outline:none}
    went through on its own. */
 {
   const grid = document.getElementById("cal-grid");
+  const cal = grid && grid.closest(".cal");
   const buy = document.getElementById("buy");
   const nightName = document.getElementById("buy-night-name");
   const tiers = document.getElementById("tiers");
   const slotsEl = document.getElementById("slots");
   const cta = document.getElementById("buy-cta");
   const errorEl = document.getElementById("buy-error");
-  if(grid && buy && nightName && tiers && slotsEl && cta && errorEl) (function(){
+  if(grid && cal && buy && nightName && tiers && slotsEl && cta && errorEl) (function(){
     const SUPABASE_URL = "https://tqeunmqnaoyrerkbhokk.supabase.co";
     const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxZXVubXFuYW95cmVya2Job2trIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4OTQ1MzQsImV4cCI6MjA4OTQ3MDUzNH0.hkkuc7_YE2yf0w0NQENpahAxqxxqBfjq8n5QhtTIkw8";
     const DOW = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -2999,7 +3020,7 @@ main:focus{outline:none}
     const onSale = new Date().getTime() >= PRESALE;
     const note = document.querySelector(".cal-note");
     if(!onSale){
-      grid.querySelectorAll(".cal-day.open").forEach(b => {
+      cal.querySelectorAll(".cal-day.open").forEach(b => {
         if(b.tagName === "BUTTON"){
           b.disabled = true;
           b.removeAttribute("aria-pressed");
@@ -3009,7 +3030,10 @@ main:focus{outline:none}
     }
     if(note) note.hidden = true;
 
-    const nightDate = day => "2026-10-" + String(day).padStart(2, "0");
+    /* A night is its date, "2026-11-06". October's buttons carry only the
+       day number; November's carry the whole date. */
+    const dateOf = el => el.dataset.date || "2026-10-" + String(el.dataset.day).padStart(2, "0");
+    const dayOf = iso => new Date(iso + "T12:00:00Z");
 
     /* Which hours still have room: a yes or no per hour from hm_open_slots,
        fetched once. If it cannot be read every hour stays pickable - the
@@ -3027,12 +3051,12 @@ main:focus{outline:none}
     /* Manny 2026-10-08, from Thu Oct 15: 11 PM Thu-Sat, midnight Fri/Sat,
        2 and 3 PM Sat/Sun. Wednesdays stay 7-10 PM. Once hm_open_slots has
        answered, the night shows exactly the hours it has in the database. */
-    const hoursFor = day => {
-      const key = nightDate(day) + " ";
+    const hoursFor = iso => {
+      const key = iso + " ";
       if(openSlots && Object.keys(openSlots).some(k => k.startsWith(key)))
         return Object.keys(openSlots).filter(k => k.startsWith(key)).map(k => k.slice(-5));
-      const dow = (day + 3) % 7, late = day >= 15;
-      if(dow === 3 || day === 27) return ["19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00"];
+      const dow = dayOf(iso).getUTCDay(), late = iso >= "2026-10-15";
+      if(dow === 3 || iso === "2026-10-27") return ["19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00"];
       const h = ["16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00"];
       if(late && (dow === 6 || dow === 0)) h.unshift("14:00", "15:00");
       if(late && dow >= 4) h.push("23:00");
@@ -3043,8 +3067,8 @@ main:focus{outline:none}
     };
     const adultSpan = document.getElementById("slot-adult-span");
     const ampm = h => (h % 12 || 12) + (h % 24 < 12 ? " AM" : " PM");
-    const showHours = day => {
-      const hours = hoursFor(day);
+    const showHours = iso => {
+      const hours = hoursFor(iso);
       slotsEl.querySelectorAll("input").forEach(i => {
         const on = hours.includes(i.value);
         i.closest("label").hidden = !on;
@@ -3055,34 +3079,41 @@ main:focus{outline:none}
       if(allAgesSpan) allAgesSpan.innerHTML = (first % 12 || 12) + "&ndash;8 PM";
       if(adultSpan) adultSpan.innerHTML = end < 24 ? "8&ndash;" + ampm(end) : "8 PM&ndash;" + ampm(end);
     };
-    const paintSlots = day => {
-      showHours(day);
+    const paintSlots = iso => {
+      showHours(iso);
       slotsEl.querySelectorAll("input").forEach(i => {
-        const known = openSlots && (nightDate(day) + " " + i.value) in openSlots;
-        i.disabled = known ? !openSlots[nightDate(day) + " " + i.value] : false;
+        const known = openSlots && (iso + " " + i.value) in openSlots;
+        i.disabled = known ? !openSlots[iso + " " + i.value] : false;
         if(i.disabled) i.checked = false;
       });
     };
     const ready = () => !!(tiers.querySelector("input:checked") && slotsEl.querySelector("input:checked"));
-    const nightLabel = day => DOW[(day + 3) % 7] + ", October " + day;
+    const nightLabel = iso => {
+      const dt = dayOf(iso);
+      return DOW[dt.getUTCDay()] + ", " + (iso.slice(5, 7) === "11" ? "November " : "October ") + dt.getUTCDate();
+    };
 
     /* Prices per night, before the $2/ticket processing fee (2026-10-08):
        [single, pair, quad]. Must match hm_events.price_cents, which is what
        the checkout charges; nights not listed use hm_products (40/70/130).
        Owner, 2026-10-22: Thu 10/22 + Sun 10/25 $25, Fri/Sat 10/23-24 $30,
        Thu 10/29 $30, Fri/Sat 10/30-31 $40. Wednesdays 7-10 PM, $20/$35/$60;
-       Tuesday 10/27 the same (owner, 2026-10-22). */
+       Tuesday 10/27 the same (owner, 2026-10-22). November's first week
+       (owner, 2026-10-27) prices like the week of 10/22: Sun + Thu $25,
+       Fri/Sat $30, Wed $20. */
     const NIGHT_PRICES = {
-      22: [25, 50, 100], 23: [30, 60, 120], 24: [30, 60, 120], 25: [25, 50, 100],
-      27: [20, 35, 60], 28: [20, 35, 60], 29: [30, 60, 120]
+      "2026-10-22": [25, 50, 100], "2026-10-23": [30, 60, 120], "2026-10-24": [30, 60, 120], "2026-10-25": [25, 50, 100],
+      "2026-10-27": [20, 35, 60], "2026-10-28": [20, 35, 60], "2026-10-29": [30, 60, 120],
+      "2026-11-01": [25, 50, 100], "2026-11-04": [20, 35, 60], "2026-11-05": [25, 50, 100],
+      "2026-11-06": [30, 60, 120], "2026-11-07": [30, 60, 120]
     };
     const DEFAULT_PRICES = [40, 70, 130];
     const WED_PRICES = [20, 35, 60];
-    const isWed = day => (day + 3) % 7 === 3;
+    const isWed = iso => dayOf(iso).getUTCDay() === 3;
     const allAgesSpan = document.getElementById("slot-allages-span");
     const TIER = { single: [0, 1], pair: [1, 2], quad: [2, 4] };
-    const shapeNight = day => {
-      const p = NIGHT_PRICES[day] || (isWed(day) ? WED_PRICES : DEFAULT_PRICES);
+    const shapeNight = iso => {
+      const p = NIGHT_PRICES[iso] || (isWed(iso) ? WED_PRICES : DEFAULT_PRICES);
       tiers.querySelectorAll(".tier-price[data-code]").forEach(el => {
         const [i, n] = TIER[el.dataset.code];
         el.textContent = "$" + (p[i] + 2 * n);
@@ -3101,7 +3132,7 @@ main:focus{outline:none}
     };
 
     function selectNight(btn, day){
-      grid.querySelectorAll(".cal-day.open.selected").forEach(b => {
+      cal.querySelectorAll(".cal-day.open.selected").forEach(b => {
         b.classList.remove("selected");
         b.setAttribute("aria-pressed", "false");
       });
@@ -3127,11 +3158,11 @@ main:focus{outline:none}
       }
     }
 
-    grid.addEventListener("click", e => {
+    cal.addEventListener("click", e => {
       if(sending) return;
       const btn = e.target.closest(".cal-day.open");
       if(!btn || btn.disabled) return;
-      selectNight(btn, Number(btn.dataset.day));
+      selectNight(btn, dateOf(btn));
     });
 
     const sync = () => { cta.disabled = sending || !ready(); };
@@ -3158,7 +3189,7 @@ main:focus{outline:none}
             Authorization: "Bearer " + SUPABASE_ANON,
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({ event_date: nightDate(day), slot: slot.value, product: tier.value })
+          body: JSON.stringify({ event_date: day, slot: slot.value, product: tier.value })
         });
         let data = null;
         try{ data = await r.json(); }catch(_){}

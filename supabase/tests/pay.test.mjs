@@ -15,19 +15,25 @@ import {
 } from "../functions/_shared/pay.ts";
 import { ticketEmail } from "../functions/_shared/mail.ts";
 
-test("nights: twenty-two, October 1 first, Halloween last, Thu-Sun plus Wednesdays from the 14th", () => {
-  assert.equal(NIGHTS.length, 22);
-  assert.equal(NIGHTS[0], "2026-10-01");
-  assert.equal(NIGHTS.at(-1), "2026-10-31");
-  const dows = NIGHTS.map((d) => new Date(d + "T12:00:00Z").getUTCDay());
+test("nights: twenty-three, October 1 first, Halloween last, Thu-Sun plus Wednesdays from the 14th and Tuesday the 27th", () => {
+  const oct = NIGHTS.filter((d) => d.startsWith("2026-10-"));
+  assert.equal(oct.length, 23);
+  assert.equal(oct[0], "2026-10-01");
+  assert.equal(oct.at(-1), "2026-10-31");
+  const dows = oct.map((d) => new Date(d + "T12:00:00Z").getUTCDay());
   assert.equal(dows.filter((d) => d === 4).length, 5, "Thursdays");
   assert.equal(dows.filter((d) => d === 5).length, 5, "Fridays");
   assert.equal(dows.filter((d) => d === 6).length, 5, "Saturdays");
   assert.equal(dows.filter((d) => d === 0).length, 4, "Sundays");
-  assert.deepEqual(NIGHTS.filter((d) => new Date(d + "T12:00:00Z").getUTCDay() === 3), ["2026-10-14", "2026-10-21", "2026-10-28"], "Wednesdays");
-  for (const d of ["2026-10-05", "2026-10-06", "2026-10-07", "2026-09-30", "2026-11-01", "2026-10-1", ""]) {
+  assert.deepEqual(oct.filter((d) => new Date(d + "T12:00:00Z").getUTCDay() === 3), ["2026-10-14", "2026-10-21", "2026-10-28"], "Wednesdays");
+  for (const d of ["2026-10-05", "2026-10-06", "2026-10-07", "2026-09-30", "2026-11-02", "2026-11-03", "2026-11-08", "2026-10-1", ""]) {
     assert.equal(isNight(d), false, d);
   }
+});
+
+test("nights: November's first week, Wednesday to Sunday", () => {
+  assert.deepEqual(NIGHTS.filter((d) => d.startsWith("2026-11-")), ["2026-11-01", "2026-11-04", "2026-11-05", "2026-11-06", "2026-11-07"]);
+  assert.equal(nightLabel("2026-11-01"), "Sunday, November 1");
 });
 
 test("labels: night, clock, money", () => {

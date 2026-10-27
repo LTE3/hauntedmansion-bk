@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-GFmNLr10/whafT9YVwpIgq6c4K7FyikM1CIdUEMnxcY='; font-src 'self'; script-src 'sha256-AwOMcEGOgF5Z2a9Og76PAp7FUbuDJ5qLDOxiHhL7uiQ='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data:; style-src 'sha256-aLzI7SxWdwdhSfD57p2WcHgboDyrpG1GwntOIWbdIS4='; font-src 'self'; script-src 'sha256-r+RdxDYCE2kgQ/Iy2M5jXoScHUxyFswFl3W34kYnqVU='; connect-src https://tqeunmqnaoyrerkbhokk.supabase.co; frame-src 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>The books | Haunted Mansion BK</title>
@@ -88,10 +88,11 @@ h1 em{font-style:normal;color:var(--red-lit)}
 @media(min-width:640px){.stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
 
 /* Tabs */
-.tabs{position:sticky;top:58px;z-index:10;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:26px 0 16px;padding:4px;border:1px solid var(--line);border-radius:999px;background:rgba(3,2,2,.9);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.tabs{position:sticky;top:58px;z-index:10;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin:26px 0 16px;padding:4px;border:1px solid var(--line);border-radius:999px;background:rgba(3,2,2,.9);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 .tabs button{min-height:42px;border-radius:999px;font:700 14px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);transition:background .2s var(--ease-out),color .2s}
 .tabs button[aria-selected="true"]{background:rgba(92,8,6,.6);color:var(--bone);box-shadow:inset 0 0 0 1px rgba(255,89,78,.5)}
 .panel[hidden]{display:none}
+@media(max-width:439px){.tabs button{font-size:12px;letter-spacing:.06em}}
 
 /* Nights */
 .nights{display:grid;gap:8px}
@@ -133,6 +134,9 @@ h1 em{font-style:normal;color:var(--red-lit)}
 .more{margin-top:12px;width:100%}
 .empty{padding:24px 0;text-align:center;color:var(--muted)}
 .sum{margin:0 0 12px}
+.row a{color:var(--bone);text-decoration:underline;text-decoration-color:rgba(255,89,78,.6);text-underline-offset:3px}
+.row .wk{color:var(--bone)}
+.row .note{color:var(--muted)}
 
 @keyframes rise{from{opacity:0;transform:translate3d(0,14px,0)}to{opacity:1;transform:none}}
 @keyframes grow{from{transform:scaleX(0)}}
@@ -176,6 +180,7 @@ button:focus-visible,.field:focus-visible{outline:2px solid #ff6b5f;outline-offs
       <button type="button" role="tab" aria-selected="false" data-tab="orders">Orders</button>
       <button type="button" role="tab" aria-selected="false" data-tab="waitlist">Waitlist</button>
       <button type="button" role="tab" aria-selected="false" data-tab="rooftop">Rooftop</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="crew">Crew</button>
     </div>
 
     <section class="panel" id="p-nights"><div class="nights" id="nights"></div></section>
@@ -197,6 +202,13 @@ button:focus-visible,.field:focus-visible{outline:2px solid #ff6b5f;outline-offs
       <div class="tools"><input class="field" id="q-roof" type="search" placeholder="Name, email, code, night" aria-label="Search rooftop tables"><button class="ghost" type="button" id="csv-roof">CSV</button></div>
       <div class="rows" id="rooftop"></div>
       <button class="ghost more" type="button" id="more-roof" hidden>Show more</button>
+    </section>
+
+    <section class="panel" id="p-crew" hidden>
+      <p class="sum label" id="crew-sum"></p>
+      <div class="tools"><input class="field" id="q-crew" type="search" placeholder="Name, phone, night" aria-label="Search crew"><button class="ghost" type="button" id="csv-crew">CSV</button></div>
+      <div class="rows" id="crew"></div>
+      <button class="ghost more" type="button" id="more-crew" hidden>Show more</button>
     </section>
   </main>
 </div>
@@ -259,7 +271,7 @@ button:focus-visible,.field:focus-visible{outline:2px solid #ff6b5f;outline-offs
 
   document.querySelectorAll(".tabs button").forEach(b => b.addEventListener("click", () => {
     document.querySelectorAll(".tabs button").forEach(x => x.setAttribute("aria-selected", x === b ? "true" : "false"));
-    ["nights", "orders", "waitlist", "rooftop"].forEach(t => { $("p-" + t).hidden = t !== b.dataset.tab; });
+    ["nights", "orders", "waitlist", "rooftop", "crew"].forEach(t => { $("p-" + t).hidden = t !== b.dataset.tab; });
   }));
 
   /* Real money only in the headline: test-mode orders are listed, not counted. */
@@ -285,6 +297,7 @@ button:focus-visible,.field:focus-visible{outline:2px solid #ff6b5f;outline-offs
     renderOrders();
     renderWait();
     renderRoof();
+    renderCrew();
   }
 
   function renderNights(){
@@ -382,6 +395,25 @@ button:focus-visible,.field:focus-visible{outline:2px solid #ff6b5f;outline-offs
     renderRoofList();
   }
 
+  /* The crew: who is on this week first, then everyone who has worked.
+     Read-only - the owner books shifts and pay, rows are set by hand. */
+  const crewRows = () => data.crew || [];
+  const renderCrewList = list({
+    q: "q-crew", out: "crew", more: "more-crew",
+    rows: crewRows, text: c => [c.name, c.phone, c.role, c.this_week, c.worked, c.note].join(" "),
+    card: c => '<div class="row"><div class="row-top"><b>' + esc(c.name) + '</b></div>' +
+      (c.this_week ? '<p class="wk">This week: ' + esc(c.this_week) + '</p>' : "") +
+      (c.worked ? '<p>Worked ' + esc(c.worked) + '</p>' : "") +
+      (c.phone ? '<p class="num"><a href="tel:' + esc(c.phone.replace(/[^0-9+]/g, "")) + '">' + esc(c.phone) + '</a></p>' : "") +
+      (c.note ? '<p class="note">' + esc(c.note) + '</p>' : "") +
+      '<div class="meta">' + (c.this_week ? '<span class="pill paid">This week</span>' : "") + '<span class="pill">' + esc(c.role) + '</span></div></div>'
+  });
+  function renderCrew(){
+    const all = crewRows(), on = all.filter(c => c.this_week).length;
+    $("crew-sum").textContent = on + " on this week, " + all.length + " on the list";
+    renderCrewList();
+  }
+
   function csv(name, cols, rows){
     const cell = v => { const s = String(v == null ? "" : v); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
     const body = [cols.join(",")].concat(rows.map(r => cols.map(c => cell(r[c])).join(","))).join("\n");
@@ -393,6 +425,7 @@ button:focus-visible,.field:focus-visible{outline:2px solid #ff6b5f;outline-offs
   }
   $("csv-orders").addEventListener("click", () => csv("hm-orders", ["event_date", "slot", "name", "email", "tickets", "amount_cents", "status", "ticket_code", "livemode", "paid_at", "scanned_at"], data.orders));
   $("csv-roof").addEventListener("click", () => csv("hm-rooftop", ["event_date", "slot", "party", "name", "email", "phone", "code", "ticket_code", "status", "created_at"], data.rooftop || []));
+  $("csv-crew").addEventListener("click", () => csv("hm-crew", ["name", "phone", "role", "this_week", "worked", "note"], data.crew || []));
   $("csv-wait").addEventListener("click", () => csv("hm-waitlist", ["name", "email", "phone", "source", "created_at"], data.waitlist));
 
   if(pw) open(); else show(false);
